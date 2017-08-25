@@ -22,6 +22,7 @@ namespace BTS.Data
         public DbSet<Operator> Operators { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<SubBTS> SubBTSs { get; set; }
+        public DbSet<Error> Errors { get; set; }
 
         public static BTSDbContext Create()
         {

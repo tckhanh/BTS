@@ -62,8 +62,20 @@
     <Compile Include="Migrations\201708180903239_InitialDB.Designer.cs">
       <DependentUpon>201708180903239_InitialDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708240804020_addErrorTable.cs" />
+    <Compile Include="Migrations\201708240804020_addErrorTable.Designer.cs">
+      <DependentUpon>201708240804020_addErrorTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ApplicantRepository.cs" />
+    <Compile Include="Repository\BTSCertificateRepository.cs" />
+    <Compile Include="Repository\CityRepository.cs" />
+    <Compile Include="Repository\DistrictRepository.cs" />
+    <Compile Include="Repository\ErrorRepository.cs" />
+    <Compile Include="Repository\OperatorRepository.cs" />
+    <Compile Include="Repository\ProfileRepository.cs" />
+    <Compile Include="Repository\SubBTSRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Model\BTS.Model.csproj">
@@ -78,6 +90,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201708180903239_InitialDB.resx">
       <DependentUpon>201708180903239_InitialDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708240804020_addErrorTable.resx">
+      <DependentUpon>201708240804020_addErrorTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

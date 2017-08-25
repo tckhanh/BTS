@@ -54,6 +54,7 @@
     <Compile Include="Models\BTSCertificate.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\District.cs" />
+    <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Operator.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\SubBTS.cs" />
