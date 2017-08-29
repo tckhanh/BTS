@@ -14,7 +14,7 @@ namespace BTS.Service
         BTSCertificate Add(BTSCertificate btsCertificate);
         void Update(BTSCertificate btsCertificate);
         void Delete(int ID);        
-        IEnumerable<BTSCertificate> getAll(out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<BTSCertificate> getAll(out int totalRow);
         IEnumerable<BTSCertificate> getByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
         IEnumerable<BTSCertificate> getByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
         IEnumerable<BTSCertificate> getByOperator(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
@@ -46,9 +46,9 @@ namespace BTS.Service
             _BTSCertificateRepository.Delete(ID);
         }
 
-        public IEnumerable<BTSCertificate> getAll(out int totalRow, int pageIndex = 1, int pageSize = 10)
+        public IEnumerable<BTSCertificate> getAll(out int totalRows)
         {
-            var result = _BTSCertificateRepository.GetMultiPaging(x => true, out totalRow, pageIndex, pageSize, null);
+            var result = _BTSCertificateRepository.GetMultiPaging(x=> true, out totalRows);
             return result;
         }
 

@@ -1,15 +1,19 @@
-﻿using BTS.Model.Models;
+﻿using AutoMapper;
+using BTS.Model.Models;
 using BTS.Service;
 using BTS.Web.Infastructure.Core;
+using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BTS.Web.Infastructure.Extensions;
 
 namespace BTS.Web.Api
 {
+    [RoutePrefix("api/BtsCertificate")]
     public class BtsCertificateController : ApiControllerBase
     {
         IBTSCertificateService _btsCertificateService;
@@ -20,23 +24,23 @@ namespace BTS.Web.Api
         }
         [Route("getall")]
         public HttpResponseMessage Get(HttpRequestMessage request)
-        {
-            int totalRow = 0;
+        {            
+            int totalRow = 10;
 
             return CreateHttpResponse(request, () =>
             {
-                var listbtsCertificate = _btsCertificateService.getAll(out totalRow);
+                var listBtsCertificate = _btsCertificateService.getAll(out totalRow);
 
-                //var listPostCategoryVm = Mapper.Map<List<PostCategoryViewModel>>(listCategory);
+                var listBtsCertificateVm = Mapper.Map<List<BTSCertificateViewModel>>(listBtsCertificate);
 
-                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, listbtsCertificate);
+                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, listBtsCertificateVm);
 
                 return response;
             });
         }
 
         [Route("add")]
-        public HttpResponseMessage Post(HttpRequestMessage request, BTSCertificate btsCertificate)
+        public HttpResponseMessage Post(HttpRequestMessage request, BTSCertificateViewModel btsCertificateVm)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -47,7 +51,9 @@ namespace BTS.Web.Api
                 }
                 else
                 {
-                    var newBTSCertificate = _btsCertificateService.Add(btsCertificate);
+                    BTSCertificate  newBTSCertificate = new BTSCertificate();
+                    newBTSCertificate.UpdateBTSCertificate(btsCertificateVm);
+                    newBTSCertificate = _btsCertificateService.Add(newBTSCertificate);
                     _btsCertificateService.Save();
 
                     response = request.CreateResponse(HttpStatusCode.Created, newBTSCertificate);
@@ -58,7 +64,7 @@ namespace BTS.Web.Api
         }
 
         [Route("update")]
-        public HttpResponseMessage Put(HttpRequestMessage request, BTSCertificate btsCertificate)
+        public HttpResponseMessage Put(HttpRequestMessage request, BTSCertificateViewModel btsCertificateVm)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -69,6 +75,9 @@ namespace BTS.Web.Api
                 }
                 else
                 {
+                    var btsCertificate = _btsCertificateService.getByID(btsCertificateVm.ID);
+                    btsCertificate.UpdateBTSCertificate(btsCertificateVm);
+
                     _btsCertificateService.Update(btsCertificate);
                     _btsCertificateService.Save();                    
                     response = request.CreateResponse(HttpStatusCode.OK);
