@@ -1,5 +1,8 @@
-namespace BTS.Data.Migrations
+﻿namespace BTS.Data.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Model.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -26,6 +29,39 @@ namespace BTS.Data.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            CreateUser(context);
+        }
+
+        private void CreateUser(BTSDbContext context)
+        {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new BTSDbContext()));
+
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new BTSDbContext()));
+
+            var user = new ApplicationUser()
+            {
+                UserName = "khanh",
+                Email = "tckhanh.p@gmail.com",
+                EmailConfirmed = true,
+                BirthDay = DateTime.Now,
+                FullName = "Trần Công Khanh"
+
+            };
+            if (manager.Users.Count(x => x.UserName == "khanh") == 0)
+            {
+                manager.Create(user, "abc1234567");
+
+                if (!roleManager.Roles.Any())
+                {
+                    roleManager.Create(new IdentityRole { Name = "Admin" });
+                    roleManager.Create(new IdentityRole { Name = "User" });
+                }
+
+                var adminUser = manager.FindByEmail("tckhanh.p@gmail.com");
+
+                manager.AddToRoles(adminUser.Id, new string[] { "Admin", "User" });
+            }
+
         }
     }
 }
