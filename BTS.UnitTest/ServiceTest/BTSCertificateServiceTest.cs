@@ -44,7 +44,7 @@ namespace BTS.UnitTest.ServiceTest
             _mockBTSCertificateRepository.Setup(m => m.GetMultiPaging(x => true, out totalRow, 1, 10, null)).Returns(_listBTSCertificate);
 
             // call action
-            var result = _BTSCertificateService.getAll(totalRow) as List<BTSCertificate>;
+            var result = _BTSCertificateService.getAll(out totalRow) as List<BTSCertificate>;
 
             // check Assert
             Assert.IsNotNull(result);
