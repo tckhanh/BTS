@@ -1,7 +1,11 @@
 ﻿/// <reference path="/Assets/admin/libs/angular/angular.js" />
 
 (function () {
-    angular.module('BTS', ['BTS.btsCertificates', 'BTS.common']).config(config);
+    angular.module('BTS',
+           ['BTS.btsCertificates',
+            'BTS.operators',
+            'BTS.common'])
+        .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
 

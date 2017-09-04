@@ -4,6 +4,7 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Model.Models;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -30,6 +31,7 @@
             //    );
             //
             CreateUser(context);
+            CreateOperator(context);
         }
 
         private void CreateUser(BTSDbContext context)
@@ -63,5 +65,21 @@
             }
 
         }
+
+        private void CreateOperator(BTSDbContext context)
+        {
+            if (context.Operators.Count() == 0)
+            {
+                List<Operator> listOperator = new List<Operator>()
+            {
+                new Operator() { ID ="MOBIFONE", Name="Tổng Công Ty MobiFone", Address="Hà Mội" } ,
+                new Operator() { ID ="VIETTEL", Name="Tập đoàn VIETTEL", Address="Hà Mội" } ,
+                new Operator() { ID ="VINAPHONE", Name="Tập đoàn VNPT", Address="Hà Mội" }
+            };
+                context.Operators.AddRange(listOperator);
+                context.SaveChanges();
+            }
+        }
+
     }
 }

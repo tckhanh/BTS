@@ -18,11 +18,16 @@ namespace BTS.Data.Infrastructure
 
         T Delete(int id);
 
+        T Delete(string id);
+
         //Delete multi records
         void DeleteMulti(Expression<Func<T, bool>> where);
 
         // Get an entity by int id
         T GetSingleById(int id);
+
+        // Get an entity by string id
+        T GetSingleById(string id);
 
         T GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes = null);
 

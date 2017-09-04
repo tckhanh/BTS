@@ -50,8 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BTSCertificateService.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="ErrorService.cs" />
+    <Compile Include="OperatorService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

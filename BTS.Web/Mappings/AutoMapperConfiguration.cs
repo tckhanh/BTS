@@ -14,6 +14,7 @@ namespace BTS.Web.Mappings
         {
             var config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<Applicant, ApplicantViewModel>();
+                cfg.CreateMap<Operator, OperatorViewModel>();
                 //lots more maps...?
             });
 

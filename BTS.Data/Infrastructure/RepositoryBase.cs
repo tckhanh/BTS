@@ -53,6 +53,12 @@ namespace BTS.Data.Infrastructure
             var entity = dbSet.Find(id);
             return dbSet.Remove(entity);
         }
+
+        public virtual T Delete(string id)
+        {
+            var entity = dbSet.Find(id);
+            return dbSet.Remove(entity);
+        }
         public virtual void DeleteMulti(Expression<Func<T, bool>> where)
         {
             IEnumerable<T> objects = dbSet.Where<T>(where).AsEnumerable();
@@ -61,6 +67,11 @@ namespace BTS.Data.Infrastructure
         }
 
         public virtual T GetSingleById(int id)
+        {
+            return dbSet.Find(id);
+        }
+
+        public virtual T GetSingleById(string id)
         {
             return dbSet.Find(id);
         }

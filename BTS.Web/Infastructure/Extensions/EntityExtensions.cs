@@ -32,5 +32,14 @@ namespace BTS.Web.Infastructure.Extensions
             btsCertificate.Signer = btsCertificateVm.Signer;
             btsCertificate.OperatorID = btsCertificateVm.OperatorID;
         }
+
+        public static void UpdateOperator(this Operator myoperator, OperatorViewModel operatorVm)
+        {
+            myoperator.ID = operatorVm.ID;
+            myoperator.Name = operatorVm.Name;
+            myoperator.Address = operatorVm.Address;
+            myoperator.Telephone = operatorVm.Telephone;
+            myoperator.Fax = operatorVm.Fax;
+        }
     }
 }

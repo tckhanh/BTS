@@ -230,13 +230,13 @@
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-files-o"></i>
-                            <span>Layout Options</span>
+                            <span>Doanh nghiệp viễn thông</span>
                             <span class="pull-right-container">
                                 <span class="label label-primary pull-right">4</span>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="../layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
+                            <li><a ui-sref="operators"><i class="fa fa-circle-o"></i> Danh sách DNVT</a></li>
                             <li><a href="../layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
                             <li><a href="../layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
                             <li><a href="../layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
@@ -589,11 +589,15 @@
     <script src="~/Assets/admin/libs/angular/angular.js"></script>
     <script src="~/Assets/admin/libs/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="~/app/shared/modules/BTS.common.js"></script>
+    <script src="~/app/shared/services/apiService.js"></script>
+    <script src="~/app/components/operators/operators.module.js"></script>
     <script src="~/app/components/btsCertificates/btsCertificates.module.js"></script>
     <script src="~/app/app.js"></script>
+    <script src="~/app/components/operators/operatorListViewController.js"></script>
     <script src="~/app/components/home/homeController.js"></script>
     <script src="~/app/components/btsCertificates/btsCertificateListController.js"></script>
     <script src="~/app/components/btsCertificates/btsCertificateAddController.js"></script>
+
 
 </body>
 </html>
