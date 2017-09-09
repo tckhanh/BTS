@@ -25,14 +25,14 @@ namespace BTS.Web.Api
 
 
         [Route("getall")]
-        public HttpResponseMessage GetAll(HttpRequestMessage request, int page,int pageSize=20)
+        public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword, int page,int pageSize=20)
         {
             int totalRow = 0;
 
             return CreateHttpResponse(request, () =>
             {
                 
-                var listOperator = _operatorService.getAll();
+                var listOperator = _operatorService.getAll(keyword);
 
                 totalRow = listOperator.Count();
 

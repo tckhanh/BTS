@@ -7,6 +7,13 @@
         $scope.operators = [];
         $scope.page = 0;
         $scope.pageCount = 0;
+        $scope.keyword = '';
+
+        $scope.search = search;
+
+        function search() {
+            getOperators();
+        }
 
         $scope.getOperators = getOperators;
 

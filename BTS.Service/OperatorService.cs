@@ -17,6 +17,7 @@ namespace BTS.Service
         void Update(Operator newOperator);
         void Delete(string ID);
         IEnumerable<Operator> getAll();
+        IEnumerable<Operator> getAll(string keyword);
         Operator getByID(string ID);
         void Save();
     }
@@ -28,7 +29,7 @@ namespace BTS.Service
         public OperatorService(IOperatorRepository operatorRepository, IUnitOfWork unitOfWork)
         {
             this._operatorRepository = operatorRepository;
-            this._unitOfWork = unitOfWork;         
+            this._unitOfWork = unitOfWork;
         }
 
         public Operator Add(Operator newOperator)
@@ -43,8 +44,15 @@ namespace BTS.Service
 
         public IEnumerable<Operator> getAll()
         {
-            var result = _operatorRepository.GetAll();
-            return result;
+            return _operatorRepository.GetAll();
+        }
+
+        public IEnumerable<Operator> getAll(string keyword)
+        {
+            if (!string.IsNullOrEmpty(keyword))
+                return _operatorRepository.GetMulti(x => x.ID.Contains(keyword) || x.Name.Contains(keyword) || x.Address.Contains(keyword));
+            else
+                return _operatorRepository.GetAll();
         }
 
         public Operator getByID(string ID)
