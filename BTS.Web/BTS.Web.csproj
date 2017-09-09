@@ -220,6 +220,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infastructure\Core\ApiControllerBase.cs" />
+    <Compile Include="Infastructure\Core\PaginationSet.cs" />
     <Compile Include="Infastructure\Extensions\EntityExtensions.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\ApplicantViewModel.cs" />
@@ -244,6 +245,9 @@
     <Content Include="app\components\home\homeView.html" />
     <Content Include="app\components\operators\operatorListView.html" />
     <Content Include="app\components\operators\operatorListViewController.js" />
+    <Content Include="app\shared\directives\pagerDirective.html" />
+    <Content Include="app\shared\directives\pagerDirective.js" />
+    <Content Include="app\shared\filters\statusFilter.js" />
     <Content Include="app\shared\modules\BTS.common.js" />
     <Content Include="app\shared\services\apiService.js" />
     <Content Include="Assets\admin\css\AdminLTE.css" />

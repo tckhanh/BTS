@@ -25,17 +25,29 @@ namespace BTS.Web.Api
 
 
         [Route("getall")]
-        public HttpResponseMessage Get(HttpRequestMessage request)
+        public HttpResponseMessage GetAll(HttpRequestMessage request, int page,int pageSize=20)
         {
-            int totalRow = 10;
+            int totalRow = 0;
 
             return CreateHttpResponse(request, () =>
             {
-                var listOperator = _operatorService.getAll(out totalRow);
+                
+                var listOperator = _operatorService.getAll();
 
-                var listOperatorVm = Mapper.Map<List<OperatorViewModel>>(listOperator);
+                totalRow = listOperator.Count();
 
-                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, listOperatorVm);
+                var query = listOperator.OrderBy(x => x.ID).Skip(page * pageSize).Take(pageSize);
+                
+                var listOperatorVm = Mapper.Map<List<OperatorViewModel>>(query);
+
+                var paginationSet = new PaginationSet<OperatorViewModel> {
+                    Page = page,
+                    TotalCount = totalRow,
+                    TotalPages = (int) Math.Ceiling((decimal)totalRow / pageSize),
+                    items = listOperatorVm
+                };
+
+                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, paginationSet);
 
                 return response;
             });

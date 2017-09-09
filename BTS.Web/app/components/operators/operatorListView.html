@@ -27,11 +27,11 @@
                 <div class="col-md-12">
                     <table class="table table-bordered">
                         <tr>
-                            <th style="width: 10px">ID</th>
-                            <th>Tên doanh nghiệp</th>
-                            <th style="width: 20%">Địa chỉ</th>
+                            <th style="width: 10%">ID</th>
+                            <th style="width: 25%">Tên doanh nghiệp</th>
+                            <th style="width: 45%">Địa chỉ</th>
                             <th style="width: 10%">Số điện thoại</th>
-                        </tr>
+                            <th style="width: 10%">Thao tác</th>
                         <tr ng-repeat="item in operators">
                             <td>{{item.ID}}</td>
                             <td>{{item.Name}}</td>
@@ -39,13 +39,18 @@
                                 {{item.Address}}
                             </td>
                             <td><span class="badge bg-red">{{item.Telephone}}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></button>
+                                <button class="btn  btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+
+                            </td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div><!-- /.box-body -->
         <div class="box-footer">
-
+            <pager-directive page="{{page}}" custom-path="{{customPath}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="getOperators(page)"></pager-directive>
         </div><!-- /.box-footer-->
     
     </div>
