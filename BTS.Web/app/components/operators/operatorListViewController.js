@@ -2,8 +2,8 @@
 (function (app) {
     app.controller('operatorListController', operatorListController);
 
-    operatorListController.$inject = ['$scope','apiService'];
-    function operatorListController($scope, apiService) {
+    operatorListController.$inject = ['$scope', 'apiService', 'notificationService'];
+    function operatorListController($scope, apiService, notificationService) {
         $scope.operators = [];
         $scope.page = 0;
         $scope.pageCount = 0;
@@ -27,6 +27,12 @@
                 }
             }
             apiService.get('/api/Operator/getall', config, function (result) {
+                if (result.data.TotalCount == 0) {
+                    notificationService.displayWarning('Không có bản ghi nào được tìm thấy.');
+                }
+                else {
+                    notificationService.displaySuccess('Đã tìm thấy ' + result.data.TotalCount + ' bản ghi.');
+                }
                 $scope.operators = result.data.items;
                 $scope.page = result.data.Page;
                 $scope.pagesCount = result.data.TotalPages;
