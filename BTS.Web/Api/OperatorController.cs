@@ -13,7 +13,7 @@ using BTS.Web.Infastructure.Extensions;
 
 namespace BTS.Web.Api
 {
-    [RoutePrefix("api/Operator")]
+    [RoutePrefix("api/operator")]
     public class OperatorController : ApiControllerBase
     {
         IOperatorService _operatorService;
@@ -25,6 +25,7 @@ namespace BTS.Web.Api
 
 
         [Route("getall")]
+        [HttpGet]
         public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword, int page,int pageSize=20)
         {
             int totalRow = 0;
@@ -53,7 +54,8 @@ namespace BTS.Web.Api
             });
         }
 
-        [Route("add")]
+        [Route("create")]
+        [HttpPost]
         public HttpResponseMessage Post(HttpRequestMessage request, OperatorViewModel operatorVm)
         {
             return CreateHttpResponse(request, () =>
@@ -70,7 +72,9 @@ namespace BTS.Web.Api
                     newOperator = _operatorService.Add(newOperator);
                     _operatorService.Save();
 
-                    response = request.CreateResponse(HttpStatusCode.Created, newOperator);
+                    var responseData = Mapper.Map<Operator, OperatorViewModel>(newOperator);
+
+                    response = request.CreateResponse(HttpStatusCode.Created, responseData);
 
                 }
                 return response;

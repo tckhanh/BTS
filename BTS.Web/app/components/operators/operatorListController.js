@@ -26,13 +26,13 @@
                     pageSize: 2
                 }
             }
-            apiService.get('/api/Operator/getall', config, function (result) {
+            apiService.get('/api/operator/getall', config, function (result) {
                 if (result.data.TotalCount == 0) {
                     notificationService.displayWarning('Không có bản ghi nào được tìm thấy.');
                 }
-                else {
-                    notificationService.displaySuccess('Đã tìm thấy ' + result.data.TotalCount + ' bản ghi.');
-                }
+                //else {
+                //    notificationService.displaySuccess('Đã tìm thấy ' + result.data.TotalCount + ' bản ghi.');
+                //}
                 $scope.operators = result.data.items;
                 $scope.page = result.data.Page;
                 $scope.pagesCount = result.data.TotalPages;
