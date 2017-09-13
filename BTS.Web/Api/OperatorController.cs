@@ -16,6 +16,7 @@ namespace BTS.Web.Api
     [RoutePrefix("api/operator")]
     public class OperatorController : ApiControllerBase
     {
+        #region Initialize
         IOperatorService _operatorService;
 
         public OperatorController(IErrorService errorService, IOperatorService operatorService) : base(errorService)
@@ -23,10 +24,11 @@ namespace BTS.Web.Api
             this._operatorService = operatorService;
         }
 
+        #endregion
 
         [Route("getall")]
         [HttpGet]
-        public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword, int page,int pageSize=20)
+        public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword = "", int page = 0,int pageSize=20)
         {
             int totalRow = 0;
 
@@ -49,6 +51,25 @@ namespace BTS.Web.Api
                 };
 
                 HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, paginationSet);
+
+                return response;
+            });
+        }
+
+
+        [Route("getbyid/{id}")]
+        [HttpGet]
+        public HttpResponseMessage GetByID(HttpRequestMessage request, string id)
+        {
+
+            return CreateHttpResponse(request, () =>
+            {
+
+                var dbOperator = _operatorService.getByID(id);
+
+                var dbOperatorVm = Mapper.Map<Operator, OperatorViewModel>(dbOperator);
+
+                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.OK, dbOperatorVm);
 
                 return response;
             });
@@ -82,6 +103,7 @@ namespace BTS.Web.Api
         }
 
         [Route("update")]
+        [HttpPut]
         public HttpResponseMessage Put(HttpRequestMessage request, OperatorViewModel operatorVm)
         {
             return CreateHttpResponse(request, () =>
@@ -93,12 +115,14 @@ namespace BTS.Web.Api
                 }
                 else
                 {
-                    var Operator = _operatorService.getByID(operatorVm.ID);
-                    Operator.UpdateOperator(operatorVm);
+                    var dbOperator = _operatorService.getByID(operatorVm.ID);
+                    dbOperator.UpdateOperator(operatorVm);
 
-                    _operatorService.Update(Operator);
+                    _operatorService.Update(dbOperator);
                     _operatorService.Save();
-                    response = request.CreateResponse(HttpStatusCode.OK);
+
+                    var responData = Mapper.Map<Operator, OperatorViewModel>(dbOperator);
+                    response = request.CreateResponse(HttpStatusCode.OK, responData);
 
                 }
                 return response;

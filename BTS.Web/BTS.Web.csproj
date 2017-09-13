@@ -245,6 +245,8 @@
     <Content Include="app\components\home\homeView.html" />
     <Content Include="app\components\operators\operatorAddController.js" />
     <Content Include="app\components\operators\operatorAddView.html" />
+    <Content Include="app\components\operators\operatorEditController.js" />
+    <Content Include="app\components\operators\operatorEditView.html" />
     <Content Include="app\components\operators\operatorListView.html" />
     <Content Include="app\components\operators\operatorListController.js" />
     <Content Include="app\shared\directives\pagerDirective.html" />

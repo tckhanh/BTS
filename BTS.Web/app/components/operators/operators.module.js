@@ -10,10 +10,16 @@
 			url: "/operators",
 			templateUrl: "/app/components/operators/operatorListView.html",
 			controller: "operatorListController"
-		}).state('add_operator', {
+		})
+            .state('add_operator', {
 		    url: "/add_operator",
 		    templateUrl: "/app/components/operators/operatorAddView.html",
 		    controller: "operatorAddController"
-		});
+        })
+	        .state('edit_operator', {
+	        url: "/edit_operator/:id",
+	        templateUrl: "/app/components/operators/operatorEditView.html",
+	        controller: "operatorEditController"
+	    });
 	}
 })();

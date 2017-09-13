@@ -8,7 +8,8 @@
     function apiService($http) {
         return {
             get: get,
-            post: post
+            post: post,
+            put:put
         }
 
         function get(url, params, success, failure) {
@@ -23,7 +24,27 @@
             $http.post(url, data).then(function (result) {
                 success(result);
             }, function (error) {
-                failure(error);
+                console.log(error.status)
+                if (error.status === 401) {
+                    notificationService.displayError('Authenticate is required.');
+                }
+                else if (failure != null) {
+                    failure(error);
+                }
+            });
+        }
+
+        function put(url, data, success, failure) {
+            $http.put(url, data).then(function (result) {
+                success(result);
+            }, function (error) {
+                console.log(error.status)
+                if (error.status === 401) {
+                    notificationService.displayError('Authenticate is required.');
+                }
+                else if (failure != null) {
+                    failure(error);
+                }
             });
         }
     }
