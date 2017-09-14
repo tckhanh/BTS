@@ -1,12 +1,12 @@
 ﻿            <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        DOANH NGHIỆP VIỄN THÔNG {{operator.ID}}
+        DOANH NGHIỆP VIỄN THÔNG
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Operators</a></li>
-        <li class="active">{{operator.ID}}</li>
+        <li class="active"><h1>{{operator.ID}} </h1></li>
     </ol>
 </section>
 <!-- Main content -->
@@ -15,11 +15,11 @@
     <div class="box">
         <div class="box-header with-border">
             <div class="box-header with-border">
-                <h3 class="box-title">Thêm mới</h3>
+                <h3 class="box-title">{{operator.ID}}</h3>
             </div><!-- /.box-header -->
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" ui-sref="" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                <!--<button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>-->
             </div>
 
         </div>
@@ -27,14 +27,8 @@
         <!-- Horizontal Form -->
         <div class="box box-info">
             <!-- form start -->
-            <form class="form-horizontal" novalidate name="frmAddOperator" role="form" ng-submit="AddOperator()">
-                <div class="box-body">
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">Tên ID</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" name="id" ng-model="operator.ID">
-                        </div>
-                    </div>
+            <form class="form-horizontal" novalidate name="frmAddOperator" role="form" ng-submit="EditOperator()">
+                <div class="box-body">                    
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">Tên Doanh nghiệp</label>
                         <div class="col-sm-10">
@@ -61,7 +55,7 @@
                     </div>
                 </div><!-- /.box-body -->
                 <div class="box-footer">
-                    <button ui-sref="operators" class="btn btn-default">Hủy</button>
+                    <button ui-sref="operators" class="btn btn-default pull-right">Hủy</button>
                     <button type="submit" class="btn btn-success pull-right">Lưu</button>
                 </div><!-- /.box-footer -->
             </form>

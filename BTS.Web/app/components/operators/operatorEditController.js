@@ -13,7 +13,7 @@
         $scope.EditOperator = EditOperator;
         
         function EditOperator() {
-            apiService.put('api/operator/update', $scope.operator,
+            apiService.put('/api/operator/update', $scope.operator,
                 function (result) {
                     notificationService.displaySuccess(result.data.ID + ' đã được cập nhật.');
                     $state.go('operators');
@@ -23,14 +23,14 @@
         }
 
         function loadOperatorDetail() {
-            apiService.get('api/operator/getbyid/' + $stateParams.id, null, function (result) {
+            apiService.get('/api/operator/getbyid/' + $stateParams.id, null, function (result) {
                 $scope.operator = result.data;
             }, function (error) {
                 notificationService.displayError(error.data);
             });
         }
         //function loadParentCategory() {
-        //    apiService.get('api/operator/getallparents', null, function (result) {
+        //    apiService.get('/api/operator/getallparents', null, function (result) {
         //        $scope.parentCategories = result.data;
         //    }, function () {
         //        console.log('Cannot get list parent');

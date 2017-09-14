@@ -254,6 +254,7 @@
     <Content Include="app\shared\filters\statusFilter.js" />
     <Content Include="app\shared\modules\BTS.common.js" />
     <Content Include="app\shared\services\apiService.js" />
+    <Content Include="app\shared\services\commonService.js" />
     <Content Include="app\shared\services\notificationService.js" />
     <Content Include="Assets\admin\css\AdminLTE.css" />
     <Content Include="Assets\admin\css\AdminLTE.min.css" />
