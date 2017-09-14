@@ -3,13 +3,14 @@
 (function (app) {
     app.factory('apiService', apiService);
 
-    apiService.$inject = ['$http'];
+    apiService.$inject = ['$http', 'notificationService'];
 
-    function apiService($http) {
+    function apiService($http, notificationService) {
         return {
             get: get,
             post: post,
-            put:put
+            put: put,
+            del: del
         }
 
         function get(url, params, success, failure) {
@@ -45,6 +46,14 @@
                 else if (failure != null) {
                     failure(error);
                 }
+            });
+        }
+
+        function del(url, params, success, failure) {
+            $http.delete(url, params).then(function (result) {
+                success(result);
+            }, function (error) {
+                failure(error);
             });
         }
     }

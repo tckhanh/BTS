@@ -2,14 +2,32 @@
 (function (app) {
     app.controller('operatorListController', operatorListController);
 
-    operatorListController.$inject = ['$scope', 'apiService', 'notificationService'];
-    function operatorListController($scope, apiService, notificationService) {
+    operatorListController.$inject = ['$scope', 'apiService', 'notificationService', '$ngBootbox'];
+    function operatorListController($scope, apiService, notificationService, $ngBootbox) {
         $scope.operators = [];
         $scope.page = 0;
         $scope.pageCount = 0;
         $scope.keyword = '';
 
         $scope.search = search;
+
+        $scope.deleteOperator = deleteOperator;
+
+        function deleteOperator(id) {
+            $ngBootbox.confirm('Bạn có chắc muốn xóa?').then(function () {
+                var config = {
+                    params: {
+                        id: id
+                    }
+                }
+                apiService.del('/api/operator/delete', config, function () {
+                    notificationService.displaySuccess('Xóa thành công');
+                    search();
+                }, function () {
+                    notificationService.displayError('Xóa không thành công');
+                })
+            });
+        }
 
         function search() {
             getOperators();

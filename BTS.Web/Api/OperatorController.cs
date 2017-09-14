@@ -28,25 +28,26 @@ namespace BTS.Web.Api
 
         [Route("getall")]
         [HttpGet]
-        public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword = "", int page = 0,int pageSize=20)
+        public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword = "", int page = 0, int pageSize = 20)
         {
             int totalRow = 0;
 
             return CreateHttpResponse(request, () =>
             {
-                
+
                 var listOperator = _operatorService.getAll(keyword);
 
                 totalRow = listOperator.Count();
 
                 var query = listOperator.OrderBy(x => x.ID).Skip(page * pageSize).Take(pageSize);
-                
+
                 var listOperatorVm = Mapper.Map<List<OperatorViewModel>>(query);
 
-                var paginationSet = new PaginationSet<OperatorViewModel> {
+                var paginationSet = new PaginationSet<OperatorViewModel>
+                {
                     Page = page,
                     TotalCount = totalRow,
-                    TotalPages = (int) Math.Ceiling((decimal)totalRow / pageSize),
+                    TotalPages = (int)Math.Ceiling((decimal)totalRow / pageSize),
                     items = listOperatorVm
                 };
 
@@ -129,22 +130,19 @@ namespace BTS.Web.Api
             });
         }
 
+        [Route("delete")]
+        [HttpDelete]
         public HttpResponseMessage Delete(HttpRequestMessage request, string id)
         {
             return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
-                if (ModelState.IsValid)
-                {
-                    request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
-                }
-                else
-                {
-                    _operatorService.Delete(id);
-                    _operatorService.Save();
-                    response = request.CreateResponse(HttpStatusCode.OK);
+                var dbOperator = _operatorService.Delete(id);
+                _operatorService.Save();
 
-                }
+                var responData = Mapper.Map<Operator, OperatorViewModel>(dbOperator);
+                response = request.CreateResponse(HttpStatusCode.OK, responData);
+
                 return response;
             });
         }

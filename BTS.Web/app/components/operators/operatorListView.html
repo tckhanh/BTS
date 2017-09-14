@@ -54,7 +54,7 @@
                             <td><span class="badge bg-red">{{item.Telephone}}</span></td>
                             <td>
                                 <button class="btn btn-sm btn-primary" ui-sref="edit_operator({id:item.ID})"><i class="fa fa-pencil"></i></button>
-                                <button class="btn  btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                                <button class="btn  btn-sm btn-danger" ng-click="deleteOperator(item.ID)"><i class="fa fa-trash"></i></button>
 
                             </td>
                         </tr>

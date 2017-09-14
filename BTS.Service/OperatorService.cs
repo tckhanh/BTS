@@ -15,7 +15,7 @@ namespace BTS.Service
 
         Operator Add(Operator newOperator);
         void Update(Operator newOperator);
-        void Delete(string ID);
+        Operator Delete(string ID);
         IEnumerable<Operator> getAll();
         IEnumerable<Operator> getAll(string keyword);
         Operator getByID(string ID);
@@ -37,9 +37,9 @@ namespace BTS.Service
             return _operatorRepository.Add(newOperator);
         }
 
-        public void Delete(string ID)
+        public Operator Delete(string ID)
         {
-            _operatorRepository.Delete(ID);
+            return _operatorRepository.Delete(ID);
         }
 
         public IEnumerable<Operator> getAll()

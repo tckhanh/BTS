@@ -86,6 +86,10 @@
     <Compile Include="Migrations\201708291013491_addSeed.Designer.cs">
       <DependentUpon>201708291013491_addSeed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709140722101_change_OperatorID.cs" />
+    <Compile Include="Migrations\201709140722101_change_OperatorID.Designer.cs">
+      <DependentUpon>201709140722101_change_OperatorID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ApplicantRepository.cs" />
@@ -122,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708291013491_addSeed.resx">
       <DependentUpon>201708291013491_addSeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709140722101_change_OperatorID.resx">
+      <DependentUpon>201709140722101_change_OperatorID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
