@@ -17,10 +17,10 @@ namespace BTS.Model.Models
         [StringLength(255)]
         public string Address { get; set; }
 
-        [StringLength(50)]
+        [StringLength(30)]
         public string Telephone { get; set; }
 
-        [StringLength(50)]
+        [StringLength(30)]
         public string Fax { get; set; }
 
         public virtual ICollection<Applicant> Applicants { get; set; }
