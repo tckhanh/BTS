@@ -27,36 +27,42 @@
         <!-- Horizontal Form -->
         <div class="box box-info">
             <!-- form start -->
-            <form class="form-horizontal" novalidate name="frmAddOperator" role="form" ng-submit="EditOperator()">
+            <form class="form-horizontal" novalidate name="frmEditOperator" role="form" ng-submit="EditOperator()">
                 <div class="box-body">                    
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">Tên Doanh nghiệp</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="name" ng-model="operator.Name">
+                            <input type="text" class="form-control" name="name" required ng-maxlength="255" ng-model="operator.Name">
+                            <span ng-show="frmEditOperator.name.$invalid" class="has-error">Phải nhập Tên doanh nghiệp</span>
+                            <span ng-show="frmEditOperator.name.$error.maxlength" class="has-error">Tên doanh nghiệp chỉ được tối đa 255 ký tự</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">Địa chỉ</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="address" ng-model="operator.Address">
+                            <input type="text" class="form-control" name="address" required ng-maxlength="255" ng-model="operator.Address">
+                            <span ng-show="frmEditOperator.address.$invalid" class="has-error">Phải nhập Địa chỉ</span>
+                            <span ng-show="frmEditOperator.address.$error.maxlength" class="has-error">Địa chỉ chỉ được tối đa 255 ký tự</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">Số điện thoại</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="telephone" ng-model="operator.Telephone">
+                            <input type="text" class="form-control" name="telephone" ng-maxlength="50" ng-model="operator.Telephone">
+                            <span ng-show="frmEditOperator.telephone.$error.maxlength" class="has-error">Số điện thoại chỉ được tối đa 50 ký tự</span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">Số Fax</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="fax" ng-model="operator.Fax">
+                            <input type="text" class="form-control" name="fax" ng-maxlength="50" ng-model="operator.Fax">
+                            <span ng-show="frmEditOperator.fax.$error.maxlength" class="has-error">Số Fax chỉ được tối đa 50 ký tự</span>
                         </div>
                     </div>
                 </div><!-- /.box-body -->
                 <div class="box-footer">
                     <button ui-sref="operators" class="btn btn-default pull-right">Hủy</button>
-                    <button type="submit" class="btn btn-success pull-right">Lưu</button>
+                    <button type="submit" class="btn btn-success pull-right" ng-disabled="frmEditOperator.$invalid">Lưu</button>
                 </div><!-- /.box-footer -->
             </form>
         </div><!-- /.box -->

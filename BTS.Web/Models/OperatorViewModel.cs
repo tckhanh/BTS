@@ -8,17 +8,22 @@ namespace BTS.Web.Models
 {
     public class OperatorViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Yêu cầu nhập Mã Doanh nghiệp")]
+        [MaxLength(10, ErrorMessage = "Mã Doanh nghiệp tối đa 10 ký tự")]
         public string ID { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Yêu cầu nhập Tên Doanh nghiệp")]
+        [MaxLength(255, ErrorMessage = "Tên Doanh nghiệp tối đa 255 ký tự")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Yêu cầu Địa chỉ Doanh nghiệp")]
+        [MaxLength(255, ErrorMessage = "Địa chỉ Doanh nghiệp tối đa 255 ký tự")]
         public string Address { get; set; }
 
+        [MaxLength(50, ErrorMessage = "Số điện thoại tối đa 50 ký tự")]
         public string Telephone { get; set; }
 
+        [MaxLength(50, ErrorMessage = "Số Fax tối đa 50 ký tự")]
         public string Fax { get; set; }
 
         public virtual ICollection<ApplicantViewModel> Applicants { get; set; }
