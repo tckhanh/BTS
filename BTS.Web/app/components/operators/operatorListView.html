@@ -33,6 +33,7 @@
                 </div>
                 <div class="col-md-6">
                     <button class="btn btn-success" ui-sref="add_operator">Thêm mới</button>
+                    <button class="btn  btn-sm btn-danger" id="btnDelete" disabled ng-click="deleteMultiple()">Xóa</button>
                 </div>
             </div>
 
@@ -40,12 +41,14 @@
                 <div class="col-md-12">
                     <table class="table table-bordered">
                         <tr>
+                            <th><input name="all" type="checkbox" ng-click="selectAll()" /></th>
                             <th style="width: 10%">Mã DN</th>
                             <th style="width: 25%">Tên doanh nghiệp</th>
                             <th style="width: 45%">Địa chỉ</th>
                             <th style="width: 10%">Số điện thoại</th>
                             <th style="width: 10%">Thao tác</th>
                         <tr ng-repeat="item in operators">
+                            <td><input name="all" type="checkbox" ng-model="item.checked" /></td>
                             <td>{{item.ID}}</td>
                             <td>{{item.Name}}</td>
                             <td>

@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BTS.Web.Infastructure.Extensions;
+using System.Web.Script.Serialization;
 
 namespace BTS.Web.Api
 {
@@ -142,6 +143,27 @@ namespace BTS.Web.Api
 
                 var responData = Mapper.Map<Operator, OperatorViewModel>(dbOperator);
                 response = request.CreateResponse(HttpStatusCode.OK, responData);
+
+                return response;
+            });
+        }
+
+        [Route("deletemulti")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string checkedOperators)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                HttpResponseMessage response = null;
+
+                var listOperators = new JavaScriptSerializer().Deserialize<List<string>>(checkedOperators);
+                foreach (var item in listOperators)
+                {
+                    _operatorService.Delete(item);
+                }                
+                _operatorService.Save();
+
+                response = request.CreateResponse(HttpStatusCode.OK, listOperators.Count);
 
                 return response;
             });

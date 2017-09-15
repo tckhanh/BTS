@@ -13,7 +13,7 @@
         $scope.AddOperator = AddOperator;
 
         function AddOperator() {
-            apiService.post('api/operator/create', $scope.operator,
+            apiService.post('/api/operator/create', $scope.operator,
                 function (result) {
                     notificationService.displaySuccess(result.data.ID + ' đã được thêm mới.');
                     $state.go('operators');
@@ -23,7 +23,7 @@
         }
 
         //function loadParentCategory() {
-        //    apiService.get('api/operator/getallparents', null, function (result) {
+        //    apiService.get('/api/operator/getallparents', null, function (result) {
         //        $scope.parentCategories = result.data;
         //    }, function () {
         //        console.log('Cannot get list parent');
