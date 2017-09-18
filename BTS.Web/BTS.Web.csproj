@@ -243,6 +243,9 @@
     <Content Include="app\components\btsCertificates\btsCertificates.module.js" />
     <Content Include="app\components\home\homeController.js" />
     <Content Include="app\components\home\homeView.html" />
+    <Content Include="app\components\home\rootController.js" />
+    <Content Include="app\components\login\loginController.js" />
+    <Content Include="app\components\login\loginView.html" />
     <Content Include="app\components\operators\operatorAddController.js" />
     <Content Include="app\components\operators\operatorAddView.html" />
     <Content Include="app\components\operators\operatorEditController.js" />
@@ -256,6 +259,7 @@
     <Content Include="app\shared\services\apiService.js" />
     <Content Include="app\shared\services\commonService.js" />
     <Content Include="app\shared\services\notificationService.js" />
+    <Content Include="app\shared\views\baseView.html" />
     <Content Include="Assets\admin\css\AdminLTE.css" />
     <Content Include="Assets\admin\css\AdminLTE.min.css" />
     <Content Include="Assets\admin\css\alt\AdminLTE-bootstrap-social.css" />
