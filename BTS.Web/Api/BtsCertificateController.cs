@@ -14,6 +14,7 @@ using BTS.Web.Infastructure.Extensions;
 namespace BTS.Web.Api
 {
     [RoutePrefix("api/BtsCertificate")]
+    [Authorize]
     public class BtsCertificateController : ApiControllerBase
     {
         IBTSCertificateService _btsCertificateService;

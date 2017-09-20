@@ -15,6 +15,7 @@ using System.Web.Script.Serialization;
 namespace BTS.Web.Api
 {
     [RoutePrefix("api/operator")]
+    [Authorize]
     public class OperatorController : ApiControllerBase
     {
         #region Initialize
@@ -61,6 +62,7 @@ namespace BTS.Web.Api
 
         [Route("getbyid/{id}")]
         [HttpGet]
+        [Authorize]
         public HttpResponseMessage GetByID(HttpRequestMessage request, string id)
         {
 
@@ -79,6 +81,7 @@ namespace BTS.Web.Api
 
         [Route("create")]
         [HttpPost]
+        [Authorize]
         public HttpResponseMessage Post(HttpRequestMessage request, OperatorViewModel operatorVm)
         {
             return CreateHttpResponse(request, () =>
@@ -106,6 +109,7 @@ namespace BTS.Web.Api
 
         [Route("update")]
         [HttpPut]
+        [Authorize]
         public HttpResponseMessage Put(HttpRequestMessage request, OperatorViewModel operatorVm)
         {
             return CreateHttpResponse(request, () =>
@@ -133,6 +137,7 @@ namespace BTS.Web.Api
 
         [Route("delete")]
         [HttpDelete]
+        [Authorize]
         public HttpResponseMessage Delete(HttpRequestMessage request, string id)
         {
             return CreateHttpResponse(request, () =>
@@ -150,6 +155,7 @@ namespace BTS.Web.Api
 
         [Route("deletemulti")]
         [HttpDelete]
+        [Authorize]
         public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string checkedOperators)
         {
             return CreateHttpResponse(request, () =>
