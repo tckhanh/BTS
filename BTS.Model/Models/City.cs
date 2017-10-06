@@ -15,8 +15,8 @@ namespace BTS.Model.Models
         [StringLength(50)]
         public string Name { get; set; }
 
-        public virtual ICollection<BTSCertificate> BTSCertificates { get; set; }
+        public virtual IEnumerable<BTSCertificate> BTSCertificates { get; set; }
 
-        public virtual ICollection<District> Districts { get; set; }
+        public virtual IEnumerable<District> Districts { get; set; }
     }
 }

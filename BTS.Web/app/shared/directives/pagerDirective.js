@@ -1,5 +1,4 @@
-﻿/// <reference path="/Assets/admin/libs/angular/angular.js" />
-(function (app) {
+﻿(function (app) {
     'use strict';
 
     app.directive('pagerDirective', pagerDirective);

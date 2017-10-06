@@ -1,6 +1,6 @@
 ﻿(function (app) {
     'use strict';
-    app.service('loginService', ['$http', '$q', 'authenticationService', 'authData',
+    app.service('loginService',['$http', '$q', 'authenticationService', 'authData',
     function ($http, $q, authenticationService, authData) {
         var userInfo;
         var deferred;
@@ -11,17 +11,16 @@
             $http.post('/oauth/token', data, {
                 headers:
                    { 'Content-Type': 'application/x-www-form-urlencoded' }
-            }).success(function (response) {
+            }).then (function (response) {
                 userInfo = {
-                    accessToken: response.access_token,
+                    accessToken: response.data.access_token,
                     userName: userName
                 };
                 authenticationService.setTokenInfo(userInfo);
                 authData.authenticationData.IsAuthenticated = true;
                 authData.authenticationData.userName = userName;
                 deferred.resolve(null);
-            })
-            .error(function (err, status) {
+            }, function (err, status) {
                 authData.authenticationData.IsAuthenticated = false;
                 authData.authenticationData.userName = "";
                 deferred.resolve(err);
@@ -33,8 +32,6 @@
             authenticationService.removeToken();
             authData.authenticationData.IsAuthenticated = false;
             authData.authenticationData.userName = "";
-
-            deferred.resolve(null);
         }
     }]);
 })(angular.module('BTS.common'));

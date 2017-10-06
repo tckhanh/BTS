@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BTS.Model.Models;
 using BTS.Service;
-using BTS.Web.Infastructure.Core;
+using BTS.Web.Infrastructure.Core;
 using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using BTS.Web.Infastructure.Extensions;
+using BTS.Web.Infrastructure.Extensions;
 
 namespace BTS.Web.Api
 {

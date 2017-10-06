@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,19 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CommonConstants.cs" />
+    <Compile Include="ConfigHelper.cs" />
+    <Compile Include="Exceptions\NameDuplicatedException.cs" />
+    <Compile Include="MailHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringHelper.cs" />
+    <Compile Include="ViewModels\CertificateStatisticViewModel.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BTS.Data\BTS.Data.csproj">
-      <Project>{35cbd06b-5985-4108-95a8-0113c4685076}</Project>
-      <Name>BTS.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BTS.Model\BTS.Model.csproj">
-      <Project>{c5bbf3c8-3872-45de-ad20-73c9ef7d9350}</Project>
-      <Name>BTS.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

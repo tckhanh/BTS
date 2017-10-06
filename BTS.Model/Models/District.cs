@@ -18,7 +18,7 @@ namespace BTS.Model.Models
         [StringLength(3)]
         public string CityID { get; set; }
 
-        public virtual ICollection<BTSCertificate> BTSCertificates { get; set; }
+        public virtual IEnumerable<BTSCertificate> BTSCertificates { get; set; }
 
         [ForeignKey("CityID")]
         public virtual City City { get; set; }

@@ -57,16 +57,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Abstract\Auditable.cs" />
+    <Compile Include="Abstract\IAuditable.cs" />
     <Compile Include="Models\Applicant.cs" />
+    <Compile Include="Models\ApplicationGroup.cs" />
+    <Compile Include="Models\ApplicationRole.cs" />
+    <Compile Include="Models\ApplicationRoleGroup.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\ApplicationUserGroup.cs" />
     <Compile Include="Models\BTSCertificate.cs" />
     <Compile Include="Models\City.cs" />
+    <Compile Include="Models\ContactDetail.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\Feedback.cs" />
+    <Compile Include="Models\Footer.cs" />
+    <Compile Include="Models\Menu.cs" />
+    <Compile Include="Models\MenuGroup.cs" />
     <Compile Include="Models\Operator.cs" />
+    <Compile Include="Models\Page.cs" />
     <Compile Include="Models\Profile.cs" />
+    <Compile Include="Models\Slide.cs" />
     <Compile Include="Models\SubBTS.cs" />
+    <Compile Include="Models\SupportOnline.cs" />
+    <Compile Include="Models\SystemConfig.cs" />
+    <Compile Include="Models\VisitorStatistic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

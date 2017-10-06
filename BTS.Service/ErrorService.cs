@@ -1,11 +1,11 @@
-﻿using BTS.Data.Infrastructure;
-using BTS.Data.Repository;
-using BTS.Model.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BTS.Data.Infrastructure;
+using BTS.Data.Repositories;
+using BTS.Model.Models;
 
 namespace BTS.Service
 {
@@ -13,19 +13,16 @@ namespace BTS.Service
     {
         Error Create(Error error);
         void Save();
-
     }
     public class ErrorService : IErrorService
     {
-        private IErrorRepository _errorRepository;
-        private IUnitOfWork _unitOfWork;
-
-        public ErrorService(IErrorRepository errorRepository, IUnitOfWork unitOfWork)
+        IErrorRepository _errorRepository;
+        IUnitOfWork _unitOfWork;
+        public ErrorService(IErrorRepository errorRepository,IUnitOfWork unitOfWork)
         {
             this._errorRepository = errorRepository;
             this._unitOfWork = unitOfWork;
         }
-
         public Error Create(Error error)
         {
             return _errorRepository.Add(error);

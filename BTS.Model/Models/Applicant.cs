@@ -32,6 +32,6 @@ namespace BTS.Model.Models
         [ForeignKey("OperatorID")]
         public virtual Operator Operator { get; set; }
 
-        public virtual ICollection<Profile> Profiles { get; set; }
+        public virtual IEnumerable<Profile> Profiles { get; set; }
     }
 }

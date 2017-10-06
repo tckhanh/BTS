@@ -31,6 +31,6 @@ namespace BTS.Model.Models
         [ForeignKey("ApplicantID")]
         public virtual Applicant Applicant { get; set; }
         
-        public virtual ICollection<BTSCertificate> BTSCertificates { get; set; }
+        public virtual IEnumerable<BTSCertificate> BTSCertificates { get; set; }
     }
 }

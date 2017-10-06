@@ -72,6 +72,6 @@ namespace BTS.Model.Models
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }
 
-        public virtual ICollection<SubBTS> SubBTSs { get; set; }
+        public virtual IEnumerable<SubBTS> SubBTSs { get; set; }
     }
 }

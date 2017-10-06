@@ -105,7 +105,7 @@
                 //else {
                 //    notificationService.displaySuccess('Đã tìm thấy ' + result.data.TotalCount + ' bản ghi.');
                 //}
-                $scope.operators = result.data.items;
+                $scope.operators = result.data.Items;
                 $scope.page = result.data.Page;
                 $scope.pagesCount = result.data.TotalPages;
                 $scope.totalCount = result.data.TotalCount;

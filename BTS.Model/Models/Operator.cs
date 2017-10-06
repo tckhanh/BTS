@@ -23,10 +23,10 @@ namespace BTS.Model.Models
         [StringLength(30)]
         public string Fax { get; set; }
 
-        public virtual ICollection<Applicant> Applicants { get; set; }
+        public virtual IEnumerable<Applicant> Applicants { get; set; }
 
-        public virtual ICollection<BTSCertificate> BTSCertificates { get; set; }
+        public virtual IEnumerable<BTSCertificate> BTSCertificates { get; set; }
 
-        public virtual ICollection<SubBTS> SubBTSs { get; set; }
+        public virtual IEnumerable<SubBTS> SubBTSs { get; set; }
     }
 }

@@ -1,11 +1,11 @@
-﻿using BTS.Service;
-using BTS.Web.Infastructure.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BTS.Service;
+using BTS.Web.Infrastructure.Core;
 
 namespace BTS.Web.Api
 {
@@ -23,7 +23,7 @@ namespace BTS.Web.Api
         [Route("TestMethod")]
         public string TestMethod()
         {
-            return "Hello, VCC2 Member. ";
+            return "Hello, TEDU Member. ";
         }
     }
 }

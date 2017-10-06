@@ -32,6 +32,15 @@ namespace BTS.Web.Mappings
                 cfg.CreateMap<Operator, OperatorViewModel>();
                 cfg.CreateMap<Model.Models.Profile, ProfileViewModel>();
                 cfg.CreateMap<SubBTS, SubBTSViewModel>();
+
+                cfg.CreateMap<Footer, FooterViewModel>();
+                cfg.CreateMap<Slide, SlideViewModel>();
+                cfg.CreateMap<Page, PageViewModel>();
+                cfg.CreateMap<ContactDetail, ContactDetailViewModel>();
+                
+                cfg.CreateMap<ApplicationGroup, ApplicationGroupViewModel>();
+                cfg.CreateMap<ApplicationRole, ApplicationRoleViewModel>();
+                cfg.CreateMap<ApplicationUser, ApplicationUserViewModel>();
                 /* etc */
             });            
         }

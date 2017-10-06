@@ -1,7 +1,9 @@
-﻿using BTS.Data.Infrastructure;
+﻿using BTS.Common.ViewModels;
+using BTS.Data.Infrastructure;
 using BTS.Model.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ namespace BTS.Data.Repository
     {
         IEnumerable<BTSCertificate> GetMultiPagingByBtsCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10, bool onlyOwner = false);
         IEnumerable<BTSCertificate> GetMultiByBtsCode(string btsCode, bool onlyOwner = false);
+        IEnumerable<CertificateStatisticViewModel> GetStatistic(string fromDate, string toDate);
     }
 
     public class BTSCertificateRepository : RepositoryBase<BTSCertificate>, IBTSCertificateRepository
@@ -68,6 +71,25 @@ namespace BTS.Data.Repository
                 totalRow = query.Count();
                 return query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
             }
+        }
+
+        public IEnumerable<CertificateStatisticViewModel> GetStatistic(string fromDate, string toDate)
+        {
+            var parameters = new SqlParameter[]{
+                new SqlParameter("@fromDate",fromDate),
+                new SqlParameter("@toDate",toDate)
+            };
+            return DbContext.Database.SqlQuery<CertificateStatisticViewModel>("GetStatistic @fromDate,@toDate", parameters);
+
+        }
+
+        IEnumerable<CertificateStatisticViewModel> IBTSCertificateRepository.GetStatistic(string fromDate, string toDate)
+        {
+            var parameters = new SqlParameter[]{
+                new SqlParameter("@fromDate",fromDate),
+                new SqlParameter("@toDate",toDate)
+            };
+            return DbContext.Database.SqlQuery<CertificateStatisticViewModel>("GetCertificateStatistic @fromDate,@toDate", parameters);
         }
     }
 }

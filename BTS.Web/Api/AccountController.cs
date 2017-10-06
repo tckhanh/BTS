@@ -1,25 +1,24 @@
-﻿using BTS.Service;
-using BTS.Web.App_Start;
-using BTS.Web.Infastructure.Core;
-using Microsoft.AspNet.Identity.Owin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNet.Identity.Owin;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using BTS.Web.App_Start;
 
 namespace BTS.Web.Api
 {
     [RoutePrefix("api/account")]
-    public class AccountController : ApiControllerBase
+    public class AccountController : ApiController
     {
         private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;        
+        private ApplicationUserManager _userManager;
 
-        public AccountController(IErrorService errorService, ApplicationUserManager userManager, ApplicationSignInManager signInManager): base(errorService)
+        public AccountController()
+        {
+        }
+
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -49,8 +48,6 @@ namespace BTS.Web.Api
             }
         }
 
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [Route("login")]
@@ -60,11 +57,12 @@ namespace BTS.Web.Api
             {
                 return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
-
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(userName, password, rememberMe, shouldLockout: false);
-            return request.CreateResponse(HttpStatusCode.OK, result);            
+            return request.CreateResponse(HttpStatusCode.OK, result);
         }
+
+
     }
 }
