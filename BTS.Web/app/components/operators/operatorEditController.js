@@ -26,7 +26,7 @@
             apiService.get('/api/operator/getbyid/' + $stateParams.id, null, function (result) {
                 $scope.operator = result.data;
             }, function (error) {
-                notificationService.displayError(error.data);
+                notificationService.displayError(error.data.Message);
             });
         }
         //function loadParentCategory() {

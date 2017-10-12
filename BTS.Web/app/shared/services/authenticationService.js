@@ -2,7 +2,17 @@
     'use strict';
     app.service('authenticationService', ['$http', '$q', '$window',
         function ($http, $q, $window) {
-            var tokenInfo;
+            var tokenInfo = null;
+
+            this.isAuthenticated = function () {
+                if (tokenInfo == null) {
+                    return false;
+                }else
+                {
+                    return true;
+                }
+                
+            }
 
             this.setTokenInfo = function (data) {
                 tokenInfo = data;
@@ -16,6 +26,7 @@
             this.removeToken = function () {
                 tokenInfo = null;
                 $window.sessionStorage["TokenInfo"] = null;
+                delete $http.defaults.headers.common['Authorization'];
             }
 
             this.init = function () {

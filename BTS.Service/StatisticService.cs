@@ -12,18 +12,33 @@ namespace BTS.Service
     public interface IStatisticService
     {
         IEnumerable<CertificateStatisticViewModel> GetRevenueStatistic(string fromDate, string toDate);
+        IEnumerable<StatisticCertificateByOperator> GetStatisticCertificateByOperator();
+        IEnumerable<StatisticCertificateByOperatorCity> GetStatisticCertificateByOperatorCity();
+
 
     }
     public class StatisticService : IStatisticService
     {
         IBTSCertificateRepository _btsCertificateRepository;
-        //public StatisticService(IOrderRepository orderRepository)
-        //{
-        //    _orderRepository = orderRepository;
-        //}
+
+        public StatisticService(IBTSCertificateRepository btsCertificateRepository)
+        {
+            _btsCertificateRepository = btsCertificateRepository;
+        }
+
         public IEnumerable<CertificateStatisticViewModel> GetRevenueStatistic(string fromDate, string toDate)
         {
             return _btsCertificateRepository.GetStatistic(fromDate, toDate);
+        }
+
+        public IEnumerable<StatisticCertificateByOperator> GetStatisticCertificateByOperator()
+        {
+            return _btsCertificateRepository.GetStatisticCertificateByOperator();
+        }
+
+        public IEnumerable<StatisticCertificateByOperatorCity> GetStatisticCertificateByOperatorCity()
+        {
+            return _btsCertificateRepository.GetStatisticCertificateByOperatorCity();
         }
     }
 }

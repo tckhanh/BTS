@@ -2,8 +2,8 @@
 (function (app) {
     app.controller('operatorListController', operatorListController);
 
-    operatorListController.$inject = ['$scope', 'apiService', 'notificationService', '$ngBootbox', '$filter'];
-    function operatorListController($scope, apiService, notificationService, $ngBootbox, $filter) {
+    operatorListController.$inject = ['$scope', '$location', 'apiService', 'notificationService', '$ngBootbox', '$filter'];
+    function operatorListController($scope, $location, apiService, notificationService, $ngBootbox, $filter) {
         $scope.operators = [];
         $scope.page = 0;
         $scope.pageCount = 0;
@@ -109,8 +109,15 @@
                 $scope.page = result.data.Page;
                 $scope.pagesCount = result.data.TotalPages;
                 $scope.totalCount = result.data.TotalCount;
-            }, function () {
+            }, function (response) {
                 console.log('Load Operators failed.');
+                if (response.status == "401") {
+                    notificationService.displayError("Bạn chưa được cấp quyền để thực hiện");
+                    $location.path('/admin');
+                }
+                else {
+                    notificationService.displayError(response.data.Message);
+                }
             });
         }
 

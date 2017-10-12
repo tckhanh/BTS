@@ -48,6 +48,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringHelper.cs" />
     <Compile Include="ViewModels\CertificateStatisticViewModel.cs" />
+    <Compile Include="ViewModels\StatisticCertificateByOperator.cs" />
+    <Compile Include="ViewModels\StatisticCertificateByOperatorCity.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

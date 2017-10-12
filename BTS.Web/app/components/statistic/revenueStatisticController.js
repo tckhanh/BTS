@@ -1,9 +1,9 @@
 ﻿(function (app) {
     app.controller('revenueStatisticController', revenueStatisticController);
 
-    revenueStatisticController.$inject = ['$scope', 'apiService', 'notificationService','$filter'];
+    revenueStatisticController.$inject = ['$scope', '$location', 'apiService', 'notificationService', '$filter'];
 
-    function revenueStatisticController($scope, apiService, notificationService,$filter) {
+    function revenueStatisticController($scope, $location, apiService, notificationService,$filter) {
         $scope.tabledata = [];
         $scope.labels = [];
         $scope.series = ['Doanh số', 'Lợi nhuận'];
@@ -34,7 +34,14 @@
                 $scope.chartdata = chartData;
                 $scope.labels = labels;
             }, function (response) {
-                notificationService.displayError('Không thể tải dữ liệu');
+
+                if (response.status == "401") {
+                    notificationService.displayError("Bạn chưa được cấp quyền để thực hiện");
+                    $location.path('/admin');
+                }
+                else {
+                    notificationService.displayError(response.data.Message);
+                }
             });
         }
 

@@ -30,6 +30,7 @@ namespace BTS.Web.Api
 
         [Route("getall")]
         [HttpGet]
+        [Authorize(Roles = "*")]
         public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword = "", int page = 0, int pageSize = 20)
         {
             int totalRow = 0;
@@ -62,7 +63,7 @@ namespace BTS.Web.Api
 
         [Route("getbyid/{id}")]
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "*")]
         public HttpResponseMessage GetByID(HttpRequestMessage request, string id)
         {
 
@@ -81,7 +82,7 @@ namespace BTS.Web.Api
 
         [Route("create")]
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "*")]
         public HttpResponseMessage Post(HttpRequestMessage request, OperatorViewModel operatorVm)
         {
             return CreateHttpResponse(request, () =>
@@ -109,7 +110,7 @@ namespace BTS.Web.Api
 
         [Route("update")]
         [HttpPut]
-        [Authorize]
+        [Authorize(Roles = "*")]
         public HttpResponseMessage Put(HttpRequestMessage request, OperatorViewModel operatorVm)
         {
             return CreateHttpResponse(request, () =>
@@ -137,7 +138,7 @@ namespace BTS.Web.Api
 
         [Route("delete")]
         [HttpDelete]
-        [Authorize]
+        [Authorize(Roles = "*")]
         public HttpResponseMessage Delete(HttpRequestMessage request, string id)
         {
             return CreateHttpResponse(request, () =>
@@ -155,7 +156,7 @@ namespace BTS.Web.Api
 
         [Route("deletemulti")]
         [HttpDelete]
-        [Authorize]
+        [Authorize(Roles = "*")]
         public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string checkedOperators)
         {
             return CreateHttpResponse(request, () =>

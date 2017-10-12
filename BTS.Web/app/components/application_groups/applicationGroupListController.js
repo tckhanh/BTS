@@ -3,9 +3,9 @@
 
     app.controller('applicationGroupListController', applicationGroupListController);
 
-    applicationGroupListController.$inject = ['$scope', 'apiService', 'notificationService', '$ngBootbox','$filter'];
+    applicationGroupListController.$inject = ['$scope', '$location', 'apiService', 'notificationService', '$ngBootbox', '$filter'];
 
-    function applicationGroupListController($scope, apiService, notificationService, $ngBootbox, $filter) {
+    function applicationGroupListController($scope, $location, apiService, notificationService, $ngBootbox, $filter) {
         $scope.loading = true;
         $scope.data = [];
         $scope.page = 0;
@@ -104,7 +104,13 @@
             }
         }
         function dataLoadFailed(response) {
-            notificationService.displayError(response.data);
+            if (response.status == "401") {
+                notificationService.displayError("Bạn chưa được cấp quyền để thực hiện");
+                $location.path('/admin');
+            }
+            else {
+                notificationService.displayError(response.data.Message);
+            }
         }
 
         function clearSearch() {

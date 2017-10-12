@@ -15,6 +15,11 @@ namespace BTS.Data.Repository
         IEnumerable<BTSCertificate> GetMultiPagingByBtsCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10, bool onlyOwner = false);
         IEnumerable<BTSCertificate> GetMultiByBtsCode(string btsCode, bool onlyOwner = false);
         IEnumerable<CertificateStatisticViewModel> GetStatistic(string fromDate, string toDate);
+
+        IEnumerable<StatisticCertificateByOperator> GetStatisticCertificateByOperator();
+
+        IEnumerable<StatisticCertificateByOperatorCity> GetStatisticCertificateByOperatorCity();
+
     }
 
     public class BTSCertificateRepository : RepositoryBase<BTSCertificate>, IBTSCertificateRepository
@@ -81,6 +86,34 @@ namespace BTS.Data.Repository
             };
             return DbContext.Database.SqlQuery<CertificateStatisticViewModel>("GetStatistic @fromDate,@toDate", parameters);
 
+        }
+
+        public IEnumerable<StatisticCertificateByOperator> GetStatisticCertificateByOperator()
+        {
+            var query = from bts in DbContext.BTSCertificates
+                        where !string.IsNullOrEmpty(bts.CertificateNum) && !string.IsNullOrEmpty(bts.OperatorID)
+                        group bts by bts.OperatorID into OperatorGroup
+                        select new StatisticCertificateByOperator() {
+                            OperatorID = OperatorGroup.Key,
+                            Certificates = OperatorGroup.Count()
+                            };
+
+            return query;
+        }
+
+        public IEnumerable<StatisticCertificateByOperatorCity> GetStatisticCertificateByOperatorCity()
+        {
+            var query = from bts in DbContext.BTSCertificates
+                        where !string.IsNullOrEmpty(bts.CertificateNum) && !string.IsNullOrEmpty(bts.OperatorID)
+                        group bts by new { bts.OperatorID, bts.CityID } into OperatorGroup
+                        select new StatisticCertificateByOperatorCity()
+                        {
+                            OperatorID = OperatorGroup.Key.OperatorID,
+                            CityID = OperatorGroup.Key.CityID,
+                            Certificates = OperatorGroup.Count()
+                        };
+
+            return query;
         }
 
         IEnumerable<CertificateStatisticViewModel> IBTSCertificateRepository.GetStatistic(string fromDate, string toDate)

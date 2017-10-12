@@ -20,7 +20,7 @@
                 $scope.role = result.data;
             },
             function (result) {
-                notificationService.displayError(result.data);
+                notificationService.displayError(result.data.Message);
             });
         }
 

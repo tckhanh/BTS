@@ -8,7 +8,7 @@ using BTS.Data.Repositories;
 using BTS.Model.Models;
 using System.Linq;
 
-namespace TeduShop.Service
+namespace BTS.Service
 {
     public interface IPageService
     {

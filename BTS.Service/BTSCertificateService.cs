@@ -19,9 +19,12 @@ namespace BTS.Service
         IEnumerable<BTSCertificate> getByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
         IEnumerable<BTSCertificate> getByOperator(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
         IEnumerable<BTSCertificate> getCertificateByYear(int year, int page, out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<BTSCertificate> getCertificateByYear(int year);
         IEnumerable<BTSCertificate> getCertificateByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
-        IEnumerable<BTSCertificate> getCertificateByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);               
+        IEnumerable<BTSCertificate> getCertificateByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<BTSCertificate> getCertificateByCity(string cityID);
         IEnumerable<BTSCertificate> getCertificateByOperator(string operatorID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<BTSCertificate> getCertificateByOperator(string operatorID);
         BTSCertificate getByID(int ID);
         void Save();
     }
@@ -103,6 +106,20 @@ namespace BTS.Service
         {
             _BTSCertificateRepository.Update(btsCertificate);
         }
-        
+
+        public IEnumerable<BTSCertificate> getCertificateByYear(int year)
+        {
+            return _BTSCertificateRepository.GetMulti(x => x.IssuedDate != null && Convert.ToDateTime(x.IssuedDate).Year == year);
+        }
+
+        public IEnumerable<BTSCertificate> getCertificateByCity(string cityID)
+        {
+            return _BTSCertificateRepository.GetMulti(x => x.CityID == cityID && x.CertificateNum != null);
+        }
+
+        public IEnumerable<BTSCertificate> getCertificateByOperator(string operatorID)
+        {
+            return _BTSCertificateRepository.GetMulti(x => x.OperatorID == operatorID && x.CertificateNum != null);
+        }
     }
 }

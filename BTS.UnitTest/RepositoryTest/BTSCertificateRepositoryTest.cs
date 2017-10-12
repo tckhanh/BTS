@@ -42,5 +42,17 @@ namespace BTS.UnitTest.RepositoryTest
             Assert.AreEqual(1, result.ID);
 
         }
+
+        [TestMethod]
+        public void BTSCertificate_Repository_Stat()
+        {
+            
+            var result1 = objRepository.GetStatisticCertificateByOperator();
+
+            var result2 = objRepository.GetStatisticCertificateByOperatorCity();
+
+            Assert.IsNotNull(result2);
+
+        }
     }
 }
