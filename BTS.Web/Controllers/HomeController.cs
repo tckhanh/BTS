@@ -62,7 +62,13 @@ namespace BTS.Web.Controllers
         } 
 
         [ChildActionOnly]
-        public ActionResult SidebarMenu()
+        public ActionResult LeftSideBar()
+        {
+            return PartialView();
+        }
+
+        [ChildActionOnly]
+        public ActionResult RightSideBar()
         {
             return PartialView();
         }
@@ -75,5 +81,26 @@ namespace BTS.Web.Controllers
         //    var listProductCategoryViewModel = Mapper.Map<IEnumerable<ProductCategory>, IEnumerable<ProductCategoryViewModel>>(model);
         //    return PartialView(listProductCategoryViewModel);
         //}
+
+
+        public JsonResult GetCertificateSumary()
+        {
+            var homeViewModel = new HomeViewModel();
+            homeViewModel.StatisticCertificateByOperator = _stattisticService.GetStatisticCertificateByOperator();
+            if (homeViewModel!= null)
+            {
+                return Json(new
+                {
+                    data = homeViewModel.StatisticCertificateByOperator,
+                    status = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+                return Json(new
+            {
+                status = false
+            });
+        }
+
     }
 }

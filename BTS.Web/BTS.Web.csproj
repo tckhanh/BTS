@@ -6088,6 +6088,7 @@
     <Content Include="Assets\admin\libs\toastr\toastr.js" />
     <Content Include="Assets\admin\libs\toastr\toastr.min.css" />
     <Content Include="Assets\admin\libs\toastr\toastr.min.js" />
+    <Content Include="Assets\client\js\controllers\home.js" />
     <Content Include="Assets\client\map\images\pin24.png" />
     <Content Include="Assets\client\map\images\pin48.png" />
     <Content Include="Assets\client\map\leaf-demo.js" />
@@ -6778,10 +6779,11 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\Layouts.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\SidebarMenu.cshtml" />
+    <Content Include="Views\Shared\LeftSideBar.cshtml" />
     <Content Include="Views\Shared\Header.cshtml" />
     <Content Include="Views\Certificate\Index.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
+    <Content Include="Views\Shared\RightSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Common\BTS.Common.csproj">
