@@ -32,5 +32,12 @@ namespace BTS.Web.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetCertificate()
+        {
+            int countBTS = 0;
+            List<BTSCertificate> dataSumary = _btsCertificateService.getAll(out countBTS).ToList();
+
+            return Json(dataSumary, JsonRequestBehavior.AllowGet);
+        }
     }
 }

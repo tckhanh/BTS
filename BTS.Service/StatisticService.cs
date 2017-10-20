@@ -12,7 +12,7 @@ namespace BTS.Service
     public interface IStatisticService
     {
         IEnumerable<CertificateStatisticViewModel> GetRevenueStatistic(string fromDate, string toDate);
-        IEnumerable<StatisticCertificateByOperator> GetStatisticCertificateByOperator();
+        IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYear();
         IEnumerable<StatisticCertificateByOperatorCity> GetStatisticCertificateByOperatorCity();
 
 
@@ -31,9 +31,9 @@ namespace BTS.Service
             return _btsCertificateRepository.GetStatistic(fromDate, toDate);
         }
 
-        public IEnumerable<StatisticCertificateByOperator> GetStatisticCertificateByOperator()
+        public IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYear()
         {
-            return _btsCertificateRepository.GetStatisticCertificateByOperator();
+            return _btsCertificateRepository.GetStatisticCertificateByYear();
         }
 
         public IEnumerable<StatisticCertificateByOperatorCity> GetStatisticCertificateByOperatorCity()

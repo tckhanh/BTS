@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace BTS.Common.ViewModels
 {
-    public class StatisticCertificateByOperator
+    [Serializable]
+    public class StatisticCertificateByYear
     {
-        public string OperatorID { get; set; }
+        public string Year { get; set; }
+        
         public int Certificates { get; set; }
     }
 }

@@ -7,6 +7,9 @@ using System.Web.Mvc;
 using BTS.Model.Models;
 using BTS.Service;
 using BTS.Web.Models;
+using System.Web.Script.Serialization;
+using BTS.Common.ViewModels;
+using System.Web.Helpers;
 
 namespace BTS.Web.Controllers
 {
@@ -29,7 +32,7 @@ namespace BTS.Web.Controllers
         {
 
 
-            var statisticData = _stattisticService.GetStatisticCertificateByOperator();
+            var statisticData = _stattisticService.GetStatisticCertificateByYear();
             
             //var slideModel = _commonService.GetSlides();
             //var slideView = Mapper.Map<IEnumerable<Slide>, IEnumerable<SlideViewModel>>(slideModel);
@@ -40,7 +43,7 @@ namespace BTS.Web.Controllers
             //var topSaleProductModel = _CertificateService.GetHotProduct(3);
             //var lastestProductViewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(lastestProductModel);
             //var topSaleProductViewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(topSaleProductModel);
-            homeViewModel.StatisticCertificateByOperator = _stattisticService.GetStatisticCertificateByOperator();
+            //homeViewModel.StatisticCertificateByOperator = _stattisticService.GetStatisticCertificateByOperator();
             homeViewModel.StatisticCertificateByOperatorCity = _stattisticService.GetStatisticCertificateByOperatorCity();
             return View(homeViewModel);            
         }
@@ -83,24 +86,11 @@ namespace BTS.Web.Controllers
         //}
 
 
-        public JsonResult GetCertificateSumary()
+        public ActionResult GetCertificateSumary()
         {
-            var homeViewModel = new HomeViewModel();
-            homeViewModel.StatisticCertificateByOperator = _stattisticService.GetStatisticCertificateByOperator();
-            if (homeViewModel!= null)
-            {
-                return Json(new
-                {
-                    data = homeViewModel.StatisticCertificateByOperator,
-                    status = true
-                }, JsonRequestBehavior.AllowGet);
-            }
-            else
-                return Json(new
-            {
-                status = false
-            });
-        }
+            List<StatisticCertificateByYear> dataSumary = _stattisticService.GetStatisticCertificateByYear().ToList();
 
+            return Json(dataSumary,JsonRequestBehavior.AllowGet);
+        }
     }
 }

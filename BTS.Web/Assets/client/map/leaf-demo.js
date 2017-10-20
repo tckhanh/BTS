@@ -1,5 +1,22 @@
 // See post: http://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps
 
+function getData() {
+    var data = [];
+    $.ajax({
+        url: '/Certificate/GetCertificate',
+        type: 'GET',
+        dataType: 'json',
+        async: false,
+        success: function (response) {
+            data = response;
+        }
+    });
+    return data;
+}
+
+var markers = getData();
+
+
 var map = L.map( 'map', {
   center: [10.0, 5.0],
   minZoom: 2,
@@ -25,14 +42,13 @@ var markerClusters = L.markerClusterGroup();
 
 for ( var i = 0; i < markers.length; ++i )
 {
-  var popup = markers[i].name +
-              '<br/>' + markers[i].city +
-              '<br/><b>IATA/FAA:</b> ' + markers[i].iata_faa +
-              '<br/><b>ICAO:</b> ' + markers[i].icao +
-              '<br/><b>Altitude:</b> ' + Math.round( markers[i].alt * 0.3048 ) + ' m' +
-              '<br/><b>Timezone:</b> ' + markers[i].tz;
+    var popup = markers[i].name +
+                '<br/>' + markers[i].Address +
+                '<br/><b>CertNo:</b> ' + markers[i].CertificateNum +
+                '<br/><b>DN:</b> ' + markers[i].OperatorID +
+                '<br/><b>City:</b> ' + markers[i].CityID;
 
-  var m = L.marker( [markers[i].lat, markers[i].lng], {icon: myIcon} )
+  var m = L.marker([markers[i].Latitude, markers[i].Longtitude], { icon: myIcon })
                   .bindPopup( popup );
 
   markerClusters.addLayer( m );

@@ -16,7 +16,9 @@ namespace BTS.Data.Repository
         IEnumerable<BTSCertificate> GetMultiByBtsCode(string btsCode, bool onlyOwner = false);
         IEnumerable<CertificateStatisticViewModel> GetStatistic(string fromDate, string toDate);
 
-        IEnumerable<StatisticCertificateByOperator> GetStatisticCertificateByOperator();
+        IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYear();
+
+        IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYearOperator();
 
         IEnumerable<StatisticCertificateByOperatorCity> GetStatisticCertificateByOperatorCity();
 
@@ -88,13 +90,14 @@ namespace BTS.Data.Repository
 
         }
 
-        public IEnumerable<StatisticCertificateByOperator> GetStatisticCertificateByOperator()
+        public IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYear()
         {
             var query = from bts in DbContext.BTSCertificates
-                        where !string.IsNullOrEmpty(bts.CertificateNum) && !string.IsNullOrEmpty(bts.OperatorID)
-                        group bts by bts.OperatorID into OperatorGroup
-                        select new StatisticCertificateByOperator() {
-                            OperatorID = OperatorGroup.Key,
+                        where !string.IsNullOrEmpty(bts.CertificateNum) && !string.IsNullOrEmpty(bts.OperatorID) && bts.IssuedDate != null
+                        orderby bts.IssuedDate ascending
+                        group bts by new { bts.IssuedDate.Value.Year} into OperatorGroup                        
+                        select new StatisticCertificateByYear() {
+                            Year = OperatorGroup.Key.Year.ToString(),                            
                             Certificates = OperatorGroup.Count()
                             };
 
@@ -123,6 +126,22 @@ namespace BTS.Data.Repository
                 new SqlParameter("@toDate",toDate)
             };
             return DbContext.Database.SqlQuery<CertificateStatisticViewModel>("GetCertificateStatistic @fromDate,@toDate", parameters);
+        }
+
+        public IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYearOperator()
+        {
+            var query = from bts in DbContext.BTSCertificates
+                        where !string.IsNullOrEmpty(bts.CertificateNum) && !string.IsNullOrEmpty(bts.OperatorID) && bts.IssuedDate != null
+                        orderby bts.IssuedDate ascending
+                        group bts by new { bts.IssuedDate.Value.Year, bts.OperatorID } into OperatorGroup
+                        select new StatisticCertificateByYear()
+                        {
+                            Year = OperatorGroup.Key.Year.ToString(),
+                            
+                            Certificates = OperatorGroup.Count()
+                        };
+
+            return query;
         }
     }
 }
