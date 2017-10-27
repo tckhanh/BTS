@@ -11,7 +11,7 @@ namespace BTS.Web.Models
         
         public string Name { get; set; }
 
-        public virtual ICollection<BTSCertificateViewModel> BTSCertificates { get; set; }
+        public virtual ICollection<CertificateViewModel> BTSCertificates { get; set; }
 
         public virtual ICollection<DistrictViewModel> Districts { get; set; }
     }

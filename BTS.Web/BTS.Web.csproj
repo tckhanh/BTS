@@ -242,6 +242,7 @@
     <Compile Include="Controllers\CertificateController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -254,7 +255,7 @@
     <Compile Include="Models\ApplicationGroupViewModel.cs" />
     <Compile Include="Models\ApplicationRoleViewModel.cs" />
     <Compile Include="Models\ApplicationUserViewModel.cs" />
-    <Compile Include="Models\BTSCertificateViewModel.cs" />
+    <Compile Include="Models\BtsViewModel.cs" />
     <Compile Include="Models\CertificateViewModel.cs" />
     <Compile Include="Models\CityViewModel.cs" />
     <Compile Include="Models\ContactDetailViewModel.cs" />
@@ -262,13 +263,14 @@
     <Compile Include="Models\FeedbackViewModel.cs" />
     <Compile Include="Models\FooterViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\InCaseOfViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\OperatorViewModel.cs" />
     <Compile Include="Models\PageViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\SlideViewModel.cs" />
-    <Compile Include="Models\SubBTSViewModel.cs" />
+    <Compile Include="Models\SubBtsInCertViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -9267,6 +9269,7 @@
     <Content Include="Assets\admin\libs\select2\src\scss\_dropdown.scss" />
     <Content Include="Assets\admin\libs\select2\src\scss\_multiple.scss" />
     <Content Include="Assets\admin\libs\select2\src\scss\_single.scss" />
+    <Content Include="ImportData\Mau ho so kiem dnh BTS.xlsx" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\Layouts.cshtml" />
@@ -9276,6 +9279,7 @@
     <Content Include="Views\Certificate\Index.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Views\Shared\RightSideBar.cshtml" />
+    <Content Include="Views\Import\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Common\BTS.Common.csproj">

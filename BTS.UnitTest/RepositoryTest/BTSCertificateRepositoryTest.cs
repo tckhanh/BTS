@@ -14,28 +14,27 @@ namespace BTS.UnitTest.RepositoryTest
     public class BTSCertificateRepositoryTest
     {
         IDbFactory dbFactory;
-        IBTSCertificateRepository objRepository;
+        ICertificateRepository objRepository;
         IUnitOfWork unitOfwork;
 
         [TestInitialize]
         public void Initialize()
         {
             dbFactory = new DbFactory();
-            objRepository = new BTSCertificateRepository(dbFactory);
+            objRepository = new CertificateRepository(dbFactory);
             unitOfwork = new UnitOfWork(dbFactory);
         }
 
         [TestMethod]
         public void BTSCertificate_Repository_Create()
         {
-            BTSCertificate btsCertificate = new BTSCertificate();
-            btsCertificate.ProfileID = 1;
-            btsCertificate.CityID = "HCM";
-            btsCertificate.DistrictID = 4;
-            btsCertificate.OperatorID = "MOBIFONE";
-            btsCertificate.Address = "60 Tân Canh, Phường 1, Quận Tân Bình, Thành phố Hồ Chí Minh";
+            Certificate certificate = new Certificate();
+            certificate.ProfileID = 1;
+            certificate.CityID = "HCM";            
+            certificate.OperatorID = "MOBIFONE";
+            certificate.Address = "60 Tân Canh, Phường 1, Quận Tân Bình, Thành phố Hồ Chí Minh";
 
-            var result = objRepository.Add(btsCertificate);
+            var result = objRepository.Add(certificate);
             unitOfwork.Commit();
 
             Assert.IsNotNull(result);
@@ -46,8 +45,8 @@ namespace BTS.UnitTest.RepositoryTest
         [TestMethod]
         public void BTSCertificate_Repository_Stat()
         {
-            
-            var result1 = objRepository.GetStatisticCertificateByOperator();
+
+            var result1 = objRepository.GetStatisticCertificateByYear();
 
             var result2 = objRepository.GetStatisticCertificateByOperatorCity();
 

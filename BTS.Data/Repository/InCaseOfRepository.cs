@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace BTS.Data.Repository
 {
-    public interface ISubBTSRepository: IRepository<SubBTS>
+    public interface IInCaseOfRepository : IRepository<InCaseOf>
     {
-
     }
-    public class SubBTSRepository : RepositoryBase<SubBTS>, ISubBTSRepository
+
+    public class InCaseOfRepository : RepositoryBase<InCaseOf>, IInCaseOfRepository
     {
-        public SubBTSRepository(IDbFactory dbFactory) : base(dbFactory)
+        public InCaseOfRepository(IDbFactory dbFactory) : base(dbFactory)
         {
         }
     }

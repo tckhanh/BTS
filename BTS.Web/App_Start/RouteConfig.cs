@@ -84,14 +84,23 @@ namespace BTS.Web
                  name: "Product",
                  url: "{alias}.p-{productId}.html",
                  defaults: new { controller = "Product", action = "Detail", productId = UrlParameter.Optional },
-                   namespaces: new string[] { "BTS.Web.Controllers" }
+                 namespaces: new string[] { "BTS.Web.Controllers" }
              );
             routes.MapRoute(
                  name: "TagList",
                  url: "tag/{tagId}.html",
                  defaults: new { controller = "Product", action = "ListByTag", tagId = UrlParameter.Optional },
-                   namespaces: new string[] { "BTS.Web.Controllers" }
+                 namespaces: new string[] { "BTS.Web.Controllers" }
              );
+
+            routes.MapRoute(
+                 name: "importCertificates",
+                 url: "cap-nhat-GCNKD.html",
+                 defaults: new { controller = "Import", action = "Index", tagId = UrlParameter.Optional },
+                 namespaces: new string[] { "BTS.Web.Controllers" }
+ );
+
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

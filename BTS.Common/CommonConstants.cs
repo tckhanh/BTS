@@ -11,5 +11,8 @@
         public const string HomeTitle = "HomeTitle";
         public const string HomeMetaKeyword = "HomeMetaKeyword";
         public const string HomeMetaDescription = "HomeMetaDescription";
+        public const string Sheet_InCaseOf = "InCaseOf$";
+        public const string Sheet_InCaseOf_ID = "ID";
+        public const string Sheet_InCaseOf_Case = "Name";
     }
 }

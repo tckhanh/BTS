@@ -53,12 +53,12 @@ namespace BTS.Web.App_Start
 
 
             // Repositories
-            builder.RegisterAssemblyTypes(typeof(BTSCertificateRepository).Assembly)
+            builder.RegisterAssemblyTypes(typeof(CertificateRepository).Assembly)
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces().InstancePerRequest();
 
             // Services
-            builder.RegisterAssemblyTypes(typeof(BTSCertificateService).Assembly)
+            builder.RegisterAssemblyTypes(typeof(CertificateService).Assembly)
                .Where(t => t.Name.EndsWith("Service"))
                .AsImplementedInterfaces().InstancePerRequest();
 

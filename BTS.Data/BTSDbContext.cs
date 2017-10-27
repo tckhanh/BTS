@@ -16,15 +16,17 @@ namespace BTS.Data
             this.Configuration.LazyLoadingEnabled = false;
         }
 
-        public DbSet<Applicant> Applicants { get; set; }
-        public DbSet<BTSCertificate> BTSCertificates { get; set; }
+        public DbSet<InCaseOf> InCaseOfs { get; set; }
+        public DbSet<Lab> Labs { get; set; }
         public DbSet<City> Cities { get; set; }
-        public DbSet<District> Districts { get; set; }
         public DbSet<Operator> Operators { get; set; }
+        public DbSet<Applicant> Applicants { get; set; }
         public DbSet<Profile> Profiles { get; set; }
-        public DbSet<SubBTS> SubBTSs { get; set; }
-        public DbSet<Error> Errors { get; set; }
+        public DbSet<Bts> Btss { get; set; }
+        public DbSet<Certificate> Certificates { get; set; }
+        public DbSet<SubBtsInCert> SubBtsInCerts { get; set; }
 
+        public DbSet<Error> Errors { get; set; }
         public DbSet<Footer> Footers { set; get; }
         public DbSet<Menu> Menus { set; get; }
         public DbSet<MenuGroup> MenuGroups { set; get; }

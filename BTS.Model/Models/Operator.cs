@@ -12,21 +12,11 @@ namespace BTS.Model.Models
         public string ID { get; set; }
 
         [StringLength(255)]
-        public string Name { get; set; }
-
-        [StringLength(255)]
-        public string Address { get; set; }
-
-        [StringLength(30)]
-        public string Telephone { get; set; }
-
-        [StringLength(30)]
-        public string Fax { get; set; }
+        public string Name { get; set; }        
 
         public virtual IEnumerable<Applicant> Applicants { get; set; }
-
-        public virtual IEnumerable<BTSCertificate> BTSCertificates { get; set; }
-
-        public virtual IEnumerable<SubBTS> SubBTSs { get; set; }
+        public virtual IEnumerable<Bts> Btss { get; set; }
+        public virtual IEnumerable<Certificate> Certificates { get; set; }
+        public virtual IEnumerable<SubBtsInCert> SubBtsInCerts { get; set; }
     }
 }

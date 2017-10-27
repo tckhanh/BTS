@@ -28,8 +28,8 @@ namespace BTS.Web.Models
 
         public virtual ICollection<ApplicantViewModel> Applicants { get; set; }
 
-        public virtual ICollection<BTSCertificateViewModel> BTSCertificates { get; set; }
+        public virtual ICollection<CertificateViewModel> BTSCertificates { get; set; }
 
-        public virtual ICollection<SubBTSViewModel> SubBTSs { get; set; }
+        public virtual ICollection<SubBtsInCertViewModel> SubBTSs { get; set; }
     }
 }

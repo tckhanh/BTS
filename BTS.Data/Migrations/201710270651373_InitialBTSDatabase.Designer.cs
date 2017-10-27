@@ -7,13 +7,13 @@ namespace BTS.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class addSeed : IMigrationMetadata
+    public sealed partial class InitialBTSDatabase : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addSeed));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialBTSDatabase));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708291013491_addSeed"; }
+            get { return "201710270651373_InitialBTSDatabase"; }
         }
         
         string IMigrationMetadata.Source

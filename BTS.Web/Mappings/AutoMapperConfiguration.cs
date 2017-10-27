@@ -25,13 +25,13 @@ namespace BTS.Web.Mappings
         public static void Configure()
         {
             Mapper.Initialize(cfg => {
+                cfg.CreateMap<InCaseOf, InCaseOfViewModel>();
                 cfg.CreateMap<Applicant, ApplicantViewModel>();
-                cfg.CreateMap<BTSCertificate, BTSCertificateViewModel>();
-                cfg.CreateMap<City, CityViewModel>();
-                cfg.CreateMap<District, DistrictViewModel>();
+                cfg.CreateMap<Certificate, CertificateViewModel>();
+                cfg.CreateMap<City, CityViewModel>();                
                 cfg.CreateMap<Operator, OperatorViewModel>();
                 cfg.CreateMap<Model.Models.Profile, ProfileViewModel>();
-                cfg.CreateMap<SubBTS, SubBTSViewModel>();
+                cfg.CreateMap<SubBtsInCert, SubBtsInCertViewModel>();
 
                 cfg.CreateMap<Footer, FooterViewModel>();
                 cfg.CreateMap<Slide, SlideViewModel>();

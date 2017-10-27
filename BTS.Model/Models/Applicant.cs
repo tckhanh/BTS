@@ -8,12 +8,8 @@ namespace BTS.Model.Models
     public class Applicant
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-
-        [Required]
-        [StringLength(10)]
-        public string OperatorID { get; set; }
+        [StringLength(50)]
+        public string ID { get; set; }
 
         [Required]
         [StringLength(255)]
@@ -24,10 +20,19 @@ namespace BTS.Model.Models
         public string Address { get; set; }
 
         [StringLength(30)]
-        public string Telephone { get; set; }
+        public string Phone { get; set; }
 
         [StringLength(30)]
         public string Fax { get; set; }
+
+        [StringLength(100)]
+        public string ContactName { get; set; }
+
+
+        [Required]
+        [StringLength(10)]
+        public string OperatorID { get; set; }
+
 
         [ForeignKey("OperatorID")]
         public virtual Operator Operator { get; set; }

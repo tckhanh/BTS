@@ -9,37 +9,39 @@ namespace BTS.Web.Infrastructure.Extensions
 {
     public static class EntityExtensions
     {
-        public static void UpdateBTSCertificate(this BTSCertificate btsCertificate, BTSCertificateViewModel btsCertificateVm)
+        public static void UpdateBTSCertificate(this Certificate certificate, CertificateViewModel btsCertificateVm)
         {
-            btsCertificate.ID = btsCertificateVm.ID;
-            btsCertificate.ProfileID = btsCertificateVm.ProfileID;
-            btsCertificate.Longtitude = btsCertificateVm.Longtitude;
-            btsCertificate.Latitude = btsCertificateVm.Latitude;
-            btsCertificate.Address = btsCertificateVm.Address;
-            btsCertificate.CityID = btsCertificateVm.CityID;
+            certificate.ID = btsCertificateVm.ID;
+            certificate.ProfileID = btsCertificateVm.ProfileID;
+            certificate.Longtitude = btsCertificateVm.Longtitude;
+            certificate.Latitude = btsCertificateVm.Latitude;
+            certificate.Address = btsCertificateVm.Address;
+            certificate.CityID = btsCertificateVm.CityID;
+            
+            certificate.SubBtsQuantity = btsCertificateVm.SubBtsQuantity;
+            certificate.InCaseOfID = btsCertificateVm.InCaseOfID;
+            certificate.TestReportNo = btsCertificateVm.TestReportNo;
+            certificate.TestReportDate = btsCertificateVm.TestReportDate;            
 
-            btsCertificate.DistrictID = btsCertificateVm.DistrictID;
-            btsCertificate.SubBTSNum = btsCertificateVm.SubBTSNum;
-            btsCertificate.InCaseOf = btsCertificateVm.InCaseOf;
-            btsCertificate.ReportNum = btsCertificateVm.ReportNum;
-            btsCertificate.ReportDate = btsCertificateVm.ReportDate;
-            btsCertificate.CertificateNum = btsCertificateVm.CertificateNum;
-
-            btsCertificate.SafeLimit = btsCertificateVm.SafeLimit;
-            btsCertificate.IssuedPlace = btsCertificateVm.IssuedPlace;
-            btsCertificate.IssuedDate = btsCertificateVm.IssuedDate;
-            btsCertificate.ExpiredDate = btsCertificateVm.ExpiredDate;
-            btsCertificate.Signer = btsCertificateVm.Signer;
-            btsCertificate.OperatorID = btsCertificateVm.OperatorID;
+            certificate.SafeLimit = btsCertificateVm.SafeLimit;
+            certificate.IssuedPlace = btsCertificateVm.IssuedPlace;
+            certificate.IssuedDate = btsCertificateVm.IssuedDate;
+            certificate.ExpiredDate = btsCertificateVm.ExpiredDate;
+            certificate.Signer = btsCertificateVm.Signer;
+            certificate.OperatorID = btsCertificateVm.OperatorID;
         }
+
+        public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)
+        {
+            myInCaseOf.ID = inCaseOfVm.ID;
+            myInCaseOf.Case = inCaseOfVm.Case;
+        }
+
 
         public static void UpdateOperator(this Operator myoperator, OperatorViewModel operatorVm)
         {
             myoperator.ID = operatorVm.ID;
             myoperator.Name = operatorVm.Name;
-            myoperator.Address = operatorVm.Address;
-            myoperator.Telephone = operatorVm.Telephone;
-            myoperator.Fax = operatorVm.Fax;
         }
 
         public static void UpdateFeedback(this Feedback feedback, FeedbackViewModel feedbackVm)

@@ -3,20 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BTS.Model.Models
 {
-    [Table("SubBTSs")]
-    public class SubBTS
+    [Table("SubBtsInCerts")]
+    public class SubBtsInCert
     {
         [Key]        
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        [StringLength(10)]
-        public string OperatorID { get; set; }
-
-        public int? BTSCertificateID { get; set; }
+        [StringLength(16)]
+        public string CertificateID { get; set; }
 
         [StringLength(50)]
-        public string BTSCode { get; set; }
+        public string BtsCode { get; set; }
+
+        [StringLength(10)]
+        public string OperatorID { get; set; }
 
         [StringLength(50)]
         public string Equipment { get; set; }
@@ -33,12 +34,10 @@ namespace BTS.Model.Models
         public string Band { get; set; }
 
         [StringLength(30)]
-        public string HeightAnten { get; set; }
+        public string AntenHeight { get; set; }        
 
-        public bool? Status { get; set; }
-
-        [ForeignKey("BTSCertificateID")]
-        public virtual BTSCertificate BTSCertificate { get; set; }
+        [ForeignKey("CertificateID")]
+        public virtual Certificate Certificates { get; set; }
 
         [ForeignKey("OperatorID")]
         public virtual Operator Operator { get; set; }

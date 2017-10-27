@@ -16,11 +16,11 @@ namespace BTS.Web.Controllers
     public class HomeController : Controller
     {
         //IProductCategoryService _productCategoryService;
-        IBTSCertificateService _btsCertificateService;
+        ICertificateService _btsCertificateService;
         IStatisticService _stattisticService;
         ICommonService _commonService;
 
-        public HomeController(IBTSCertificateService btscertificateService,ICommonService commonService, IStatisticService stattisticService)
+        public HomeController(ICertificateService btscertificateService,ICommonService commonService, IStatisticService stattisticService)
         {            
             _commonService = commonService;
             _btsCertificateService = btscertificateService;

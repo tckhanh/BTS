@@ -50,7 +50,7 @@ namespace BTS.Service
         public IEnumerable<Operator> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _operatorRepository.GetMulti(x => x.ID.Contains(keyword) || x.Name.Contains(keyword) || x.Address.Contains(keyword));
+                return _operatorRepository.GetMulti(x => x.ID.Contains(keyword) || x.Name.Contains(keyword));
             else
                 return _operatorRepository.GetAll();
         }

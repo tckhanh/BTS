@@ -5,7 +5,7 @@ using System.Web;
 
 namespace BTS.Web.Models
 {
-    public class BTSCertificateViewModel
+    public class BtsViewModel
     {
         public int ID { get; set; }
 
@@ -21,7 +21,7 @@ namespace BTS.Web.Models
 
         public int? DistrictID { get; set; }
 
-        public int? SubBTSNum { get; set; }
+        public int? SubBtsNum { get; set; }
 
         public string InCaseOf { get; set; }
 
@@ -51,6 +51,6 @@ namespace BTS.Web.Models
 
         public virtual ProfileViewModel Profile { get; set; }
 
-        public virtual ICollection<SubBTSViewModel> SubBTSs { get; set; }
+        public virtual ICollection<SubBtsInCertViewModel> SubBTSs { get; set; }
     }
 }

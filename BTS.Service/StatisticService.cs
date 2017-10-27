@@ -19,9 +19,9 @@ namespace BTS.Service
     }
     public class StatisticService : IStatisticService
     {
-        IBTSCertificateRepository _btsCertificateRepository;
+        ICertificateRepository _btsCertificateRepository;
 
-        public StatisticService(IBTSCertificateRepository btsCertificateRepository)
+        public StatisticService(ICertificateRepository btsCertificateRepository)
         {
             _btsCertificateRepository = btsCertificateRepository;
         }

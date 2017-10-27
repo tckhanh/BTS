@@ -12,9 +12,9 @@ namespace BTS.Web.Controllers
 {
     public class CertificateController : Controller
     {
-        IBTSCertificateService _btsCertificateService;
+        ICertificateService _btsCertificateService;
 
-        public CertificateController(IBTSCertificateService btsCertificateService)
+        public CertificateController(ICertificateService btsCertificateService)
         {
             _btsCertificateService = btsCertificateService;
         }
@@ -28,14 +28,14 @@ namespace BTS.Web.Controllers
         public ActionResult GetCertificateByCity(string cityID)
         {
             var CertificateData = _btsCertificateService.getCertificateByCity(cityID);
-            var model = Mapper.Map<IEnumerable<BTSCertificate>, IEnumerable<CertificateViewModel>>(CertificateData);
+            var model = Mapper.Map<IEnumerable<Certificate>, IEnumerable<CertificateViewModel>>(CertificateData);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetCertificate()
         {
             int countBTS = 0;
-            List<BTSCertificate> dataSumary = _btsCertificateService.getAll(out countBTS).ToList();
+            List<Certificate> dataSumary = _btsCertificateService.getAll(out countBTS).ToList();
 
             return Json(dataSumary, JsonRequestBehavior.AllowGet);
         }
