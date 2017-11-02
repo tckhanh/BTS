@@ -10,10 +10,10 @@ using BTS.Web.Models;
 
 namespace BTS.Web.Controllers
 {
-    public class PageController : Controller
+    public class PageController : BaseController
     {
         IPageService _pageService;
-        public PageController(IPageService pageService)
+        public PageController(IPageService pageService, IErrorService errorService) : base(errorService)
         {
             this._pageService = pageService;
         }

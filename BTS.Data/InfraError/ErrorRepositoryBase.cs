@@ -1,20 +1,20 @@
-﻿using System;
+﻿using BTS.Data.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BTS.Data.Infrastructure
+namespace BTS.Data.InfraError
 {
-    public abstract class RepositoryBase<T> : IRepository<T> where T : class
+    public abstract class ErrorRepositoryBase<T> : IRepository<T> where T : class
     {
         #region Properties
+
         private BTSDbContext dataContext;
         private readonly IDbSet<T> dbSet;
 
-        protected IDbFactory DbFactory
+        protected IErrorDbFactory DbFactory
         {
             get;
             private set;
@@ -25,15 +25,16 @@ namespace BTS.Data.Infrastructure
             get { return dataContext ?? (dataContext = DbFactory.Init()); }
         }
 
-        #endregion
+        #endregion Properties
 
-        protected RepositoryBase(IDbFactory dbFactory)
+        protected ErrorRepositoryBase(IErrorDbFactory dbFactory)
         {
             DbFactory = dbFactory;
             dbSet = DbContext.Set<T>();
-        }        
+        }
 
         #region Implementation
+
         public virtual T Add(T entity)
         {
             return dbSet.Add(entity);
@@ -49,6 +50,7 @@ namespace BTS.Data.Infrastructure
         {
             return dbSet.Remove(entity);
         }
+
         public virtual T Delete(int id)
         {
             var entity = dbSet.Find(id);
@@ -60,6 +62,7 @@ namespace BTS.Data.Infrastructure
             var entity = dbSet.Find(id);
             return dbSet.Remove(entity);
         }
+
         public virtual void DeleteMulti(Expression<Func<T, bool>> where)
         {
             IEnumerable<T> objects = dbSet.Where<T>(where).AsEnumerable();
@@ -81,7 +84,6 @@ namespace BTS.Data.Infrastructure
         {
             return dbSet.Where(where).ToList();
         }
-
 
         public virtual int Count(Expression<Func<T, bool>> where)
         {
@@ -126,7 +128,7 @@ namespace BTS.Data.Infrastructure
             }
 
             return dataContext.Set<T>().Where<T>(predicate).AsQueryable<T>();
-        }        
+        }
 
         public virtual IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> predicate, out int total, int index = 0, int size = 20, string[] includes = null)
         {
@@ -155,6 +157,7 @@ namespace BTS.Data.Infrastructure
         {
             return dataContext.Set<T>().Count<T>(predicate) > 0;
         }
-        #endregion
+
+        #endregion Implementation
     }
 }

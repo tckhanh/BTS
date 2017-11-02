@@ -12,11 +12,12 @@ namespace BTS.Model.Models
     public class InCaseOf
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string Case { get; set; }
+        public string Name { get; set; }
 
         public virtual IEnumerable<Bts> Btss { get; set; }
 

@@ -49,6 +49,7 @@
     <Compile Include="StringHelper.cs" />
     <Compile Include="ViewModels\CertificateStatisticViewModel.cs" />
     <Compile Include="ViewModels\commonDataChart.cs" />
+    <Compile Include="ViewModels\Message.cs" />
     <Compile Include="ViewModels\StatisticCertificateByOperatorYear.cs" />
     <Compile Include="ViewModels\StatisticCertificateByYear.cs" />
     <Compile Include="ViewModels\StatisticCertificateByOperatorCity.cs" />

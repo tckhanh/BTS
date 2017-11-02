@@ -10,11 +10,11 @@ using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
 {
-    public class CertificateController : Controller
+    public class CertificateController : BaseController
     {
         ICertificateService _btsCertificateService;
 
-        public CertificateController(ICertificateService btsCertificateService)
+        public CertificateController(ICertificateService btsCertificateService, IErrorService errorService) : base(errorService)
         {
             _btsCertificateService = btsCertificateService;
         }

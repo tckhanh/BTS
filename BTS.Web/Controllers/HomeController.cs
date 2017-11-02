@@ -13,14 +13,14 @@ using System.Web.Helpers;
 
 namespace BTS.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         //IProductCategoryService _productCategoryService;
         ICertificateService _btsCertificateService;
         IStatisticService _stattisticService;
         ICommonService _commonService;
 
-        public HomeController(ICertificateService btscertificateService,ICommonService commonService, IStatisticService stattisticService)
+        public HomeController(ICertificateService btscertificateService,ICommonService commonService, IStatisticService stattisticService, IErrorService errorService) : base(errorService)
         {            
             _commonService = commonService;
             _btsCertificateService = btscertificateService;

@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace BTS.Data
     {
         public BTSDbContext(): base("BTSConnection")
         {
-            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.LazyLoadingEnabled = false;            
         }
 
         public DbSet<InCaseOf> InCaseOfs { get; set; }
@@ -50,11 +51,14 @@ namespace BTS.Data
         }
 
         protected override void OnModelCreating(DbModelBuilder builder)
-        {
+        {            
+
             builder.Entity<IdentityUserRole>().HasKey(i => new { i.UserId, i.RoleId }).ToTable("ApplicationUserRoles");
             builder.Entity<IdentityUserLogin>().HasKey(i => i.UserId).ToTable("ApplicationUserLogins");
             builder.Entity<IdentityRole>().ToTable("ApplicationRoles");
             builder.Entity<IdentityUserClaim>().HasKey(i => i.UserId).ToTable("ApplicationUserClaims");
+
+            //builder.Entity<InCaseOf>().Property(e => e.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
         }
     }
 }

@@ -236,9 +236,13 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Common\Encryptor.cs" />
+    <Compile Include="Common\HasCredentialAttribute.cs" />
+    <Compile Include="Common\UserLogin.cs" />
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CertificateController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -8413,6 +8417,7 @@
     <Folder Include="Assets\admin\libs\inputmask\dist\min\inputmask\dependencyLibs\" />
     <Folder Include="Assets\admin\libs\inputmask\dist\min\inputmask\global\" />
     <Folder Include="Assets\admin\libs\inputmask\dist\min\inputmask\phone-codes\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\BTSCertiticate\" />
   </ItemGroup>
   <ItemGroup>

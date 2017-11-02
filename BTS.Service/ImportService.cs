@@ -5,6 +5,7 @@ using BTS.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Validation;
 using System.Data.OleDb;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,11 @@ namespace BTS.Service
 {
     public interface IImportService
     {
-        bool AddInCaseOf(InCaseOf item);
+        bool Add(InCaseOf item);
+        bool Add(Lab item);
+        bool Add(City item);
+        bool Add(Operator item);
+        bool Add(Applicant item);
         void Update(InCaseOf newInCaseOf);
         void Save();
     }
@@ -22,38 +27,71 @@ namespace BTS.Service
     public class ImportService : IImportService
     {
         IInCaseOfRepository _inCaseOfRepository;
+        ILabRepository _labRepository;
+        ICityRepository _cityRepository;
+        public IOperatorRepository _operatorRepository;
+        IApplicantRepository _applicantRepository;
         IUnitOfWork _unitOfWork;
 
 
-        public ImportService(IInCaseOfRepository inCaseOfRepository, IUnitOfWork unitOfWork)
+        public ImportService(IInCaseOfRepository inCaseOfRepository, ILabRepository labRepository, ICityRepository cityRepository, IOperatorRepository operatorRepository, IApplicantRepository applicantRepository, IUnitOfWork unitOfWork)
         {
             this._inCaseOfRepository = inCaseOfRepository;
+            this._labRepository = labRepository;
+            this._cityRepository = cityRepository;
+            this._operatorRepository = operatorRepository;
+            this._applicantRepository = applicantRepository;
             this._unitOfWork = unitOfWork;
         }
+ 
 
-        public InCaseOf Add(InCaseOf newInCaseOf)
+        public bool Add(InCaseOf item)
         {
-            return _inCaseOfRepository.Add(newInCaseOf);
-        }
-
-        public bool AddInCaseOf(InCaseOf item)
-        {
-            try
-            {
                 if (_inCaseOfRepository.GetSingleById(item.ID) == null)
                 {
                     _inCaseOfRepository.Add(item);
-                    _unitOfWork.Commit();
                 }
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+                return true;            
         }
 
+        public bool Add(Lab item)
+        {
+           if (_labRepository.GetSingleById(item.ID) == null)
+                {
+                    _labRepository.Add(item);
+                }
+                return true;
+        }
 
+        
+        public bool Add(City item)
+        {
+                if (_cityRepository.GetSingleById(item.ID) == null)
+                {
+                    _cityRepository.Add(item);
+                }
+                return true;
+        }
+
+        public bool Add(Operator item)
+        {
+           if (_operatorRepository.GetSingleById(item.ID) == null)
+                {
+                    _operatorRepository.Add(item);                    
+                }
+                return true;
+        }
+
+        public bool Add(Applicant item)
+        {            
+            if (_applicantRepository.GetSingleById(item.ID) == null)
+                {
+                    _applicantRepository.Add(item);                    
+                }
+                return true;
+        }
+
+        
         public void Save()
         {
             _unitOfWork.Commit();
@@ -63,5 +101,6 @@ namespace BTS.Service
         {
             _inCaseOfRepository.Update(newInCaseOf);
         }
+
     }
 }

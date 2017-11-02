@@ -17,6 +17,11 @@ namespace BTS.Model.Models
 
         public string Message { get; set; }
 
+        public string Description { get; set; }
+
+        [StringLength(255)]
+        public string Controller { get; set; }
+
         public string StackTrace { get; set; }
 
         public DateTime CreatedDate { get; set; }

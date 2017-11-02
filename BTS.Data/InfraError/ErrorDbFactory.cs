@@ -1,6 +1,6 @@
-﻿namespace BTS.Data.Infrastructure
+﻿namespace BTS.Data.InfraError
 {
-    public class DbFactory : Disposable, IDbFactory
+    public class ErrorDbFactory : ErrorDisposable, IErrorDbFactory
     {
         private BTSDbContext dbContext;
 
@@ -8,7 +8,6 @@
         {
             return dbContext ?? (dbContext = new BTSDbContext());
         }
-
 
         protected override void DisposeCore()
         {

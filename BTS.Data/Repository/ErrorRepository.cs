@@ -1,5 +1,7 @@
-﻿using BTS.Data.Infrastructure;
+﻿using System;
 using BTS.Model.Models;
+using BTS.Data.InfraError;
+using BTS.Data.Infrastructure;
 
 namespace BTS.Data.Repositories
 {
@@ -7,9 +9,9 @@ namespace BTS.Data.Repositories
     {
     }
 
-    public class ErrorRepository : RepositoryBase<Error>, IErrorRepository
+    public class ErrorRepository : ErrorRepositoryBase<Error>, IErrorRepository
     {
-        public ErrorRepository(IDbFactory dbFactory) : base(dbFactory)
+        public ErrorRepository(IErrorDbFactory dbFactory) : base(dbFactory)
         {
         }
     }

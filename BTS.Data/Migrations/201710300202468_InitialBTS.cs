@@ -3,7 +3,7 @@ namespace BTS.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialBTSDatabase : DbMigration
+    public partial class InitialBTS : DbMigration
     {
         public override void Up()
         {
@@ -181,8 +181,8 @@ namespace BTS.Data.Migrations
                 "dbo.InCaseOfs",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
-                        Case = c.String(nullable: false, maxLength: 50),
+                        ID = c.Int(nullable: false),
+                        Name = c.String(nullable: false, maxLength: 50),
                     })
                 .PrimaryKey(t => t.ID);
             

@@ -16,6 +16,7 @@ using Microsoft.AspNet.Identity;
 using BTS.Model.Models;
 using System.Web;
 using Microsoft.Owin.Security.DataProtection;
+using BTS.Data.InfraError;
 
 [assembly: OwinStartup(typeof(BTS.Web.App_Start.Startup))]
 
@@ -36,11 +37,13 @@ namespace BTS.Web.App_Start
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
             // Register your Web API controllers.
 
-            builder.RegisterApiControllers(Assembly.GetExecutingAssembly()); 
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             //Register WebApi Controllers
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<DbFactory>().As<IDbFactory>().InstancePerRequest();
+            builder.RegisterType<ErrorUnitOfWork>().As<IErrorUnitOfWork>().InstancePerRequest();
+            builder.RegisterType<ErrorDbFactory>().As<IErrorDbFactory>().InstancePerRequest();
 
             builder.RegisterType<BTSDbContext>().AsSelf().InstancePerRequest();
 
@@ -50,7 +53,6 @@ namespace BTS.Web.App_Start
             builder.RegisterType<ApplicationSignInManager>().AsSelf().InstancePerRequest();
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register(c => app.GetDataProtectionProvider()).InstancePerRequest();
-
 
             // Repositories
             builder.RegisterAssemblyTypes(typeof(CertificateRepository).Assembly)
@@ -65,9 +67,8 @@ namespace BTS.Web.App_Start
             Autofac.IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
 
-            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver((IContainer)container); 
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver((IContainer)container);
             //Set the WebApi DependencyResolver
-
         }
     }
 }

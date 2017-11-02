@@ -14,11 +14,11 @@ using BTS.Web.Models;
 
 namespace BTS.Web.Controllers
 {
-    public class ContactController : Controller
+    public class ContactController : BaseController
     {
         IContactDetailService _contactDetailService;
         IFeedbackService _feedbackService;
-        public ContactController(IContactDetailService contactDetailService, IFeedbackService feedbackService)
+        public ContactController(IContactDetailService contactDetailService, IFeedbackService feedbackService, IErrorService errorService) : base(errorService)
         {
             this._contactDetailService = contactDetailService;
             this._feedbackService = feedbackService;

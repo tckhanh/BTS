@@ -14,15 +14,16 @@ using BTS.Common;
 using BTS.Model.Models;
 using BTS.Web.App_Start;
 using BTS.Web.Models;
+using BTS.Service;
 
 namespace BTS.Web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IErrorService errorService) : base(errorService)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -51,9 +52,8 @@ namespace BTS.Web.Controllers
                 _userManager = value;
             }
         }
-        public AccountController()
+        public AccountController(IErrorService errorService) : base(errorService)
         {
-
         }
         // GET: Account
         public ActionResult Login(string returnUrl)

@@ -14,12 +14,12 @@ using System.Xml;
 
 namespace BTS.Web.Controllers
 {
-    public class ImportController : Controller
+    public class ImportController : BaseController
     {
         // GET: Import
-        IImportService _importService;
+        private IImportService _importService;
 
-        public ImportController(IImportService importService)
+        public ImportController(IImportService importService, IErrorService errorService) : base(errorService)
         {
             this._importService = importService;
         }
@@ -32,8 +32,6 @@ namespace BTS.Web.Controllers
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase file)
         {
-            DataSet ds = new DataSet();
-
             if (Request.Files["file"].ContentLength > 0)
             {
                 string fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
@@ -47,60 +45,163 @@ namespace BTS.Web.Controllers
                     }
                     Request.Files["file"].SaveAs(fileLocation);
                     string excelConnectionString = string.Empty;
-                    excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                    //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 ;HDR=Yes;IMEX=2\"";
+                    excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes\"";
                     //connection String for xls file format.
                     if (fileExtension == ".xls")
                     {
-                        excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
+                        excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes\"";
                     }
                     //connection String for xlsx file format.
                     else if (fileExtension == ".xlsx")
                     {
-                        excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
-                    }
-                    //Create Connection to Excel work book and add oledb namespace
-                    OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
-                    excelConnection.Open();
-                    DataTable dt = new DataTable();
-
-                    dt = excelConnection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
-                    if (dt == null)
-                    {
-                        return null;
+                        //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                        excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes\"";
                     }
 
-                    String[] excelSheets = new String[dt.Rows.Count];
-                    int t = 0;
-                    //excel data saves in temp file here.
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        excelSheets[t] = row["TABLE_NAME"].ToString();
-                        t++;
-                    }
-                    OleDbConnection excelConnection1 = new OleDbConnection(excelConnectionString);
-
-
-                    // Import Data from Sheet_InCaseOf
-
-                    string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_InCaseOf);
-                    using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection1))
-                    {
-                        dataAdapter.Fill(ds);
-                    }
-
-                    var Item = new InCaseOf();
-                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                    {
-                        Item.ID = Convert.ToInt32(ds.Tables[0].Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
-                        Item.Case = ds.Tables[0].Rows[i][CommonConstants.Sheet_InCaseOf_Case].ToString();
-                        _importService.AddInCaseOf(Item);
-                    }
-
-
+                    ExecuteDatabase(ImportInCaseOf, excelConnectionString);
+                    ExecuteDatabase(ImportLab, excelConnectionString);
+                    ExecuteDatabase(ImportCity, excelConnectionString);
+                    ExecuteDatabase(ImportOperator, excelConnectionString);
+                    ExecuteDatabase(ImportApplicant, excelConnectionString);
                 }
             }
             return View();
         }
 
+        private bool ImportInCaseOf(string excelConnectionString)
+        {
+            DataSet ds = new DataSet();
+            //Create Connection to Excel work book and add oledb namespace
+            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+            // Import Data from Sheet_InCaseOf
+            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_InCaseOf);
+            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
+            {
+                dataAdapter.Fill(ds);
+            }
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                var Item = new InCaseOf();
+                Item.ID = Convert.ToInt32(ds.Tables[0].Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
+                Item.Name = ds.Tables[0].Rows[i][CommonConstants.Sheet_InCaseOf_Name].ToString();
+                _importService.Add(Item);
+            }
+            excelConnection.Close();
+
+            _importService.Save();
+
+            return true;
+        }
+
+        private bool ImportLab(string excelConnectionString)
+        {
+            DataSet ds = new DataSet();
+            //Create Connection to Excel work book and add oledb namespace
+            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+            // Import Data from Sheet_Lab
+            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_Lab);
+            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
+            {
+                dataAdapter.Fill(ds);
+            }
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                var Item = new Lab();
+                Item.ID = ds.Tables[0].Rows[i][CommonConstants.Sheet_Lab_ID].ToString();
+                Item.Name = ds.Tables[0].Rows[i][CommonConstants.Sheet_Lab_Name].ToString();
+                Item.Address = ds.Tables[0].Rows[i][CommonConstants.Sheet_Lab_Address].ToString();
+                Item.Phone = ds.Tables[0].Rows[i][CommonConstants.Sheet_Lab_Phone].ToString();
+                Item.Fax = ds.Tables[0].Rows[i][CommonConstants.Sheet_Lab_Fax].ToString();
+                _importService.Add(Item);
+            }
+            excelConnection.Close();
+            _importService.Save();
+
+            return true;
+        }
+
+        private bool ImportCity(string excelConnectionString)
+        {
+            DataSet ds = new DataSet();
+            //Create Connection to Excel work book and add oledb namespace
+            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+            // Import Data from Sheet_City
+            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_City);
+            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
+            {
+                dataAdapter.Fill(ds);
+            }
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                var Item = new City();
+                Item.ID = ds.Tables[0].Rows[i][CommonConstants.Sheet_City_ID].ToString();
+                Item.Name = ds.Tables[0].Rows[i][CommonConstants.Sheet_City_Name].ToString();
+                _importService.Add(Item);
+            }
+            excelConnection.Close();
+            _importService.Save();
+
+            return true;
+        }
+
+        private bool ImportOperator(string excelConnectionString)
+        {
+            DataSet ds = new DataSet();
+            //Create Connection to Excel work book and add oledb namespace
+            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+            // Import Data from Sheet_City
+            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_Operator);
+            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
+            {
+                dataAdapter.Fill(ds);
+            }
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                var Item = new Operator();
+                Item.ID = ds.Tables[0].Rows[i][CommonConstants.Sheet_Operator_ID].ToString();
+                Item.Name = ds.Tables[0].Rows[i][CommonConstants.Sheet_Operator_Name].ToString();
+                _importService.Add(Item);
+            }
+            excelConnection.Close();
+            _importService.Save();
+
+            return true;
+        }
+
+        private bool ImportApplicant(string excelConnectionString)
+        {
+            DataSet ds = new DataSet();
+            //Create Connection to Excel work book and add oledb namespace
+            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
+            // Import Data from Sheet_City
+            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_Applicant);
+            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
+            {
+                dataAdapter.Fill(ds);
+            }
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                var Item = new Applicant();
+                Item.ID = ds.Tables[0].Rows[i][CommonConstants.Sheet_Applicant_ID].ToString();
+                Item.Name = ds.Tables[0].Rows[i][CommonConstants.Sheet_Applicant_Name].ToString();
+                Item.Address = ds.Tables[0].Rows[i][CommonConstants.Sheet_Applicant_Address].ToString();
+                Item.Phone = ds.Tables[0].Rows[i][CommonConstants.Sheet_Applicant_Phone].ToString();
+                Item.Fax = ds.Tables[0].Rows[i][CommonConstants.Sheet_Applicant_Fax].ToString();
+                Item.ContactName = ds.Tables[0].Rows[i][CommonConstants.Sheet_Applicant_ContactName].ToString();
+                Item.OperatorID = ds.Tables[0].Rows[i][CommonConstants.Sheet_Applicant_OperatorID].ToString();
+
+                _importService.Add(Item);
+            }
+            excelConnection.Close();
+            _importService.Save();
+
+            return true;
+        }
     }
 }

@@ -20,9 +20,9 @@ namespace BTS.UnitTest.RepositoryTest
         [TestInitialize]
         public void Initialize()
         {
-            dbFactory = new DbFactory();
-            objRepository = new CertificateRepository(dbFactory);
-            unitOfwork = new UnitOfWork(dbFactory);
+            //dbFactory = new DbFactory();
+            //objRepository = new CertificateRepository(dbFactory);
+            //unitOfwork = new UnitOfWork(dbFactory);
         }
 
         [TestMethod]

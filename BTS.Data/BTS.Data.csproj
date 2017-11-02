@@ -59,6 +59,12 @@
   <ItemGroup>
     <Compile Include="BTSDbContext.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="InfraError\ErrorDbFactory.cs" />
+    <Compile Include="InfraError\ErrorDisposable.cs" />
+    <Compile Include="InfraError\ErrorRepositoryBase.cs" />
+    <Compile Include="InfraError\ErrorUnitOfWork.cs" />
+    <Compile Include="InfraError\IErrorDbFactory.cs" />
+    <Compile Include="InfraError\IErrorUnitOfWork.cs" />
     <Compile Include="Infrastructure\DbFactory.cs" />
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\IDbFactory.cs" />
@@ -66,9 +72,13 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201710270651373_InitialBTSDatabase.cs" />
-    <Compile Include="Migrations\201710270651373_InitialBTSDatabase.Designer.cs">
-      <DependentUpon>201710270651373_InitialBTSDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201710300202468_InitialBTS.cs" />
+    <Compile Include="Migrations\201710300202468_InitialBTS.Designer.cs">
+      <DependentUpon>201710300202468_InitialBTS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711020801390_changeErrorTable.cs" />
+    <Compile Include="Migrations\201711020801390_changeErrorTable.Designer.cs">
+      <DependentUpon>201711020801390_changeErrorTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,9 +90,9 @@
     <Compile Include="Repository\CertificateRepository.cs" />
     <Compile Include="Repository\CityRepository.cs" />
     <Compile Include="Repository\ContactDetailRepository.cs" />
+    <Compile Include="Repository\ErrorRepository.cs" />
     <Compile Include="Repository\InCaseOfRepository.cs" />
     <Compile Include="Repository\LabRepository.cs" />
-    <Compile Include="Repository\ErrorRepository.cs" />
     <Compile Include="Repository\FeedbackRepository.cs" />
     <Compile Include="Repository\FooterRepository.cs" />
     <Compile Include="Repository\MenuGroupRepository.cs" />
@@ -111,8 +121,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201710270651373_InitialBTSDatabase.resx">
-      <DependentUpon>201710270651373_InitialBTSDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710300202468_InitialBTS.resx">
+      <DependentUpon>201710300202468_InitialBTS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711020801390_changeErrorTable.resx">
+      <DependentUpon>201711020801390_changeErrorTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
