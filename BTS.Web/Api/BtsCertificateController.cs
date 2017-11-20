@@ -17,15 +17,16 @@ namespace BTS.Web.Api
     [Authorize]
     public class BtsCertificateController : ApiControllerBase
     {
-        ICertificateService _certificateService;
+        private ICertificateService _certificateService;
 
         public BtsCertificateController(IErrorService errorService, ICertificateService certificateService) : base(errorService)
         {
             this._certificateService = certificateService;
         }
+
         [Route("getall")]
         public HttpResponseMessage Get(HttpRequestMessage request)
-        {            
+        {
             int totalRow = 10;
 
             return CreateHttpResponse(request, () =>
@@ -52,13 +53,12 @@ namespace BTS.Web.Api
                 }
                 else
                 {
-                    Certificate  newBTSCertificate = new Certificate();
-                    newBTSCertificate.UpdateBTSCertificate(btsCertificateVm);
+                    Certificate newBTSCertificate = new Certificate();
+                    newBTSCertificate.UpdateCertificate(btsCertificateVm);
                     newBTSCertificate = _certificateService.Add(newBTSCertificate);
                     _certificateService.Save();
 
                     response = request.CreateResponse(HttpStatusCode.Created, newBTSCertificate);
-
                 }
                 return response;
             });
@@ -77,12 +77,11 @@ namespace BTS.Web.Api
                 else
                 {
                     var certificate = _certificateService.getByID(certificateVm.ID);
-                    certificate.UpdateBTSCertificate(certificateVm);
+                    certificate.UpdateCertificate(certificateVm);
 
                     _certificateService.Update(certificate);
-                    _certificateService.Save();                    
+                    _certificateService.Save();
                     response = request.CreateResponse(HttpStatusCode.OK);
-
                 }
                 return response;
             });
@@ -100,9 +99,8 @@ namespace BTS.Web.Api
                 else
                 {
                     _certificateService.Delete(id);
-                    _certificateService.Save();                    
+                    _certificateService.Save();
                     response = request.CreateResponse(HttpStatusCode.OK);
-
                 }
                 return response;
             });

@@ -86,6 +86,10 @@
       <HintPath>..\packages\JSON.1.0.1\lib\net40\Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -248,11 +252,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\PivotTableController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Core\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Core\PaginationSet.cs" />
+    <Compile Include="Infrastructure\Core\WriteLog.cs" />
     <Compile Include="Infrastructure\Extensions\EntityExtensions.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\ApplicantViewModel.cs" />
@@ -8145,6 +8151,65 @@
     <Content Include="Assets\admin\libs\PACE\themes\yellow\pace-theme-loading-bar.css" />
     <Content Include="Assets\admin\libs\PACE\themes\yellow\pace-theme-mac-osx.css" />
     <Content Include="Assets\admin\libs\PACE\themes\yellow\pace-theme-minimal.css" />
+    <Content Include="Assets\admin\libs\pivottable\.gitignore" />
+    <Content Include="Assets\admin\libs\pivottable\dist\c3_renderers.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\c3_renderers.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\d3_renderers.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\d3_renderers.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\export_renderers.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\export_renderers.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\gchart_renderers.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\gchart_renderers.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.cs.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.cs.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.css" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.da.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.da.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.de.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.de.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.es.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.es.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.fr.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.fr.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.it.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.it.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.min.css" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.nl.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.nl.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.pl.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.pl.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.pt.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.pt.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.ru.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.ru.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.tr.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.tr.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.zh.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.zh.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot_spec.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot_spec.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\dist\tips_data.min.js" />
+    <Content Include="Assets\admin\libs\pivottable\gulpFile.js" />
+    <Content Include="Assets\admin\libs\pivottable\images\animation.gif" />
+    <Content Include="Assets\admin\libs\pivottable\images\cdnjs.svg" />
+    <Content Include="Assets\admin\libs\pivottable\images\filters.png" />
+    <Content Include="Assets\admin\libs\pivottable\images\gender_age_bins.png" />
+    <Content Include="Assets\admin\libs\pivottable\images\gender_imbalance.png" />
+    <Content Include="Assets\admin\libs\pivottable\images\gender_imbalance_instructions.png" />
+    <Content Include="Assets\admin\libs\pivottable\images\initial_state.png" />
+    <Content Include="Assets\admin\libs\pivottable\images\license.svg" />
+    <Content Include="Assets\admin\libs\pivottable\images\npm.svg" />
+    <Content Include="Assets\admin\libs\pivottable\images\province_x_party_heatmap.png" />
+    <Content Include="Assets\admin\libs\pivottable\images\province_x_party_heatmap_instructions.png" />
+    <Content Include="Assets\admin\libs\pivottable\images\simple.png" />
+    <Content Include="Assets\admin\libs\pivottable\images\simple_ui.png" />
+    <Content Include="Assets\admin\libs\pivottable\images\tests.svg" />
+    <Content Include="Assets\admin\libs\pivottable\images\whats_what.png" />
+    <Content Include="Assets\admin\libs\pivottable\index.html" />
+    <Content Include="Assets\admin\libs\pivottable\tests\boot.js" />
+    <Content Include="Assets\admin\libs\pivottable\tests\index.html" />
     <Content Include="Assets\admin\libs\raphael\dev\banner.txt" />
     <Content Include="Assets\admin\libs\raphael\dev\raphael.amd.js" />
     <Content Include="Assets\admin\libs\raphael\dev\raphael.core.js" />
@@ -8385,6 +8450,7 @@
     <Content Include="Assets\admin\libs\toastr\toastr.min.css" />
     <Content Include="Assets\admin\libs\toastr\toastr.min.js" />
     <Content Include="Assets\client\js\controllers\home.js" />
+    <Content Include="Assets\client\js\controllers\pivotTable.js" />
     <Content Include="Assets\client\map\images\pin24.png" />
     <Content Include="Assets\client\map\images\pin48.png" />
     <Content Include="Assets\client\map\leaf-demo.js" />
@@ -8412,6 +8478,7 @@
     <Folder Include="app\components\users\" />
     <Folder Include="app\shared\footer\" />
     <Folder Include="app\shared\navigation\" />
+    <Folder Include="App_Data\" />
     <Folder Include="Assets\admin\libs\checklist-model\test\" />
     <Folder Include="Assets\admin\libs\inputmask\dist\min\inputmask\bindings\" />
     <Folder Include="Assets\admin\libs\inputmask\dist\min\inputmask\dependencyLibs\" />
@@ -9275,6 +9342,69 @@
     <Content Include="Assets\admin\libs\select2\src\scss\_multiple.scss" />
     <Content Include="Assets\admin\libs\select2\src\scss\_single.scss" />
     <Content Include="ImportData\Mau ho so kiem dnh BTS.xlsx" />
+    <Content Include="Assets\admin\libs\pivottable\.bower.json" />
+    <Content Include="Assets\admin\libs\pivottable\bower.json" />
+    <Content Include="Assets\admin\libs\pivottable\CNAME" />
+    <Content Include="Assets\admin\libs\pivottable\composer.json" />
+    <Content Include="Assets\admin\libs\pivottable\CONTRIBUTING.md" />
+    <Content Include="Assets\admin\libs\pivottable\dist\c3_renderers.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\c3_renderers.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\d3_renderers.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\d3_renderers.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\export_renderers.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\export_renderers.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\gchart_renderers.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\gchart_renderers.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.cs.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.cs.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.da.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.da.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.de.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.de.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.es.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.es.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.fr.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.fr.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.it.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.it.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.nl.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.nl.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.pl.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.pl.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.pt.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.pt.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.ru.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.ru.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.tr.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.tr.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.zh.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot.zh.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot_spec.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\dist\pivot_spec.min.js.map" />
+    <Content Include="Assets\admin\libs\pivottable\LICENSE.md" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.cs.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.da.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.de.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.es.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.fr.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.it.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.nl.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.pl.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.pt.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.ru.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.tr.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\locales\pivot.zh.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\package.json" />
+    <Content Include="Assets\admin\libs\pivottable\README.md" />
+    <Content Include="Assets\admin\libs\pivottable\src\c3_renderers.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\src\d3_renderers.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\src\export_renderers.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\src\gchart_renderers.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\src\pivot.coffee" />
+    <Content Include="Assets\admin\libs\pivottable\SUPPORT.md" />
+    <Content Include="Assets\admin\libs\pivottable\tests\pivot_spec.coffee" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\Layouts.cshtml" />
@@ -9285,6 +9415,7 @@
     <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Views\Shared\RightSideBar.cshtml" />
     <Content Include="Views\Import\Index.cshtml" />
+    <Content Include="Views\PivotTable\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Common\BTS.Common.csproj">
@@ -9294,6 +9425,10 @@
     <ProjectReference Include="..\BTS.Data\BTS.Data.csproj">
       <Project>{35cbd06b-5985-4108-95a8-0113c4685076}</Project>
       <Name>BTS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BTS.ExcelLib\BTS.ExcelLib.csproj">
+      <Project>{02e532a6-3c50-46f9-ae18-58d4ec28a5ba}</Project>
+      <Name>BTS.ExcelLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\BTS.Model\BTS.Model.csproj">
       <Project>{c5bbf3c8-3872-45de-ad20-73c9ef7d9350}</Project>

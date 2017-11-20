@@ -80,6 +80,26 @@
     <Compile Include="Migrations\201711020801390_changeErrorTable.Designer.cs">
       <DependentUpon>201711020801390_changeErrorTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711130438156_updateDB.cs" />
+    <Compile Include="Migrations\201711130438156_updateDB.Designer.cs">
+      <DependentUpon>201711130438156_updateDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711140855193_updateProfileTable.cs" />
+    <Compile Include="Migrations\201711140855193_updateProfileTable.Designer.cs">
+      <DependentUpon>201711140855193_updateProfileTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711140945597_updateBtsTable.cs" />
+    <Compile Include="Migrations\201711140945597_updateBtsTable.Designer.cs">
+      <DependentUpon>201711140945597_updateBtsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711160316178_updateBts.cs" />
+    <Compile Include="Migrations\201711160316178_updateBts.Designer.cs">
+      <DependentUpon>201711160316178_updateBts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711170745371_updateBtsTable1.cs" />
+    <Compile Include="Migrations\201711170745371_updateBtsTable1.Designer.cs">
+      <DependentUpon>201711170745371_updateBtsTable1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ApplicantRepository.cs" />
@@ -87,6 +107,7 @@
     <Compile Include="Repository\ApplicationRoleGroupRepository.cs" />
     <Compile Include="Repository\ApplicationRoleRepository.cs" />
     <Compile Include="Repository\ApplicationUserGroupRepository.cs" />
+    <Compile Include="Repository\BtsRepository.cs" />
     <Compile Include="Repository\CertificateRepository.cs" />
     <Compile Include="Repository\CityRepository.cs" />
     <Compile Include="Repository\ContactDetailRepository.cs" />
@@ -126,6 +147,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711020801390_changeErrorTable.resx">
       <DependentUpon>201711020801390_changeErrorTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711130438156_updateDB.resx">
+      <DependentUpon>201711130438156_updateDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711140855193_updateProfileTable.resx">
+      <DependentUpon>201711140855193_updateProfileTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711140945597_updateBtsTable.resx">
+      <DependentUpon>201711140945597_updateBtsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711160316178_updateBts.resx">
+      <DependentUpon>201711160316178_updateBts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711170745371_updateBtsTable1.resx">
+      <DependentUpon>201711170745371_updateBtsTable1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -13,15 +13,20 @@ namespace BTS.Data.Repository
     public interface ICertificateRepository : IRepository<Certificate>
     {
         IEnumerable<Certificate> GetMultiPagingByBtsCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10, bool onlyOwner = false);
+
         IEnumerable<Certificate> GetMultiByBtsCode(string btsCode, bool onlyOwner = false);
+
         IEnumerable<CertificateStatisticViewModel> GetStatistic(string fromDate, string toDate);
 
-        IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYear();
+        IEnumerable<StatisticCertificate> GetStatisticCertificateByYear();
 
-        IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYearOperator();
+        IEnumerable<StatisticCertificate> GetStatisticCertificateByYearOperator();
 
-        IEnumerable<StatisticCertificateByOperatorCity> GetStatisticCertificateByOperatorCity();
+        IEnumerable<StatisticCertificate> GetStatisticCertificateByOperatorCity();
 
+        IEnumerable<ShortCertificate> GetShortCertificate();
+
+        IEnumerable<ShortCertificate> GetShortCertificate(int year);
     }
 
     public class CertificateRepository : RepositoryBase<Certificate>, ICertificateRepository
@@ -87,29 +92,29 @@ namespace BTS.Data.Repository
                 new SqlParameter("@toDate",toDate)
             };
             return DbContext.Database.SqlQuery<CertificateStatisticViewModel>("GetStatistic @fromDate,@toDate", parameters);
-
         }
 
-        public IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYear()
+        public IEnumerable<StatisticCertificate> GetStatisticCertificateByYear()
         {
             var query = from certificate in DbContext.Certificates
                         where !string.IsNullOrEmpty(certificate.OperatorID) && certificate.IssuedDate != null
                         orderby certificate.IssuedDate ascending
-                        group certificate by new { certificate.IssuedDate.Value.Year} into OperatorGroup                        
-                        select new StatisticCertificateByYear() {
-                            Year = OperatorGroup.Key.Year.ToString(),                            
+                        group certificate by new { certificate.IssuedDate.Value.Year } into OperatorGroup
+                        select new StatisticCertificate()
+                        {
+                            Year = OperatorGroup.Key.Year.ToString(),
                             Certificates = OperatorGroup.Count()
-                            };
+                        };
 
             return query;
         }
 
-        public IEnumerable<StatisticCertificateByOperatorCity> GetStatisticCertificateByOperatorCity()
+        public IEnumerable<StatisticCertificate> GetStatisticCertificateByOperatorCity()
         {
             var query = from certificate in DbContext.Certificates
                         where !string.IsNullOrEmpty(certificate.OperatorID)
                         group certificate by new { certificate.OperatorID, certificate.CityID } into OperatorGroup
-                        select new StatisticCertificateByOperatorCity()
+                        select new StatisticCertificate()
                         {
                             OperatorID = OperatorGroup.Key.OperatorID,
                             CityID = OperatorGroup.Key.CityID,
@@ -128,19 +133,51 @@ namespace BTS.Data.Repository
             return DbContext.Database.SqlQuery<CertificateStatisticViewModel>("GetCertificateStatistic @fromDate,@toDate", parameters);
         }
 
-        public IEnumerable<StatisticCertificateByYear> GetStatisticCertificateByYearOperator()
+        public IEnumerable<StatisticCertificate> GetStatisticCertificateByYearOperator()
         {
             var query = from certificate in DbContext.Certificates
                         where !string.IsNullOrEmpty(certificate.ID) && !string.IsNullOrEmpty(certificate.OperatorID) && certificate.IssuedDate != null
                         orderby certificate.IssuedDate ascending
                         group certificate by new { certificate.IssuedDate.Value.Year, certificate.OperatorID } into OperatorGroup
-                        select new StatisticCertificateByYear()
+                        select new StatisticCertificate()
                         {
                             Year = OperatorGroup.Key.Year.ToString(),
-                            
+
                             Certificates = OperatorGroup.Count()
                         };
 
+            return query;
+        }
+
+        public IEnumerable<ShortCertificate> GetShortCertificate(int year)
+        {
+            var query = from certificate in DbContext.Certificates
+                        where certificate.IssuedDate.Value.Year == year
+                        select new ShortCertificate()
+                        {
+                            ID = certificate.ID,
+                            Year = year,
+                            OperatorID = certificate.OperatorID,
+                            CityID = certificate.CityID,
+                            InCaseOfID = certificate.InCaseOfID,
+                            LabID = certificate.LabID
+                        };
+            return query;
+        }
+
+        public IEnumerable<ShortCertificate> GetShortCertificate()
+        {
+            var query = from certificate in DbContext.Certificates
+                        where certificate.ExpiredDate <= DateTime.Now
+                        select new ShortCertificate()
+                        {
+                            ID = certificate.ID,
+                            Year = certificate.IssuedDate.Value.Year,
+                            OperatorID = certificate.OperatorID,
+                            CityID = certificate.CityID,
+                            InCaseOfID = certificate.InCaseOfID,
+                            LabID = certificate.LabID
+                        };
             return query;
         }
     }

@@ -24,6 +24,13 @@ namespace BTS.Web
                 );
 
             routes.MapRoute(
+                 name: "PivotTable",
+                 url: "bieu-do.html",
+                 defaults: new { controller = "PivotTable", action = "Index", id = UrlParameter.Optional },
+                 namespaces: new string[] { "BTS.Web.Controllers" }
+                );
+
+            routes.MapRoute(
                  name: "Map",
                  url: "ban-do.html",
                  defaults: new { controller = "Certificate", action = "Index", id = UrlParameter.Optional },
@@ -99,7 +106,6 @@ namespace BTS.Web
                  defaults: new { controller = "Import", action = "Index", tagId = UrlParameter.Optional },
                  namespaces: new string[] { "BTS.Web.Controllers" }
  );
-
 
             routes.MapRoute(
                 name: "Default",

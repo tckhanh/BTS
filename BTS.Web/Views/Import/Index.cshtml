@@ -1,8 +1,12 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Layouts.cshtml";
 }
+
+@section footerJS{
+
+}
+
 <h2>Index</h2>
 
 @using (Html.BeginForm("Index", "Import", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -10,4 +14,3 @@
     <input type="file" name="file" />
     <input type="submit" value="OK" />
 }
-

@@ -3,6 +3,11 @@
     Layout = "~/Views/Shared/Layouts.cshtml";
 }
 
+@section footerJS{
+    @*<script src="~/Assets/client/map/markers.js"></script>*@
+    <script src="~/Assets/client/map/leaf-demo.js"></script>
+}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,9 +50,6 @@
         </div>
     </div>
 
-
-
-
     <h1>Leaflet Cluster Example</h1>
     <p>
         Here's an interactive map indicating where airports and train stations are located around the world.  The data comes from <a href="http://openflights.org/data.html" target="_blank">OpenFlights.org</a>.
@@ -64,10 +66,6 @@
         <p>
             <b>[16 Jul 2016]</b> Switched to Leaflet 0.7.7.
         </p>
-
     </div>
-
-    @*<script src="~/Assets/client/map/markers.js"></script>*@
-    <script src="~/Assets/client/map/leaf-demo.js"></script>
 </body>
 </html>

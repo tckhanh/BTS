@@ -15,7 +15,7 @@ namespace BTS.Model.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        public int? ProfileID { get; set; }
+        public int ProfileID { get; set; }
 
         [Required]
         [StringLength(10)]
@@ -24,22 +24,34 @@ namespace BTS.Model.Models
         [Required]
         [StringLength(100)]
         public string BtsCode { get; set; }
-                  
+
         [Required]
         [StringLength(255)]
         public string Address { get; set; }
 
-         [Required]
+        [Required]
         [StringLength(3)]
         public string CityID { get; set; }
 
         public double? Longtitude { get; set; }
 
         public double? Latitude { get; set; }
-                      
+
         public int InCaseOfID { get; set; }
-        
+
         public bool IsCertificated { get; set; }
+
+        [StringLength(16)]
+        public string LastSelfCertificateID { get; set; }
+
+        [StringLength(10)]
+        public string LastSelfOperatorID { get; set; }
+
+        [StringLength(16)]
+        public string LastNoSelfCertificateID { get; set; }
+
+        [StringLength(10)]
+        public string LastNoSelfOperatorID { get; set; }
 
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }
@@ -52,6 +64,5 @@ namespace BTS.Model.Models
 
         [ForeignKey("InCaseOfID")]
         public virtual InCaseOf InCaseOf { get; set; }
-
     }
 }

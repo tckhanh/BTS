@@ -6,7 +6,7 @@ namespace BTS.Model.Models
     [Table("SubBtsInCerts")]
     public class SubBtsInCert
     {
-        [Key]        
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
@@ -18,6 +18,9 @@ namespace BTS.Model.Models
 
         [StringLength(10)]
         public string OperatorID { get; set; }
+
+        [StringLength(50)]
+        public string Manufactory { get; set; }
 
         [StringLength(50)]
         public string Equipment { get; set; }
@@ -34,7 +37,7 @@ namespace BTS.Model.Models
         public string Band { get; set; }
 
         [StringLength(30)]
-        public string AntenHeight { get; set; }        
+        public string AntenHeight { get; set; }
 
         [ForeignKey("CertificateID")]
         public virtual Certificate Certificates { get; set; }

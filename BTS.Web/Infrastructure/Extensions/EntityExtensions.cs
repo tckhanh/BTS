@@ -9,7 +9,7 @@ namespace BTS.Web.Infrastructure.Extensions
 {
     public static class EntityExtensions
     {
-        public static void UpdateBTSCertificate(this Certificate certificate, CertificateViewModel btsCertificateVm)
+        public static void UpdateCertificate(this Certificate certificate, CertificateViewModel btsCertificateVm)
         {
             certificate.ID = btsCertificateVm.ID;
             certificate.ProfileID = btsCertificateVm.ProfileID;
@@ -17,11 +17,20 @@ namespace BTS.Web.Infrastructure.Extensions
             certificate.Latitude = btsCertificateVm.Latitude;
             certificate.Address = btsCertificateVm.Address;
             certificate.CityID = btsCertificateVm.CityID;
-            
+
             certificate.SubBtsQuantity = btsCertificateVm.SubBtsQuantity;
+            certificate.SubBtsAntenHeights = btsCertificateVm.SubBtsAntenHeights;
+            certificate.SubBtsAntenNums = btsCertificateVm.SubBtsAntenNums;
+            certificate.SubBtsBands = btsCertificateVm.SubBtsBands;
+            certificate.SubBtsCodes = btsCertificateVm.SubBtsCodes;
+            certificate.SubBtsConfigurations = btsCertificateVm.SubBtsConfigurations;
+            certificate.SubBtsEquipments = btsCertificateVm.SubBtsEquipments;
+            certificate.SubBtsOperatorIDs = btsCertificateVm.SubBtsOperatorIDs;
+            certificate.SubBtsPowerSums = btsCertificateVm.SubBtsPowerSums;
+
             certificate.InCaseOfID = btsCertificateVm.InCaseOfID;
             certificate.TestReportNo = btsCertificateVm.TestReportNo;
-            certificate.TestReportDate = btsCertificateVm.TestReportDate;            
+            certificate.TestReportDate = btsCertificateVm.TestReportDate;
 
             certificate.SafeLimit = btsCertificateVm.SafeLimit;
             certificate.IssuedPlace = btsCertificateVm.IssuedPlace;
@@ -37,7 +46,6 @@ namespace BTS.Web.Infrastructure.Extensions
             myInCaseOf.Name = inCaseOfVm.Case;
         }
 
-
         public static void UpdateOperator(this Operator myoperator, OperatorViewModel operatorVm)
         {
             myoperator.ID = operatorVm.ID;
@@ -51,7 +59,7 @@ namespace BTS.Web.Infrastructure.Extensions
             feedback.Message = feedbackVm.Message;
             feedback.Status = feedbackVm.Status;
             feedback.CreatedDate = DateTime.Now;
-        }        
+        }
 
         public static void UpdateApplicationGroup(this ApplicationGroup appGroup, ApplicationGroupViewModel appGroupViewModel)
         {
@@ -68,9 +76,9 @@ namespace BTS.Web.Infrastructure.Extensions
             appRole.Name = appRoleViewModel.Name;
             appRole.Description = appRoleViewModel.Description;
         }
+
         public static void UpdateUser(this ApplicationUser appUser, ApplicationUserViewModel appUserViewModel, string action = "add")
         {
-
             appUser.Id = appUserViewModel.Id;
             appUser.FullName = appUserViewModel.FullName;
             appUser.BirthDay = appUserViewModel.BirthDay;

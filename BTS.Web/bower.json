@@ -22,7 +22,8 @@
     "checklist-model": "~0.9.0",
     "angular-chart.js": "~0.10.2",
     "leaflet.markercluster": "~1.0.4",
-    "admin-lte": "~2.4.2"
+    "admin-lte": "~2.4.2",
+    "pivottable": "~2.16.0"
   },
   "resolutions": {
     "ckeditor": "^4.7.0",

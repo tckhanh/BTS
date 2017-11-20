@@ -20,6 +20,9 @@ namespace BTS.Web.Models
         public string OperatorID { get; set; }
 
         [MaxLength(50)]
+        public string Manufactory { get; set; }
+
+        [MaxLength(50)]
         public string Equipment { get; set; }
 
         public int? AntenNum { get; set; }

@@ -19,15 +19,15 @@ namespace BTS.Model.Models
         public string ProfileNum { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? ProfileDate { get; set; }
+        public DateTime ProfileDate { get; set; }
 
         public int? BtsQuantity { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? ApplyDate { get; set; }
+        public DateTime ApplyDate { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? ValidDate { get; set; }        
+        public DateTime? ValidDate { get; set; }
 
         public int? Fee { get; set; }
 
@@ -42,7 +42,7 @@ namespace BTS.Model.Models
 
         [ForeignKey("ApplicantID")]
         public virtual Applicant Applicant { get; set; }
-        
+
         public virtual IEnumerable<Bts> Btss { get; set; }
 
         public virtual IEnumerable<Certificate> Certificates { get; set; }

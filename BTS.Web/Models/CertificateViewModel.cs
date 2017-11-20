@@ -47,21 +47,55 @@ namespace BTS.Web.Models
         public DateTime? ExpiredDate { get; set; }
 
         [MaxLength(30)]
+        [Required]
         public string IssuedPlace { get; set; }
 
         [MaxLength(30)]
+        [Required]
         public string Signer { get; set; }
 
         public int SubBtsQuantity { get; set; }
 
-        public int MinAntenHeight { get; set; }
+        [MaxLength(255)]
+        [Required]
+        public string SubBtsCodes { get; set; }
 
-        public int MaxHeightIn100m { get; set; }
+        [MaxLength(150)]
+        [Required]
+        public string SubBtsOperatorIDs { get; set; }
 
-        public int OffsetHeight { get; set; }
+        [MaxLength(255)]
+        [Required]
+        public string SubBtsEquipments { get; set; }
+
+        [MaxLength(150)]
+        [Required]
+        public string SubBtsAntenNums { get; set; }
+
+        [MaxLength(150)]
+        [Required]
+        public string SubBtsConfigurations { get; set; }
+
+        [MaxLength(150)]
+        [Required]
+        public string SubBtsPowerSums { get; set; }
+
+        [MaxLength(150)]
+        [Required]
+        public string SubBtsBands { get; set; }
+
+        [MaxLength(150)]
+        [Required]
+        public string SubBtsAntenHeights { get; set; }
+
+        public double? MinAntenHeight { get; set; }
+
+        public double? MaxHeightIn100m { get; set; }
+
+        public double? OffsetHeight { get; set; }
 
         public double? SafeLimit { get; set; }
 
-        public virtual IEnumerable<SubBtsInCertViewModel> SubBTSinCerts { get; set; }
+        public virtual IEnumerable<SubBtsInCertViewModel> SubBtsInCerts { get; set; }
     }
 }

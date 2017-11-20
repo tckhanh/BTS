@@ -26,7 +26,7 @@ namespace BTS.Web.Controllers
             this._errorService = errorService;
         }
 
-        protected Message ExecuteDatabase(Func<string, bool> function, string excelConnectionString)
+        protected Message ExecuteDatabase(Func<string, int> function, string excelConnectionString)
         {
             Error error = new Error();
             try

@@ -1,8 +1,11 @@
-﻿
-@model BTS.Web.Models.HomeViewModel
+﻿@model BTS.Web.Models.HomeViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Layouts.cshtml";
+}
+
+@section footerJS{
+
 }
 
 <!-- Content Header (Page header) -->
@@ -337,7 +340,6 @@
                     </button>
                 </div>
             </div>
-
         </section>
         <!-- /.Left col -->
         <!-- right col (We are only adding the ID to make the widgets sortable)-->
@@ -408,7 +410,7 @@
                     </div>
                 </div>
                 <div class="box-body border-radius-none">
-                    <div class="chart" id="line-chart" style="height: 250px;"></div>                    
+                    <div class="chart" id="line-chart" style="height: 250px;"></div>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer no-border">
@@ -519,11 +521,9 @@
                 </div>
             </div>
             <!-- /.box -->
-
         </section>
         <!-- right col -->
     </div>
     <!-- /.row (main row) -->
-
 </section>
 <!-- /.content -->

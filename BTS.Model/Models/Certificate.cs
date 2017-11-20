@@ -33,7 +33,7 @@ namespace BTS.Model.Models
         public double? Longtitude { get; set; }
 
         public double? Latitude { get; set; }
-        
+
         public int InCaseOfID { get; set; }
 
         [StringLength(20)]
@@ -52,20 +52,54 @@ namespace BTS.Model.Models
         public DateTime? ExpiredDate { get; set; }
 
         [StringLength(30)]
+        [Required]
         public string IssuedPlace { get; set; }
 
         [StringLength(30)]
+        [Required]
         public string Signer { get; set; }
 
-        public int SubBtsQuantity { get; set; }        
+        public int SubBtsQuantity { get; set; }
 
-        public int MinAntenHeight { get; set; }
+        [StringLength(255)]
+        [Required]
+        public string SubBtsCodes { get; set; }
 
-        public int MaxHeightIn100m { get; set; }
+        [StringLength(150)]
+        [Required]
+        public string SubBtsOperatorIDs { get; set; }
 
-        public int OffsetHeight { get; set; }        
+        [StringLength(255)]
+        [Required]
+        public string SubBtsEquipments { get; set; }
 
-        public double? SafeLimit { get; set; }    
+        [StringLength(150)]
+        [Required]
+        public string SubBtsAntenNums { get; set; }
+
+        [StringLength(150)]
+        [Required]
+        public string SubBtsConfigurations { get; set; }
+
+        [StringLength(150)]
+        [Required]
+        public string SubBtsPowerSums { get; set; }
+
+        [StringLength(150)]
+        [Required]
+        public string SubBtsBands { get; set; }
+
+        [StringLength(150)]
+        [Required]
+        public string SubBtsAntenHeights { get; set; }
+
+        public double? MinAntenHeight { get; set; }
+
+        public double? MaxHeightIn100m { get; set; }
+
+        public double? OffsetHeight { get; set; }
+
+        public double? SafeLimit { get; set; }
 
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }
@@ -83,6 +117,5 @@ namespace BTS.Model.Models
         public virtual Lab Lab { get; set; }
 
         public virtual IEnumerable<SubBtsInCert> SubBtsInCerts { get; set; }
-
     }
 }

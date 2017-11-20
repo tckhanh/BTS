@@ -12,7 +12,7 @@ namespace BTS.Web.Controllers
 {
     public class CertificateController : BaseController
     {
-        ICertificateService _btsCertificateService;
+        private ICertificateService _btsCertificateService;
 
         public CertificateController(ICertificateService btsCertificateService, IErrorService errorService) : base(errorService)
         {
@@ -21,7 +21,12 @@ namespace BTS.Web.Controllers
 
         // GET: Certificate
         public ActionResult Index()
-        {            
+        {
+            return View();
+        }
+
+        public ActionResult PivotTable()
+        {
             return View();
         }
 

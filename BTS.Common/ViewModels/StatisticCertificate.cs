@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace BTS.Common.ViewModels
 {
-    public class StatisticCertificateByOperatorCity
+    public class StatisticCertificate
     {
+        public string Year { get; set; }
         public string OperatorID { get; set; }
-
         public string CityID { get; set; }
+        public int InCaseOfID { get; set; }
+        public string LabID { get; set; }
         public int Certificates { get; set; }
-
     }
 }

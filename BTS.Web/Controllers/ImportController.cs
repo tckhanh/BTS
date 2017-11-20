@@ -1,16 +1,14 @@
 ﻿using BTS.Common;
+using BTS.ExcelLib;
 using BTS.Model.Models;
 using BTS.Service;
+using BTS.Web.Infrastructure.Extensions;
+using BTS.Web.Models;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
-using System.Data.OleDb;
-using System.Data.SqlClient;
-using System.Linq;
+using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
-using System.Xml;
 
 namespace BTS.Web.Controllers
 {
@@ -44,6 +42,7 @@ namespace BTS.Web.Controllers
                         System.IO.File.Delete(fileLocation);
                     }
                     Request.Files["file"].SaveAs(fileLocation);
+
                     string excelConnectionString = string.Empty;
                     //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 ;HDR=Yes;IMEX=2\"";
                     excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes\"";
@@ -59,11 +58,13 @@ namespace BTS.Web.Controllers
                         excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes\"";
                     }
 
-                    ExecuteDatabase(ImportInCaseOf, excelConnectionString);
-                    ExecuteDatabase(ImportLab, excelConnectionString);
-                    ExecuteDatabase(ImportCity, excelConnectionString);
-                    ExecuteDatabase(ImportOperator, excelConnectionString);
-                    ExecuteDatabase(ImportApplicant, excelConnectionString);
+                    //ExecuteDatabase(ImportInCaseOf, excelConnectionString);
+                    //ExecuteDatabase(ImportLab, excelConnectionString);
+                    //ExecuteDatabase(ImportCity, excelConnectionString);
+                    //ExecuteDatabase(ImportOperator, excelConnectionString);
+                    //ExecuteDatabase(ImportApplicant, excelConnectionString);
+                    ExecuteDatabase(ImportProfile, excelConnectionString);
+                    //ExcelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
                 }
             }
             return View();
@@ -71,15 +72,7 @@ namespace BTS.Web.Controllers
 
         private bool ImportInCaseOf(string excelConnectionString)
         {
-            DataSet ds = new DataSet();
-            //Create Connection to Excel work book and add oledb namespace
-            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
-            // Import Data from Sheet_InCaseOf
-            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_InCaseOf);
-            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
-            {
-                dataAdapter.Fill(ds);
-            }
+            DataSet ds = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_InCaseOf);
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -88,7 +81,6 @@ namespace BTS.Web.Controllers
                 Item.Name = ds.Tables[0].Rows[i][CommonConstants.Sheet_InCaseOf_Name].ToString();
                 _importService.Add(Item);
             }
-            excelConnection.Close();
 
             _importService.Save();
 
@@ -97,15 +89,7 @@ namespace BTS.Web.Controllers
 
         private bool ImportLab(string excelConnectionString)
         {
-            DataSet ds = new DataSet();
-            //Create Connection to Excel work book and add oledb namespace
-            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
-            // Import Data from Sheet_Lab
-            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_Lab);
-            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
-            {
-                dataAdapter.Fill(ds);
-            }
+            DataSet ds = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Lab);
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -117,7 +101,6 @@ namespace BTS.Web.Controllers
                 Item.Fax = ds.Tables[0].Rows[i][CommonConstants.Sheet_Lab_Fax].ToString();
                 _importService.Add(Item);
             }
-            excelConnection.Close();
             _importService.Save();
 
             return true;
@@ -125,15 +108,7 @@ namespace BTS.Web.Controllers
 
         private bool ImportCity(string excelConnectionString)
         {
-            DataSet ds = new DataSet();
-            //Create Connection to Excel work book and add oledb namespace
-            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
-            // Import Data from Sheet_City
-            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_City);
-            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
-            {
-                dataAdapter.Fill(ds);
-            }
+            DataSet ds = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_City);
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -142,7 +117,6 @@ namespace BTS.Web.Controllers
                 Item.Name = ds.Tables[0].Rows[i][CommonConstants.Sheet_City_Name].ToString();
                 _importService.Add(Item);
             }
-            excelConnection.Close();
             _importService.Save();
 
             return true;
@@ -150,15 +124,7 @@ namespace BTS.Web.Controllers
 
         private bool ImportOperator(string excelConnectionString)
         {
-            DataSet ds = new DataSet();
-            //Create Connection to Excel work book and add oledb namespace
-            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
-            // Import Data from Sheet_City
-            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_Operator);
-            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
-            {
-                dataAdapter.Fill(ds);
-            }
+            DataSet ds = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Operator);
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -167,7 +133,6 @@ namespace BTS.Web.Controllers
                 Item.Name = ds.Tables[0].Rows[i][CommonConstants.Sheet_Operator_Name].ToString();
                 _importService.Add(Item);
             }
-            excelConnection.Close();
             _importService.Save();
 
             return true;
@@ -175,15 +140,7 @@ namespace BTS.Web.Controllers
 
         private bool ImportApplicant(string excelConnectionString)
         {
-            DataSet ds = new DataSet();
-            //Create Connection to Excel work book and add oledb namespace
-            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
-            // Import Data from Sheet_City
-            string query = string.Format("Select * from [{0}]", CommonConstants.Sheet_Applicant);
-            using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection))
-            {
-                dataAdapter.Fill(ds);
-            }
+            DataSet ds = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Applicant);
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -198,9 +155,167 @@ namespace BTS.Web.Controllers
 
                 _importService.Add(Item);
             }
-            excelConnection.Close();
             _importService.Save();
+            return true;
+        }
 
+        private int ImportProfile(string excelConnectionString)
+        {
+            DataSet ds = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Profile);
+            var Item = new Profile();
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                Item.ApplicantID = ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_ApplicantID].ToString();
+                Item.ProfileNum = ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_ProfileNum].ToString();
+                Item.ProfileDate = DateTime.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_ProfileDate].ToString());
+                Item.BtsQuantity = Int32.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_BTSQuantity].ToString());
+                Item.ApplyDate = DateTime.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_ApplyDate].ToString());
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_ValidDate].ToString().Length > 0)
+                    Item.ValidDate = DateTime.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_ValidDate].ToString());
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_Fee].ToString().Length > 0)
+                    Item.Fee = Int32.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_Fee].ToString());
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_FeeAnnounceNum].ToString().Length > 0)
+                    Item.FeeAnnounceNum = ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_FeeAnnounceNum].ToString();
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_FeeAnnounceDate].ToString().Length > 0)
+                    Item.FeeAnnounceDate = DateTime.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_FeeAnnounceDate].ToString());
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_FeeReceiptDate].ToString().Length > 0)
+                    Item.FeeReceiptDate = DateTime.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Profile_FeeReceiptDate].ToString());
+
+                Profile dbProfile = _importService.findProfile(Item.ApplicantID, Item.ProfileNum, Item.ProfileDate);
+                if (dbProfile != null)
+                    _importService.Update(Item);
+                else
+                    _importService.Add(Item);
+            }
+            _importService.Save();
+            return Item.ID;
+        }
+
+        private bool ImportBts(int proFileID, string excelConnectionString)
+        {
+            DataSet ds = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Bts);
+            var Item = new Bts();
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                Item.ProfileID = proFileID;
+                Item.BtsCode = ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString();
+                Item.Address = ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_Address].ToString();
+                Item.CityID = ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_CityID].ToString();
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_Longtitude].ToString().Length > 0)
+                    Item.Longtitude = Double.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_Longtitude].ToString());
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_Latitude].ToString().Length > 0)
+                    Item.Latitude = Double.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_Latitude].ToString());
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_InCaseOfID].ToString().Length > 0)
+                    Item.InCaseOfID = Int32.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_InCaseOfID].ToString());
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_IsCertificated].ToString().Length > 0)
+                    Item.IsCertificated = Boolean.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Bts_IsCertificated].ToString());
+
+                Model.Models.Bts dbBts = _importService.findBts(Item.ProfileID, Item.BtsCode);
+                if (dbBts != null)
+                    _importService.Update(Item);
+                else
+                    _importService.Add(Item);
+            }
+            _importService.Save();
+            return true;
+        }
+
+        private bool ImportCertificate(int proFileID, string excelConnectionString)
+        {
+            DataSet ds = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Certificate);
+            var Item = new Certificate();
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
+                Item.ProfileID = proFileID;
+                Item.ID = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_CertificateNum].ToString();
+                Item.BtsCode = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_BtsCode].ToString();
+                Item.Address = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_Address].ToString();
+                Item.CityID = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_CityID].ToString();
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_Longtitude].ToString().Length > 0)
+                    Item.Longtitude = Double.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_Longtitude].ToString());
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_Latitude].ToString().Length > 0)
+                    Item.Latitude = Double.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_Latitude].ToString());
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID].ToString().Length > 0)
+                    Item.InCaseOfID = Int32.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID].ToString());
+
+                Item.TestReportNo = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_TestReportNo].ToString();
+                Item.TestReportDate = DateTime.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_TestReportDate].ToString());
+                Item.IssuedDate = DateTime.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_IssuedDate].ToString());
+                Item.ExpiredDate = DateTime.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate].ToString());
+                Item.IssuedPlace = CommonConstants.IssuePalce;
+                Item.Signer = CommonConstants.Signer;
+                Item.SubBtsQuantity = Int32.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity].ToString());
+
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight].ToString().Length > 0)
+                    Item.MinAntenHeight = Double.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight].ToString());
+
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m].ToString().Length > 0)
+                    Item.MaxHeightIn100m = Double.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m].ToString());
+
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight].ToString().Length > 0)
+                    Item.OffsetHeight = Double.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight].ToString());
+
+                if (ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SafeLimit].ToString().Length > 0)
+                    Item.SafeLimit = Double.Parse(ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SafeLimit].ToString());
+
+                Item.SubBtsAntenHeights = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenHeights].ToString();
+                SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
+
+                Item.SubBtsAntenNums = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenNums].ToString();
+                SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
+
+                Item.SubBtsBands = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands].ToString();
+                SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
+
+                Item.SubBtsCodes = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SubBtsCodes].ToString();
+                SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
+
+                Item.SubBtsConfigurations = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SubBtsConfigurations].ToString();
+                SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
+
+                Item.SubBtsEquipments = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SubBtsEquipments].ToString();
+                SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
+
+                Item.SubBtsOperatorIDs = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SubBtsOperatorIDs].ToString();
+                SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
+
+                Item.SubBtsPowerSums = ds.Tables[0].Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums].ToString();
+                SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
+
+                Certificate dbCertificate = _importService.findCertificate(Item.ID);
+
+                if (dbCertificate != null)
+                {
+                    _importService.Update(Item);
+                    _importService.RemoveSubBtsInCert(Item.ID);
+                }
+                else
+                {
+                    _importService.Add(Item);
+                }
+
+                for (int j = 0; j < Item.SubBtsQuantity; j++)
+                {
+                    SubBtsInCert subBtsItem = new SubBtsInCert();
+                    subBtsItem.CertificateID = Item.ID;
+                    subBtsItem.BtsCode = SubBtsCodes[j];
+                    subBtsItem.OperatorID = SubBtsOperatorIDs[j];
+                    subBtsItem.AntenHeight = SubBtsAntenHeights[j];
+                    subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
+                    subBtsItem.Band = SubBtsBands[j];
+                    subBtsItem.Configuration = SubBtsConfigurations[j];
+                    subBtsItem.Equipment = SubBtsEquipments[j];
+                    subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' ') - 1);
+                    subBtsItem.PowerSum = SubBtsPowerSums[j];
+
+                    _importService.Add(subBtsItem);
+                }
+            }
+            _importService.Save();
             return true;
         }
     }
