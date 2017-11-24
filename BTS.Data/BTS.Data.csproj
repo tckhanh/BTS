@@ -72,33 +72,9 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201710300202468_InitialBTS.cs" />
-    <Compile Include="Migrations\201710300202468_InitialBTS.Designer.cs">
-      <DependentUpon>201710300202468_InitialBTS.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711020801390_changeErrorTable.cs" />
-    <Compile Include="Migrations\201711020801390_changeErrorTable.Designer.cs">
-      <DependentUpon>201711020801390_changeErrorTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711130438156_updateDB.cs" />
-    <Compile Include="Migrations\201711130438156_updateDB.Designer.cs">
-      <DependentUpon>201711130438156_updateDB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711140855193_updateProfileTable.cs" />
-    <Compile Include="Migrations\201711140855193_updateProfileTable.Designer.cs">
-      <DependentUpon>201711140855193_updateProfileTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711140945597_updateBtsTable.cs" />
-    <Compile Include="Migrations\201711140945597_updateBtsTable.Designer.cs">
-      <DependentUpon>201711140945597_updateBtsTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711160316178_updateBts.cs" />
-    <Compile Include="Migrations\201711160316178_updateBts.Designer.cs">
-      <DependentUpon>201711160316178_updateBts.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711170745371_updateBtsTable1.cs" />
-    <Compile Include="Migrations\201711170745371_updateBtsTable1.Designer.cs">
-      <DependentUpon>201711170745371_updateBtsTable1.cs</DependentUpon>
+    <Compile Include="Migrations\201711240440236_createDatabase.cs" />
+    <Compile Include="Migrations\201711240440236_createDatabase.Designer.cs">
+      <DependentUpon>201711240440236_createDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,7 +98,7 @@
     <Compile Include="Repository\PageRepository.cs" />
     <Compile Include="Repository\ProfileRepository.cs" />
     <Compile Include="Repository\SlideRepository.cs" />
-    <Compile Include="Repository\SubBTSinCertRepository.cs" />
+    <Compile Include="Repository\SubBtsInCertRepository.cs" />
     <Compile Include="Repository\SupportOnlineRepository.cs" />
     <Compile Include="Repository\SystemConfigRepository.cs" />
     <Compile Include="Repository\VisitorStatisticRepository.cs" />
@@ -142,26 +118,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201710300202468_InitialBTS.resx">
-      <DependentUpon>201710300202468_InitialBTS.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711020801390_changeErrorTable.resx">
-      <DependentUpon>201711020801390_changeErrorTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711130438156_updateDB.resx">
-      <DependentUpon>201711130438156_updateDB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711140855193_updateProfileTable.resx">
-      <DependentUpon>201711140855193_updateProfileTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711140945597_updateBtsTable.resx">
-      <DependentUpon>201711140945597_updateBtsTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711160316178_updateBts.resx">
-      <DependentUpon>201711160316178_updateBts.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711170745371_updateBtsTable1.resx">
-      <DependentUpon>201711170745371_updateBtsTable1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711240440236_createDatabase.resx">
+      <DependentUpon>201711240440236_createDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

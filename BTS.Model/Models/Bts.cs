@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTS.Model.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace BTS.Model.Models
 {
     [Table("Btss")]
-    public class Bts
+    public class Bts : Auditable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -39,19 +40,20 @@ namespace BTS.Model.Models
 
         public int InCaseOfID { get; set; }
 
-        public bool IsCertificated { get; set; }
+        [StringLength(16)]
+        public string IssuedCertificateID { get; set; }
 
         [StringLength(16)]
-        public string LastSelfCertificateID { get; set; }
+        public string LastOwnCertificateID { get; set; }
 
         [StringLength(10)]
-        public string LastSelfOperatorID { get; set; }
+        public string LastOwnOperatorID { get; set; }
 
         [StringLength(16)]
-        public string LastNoSelfCertificateID { get; set; }
+        public string LastNoOwnCertificateID { get; set; }
 
         [StringLength(10)]
-        public string LastNoSelfOperatorID { get; set; }
+        public string LastNoOwnOperatorID { get; set; }
 
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }

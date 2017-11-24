@@ -29,9 +29,10 @@ namespace BTS.Web.Controllers
         protected Message ExecuteDatabase(Func<string, int> function, string excelConnectionString)
         {
             Error error = new Error();
+            int idReturn = 0;
             try
             {
-                function.Invoke(excelConnectionString);
+                idReturn = function.Invoke(excelConnectionString);
             }
             catch (DbEntityValidationException ex)
             {
@@ -71,12 +72,69 @@ namespace BTS.Web.Controllers
 
             if (string.IsNullOrEmpty(error.Message))
             {
-                return new Message(true, "Success");
+                return new Message(idReturn, false, "Success");
             }
             else
             {
+                SetAlert(error.Message, "error");
                 LogError(error);
-                return new Message(true, error.Message);
+                return new Message(idReturn, true, error.Message);
+            }
+        }
+
+        protected Message ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, int ID)
+        {
+            Error error = new Error();
+            int idReturn = 0;
+            try
+            {
+                idReturn = function.Invoke(excelConnectionString, ID);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string description = "";
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+
+                error.Controller = ex.Source;
+                error.Description = description;
+                error.CreatedDate = DateTime.Now;
+                error.Message = ex.Message;
+                error.StackTrace = ex.StackTrace;
+            }
+            catch (DbUpdateException ex)
+            {
+                error.CreatedDate = DateTime.Now;
+                error.Message = ex.Message;
+                error.StackTrace = ex.StackTrace;
+            }
+            catch (Exception ex)
+            {
+                error.CreatedDate = DateTime.Now;
+                error.Message = ex.Message;
+                error.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+            }
+
+            if (string.IsNullOrEmpty(error.Message))
+            {
+                return new Message(idReturn, false, "Success");
+            }
+            else
+            {
+                SetAlert(error.Message, "error");
+                LogError(error);
+                return new Message(idReturn, true, error.Message);
             }
         }
 

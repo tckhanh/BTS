@@ -49,10 +49,10 @@
         public const string Sheet_Applicant_OperatorID = "OperatorID";
 
         public const string Sheet_Profile = "Profile";
-        public const string Sheet_Profile_ApplicantID = "ApplicationID";
+        public const string Sheet_Profile_ApplicantID = "ApplicantID";
         public const string Sheet_Profile_ProfileNum = "ProfileNum";
         public const string Sheet_Profile_ProfileDate = "ProfileDate";
-        public const string Sheet_Profile_BTSQuantity = "BTSQuantity";
+        public const string Sheet_Profile_BtsQuantity = "BtsQuantity";
         public const string Sheet_Profile_ApplyDate = "ApplyDate";
         public const string Sheet_Profile_ValidDate = "ValidDate";
         public const string Sheet_Profile_Fee = "Fee";
@@ -60,8 +60,8 @@
         public const string Sheet_Profile_FeeAnnounceDate = "FeeAnnounceDate";
         public const string Sheet_Profile_FeeReceiptDate = "FeeReceiptDate";
 
-        public const string Sheet_Bts = "BTS";
-        public const string Sheet_Bts_BtsCode = "BTSCode";
+        public const string Sheet_Bts = "Bts";
+        public const string Sheet_Bts_BtsCode = "BtsCode";
         public const string Sheet_Bts_Address = "Address";
         public const string Sheet_Bts_CityID = "CityID";
         public const string Sheet_Bts_Longtitude = "Longtitude";
@@ -70,7 +70,7 @@
         public const string Sheet_Bts_IsCertificated = "IsCertificated";
 
         public const string Sheet_Certificate = "Certificate";
-        public const string Sheet_Certificate_BtsCode = "BTSCode";
+        public const string Sheet_Certificate_BtsCode = "BtsCode";
         public const string Sheet_Certificate_Address = "Address";
         public const string Sheet_Certificate_CityID = "CityID";
         public const string Sheet_Certificate_Longtitude = "Longtitude";
@@ -82,15 +82,15 @@
         public const string Sheet_Certificate_CertificateNum = "CertificateNum";
         public const string Sheet_Certificate_IssuedDate = "IssuedDate";
         public const string Sheet_Certificate_ExpiredDate = "ExpiredDate";
-        public const string Sheet_Certificate_SubBtsQuantity = "SubBTSQuantity";
-        public const string Sheet_Certificate_SubBtsCodes = "SubBTSCodes";
-        public const string Sheet_Certificate_SubBtsOperatorIDs = "SubBTSOperatorIDs";
-        public const string Sheet_Certificate_SubBtsEquipments = "SubBTSEquipments";
-        public const string Sheet_Certificate_SubBtsAntenNums = "SubBTSAntenNums";
-        public const string Sheet_Certificate_SubBtsConfigurations = "SubBTSConfigurations";
-        public const string Sheet_Certificate_SubBtsPowerSums = "SubBTSPowerSums";
-        public const string Sheet_Certificate_SubBtsBands = "SubBTSBands";
-        public const string Sheet_Certificate_SubBtsAntenHeights = "SubBTSAntenHeights";
+        public const string Sheet_Certificate_SubBtsQuantity = "SubBtsQuantity";
+        public const string Sheet_Certificate_SubBtsCodes = "SubBtsCodes";
+        public const string Sheet_Certificate_SubBtsOperatorIDs = "SubBtsOperatorIDs";
+        public const string Sheet_Certificate_SubBtsEquipments = "SubBtsEquipments";
+        public const string Sheet_Certificate_SubBtsAntenNums = "SubBtsAntenNums";
+        public const string Sheet_Certificate_SubBtsConfigurations = "SubBtsConfigurations";
+        public const string Sheet_Certificate_SubBtsPowerSums = "SubBtsPowerSums";
+        public const string Sheet_Certificate_SubBtsBands = "SubBtsBands";
+        public const string Sheet_Certificate_SubBtsAntenHeights = "SubBtsAntenHeights";
         public const string Sheet_Certificate_MinAntenHeight = "MinAntenHeight";
         public const string Sheet_Certificate_MaxHeightIn100m = "MaxHeightIn100m";
         public const string Sheet_Certificate_OffsetHeight = "OffsetHeight";

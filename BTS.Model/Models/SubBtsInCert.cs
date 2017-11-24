@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BTS.Model.Abstract;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BTS.Model.Models
 {
     [Table("SubBtsInCerts")]
-    public class SubBtsInCert
+    public class SubBtsInCert : Auditable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -1,10 +1,13 @@
-﻿using System;
+﻿using BTS.Model.Extensions;
+using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BTS.Model.Abstract
 {
     public abstract class Auditable : IAuditable
     {
+        [DefaultDateTimeValue("Now")]
         public DateTime? CreatedDate { set; get; }
 
         [StringLength(256)]
@@ -15,12 +18,9 @@ namespace BTS.Model.Abstract
         [StringLength(256)]
         public string UpdatedBy { set; get; }
 
-        [StringLength(256)]
-        public string MetaKeyword { set; get; }
+        public DateTime? DeletedDate { set; get; }
 
         [StringLength(256)]
-        public string MetaDescription { set; get; }
-
-        public bool Status { set; get; }
+        public string DeletedBy { set; get; }
     }
 }

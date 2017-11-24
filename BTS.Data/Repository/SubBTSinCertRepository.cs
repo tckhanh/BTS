@@ -10,11 +10,11 @@ namespace BTS.Data.Repository
 {
     public interface ISubBTSinCertRepository : IRepository<SubBtsInCert>
     {
-
     }
-    public class SubBTSinCertRepository : RepositoryBase<SubBtsInCert>, ISubBTSinCertRepository
+
+    public class SubBtsInCertRepository : RepositoryBase<SubBtsInCert>, ISubBTSinCertRepository
     {
-        public SubBTSinCertRepository(IDbFactory dbFactory) : base(dbFactory)
+        public SubBtsInCertRepository(IDbFactory dbFactory) : base(dbFactory)
         {
         }
     }

@@ -27,6 +27,10 @@ namespace BTS.Data.Repository
         IEnumerable<ShortCertificate> GetShortCertificate();
 
         IEnumerable<ShortCertificate> GetShortCertificate(int year);
+
+        IEnumerable<Certificate> getLastOwnCertificates(string btsCode, string operatorID);
+
+        IEnumerable<Certificate> getLastNoOwnCertificates(string btsCode, string operatorID);
     }
 
     public class CertificateRepository : RepositoryBase<Certificate>, ICertificateRepository
@@ -179,6 +183,36 @@ namespace BTS.Data.Repository
                             LabID = certificate.LabID
                         };
             return query;
+        }
+
+        public IEnumerable<Certificate> getLastOwnCertificates(string btsCode, string operatorID)
+        {
+            IEnumerable<SubBtsInCert> query1 = from subBtsInCert in DbContext.SubBtsInCerts
+                                               where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
+                                               select subBtsInCert;
+
+            var query2 = from certificate in DbContext.Certificates
+                         join item1 in query1
+                         on certificate.ID equals item1.CertificateID
+                         where certificate.OperatorID == operatorID
+                         orderby certificate.IssuedDate descending
+                         select certificate;
+            return query2;
+        }
+
+        public IEnumerable<Certificate> getLastNoOwnCertificates(string btsCode, string operatorID)
+        {
+            IEnumerable<SubBtsInCert> query1 = from subBtsInCert in DbContext.SubBtsInCerts
+                                               where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
+                                               select subBtsInCert;
+
+            var query2 = from certificate in DbContext.Certificates
+                         join item1 in query1
+                         on certificate.ID equals item1.CertificateID
+                         where certificate.OperatorID != operatorID
+                         orderby certificate.IssuedDate descending
+                         select certificate;
+            return query2;
         }
     }
 }

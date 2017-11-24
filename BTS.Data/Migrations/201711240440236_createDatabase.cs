@@ -3,7 +3,7 @@ namespace BTS.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialBTS : DbMigration
+    public partial class createDatabase : DbMigration
     {
         public override void Up()
         {
@@ -18,6 +18,12 @@ namespace BTS.Data.Migrations
                         Fax = c.String(maxLength: 30),
                         ContactName = c.String(maxLength: 100),
                         OperatorID = c.String(nullable: false, maxLength: 10),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
@@ -29,6 +35,12 @@ namespace BTS.Data.Migrations
                     {
                         ID = c.String(nullable: false, maxLength: 10),
                         Name = c.String(maxLength: 255),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -148,7 +160,7 @@ namespace BTS.Data.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        ProfileID = c.Int(),
+                        ProfileID = c.Int(nullable: false),
                         OperatorID = c.String(nullable: false, maxLength: 10),
                         BtsCode = c.String(nullable: false, maxLength: 100),
                         Address = c.String(nullable: false, maxLength: 255),
@@ -156,13 +168,23 @@ namespace BTS.Data.Migrations
                         Longtitude = c.Double(),
                         Latitude = c.Double(),
                         InCaseOfID = c.Int(nullable: false),
-                        IsCertificated = c.Boolean(nullable: false),
+                        IssuedCertificateID = c.String(maxLength: 16),
+                        LastOwnCertificateID = c.String(maxLength: 16),
+                        LastOwnOperatorID = c.String(maxLength: 10),
+                        LastNoOwnCertificateID = c.String(maxLength: 16),
+                        LastNoOwnOperatorID = c.String(maxLength: 10),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
                 .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
-                .ForeignKey("dbo.Profiles", t => t.ProfileID)
+                .ForeignKey("dbo.Profiles", t => t.ProfileID, cascadeDelete: true)
                 .Index(t => t.ProfileID)
                 .Index(t => t.OperatorID)
                 .Index(t => t.CityID)
@@ -174,6 +196,12 @@ namespace BTS.Data.Migrations
                     {
                         ID = c.String(nullable: false, maxLength: 3),
                         Name = c.String(nullable: false, maxLength: 50),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -183,6 +211,12 @@ namespace BTS.Data.Migrations
                     {
                         ID = c.Int(nullable: false),
                         Name = c.String(nullable: false, maxLength: 50),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -193,14 +227,20 @@ namespace BTS.Data.Migrations
                         ID = c.Int(nullable: false, identity: true),
                         ApplicantID = c.String(maxLength: 50),
                         ProfileNum = c.String(maxLength: 30),
-                        ProfileDate = c.DateTime(storeType: "date"),
+                        ProfileDate = c.DateTime(nullable: false, storeType: "date"),
                         BtsQuantity = c.Int(),
-                        ApplyDate = c.DateTime(storeType: "date"),
+                        ApplyDate = c.DateTime(nullable: false, storeType: "date"),
                         ValidDate = c.DateTime(storeType: "date"),
                         Fee = c.Int(),
                         FeeAnnounceNum = c.String(maxLength: 30),
                         FeeAnnounceDate = c.DateTime(storeType: "date"),
                         FeeReceiptDate = c.DateTime(storeType: "date"),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Applicants", t => t.ApplicantID)
@@ -224,13 +264,27 @@ namespace BTS.Data.Migrations
                         TestReportDate = c.DateTime(nullable: false, storeType: "date"),
                         IssuedDate = c.DateTime(storeType: "date"),
                         ExpiredDate = c.DateTime(storeType: "date"),
-                        IssuedPlace = c.String(maxLength: 30),
-                        Signer = c.String(maxLength: 30),
+                        IssuedPlace = c.String(nullable: false, maxLength: 30),
+                        Signer = c.String(nullable: false, maxLength: 30),
                         SubBtsQuantity = c.Int(nullable: false),
-                        MinAntenHeight = c.Int(nullable: false),
-                        MaxHeightIn100m = c.Int(nullable: false),
-                        OffsetHeight = c.Int(nullable: false),
+                        SubBtsCodes = c.String(nullable: false, maxLength: 255),
+                        SubBtsOperatorIDs = c.String(nullable: false, maxLength: 150),
+                        SubBtsEquipments = c.String(nullable: false, maxLength: 255),
+                        SubBtsAntenNums = c.String(nullable: false, maxLength: 150),
+                        SubBtsConfigurations = c.String(nullable: false, maxLength: 150),
+                        SubBtsPowerSums = c.String(nullable: false, maxLength: 150),
+                        SubBtsBands = c.String(nullable: false, maxLength: 150),
+                        SubBtsAntenHeights = c.String(nullable: false, maxLength: 150),
+                        MinAntenHeight = c.Double(),
+                        MaxHeightIn100m = c.Double(),
+                        OffsetHeight = c.Double(),
                         SafeLimit = c.Double(),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
@@ -253,6 +307,12 @@ namespace BTS.Data.Migrations
                         Address = c.String(maxLength: 255),
                         Phone = c.String(maxLength: 30),
                         Fax = c.String(maxLength: 30),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -279,6 +339,8 @@ namespace BTS.Data.Migrations
                     {
                         ID = c.Int(nullable: false, identity: true),
                         Message = c.String(),
+                        Description = c.String(),
+                        Controller = c.String(maxLength: 255),
                         StackTrace = c.String(),
                         CreatedDate = c.DateTime(nullable: false),
                     })
@@ -339,13 +401,15 @@ namespace BTS.Data.Migrations
                         Name = c.String(nullable: false, maxLength: 256),
                         Alias = c.String(nullable: false, maxLength: 256, unicode: false),
                         Content = c.String(),
+                        MetaKeyword = c.String(maxLength: 256),
+                        MetaDescription = c.String(maxLength: 256),
+                        Status = c.Boolean(nullable: false),
                         CreatedDate = c.DateTime(),
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        MetaKeyword = c.String(maxLength: 256),
-                        MetaDescription = c.String(maxLength: 256),
-                        Status = c.Boolean(nullable: false),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -372,12 +436,19 @@ namespace BTS.Data.Migrations
                         CertificateID = c.String(maxLength: 16),
                         BtsCode = c.String(maxLength: 50),
                         OperatorID = c.String(maxLength: 10),
+                        Manufactory = c.String(maxLength: 50),
                         Equipment = c.String(maxLength: 50),
                         AntenNum = c.Int(),
                         Configuration = c.String(maxLength: 30),
                         PowerSum = c.String(maxLength: 30),
                         Band = c.String(maxLength: 30),
                         AntenHeight = c.String(maxLength: 30),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Certificates", t => t.CertificateID)

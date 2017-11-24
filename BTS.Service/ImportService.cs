@@ -19,6 +19,8 @@ namespace BTS.Service
 
         Bts findBts(int profileID, string btsCode);
 
+        SubBtsInCert findSubBts(string certificateID, string btsCode, string operatorID);
+
         Certificate findCertificate(string ID);
 
         bool Add(InCaseOf item);
@@ -50,6 +52,12 @@ namespace BTS.Service
         void RemoveSubBtsInCert(string CertificateID);
 
         void Save();
+
+        Applicant getApplicant(int proFileID);
+
+        Certificate getLastOwnCertificate(string btsCode, string operatorID);
+
+        Certificate getLastNoOwnCertificate(string btsCode, string operatorID);
     }
 
     public class ImportService : IImportService
@@ -84,6 +92,7 @@ namespace BTS.Service
         {
             if (_inCaseOfRepository.GetSingleById(item.ID) == null)
             {
+                item.CreatedDate = DateTime.Now;
                 _inCaseOfRepository.Add(item);
             }
             return true;
@@ -93,6 +102,7 @@ namespace BTS.Service
         {
             if (_labRepository.GetSingleById(item.ID) == null)
             {
+                item.CreatedDate = DateTime.Now;
                 _labRepository.Add(item);
             }
             return true;
@@ -102,6 +112,7 @@ namespace BTS.Service
         {
             if (_cityRepository.GetSingleById(item.ID) == null)
             {
+                item.CreatedDate = DateTime.Now;
                 _cityRepository.Add(item);
             }
             return true;
@@ -111,6 +122,7 @@ namespace BTS.Service
         {
             if (_operatorRepository.GetSingleById(item.ID) == null)
             {
+                item.CreatedDate = DateTime.Now;
                 _operatorRepository.Add(item);
             }
             return true;
@@ -120,6 +132,7 @@ namespace BTS.Service
         {
             if (_applicantRepository.GetSingleById(item.ID) == null)
             {
+                item.CreatedDate = DateTime.Now;
                 _applicantRepository.Add(item);
             }
             return true;
@@ -128,11 +141,6 @@ namespace BTS.Service
         public void Save()
         {
             _unitOfWork.Commit();
-        }
-
-        public void Update(InCaseOf newInCaseOf)
-        {
-            _inCaseOfRepository.Update(newInCaseOf);
         }
 
         public bool Add(Profile item)
@@ -171,19 +179,33 @@ namespace BTS.Service
             return true;
         }
 
+        public void Update(Profile item)
+        {
+            item.UpdatedDate = DateTime.Now;
+            _profileRepository.Update(item);
+        }
+
+        public void Update(Bts item)
+        {
+            item.UpdatedDate = DateTime.Now;
+            _btsRepository.Update(item);
+        }
+
+        public void Update(InCaseOf item)
+        {
+            item.UpdatedDate = DateTime.Now;
+            _inCaseOfRepository.Update(item);
+        }
+
+        public void Update(Certificate item)
+        {
+            item.UpdatedDate = DateTime.Now;
+            _certificateRepository.Update(item);
+        }
+
         public Profile findProfile(string applicantID, string profileNum, DateTime profileDate)
         {
             return _profileRepository.findProfile(applicantID, profileNum, profileDate);
-        }
-
-        public void Update(Profile newProfile)
-        {
-            _profileRepository.Update(newProfile);
-        }
-
-        public void Update(Bts newBts)
-        {
-            _btsRepository.Update(newBts);
         }
 
         public Bts findBts(int profileID, string btsCode)
@@ -196,14 +218,30 @@ namespace BTS.Service
             return _certificateRepository.GetSingleByCondition(x => x.ID == ID);
         }
 
-        public void Update(Certificate newCertificate)
+        public SubBtsInCert findSubBts(string certificateID, string btsCode, string operatorID)
         {
-            _certificateRepository.Update(newCertificate);
+            return _subBTSinCertRepository.GetSingleByCondition(x => x.CertificateID == certificateID && x.BtsCode == btsCode && x.OperatorID == operatorID);
         }
 
         public void RemoveSubBtsInCert(string CertificateID)
         {
             _subBTSinCertRepository.DeleteMulti(x => x.CertificateID == CertificateID);
+        }
+
+        public Applicant getApplicant(int proFileID)
+        {
+            Profile profileItem = _profileRepository.GetSingleByCondition(x => x.ID == proFileID);
+            return _applicantRepository.GetSingleByCondition(x => x.ID == profileItem.ApplicantID);
+        }
+
+        public Certificate getLastOwnCertificate(string btsCode, string operatorID)
+        {
+            return _certificateRepository.getLastOwnCertificates(btsCode, operatorID).FirstOrDefault();
+        }
+
+        public Certificate getLastNoOwnCertificate(string btsCode, string operatorID)
+        {
+            return _certificateRepository.getLastNoOwnCertificates(btsCode, operatorID).FirstOrDefault();
         }
     }
 }

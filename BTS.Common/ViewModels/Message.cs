@@ -8,13 +8,15 @@ namespace BTS.Common.ViewModels
 {
     public class Message
     {
-        bool _error { get; set; }
-        string _description { get; set; }
+        public int ID { get; set; }
+        public bool IsError { get; set; }
+        public string Description { get; set; }
 
-        public Message(bool error, string description)
+        public Message(int id, bool isError, string description)
         {
-            _error = error;
-            _description = description;
+            ID = id;
+            IsError = isError;
+            Description = description;
         }
     }
 }

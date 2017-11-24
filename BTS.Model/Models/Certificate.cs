@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTS.Model.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BTS.Model.Models
 {
     [Table("Certificates")]
-    public class Certificate
+    public class Certificate : Auditable
     {
         [Key]
         [StringLength(16)]

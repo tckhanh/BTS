@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BTS.Model.Models
 {
     [Table("Pages")]
-    public class Page : Auditable
+    public class Page : Auditable, IMetable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -26,5 +26,13 @@ namespace BTS.Model.Models
         public string Alias { set; get; }
 
         public string Content { set; get; }
+
+        [StringLength(256)]
+        public string MetaKeyword { set; get; }
+
+        [StringLength(256)]
+        public string MetaDescription { set; get; }
+
+        public bool Status { set; get; }
     }
 }

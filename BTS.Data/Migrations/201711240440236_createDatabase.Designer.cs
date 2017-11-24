@@ -7,13 +7,13 @@ namespace BTS.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class updateProfileTable : IMigrationMetadata
+    public sealed partial class createDatabase : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(updateProfileTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(createDatabase));
         
         string IMigrationMetadata.Id
         {
-            get { return "201711140855193_updateProfileTable"; }
+            get { return "201711240440236_createDatabase"; }
         }
         
         string IMigrationMetadata.Source

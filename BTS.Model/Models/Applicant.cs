@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using BTS.Model.Abstract;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BTS.Model.Models
 {
     [Table("Applicants")]
-    public class Applicant
+    public class Applicant : Auditable
     {
         [Key]
         [StringLength(50)]
@@ -28,11 +29,9 @@ namespace BTS.Model.Models
         [StringLength(100)]
         public string ContactName { get; set; }
 
-
         [Required]
         [StringLength(10)]
         public string OperatorID { get; set; }
-
 
         [ForeignKey("OperatorID")]
         public virtual Operator Operator { get; set; }

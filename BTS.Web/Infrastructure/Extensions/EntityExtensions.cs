@@ -86,5 +86,27 @@ namespace BTS.Web.Infrastructure.Extensions
             appUser.UserName = appUserViewModel.UserName;
             appUser.PhoneNumber = appUserViewModel.PhoneNumber;
         }
+
+        public static void UpdateNewCertificate(this Bts Item, Certificate newItem)
+        {
+            Item.Address = newItem.Address;
+            Item.CityID = newItem.CityID;
+            Item.Longtitude = newItem.Longtitude;
+            Item.Latitude = newItem.Latitude;
+            Item.InCaseOfID = newItem.InCaseOfID;
+            Item.IssuedCertificateID = newItem.ID;
+            Item.UpdatedDate = DateTime.Now;
+        }
+
+        public static void UpdatePreviousCertificate(this Bts Item, Certificate newItem)
+        {
+            Item.Address = newItem.Address;
+            Item.CityID = newItem.CityID;
+            Item.Longtitude = newItem.Longtitude;
+            Item.Latitude = newItem.Latitude;
+            Item.InCaseOfID = newItem.InCaseOfID;
+            Item.IssuedCertificateID = newItem.ID;
+            Item.UpdatedDate = DateTime.Now;
+        }
     }
 }

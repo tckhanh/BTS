@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTS.Model.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace BTS.Model.Models
 {
     [Table("InCaseOfs")]
-    public class InCaseOf
+    public class InCaseOf : Auditable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
