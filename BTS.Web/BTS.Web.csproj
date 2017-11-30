@@ -8449,6 +8449,7 @@
     <Content Include="Assets\admin\libs\toastr\toastr.js" />
     <Content Include="Assets\admin\libs\toastr\toastr.min.css" />
     <Content Include="Assets\admin\libs\toastr\toastr.min.js" />
+    <Content Include="Assets\client\js\common\message.js" />
     <Content Include="Assets\client\js\controllers\home.js" />
     <Content Include="Assets\client\js\controllers\pivotTable.js" />
     <Content Include="Assets\client\map\images\pin24.png" />

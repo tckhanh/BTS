@@ -26,7 +26,7 @@ namespace BTS.Web.Controllers
             this._errorService = errorService;
         }
 
-        protected Message ExecuteDatabase(Func<string, int> function, string excelConnectionString)
+        protected bool ExecuteDatabase(Func<string, int> function, string excelConnectionString)
         {
             Error error = new Error();
             int idReturn = 0;
@@ -72,17 +72,75 @@ namespace BTS.Web.Controllers
 
             if (string.IsNullOrEmpty(error.Message))
             {
-                return new Message(idReturn, false, "Success");
+                return true;
+                //return new Message(idReturn, false, "Success");
             }
             else
             {
-                SetAlert(error.Message, "error");
                 LogError(error);
-                return new Message(idReturn, true, error.Message);
+                return false;
+                //return new Message(idReturn, true, error.Message);
             }
         }
 
-        protected Message ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, int ID)
+        protected bool ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, out int ID)
+        {
+            Error error = new Error();
+            ID = 0;
+            try
+            {
+                ID = function.Invoke(excelConnectionString, 0);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string description = "";
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+
+                error.Controller = ex.Source;
+                error.Description = description;
+                error.CreatedDate = DateTime.Now;
+                error.Message = ex.Message;
+                error.StackTrace = ex.StackTrace;
+            }
+            catch (DbUpdateException ex)
+            {
+                error.CreatedDate = DateTime.Now;
+                error.Message = ex.Message;
+                error.StackTrace = ex.StackTrace;
+            }
+            catch (Exception ex)
+            {
+                error.CreatedDate = DateTime.Now;
+                error.Message = ex.Message;
+                error.StackTrace = ex.StackTrace;
+            }
+            finally
+            {
+            }
+
+            if (string.IsNullOrEmpty(error.Message))
+            {
+                return true;
+                //return new Message(idReturn, false, "Success");
+            }
+            else
+            {
+                LogError(error);
+                return false;
+                //return new Message(idReturn, true, error.Message);
+            }
+        }
+
+        protected bool ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, int ID)
         {
             Error error = new Error();
             int idReturn = 0;
@@ -128,18 +186,20 @@ namespace BTS.Web.Controllers
 
             if (string.IsNullOrEmpty(error.Message))
             {
-                return new Message(idReturn, false, "Success");
+                return true;
+                //return new Message(idReturn, false, "Success");
             }
             else
             {
-                SetAlert(error.Message, "error");
                 LogError(error);
-                return new Message(idReturn, true, error.Message);
+                return false;
+                //return new Message(idReturn, true, error.Message);
             }
         }
 
         private void LogError(Error error)
         {
+            TempData["error"] = error.Message;
             try
             {
                 error = _errorService.Create(error);
@@ -202,23 +262,6 @@ namespace BTS.Web.Controllers
             //        RouteValueDictionary(new { controller = "Login", action = "Index", Area = "Admin" }));
             //}
             base.OnActionExecuting(filterContext);
-        }
-
-        protected void SetAlert(string message, string type)
-        {
-            TempData["AlertMessage"] = message;
-            if (type == "success")
-            {
-                TempData["AlertType"] = "alert-success";
-            }
-            else if (type == "warning")
-            {
-                TempData["AlertType"] = "alert-warning";
-            }
-            else if (type == "error")
-            {
-                TempData["AlertType"] = "alert-danger";
-            }
         }
     }
 }
