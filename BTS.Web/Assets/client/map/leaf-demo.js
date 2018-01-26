@@ -1,4 +1,4 @@
-// See post: http://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps
+﻿// See post: http://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps
 
 function getData() {
     var data = [];
@@ -42,11 +42,13 @@ var markerClusters = L.markerClusterGroup();
 
 for ( var i = 0; i < markers.length; ++i )
 {
-    var popup = markers[i].name +
-                '<br/>' + markers[i].Address +
-                '<br/><b>CertNo:</b> ' + markers[i].CertificateNum +
+    var popup = '<br/><b>Tỉnh/Tp:</b> ' + markers[i].CityID +
+                '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
                 '<br/><b>DN:</b> ' + markers[i].OperatorID +
-                '<br/><b>City:</b> ' + markers[i].CityID;
+                '<br/><b>G.CNKĐ:</b> ' + markers[i].ID +
+                '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
+                
+                
 
   var m = L.marker([markers[i].Latitude, markers[i].Longtitude], { icon: myIcon })
                   .bindPopup( popup );

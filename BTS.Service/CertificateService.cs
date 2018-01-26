@@ -12,26 +12,42 @@ namespace BTS.Service
     public interface ICertificateService
     {
         Certificate Add(Certificate btsCertificate);
+
         void Update(Certificate btsCertificate);
-        void Delete(int ID);        
+
+        void Delete(int ID);
+
         IEnumerable<Certificate> getAll(out int totalRow);
+
         IEnumerable<Certificate> getByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
+
         IEnumerable<Certificate> getByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+
         IEnumerable<Certificate> getByOperator(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+
         IEnumerable<Certificate> getCertificateByYear(int year, int page, out int totalRow, int pageIndex = 1, int pageSize = 10);
+
         IEnumerable<Certificate> getCertificateByYear(int year);
+
         IEnumerable<Certificate> getCertificateByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
+
         IEnumerable<Certificate> getCertificateByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+
         IEnumerable<Certificate> getCertificateByCity(string cityID);
+
         IEnumerable<Certificate> getCertificateByOperator(string operatorID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+
         IEnumerable<Certificate> getCertificateByOperator(string operatorID);
+
         Certificate getByID(string ID);
+
         void Save();
     }
+
     public class CertificateService : ICertificateService
     {
-        ICertificateRepository _CertificateRepository;
-        IUnitOfWork _unitOfWork;
+        private ICertificateRepository _CertificateRepository;
+        private IUnitOfWork _unitOfWork;
 
         public CertificateService(ICertificateRepository certificateRepository, IUnitOfWork unitOfWork)
         {
@@ -51,7 +67,8 @@ namespace BTS.Service
 
         public IEnumerable<Certificate> getAll(out int totalRows)
         {
-            var result = _CertificateRepository.GetMultiPaging(x=> true, out totalRows);
+            var result = _CertificateRepository.GetMulti(x => true);
+            totalRows = result.Count();
             return result;
         }
 

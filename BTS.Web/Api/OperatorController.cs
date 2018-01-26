@@ -19,25 +19,25 @@ namespace BTS.Web.Api
     public class OperatorController : ApiControllerBase
     {
         #region Initialize
-        IOperatorService _operatorService;
+
+        private IOperatorService _operatorService;
 
         public OperatorController(IErrorService errorService, IOperatorService operatorService) : base(errorService)
         {
             this._operatorService = operatorService;
         }
 
-        #endregion
+        #endregion Initialize
 
         [Route("getall")]
         [HttpGet]
-        [Authorize(Roles = "*")]
+        //[Authorize(Roles = "*")]
         public HttpResponseMessage GetAll(HttpRequestMessage request, string keyword = "", int page = 0, int pageSize = 20)
         {
             int totalRow = 0;
 
             return CreateHttpResponse(request, () =>
             {
-
                 var listOperator = _operatorService.getAll(keyword);
 
                 totalRow = listOperator.Count();
@@ -60,16 +60,13 @@ namespace BTS.Web.Api
             });
         }
 
-
         [Route("getbyid/{id}")]
         [HttpGet]
-        [Authorize(Roles = "*")]
+        //[Authorize(Roles = "*")]
         public HttpResponseMessage GetByID(HttpRequestMessage request, string id)
         {
-
             return CreateHttpResponse(request, () =>
             {
-
                 var dbOperator = _operatorService.getByID(id);
 
                 var dbOperatorVm = Mapper.Map<Operator, OperatorViewModel>(dbOperator);
@@ -82,7 +79,7 @@ namespace BTS.Web.Api
 
         [Route("create")]
         [HttpPost]
-        [Authorize(Roles = "*")]
+        //[Authorize(Roles = "*")]
         public HttpResponseMessage Post(HttpRequestMessage request, OperatorViewModel operatorVm)
         {
             return CreateHttpResponse(request, () =>
@@ -102,7 +99,6 @@ namespace BTS.Web.Api
                     var responseData = Mapper.Map<Operator, OperatorViewModel>(newOperator);
 
                     response = request.CreateResponse(HttpStatusCode.Created, responseData);
-
                 }
                 return response;
             });
@@ -110,7 +106,7 @@ namespace BTS.Web.Api
 
         [Route("update")]
         [HttpPut]
-        [Authorize(Roles = "*")]
+        //[Authorize(Roles = "*")]
         public HttpResponseMessage Put(HttpRequestMessage request, OperatorViewModel operatorVm)
         {
             return CreateHttpResponse(request, () =>
@@ -130,7 +126,6 @@ namespace BTS.Web.Api
 
                     var responData = Mapper.Map<Operator, OperatorViewModel>(dbOperator);
                     response = request.CreateResponse(HttpStatusCode.OK, responData);
-
                 }
                 return response;
             });
@@ -138,7 +133,7 @@ namespace BTS.Web.Api
 
         [Route("delete")]
         [HttpDelete]
-        [Authorize(Roles = "*")]
+        //[Authorize(Roles = "*")]
         public HttpResponseMessage Delete(HttpRequestMessage request, string id)
         {
             return CreateHttpResponse(request, () =>
@@ -156,7 +151,7 @@ namespace BTS.Web.Api
 
         [Route("deletemulti")]
         [HttpDelete]
-        [Authorize(Roles = "*")]
+        //[Authorize(Roles = "*")]
         public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string checkedOperators)
         {
             return CreateHttpResponse(request, () =>
@@ -167,7 +162,7 @@ namespace BTS.Web.Api
                 foreach (var item in listOperators)
                 {
                     _operatorService.Delete(item);
-                }                
+                }
                 _operatorService.Save();
 
                 response = request.CreateResponse(HttpStatusCode.OK, listOperators.Count);
