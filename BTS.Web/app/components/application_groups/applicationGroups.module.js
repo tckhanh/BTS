@@ -6,7 +6,6 @@
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
 
     function config($stateProvider, $urlRouterProvider) {
-
         $stateProvider.state('application_groups', {
             url: "/application_groups",
             templateUrl: "/app/components/application_groups/applicationGroupListView.html",

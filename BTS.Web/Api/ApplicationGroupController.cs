@@ -18,7 +18,8 @@ using BTS.Web.Models;
 
 namespace BTS.Web.Api
 {
-    [RoutePrefix("api/applicationGroup")]    
+    [RoutePrefix("api/applicationGroup")]
+    [Authorize]
     public class ApplicationGroupController : ApiControllerBase
     {
         private IApplicationGroupService _appGroupService;
@@ -34,11 +35,11 @@ namespace BTS.Web.Api
             _appRoleService = appRoleService;
             _userManager = userManager;
         }
+
         [Route("getlistpaging")]
         [HttpGet]
         public HttpResponseMessage GetListPaging(HttpRequestMessage request, int page, int pageSize, string filter = null)
         {
-
             return CreateHttpResponse(request, () =>
             {
                 HttpResponseMessage response = null;
@@ -59,6 +60,7 @@ namespace BTS.Web.Api
                 return response;
             });
         }
+
         [Route("getlistall")]
         [HttpGet]
         public HttpResponseMessage GetAll(HttpRequestMessage request)
@@ -74,6 +76,7 @@ namespace BTS.Web.Api
                 return response;
             });
         }
+
         [Route("detail/{id:int}")]
         [HttpGet]
         public HttpResponseMessage Details(HttpRequestMessage request, int id)
@@ -89,7 +92,7 @@ namespace BTS.Web.Api
                 return request.CreateErrorResponse(HttpStatusCode.NoContent, "No group");
             }
             var listRole = _appRoleService.GetListRoleByGroupId(appGroupViewModel.ID);
-            appGroupViewModel.Roles = Mapper.Map<IEnumerable<ApplicationRole>,IEnumerable<ApplicationRoleViewModel>>(listRole);
+            appGroupViewModel.Roles = Mapper.Map<IEnumerable<ApplicationRole>, IEnumerable<ApplicationRoleViewModel>>(listRole);
             return request.CreateResponse(HttpStatusCode.OK, appGroupViewModel);
         }
 
@@ -99,14 +102,16 @@ namespace BTS.Web.Api
         {
             if (ModelState.IsValid)
             {
-                var newAppGroup = new ApplicationGroup();
-                newAppGroup.Name = appGroupViewModel.Name;
+                var newItem = new ApplicationGroup();
+                newItem.Name = appGroupViewModel.Name;
+                newItem.Description = appGroupViewModel.Description;
                 try
                 {
-                    var appGroup = _appGroupService.Add(newAppGroup);
+                    var appGroup = _appGroupService.Add(newItem);
                     _appGroupService.Save();
-
                     //save group
+
+                    //add ApplicationRoleGroup
                     var listRoleGroup = new List<ApplicationRoleGroup>();
                     foreach (var role in appGroupViewModel.Roles)
                     {
@@ -119,16 +124,12 @@ namespace BTS.Web.Api
                     _appRoleService.AddRolesToGroup(listRoleGroup, appGroup.ID);
                     _appRoleService.Save();
 
-
                     return request.CreateResponse(HttpStatusCode.OK, appGroupViewModel);
-
-
                 }
                 catch (NameDuplicatedException dex)
                 {
                     return request.CreateErrorResponse(HttpStatusCode.BadRequest, dex.Message);
                 }
-
             }
             else
             {
@@ -180,7 +181,6 @@ namespace BTS.Web.Api
                 {
                     return request.CreateErrorResponse(HttpStatusCode.BadRequest, dex.Message);
                 }
-
             }
             else
             {

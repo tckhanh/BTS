@@ -1,3 +1,7 @@
 ﻿.has-error{
     color:red;
 }
+
+.thead-custom{
+    background-color: lightblue;
+}

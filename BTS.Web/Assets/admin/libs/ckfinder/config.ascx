@@ -17,7 +17,7 @@
 		// ... where Session[ "IsAuthorized" ] is set to "true" as soon as the
 		// user logs on your system.
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -31,7 +31,7 @@
 		LicenseKey = "";
 
 		// The base URL used to reach files in CKFinder through the browser.
-		BaseUrl = "/ckfinder/userfiles/";
+		BaseUrl = "/UploadedFiles/";
 
 		// The phisical directory in the server where the file will end up. If
 		// blank, CKFinder attempts to resolve BaseUrl.

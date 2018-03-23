@@ -13,14 +13,15 @@ namespace BTS.Web.Api
     [Authorize]
     public class HomeController : ApiControllerBase
     {
-        IErrorService _errorService;
+        private IErrorService _errorService;
+
         public HomeController(IErrorService errorService) : base(errorService)
         {
             this._errorService = errorService;
         }
 
         [HttpGet]
-        [Route("TestMethod")]
+        [Route("testMethod")]
         public string TestMethod()
         {
             return "Hello, TEDU Member. ";

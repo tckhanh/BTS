@@ -15,7 +15,6 @@ using System.Web.Script.Serialization;
 namespace BTS.Web.Api
 {
     [RoutePrefix("api/operator")]
-    [Authorize]
     public class OperatorController : ApiControllerBase
     {
         #region Initialize

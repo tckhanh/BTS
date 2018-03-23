@@ -1,104 +1,91 @@
-// Node
-if (typeof module !== 'undefined' && module.exports) {
-    var numeral = require('../../numeral');
-    var expect = require('chai').expect;
-}
+var numeral = require('../../numeral');
 
-describe('Manipulate', function() {
-    after(function() {
-        numeral.reset();
-    });
+exports.manipulate = {
 
-    describe('Add', function() {
-        it('should add', function() {
-            var tests = [
-                    [1000,10,1010],
-                    [0.5,3,3.5],
-                    [-100,200,100],
-                    [0.1,0.2,0.3]
-                ],
-                num;
+    add: function (test) {
+        test.expect(4);
 
-            for (var i = 0; i < tests.length; i++) {
-                num = numeral(tests[i][0]);
+        var tests = [
+                [1000,10,1010],
+                [0.5,3,3.5],
+                [-100,200,100],
+                [0.1,0.2,0.3]
+            ],
+            num;
 
-                num.add(tests[i][1]);
+        for (var i = 0; i < tests.length; i++) {
+            num = numeral(tests[i][0]);
+            num.add(tests[i][1]);
+            test.strictEqual(num.value(), tests[i][2], tests[i][0] + ' + ' + tests[i][1]);
+        }
 
-                expect(num.value()).to.equal(tests[i][2]);
-            }
-        });
-    });
+        test.done();
+    },
 
-    describe('Subtract', function() {
-        it('should subtract', function() {
-            var tests = [
-                    [1000,10,990],
-                    [0.5,3,-2.5],
-                    [-100,200,-300],
-                    [0.3,0.1,0.2]
-                ],
-                num;
+    subtract: function (test) {
+        test.expect(4);
 
-            for (var i = 0; i < tests.length; i++) {
-                num = numeral(tests[i][0]);
+        var tests = [
+                [1000,10,990],
+                [0.5,3,-2.5],
+                [-100,200,-300],
+                [0.3,0.1,0.2]
+            ],
+            num;
 
-                num.subtract(tests[i][1]);
+        for (var i = 0; i < tests.length; i++) {
+            num = numeral(tests[i][0]);
+            num.subtract(tests[i][1]);
+            test.strictEqual(num.value(), tests[i][2], tests[i][0] + ' - ' + tests[i][1]);
+        }
 
-                expect(num.value()).to.equal(tests[i][2]);
-            }
-        });
-    });
+        test.done();
+    },
 
+    multiply: function (test) {
+        test.expect(4);
 
-    describe('Add', function() {
-        it('should add', function() {
-        });
-    });
+        var tests = [
+                [1000,10,10000],
+                [0.5,3,1.5],
+                [-100,200,-20000],
+                [0.1,0.2,0.02]
+            ],
+            num;
 
+        for (var i = 0; i < tests.length; i++) {
+            num = numeral(tests[i][0]);
+            num.multiply(tests[i][1]);
+            test.strictEqual(num.value(), tests[i][2], tests[i][0] + ' * ' + tests[i][1]);
+        }
 
-    describe('Multiply', function() {
-        it('should multiply', function() {
-            var tests = [
-                    [1000,10,10000],
-                    [0.5,3,1.5],
-                    [-100,200,-20000],
-                    [0.1,0.2,0.02]
-                ],
-                num;
+        test.done();
+    },
 
-            for (var i = 0; i < tests.length; i++) {
-                num = numeral(tests[i][0]);
+    divide: function (test) {
+        test.expect(4);
 
-                num.multiply(tests[i][1]);
+        var tests = [
+                [1000,10,100],
+                [0.5,3,0.16666666666666666],
+                [-100,200,-0.5],
+                [5.3,0.1,53]
+            ],
+            num;
 
-                expect(num.value()).to.equal(tests[i][2]);
-            }
-        });
-    });
+        for (var i = 0; i < tests.length; i++) {
+            num = numeral(tests[i][0]);
+            num.divide(tests[i][1]);
+            test.strictEqual(num.value(), tests[i][2], tests[i][0] + ' / ' + tests[i][1]);
+        }
 
-    describe('Divide', function() {
-        it('should divide', function() {
-            var tests = [
-                    [1000,10,100],
-                    [0.5,3,0.16666666666666666],
-                    [-100,200,-0.5],
-                    [5.3,0.1,53]
-                ],
-                num;
+        test.done();
+    },
 
-            for (var i = 0; i < tests.length; i++) {
-                num = numeral(tests[i][0]);
+    difference: function (test) {
+        test.expect(4);
 
-                num.divide(tests[i][1]);
-
-                expect(num.value()).to.equal(tests[i][2]);
-            }
-        });
-    });
-
-    describe('Difference', function() {
-        it('should find a difference', function() {
-            var tests = [
+        var tests = [
                 [1000,10,990],
                 [0.5,3,2.5],
                 [-100,200,300],
@@ -106,11 +93,12 @@ describe('Manipulate', function() {
             ],
             num;
 
-            for (var i = 0; i < tests.length; i++) {
-                num = numeral(tests[i][0]);
+        for (var i = 0; i < tests.length; i++) {
+            num = numeral(tests[i][0]);
+            test.strictEqual(num.difference(tests[i][1]), tests[i][2], 'Difference between ' + tests[i][0] + ' and ' + tests[i][1]);
+        }
 
-                expect(num.difference(tests[i][1])).to.equal(tests[i][2]);
-            }
-        });
-    });
-});
+        test.done();
+    }
+
+};

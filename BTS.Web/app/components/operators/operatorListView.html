@@ -42,17 +42,15 @@
                     <table class="table table-bordered">
                         <tr>
                             <th><input name="all" type="checkbox" ng-click="selectAll()" /></th>
-                            <th style="width: 10%">Mã DN</th>
-                            <th style="width: 25%">Tên doanh nghiệp</th>
-                            <!--<th style="width: 45%">Địa chỉ</th>
-                            <th style="width: 10%">Số điện thoại</th>-->
+                            <th style="width: 20%">Mã DN</th>
+                            <th style="width: 70%">Tên doanh nghiệp</th>
                             <th style="width: 10%">Thao tác</th>
                         <tr ng-repeat="item in operators">
                             <td><input name="all" type="checkbox" ng-model="item.checked" /></td>
                             <td>{{item.ID}}</td>
-                            <!--<td>{{item.Name}}</td>
-                            <td>{{item.Address}}</td>-->
-                            <td><span class="badge bg-red">{{item.Telephone}}</span></td>
+                            <td>{{item.Address}}</td>
+                            <!--<td>{{item.Address}}</td>-->
+                            <td><span class="badge bg-red">{{item.Telephone}}</span></td>-->
                             <td>
                                 <button class="btn btn-sm btn-primary" ui-sref="edit_operator({id:item.ID})"><i class="fa fa-pencil"></i></button>
                                 <button class="btn  btn-sm btn-danger" ng-click="deleteOperator(item.ID)"><i class="fa fa-trash"></i></button>

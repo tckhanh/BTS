@@ -201,8 +201,7 @@ angular.module('ngBootbox', [])
       var template = $templateCache.get(templateId);
       if (typeof template === "undefined") {
         $http.get(templateId)
-          .then(function (response) {
-            var data = response.data;
+          .success(function (data) {
             $templateCache.put(templateId, data);
             def.resolve(data);
           });

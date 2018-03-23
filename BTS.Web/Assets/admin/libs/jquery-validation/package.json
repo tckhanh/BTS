@@ -2,7 +2,7 @@
 	"name": "jquery-validation",
 	"title": "jQuery Validation Plugin",
 	"description": "Client-side form validation made easy",
-	"version": "1.15.1",
+	"version": "1.15.0",
 	"homepage": "http://jqueryvalidation.org/",
 	"license": "MIT",
 	"author": {
@@ -33,9 +33,7 @@
 		"dist/jquery.validate.js"
 	],
 	"main": "dist/jquery.validate.js",
-	"dependencies": {
-		"jquery": "^1.7 || ^2.0"
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"commitplease": "^2.2.3",
 		"grunt": "^0.4.4",

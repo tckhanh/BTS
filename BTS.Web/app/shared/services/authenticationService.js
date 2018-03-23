@@ -7,11 +7,9 @@
             this.isAuthenticated = function () {
                 if (tokenInfo == null) {
                     return false;
-                }else
-                {
+                } else {
                     return true;
                 }
-                
             }
 
             this.setTokenInfo = function (data) {
@@ -43,10 +41,23 @@
                 }
             }
 
-            this.validateRequest = function () {
+            this.validateRequest_Old = function () {
                 var url = 'api/home/TestMethod';
                 var deferred = $q.defer();
                 $http.get(url).then(function () {
+                    deferred.resolve(null);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+                return deferred.promise;
+            }
+
+            this.validateRequest = function () {
+                var url = 'api/home/TestMethod';
+                var deferred = $q.defer();
+                this.setHeader();
+
+                $http.get(url).then(function (result) {
                     deferred.resolve(null);
                 }, function (error) {
                     deferred.reject(error);

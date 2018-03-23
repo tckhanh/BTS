@@ -21,36 +21,8 @@ module.exports = function(grunt) {
     });
 
     grunt.initConfig({
-        mochaTest : {
-            all: [
-                'tests/numeral/*.js',
-                'tests/languages/*.js'
-            ]
-        },
-        karma: {
-            options: {
-                files: [
-                    'numeral.js',
-                    'languages/*.js',
-                    'tests/numeral/*.js',
-                    'tests/languages/*.js'
-                ],
-                frameworks: [
-                    'mocha',
-                    'chai'
-                ],
-                singleRun: true,
-                autoWatch: false
-            },
-            local: {
-                browsers: [
-                    'Chrome',
-                    'Firefox'
-                ]
-            },
-            ci: {
-                configFile: 'karma-ci.conf.js'
-            }
+        nodeunit : {
+            all : ['tests/**/*.js']
         },
         uglify: {
             my_target: {
@@ -63,7 +35,7 @@ module.exports = function(grunt) {
         concat: {
             languages: {
                 src: [
-                    'languages/*.js'
+                    'languages/**/*.js'
                 ],
                 dest: 'languages.js'
             }
@@ -72,7 +44,7 @@ module.exports = function(grunt) {
             all: [
                 'Gruntfile.js',
                 'numeral.js',
-                'languages/*.js'
+                'languages/**/*.js'
             ],
             options: {
                 'node': true,
@@ -92,11 +64,10 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-nodeunit');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-karma');
 
     grunt.registerTask('default', [
         'test'
@@ -104,30 +75,17 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', [
         'jshint',
-        'mochaTest',
-        'karma:local'
-    ]);
-
-    grunt.registerTask('test:npm', [
-        'jshint',
-        'mochaTest'
-    ]);
-
-    grunt.registerTask('test:browser', [
-        'jshint',
-        'karma:local'
+        'nodeunit'
     ]);
 
     // P
     grunt.registerTask('build', [
+        'jshint',
+        'nodeunit',
         'concat',
         'uglify'
     ]);
 
     // Travis CI task.
-    grunt.registerTask('travis', [
-        'jshint',
-        'mochaTest',
-        'karma:ci'
-    ]);
+    grunt.registerTask('travis', ['test']);
 };

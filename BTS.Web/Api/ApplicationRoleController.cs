@@ -51,6 +51,7 @@ namespace BTS.Web.Api
                 return response;
             });
         }
+
         [Route("getlistall")]
         [HttpGet]
         public HttpResponseMessage GetAll(HttpRequestMessage request)
@@ -66,6 +67,7 @@ namespace BTS.Web.Api
                 return response;
             });
         }
+
         [Route("detail/{id}")]
         [HttpGet]
         public HttpResponseMessage Details(HttpRequestMessage request, string id)

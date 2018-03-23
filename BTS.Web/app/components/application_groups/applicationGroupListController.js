@@ -36,6 +36,7 @@
         }
 
         $scope.isAll = false;
+
         function selectAll() {
             if ($scope.isAll === false) {
                 angular.forEach($scope.data, function (item) {
@@ -102,6 +103,22 @@
             if ($scope.filterExpression && $scope.filterExpression.length) {
                 notificationService.displayInfo(result.data.Items.length + ' items found');
             }
+        }
+
+        function dataLoadCompleted_dataTable(result) {
+            $scope.data = result.data.Items;
+            $scope.page = result.data.Page;
+            $scope.pagesCount = result.data.TotalPages;
+            $scope.totalCount = result.data.TotalCount;
+            $scope.loading = false;
+
+            if ($scope.filterExpression && $scope.filterExpression.length) {
+                notificationService.displayInfo(result.data.Items.length + ' items found');
+            }
+            angular.element(document).ready(function () {
+                var dTable = $('#example1');
+                dTable.DataTable();
+            });
         }
         function dataLoadFailed(response) {
             if (response.status == "401") {
