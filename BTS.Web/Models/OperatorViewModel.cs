@@ -16,16 +16,6 @@ namespace BTS.Web.Models
         [MaxLength(255, ErrorMessage = "Tên Doanh nghiệp tối đa 255 ký tự")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Yêu cầu Địa chỉ Doanh nghiệp")]
-        [MaxLength(255, ErrorMessage = "Địa chỉ Doanh nghiệp tối đa 255 ký tự")]
-        public string Address { get; set; }
-
-        [MaxLength(30, ErrorMessage = "Số điện thoại tối đa 30 ký tự")]
-        public string Telephone { get; set; }
-
-        [MaxLength(30, ErrorMessage = "Số Fax tối đa 30 ký tự")]
-        public string Fax { get; set; }
-
         public virtual ICollection<ApplicantViewModel> Applicants { get; set; }
 
         public virtual ICollection<CertificateViewModel> BTSCertificates { get; set; }

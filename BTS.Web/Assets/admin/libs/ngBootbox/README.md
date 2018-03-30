@@ -63,7 +63,7 @@ ng-bootbox-alert
 ng-bootbox-confirm
 ------------------
 
-    <button class="btn btn-lg btn-primary" ng-bootbox-confirm="Are you sure you want to confirm this?"
+    <button class="btn btn-lg btn-success" ng-bootbox-confirm="Are you sure you want to confirm this?"
             ng-bootbox-confirm-action="confirmCallbackMethod(attr1, attr2)" ng-bootbox-confirm-action-cancel="confirmCallbackCancel(attr1, attr2)">
         Confirm
     </button>
@@ -71,7 +71,7 @@ ng-bootbox-confirm
 ng-bootbox-prompt
 -----------------
 
-    <button class="btn btn-lg btn-primary" ng-bootbox-prompt="Please type in your name"
+    <button class="btn btn-lg btn-success" ng-bootbox-prompt="Please type in your name"
             ng-bootbox-prompt-action="promptCallback(result)" ng-bootbox-prompt-action-cancel="promptCallbackCancelled(result)">
         Prompt
     </button>
@@ -79,7 +79,7 @@ ng-bootbox-prompt
 ng-bootbox-custom-dialog
 ------------------------
 
-    <button class="btn btn-lg btn-primary"
+    <button class="btn btn-lg btn-success"
             ng-bootbox-title="A cool title!"
             ng-bootbox-custom-dialog="Some custom text"
             ng-bootbox-buttons="customDialogButtons"
@@ -106,7 +106,7 @@ ng-bootbox-custom-dialog
             },
             main: {
                 label: "Click ME!",
-                className: "btn-primary",
+                className: "btn-success",
                 callback: function() { $scope.addAction('Main...!', true) }
             }
         };
@@ -115,7 +115,7 @@ ng-bootbox-custom-dialog
 Custom dialog with HTML Template
 --------------------------------
 
-    <button class="btn btn-lg btn-primary"
+    <button class="btn btn-lg btn-success"
             ng-bootbox-title="A cool title!"
             ng-bootbox-custom-dialog
             ng-bootbox-custom-dialog-template="custom-dialog.tpl.html"

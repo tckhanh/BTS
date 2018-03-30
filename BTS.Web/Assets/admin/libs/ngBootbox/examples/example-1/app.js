@@ -92,7 +92,7 @@ angular.module('testApp', ['ngBootbox'])
           },
           main: {
               label: "Click ME!",
-              className: "btn-primary",
+              className: "btn-success",
               callback: function() { $scope.addAction('Main...!', true); }
           }
       };
@@ -101,7 +101,7 @@ angular.module('testApp', ['ngBootbox'])
       $scope.customConfirmButtons = {
           ok: {
               label: "Ok",
-              className: "btn-primary",
+              className: "btn-success",
               callback: function() { $scope.deleteBook(); }
           },
           cancel: {

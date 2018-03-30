@@ -43,7 +43,13 @@ namespace BTS.Web.Infrastructure.Extensions
         public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)
         {
             myInCaseOf.ID = inCaseOfVm.ID;
-            myInCaseOf.Name = inCaseOfVm.Case;
+            myInCaseOf.Name = inCaseOfVm.Name;
+        }
+
+        public static void UpdateCity(this City myCity, CityViewModel cityVm)
+        {
+            myCity.ID = cityVm.ID;
+            myCity.Name = cityVm.Name;
         }
 
         public static void UpdateOperator(this Operator myoperator, OperatorViewModel operatorVm)

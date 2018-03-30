@@ -1,11 +1,11 @@
 ﻿<section class="content-header">
     <h1>
-        Cập nhất người dùng
+        HỆ THỐNG
     </h1>
     <ol class="breadcrumb">
-        <li><a href="/admin"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li><a ui-sref="accounts">Danh mục người dùng</a></li>
-        <li class="active"><a href="#">Cập nhật</a></li>
+        <li><a ui-sref="home"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li><a ui-sref="application_users">Người dùng</a></li>
+        <li class="active">Cập nhật người dùng</a></li>
     </ol>
 </section>
 <section class="content">
@@ -13,8 +13,13 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{account.FullName}}</h3>
-                </div><!-- /.box-header -->
+                    <h3 class="box-title">Cập nhật người dùng</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                        <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
                 <!-- form start -->
                 <form class="form-horizontal" role="form" novalidate name="frmUpdateAccount" ng-submit="updateAccount()">
                     <div class="box-body">

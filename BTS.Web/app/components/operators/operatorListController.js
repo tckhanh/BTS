@@ -28,11 +28,9 @@
             }
         }, true);
 
-        $scope.getOperators = getOperators;        
+        $scope.getOperators = getOperators;
 
         $scope.getOperators();
-
-
 
         function deleteMultiple() {
             var listId = [];
@@ -50,7 +48,7 @@
             }, function (error) {
                 notificationService.displayError('Xóa không thành công');
             });
-        }       
+        }
 
         function selectAll() {
             if ($scope.isAll === false) {
@@ -65,7 +63,6 @@
                 $scope.isAll = false;
             }
         }
-
 
         function deleteOperator(id) {
             $ngBootbox.confirm('Bạn có chắc muốn xóa?').then(function () {
@@ -87,15 +84,13 @@
             getOperators();
         }
 
-      
-
         function getOperators(page) {
             page = page || 0;
             var config = {
                 params: {
                     keyword: $scope.keyword,
                     page: page,
-                    pageSize: 2
+                    pageSize: 10
                 }
             }
             apiService.get('/api/operator/getall', config, function (result) {
@@ -120,7 +115,5 @@
                 }
             });
         }
-
     }
-
 })(angular.module('BTS.operators'));

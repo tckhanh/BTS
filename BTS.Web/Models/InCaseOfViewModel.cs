@@ -12,7 +12,7 @@ namespace BTS.Web.Models
 
         [Required]
         [MaxLength(50)]
-        public string Case { get; set; }
+        public string Name { get; set; }
 
         public virtual IEnumerable<BtsViewModel> Btss { get; set; }
 

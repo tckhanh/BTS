@@ -40,18 +40,18 @@
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-primary" ng-bootbox-alert="Alert message!">
+                    <button class="btn btn-lg btn-success" ng-bootbox-alert="Alert message!">
                         Alert
                     </button>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-primary" ng-bootbox-confirm="Are you sure you want to confirm this?"
+                    <button class="btn btn-lg btn-success" ng-bootbox-confirm="Are you sure you want to confirm this?"
                             ng-bootbox-confirm-action="addAction('Confirmed', 'true')" ng-bootbox-confirm-action-cancel="addAction('Confirmed', 'false')">
                         Confirm
                     </button>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-primary" ng-bootbox-prompt="Please type in your name"
+                    <button class="btn btn-lg btn-success" ng-bootbox-prompt="Please type in your name"
                             ng-bootbox-prompt-action="addAction('Prompt returned', result)" ng-bootbox-prompt-action-cancel="addAction('Prompt', 'cancelled')">
                         Prompt
                     </button>
@@ -59,7 +59,7 @@
             </div>
             <div class="row" style="padding-top: 20px">
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-primary"
+                    <button class="btn btn-lg btn-success"
                             ng-bootbox-title="A cool title!"
                             ng-bootbox-custom-dialog="Some custom text"
                             ng-bootbox-buttons="customDialogButtons">
@@ -69,18 +69,18 @@
             </div>
             <div class="row" style="padding-top: 20px">
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-primary" ng-click="handleAlert()">Alert Svc</button>
+                    <button class="btn btn-lg btn-success" ng-click="handleAlert()">Alert Svc</button>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-primary" ng-click="handleConfirm()">Confirm Svc</button>
+                    <button class="btn btn-lg btn-success" ng-click="handleConfirm()">Confirm Svc</button>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-primary" ng-click="handlePrompt()">Prompt Svc</button>
+                    <button class="btn btn-lg btn-success" ng-click="handlePrompt()">Prompt Svc</button>
                 </div>
             </div>
             <div class="row" style="padding-top: 20px">
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-primary" ng-click="openCustomDialogWithService()">Dialog Svc</button>
+                    <button class="btn btn-lg btn-success" ng-click="openCustomDialogWithService()">Dialog Svc</button>
                 </div>
             </div>
             <div class="row" style="padding-top: 20px">
@@ -93,7 +93,7 @@
                     </button>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-primary"
+                    <button class="btn btn-lg btn-success"
                             ng-bootbox-title="A cool title!"
                             ng-bootbox-custom-dialog
                             ng-bootbox-custom-dialog-template="custom-dialog.tpl.html"
@@ -127,19 +127,19 @@
 &lt;/button&gt;</pre>
                     <h2>ng-bootbox-confirm</h2>
                         <pre>
-&lt;button class="btn btn-lg btn-primary" ng-bootbox-confirm="Are you sure you want to confirm this?"
+&lt;button class="btn btn-lg btn-success" ng-bootbox-confirm="Are you sure you want to confirm this?"
         ng-bootbox-confirm-action="confirmCallbackMethod(attr1, attr2)" ng-bootbox-confirm-action-cancel="confirmCallbackCancel(attr1, attr2)"&gt;
     Confirm
 &lt;/button&gt;</pre>
                     <h2>ng-bootbox-prompt</h2>
                         <pre>
-&lt;button class="btn btn-lg btn-primary" ng-bootbox-prompt="Please type in your name"
+&lt;button class="btn btn-lg btn-success" ng-bootbox-prompt="Please type in your name"
         ng-bootbox-prompt-action="promptCallback(result)" ng-bootbox-prompt-action-cancel="promptCallbackCancelled(result)"&gt;
     Prompt
 &lt;/button&gt;</pre>
                     <h2>ng-bootbox-custom-dialog</h2>
                         <pre>
-&lt;button class="btn btn-lg btn-primary"
+&lt;button class="btn btn-lg btn-success"
         ng-bootbox-title="A cool title!"
         ng-bootbox-custom-dialog="Some custom text"
         ng-bootbox-buttons="customDialogButtons"&gt;
@@ -163,13 +163,13 @@
             },
             main: {
                 label: "Click ME!",
-                className: "btn-primary",
+                className: "btn-success",
                 callback: function() { ... }
             }
         };</pre>
                     <h2>Custom dialog with HTML template</h2>
                         <pre>
-&lt;button class="btn btn-lg btn-primary"
+&lt;button class="btn btn-lg btn-success"
         ng-bootbox-title="A cool title!"
         ng-bootbox-custom-dialog
         ng-bootbox-custom-dialog-template="custom-dialog.tpl.html"

@@ -1,11 +1,19 @@
 ﻿/// <reference path="/Assets/admin/libs/angular/angular.js" />
 
 (function () {
+    var roles = {
+        superUser: 0,
+        admin: 1,
+        user: 2
+    };
+
     angular.module('BTS',
-        [
-         'BTS.application_groups',
+        ['BTS.application_groups',
          'BTS.application_roles',
          'BTS.application_users',
+         'BTS.operators',
+         'BTS.cities',
+         'BTS.inCaseOfs',
          'BTS.common'])
         .config(config)
         .config(configAuthentication);

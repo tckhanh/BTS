@@ -6,9 +6,9 @@
 
     function operatorAddController(apiService, $scope, notificationService, $state) {
         $scope.operator = {
-            Telephone: "(+84)",
-            Fax: "(+84)"
-        }
+            ID: "",
+            Name: ""
+        };
 
         $scope.AddOperator = AddOperator;
 
@@ -21,16 +21,5 @@
                     notificationService.displayError('Thêm mới không thành công.');
                 });
         }
-
-        //function loadParentCategory() {
-        //    apiService.get('/api/operator/getallparents', null, function (result) {
-        //        $scope.parentCategories = result.data;
-        //    }, function () {
-        //        console.log('Cannot get list parent');
-        //    });
-        //}
-
-        //loadParentCategory();
     }
-
 })(angular.module('BTS.operators'));

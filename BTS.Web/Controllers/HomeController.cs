@@ -43,7 +43,7 @@ namespace BTS.Web.Controllers
             //var lastestProductViewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(lastestProductModel);
             //var topSaleProductViewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(topSaleProductModel);
             //homeViewModel.StatisticCertificateByOperator = _stattisticService.GetStatisticCertificateByOperator();
-            homeViewModel.StatisticCertificateByOperatorCity = _stattisticService.GetStatisticCertificateByOperatorCity();
+            //homeViewModel.StatisticCertificateByOperatorCity = _stattisticService.GetStatisticCertificateByOperatorCity();
             return View(homeViewModel);
         }
 

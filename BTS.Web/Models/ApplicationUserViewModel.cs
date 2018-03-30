@@ -9,7 +9,8 @@ namespace BTS.Web.Models
     {
         public string Id { set; get; }
         public string FullName { set; get; }
-        public DateTime BirthDay { set; get; }
+        public string Address { get; set; }
+        public DateTime? BirthDay { set; get; }
         public string Bio { set; get; }
         public string Email { set; get; }
         public string Password { set; get; }

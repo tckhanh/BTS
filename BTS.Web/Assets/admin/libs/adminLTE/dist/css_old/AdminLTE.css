@@ -2225,13 +2225,13 @@ a:focus {
 .btn-primary.hover {
   background-color: #367fa9;
 }
-.btn-success {
+.btn-primary {
   background-color: #00a65a;
   border-color: #008d4c;
 }
-.btn-success:hover,
-.btn-success:active,
-.btn-success.hover {
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.hover {
   background-color: #008d4c;
 }
 .btn-info {

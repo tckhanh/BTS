@@ -76,6 +76,18 @@
     <Compile Include="Migrations\201711240440236_createDatabase.Designer.cs">
       <DependentUpon>201711240440236_createDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803270425433_updateOperator.cs" />
+    <Compile Include="Migrations\201803270425433_updateOperator.Designer.cs">
+      <DependentUpon>201803270425433_updateOperator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803270455337_update2Operator.cs" />
+    <Compile Include="Migrations\201803270455337_update2Operator.Designer.cs">
+      <DependentUpon>201803270455337_update2Operator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803300713479_boSungRole.cs" />
+    <Compile Include="Migrations\201803300713479_boSungRole.Designer.cs">
+      <DependentUpon>201803300713479_boSungRole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ApplicantRepository.cs" />
@@ -120,6 +132,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201711240440236_createDatabase.resx">
       <DependentUpon>201711240440236_createDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803270425433_updateOperator.resx">
+      <DependentUpon>201803270425433_updateOperator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803270455337_update2Operator.resx">
+      <DependentUpon>201803270455337_update2Operator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803300713479_boSungRole.resx">
+      <DependentUpon>201803300713479_boSungRole.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
