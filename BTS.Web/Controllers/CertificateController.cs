@@ -22,6 +22,9 @@ namespace BTS.Web.Controllers
         // GET: Certificate
         public ActionResult Index()
         {
+            int countBTS = 0;
+            List<Certificate> data = _btsCertificateService.getAll(out countBTS, true).ToList();
+            ViewBag.Certificates = data;
             return View();
         }
 
@@ -40,7 +43,7 @@ namespace BTS.Web.Controllers
         public ActionResult GetCertificate()
         {
             int countBTS = 0;
-            List<Certificate> dataSumary = _btsCertificateService.getAll(out countBTS).ToList();
+            List<Certificate> dataSumary = _btsCertificateService.getAll(out countBTS, true).ToList();
 
             return Json(dataSumary, JsonRequestBehavior.AllowGet);
         }

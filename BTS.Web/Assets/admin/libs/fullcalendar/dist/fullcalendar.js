@@ -14870,7 +14870,7 @@ Bootstrap4Theme.prototype.classes = {
     tableList: 'table',
     tableListHeading: 'table-active',
     buttonGroup: 'btn-group',
-    button: 'btn btn-success',
+    button: 'btn btn-primary',
     stateActive: 'active',
     stateDisabled: 'disabled',
     today: 'alert alert-info',

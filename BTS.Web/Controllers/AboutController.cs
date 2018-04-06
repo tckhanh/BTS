@@ -12,7 +12,7 @@ namespace BTS.Web.Controllers
         public AboutController(IErrorService errorService) : base(errorService)
         {
         }
-        // GET: About
+
         public ActionResult Index()
         {
             return View();

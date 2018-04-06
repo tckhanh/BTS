@@ -32,7 +32,6 @@ namespace BTS.UnitTest.ServiceTest
                 new Certificate() { ID="2", ProfileID=2, CityID="NTN", OperatorID="MOBIFONE", Address="Hai"},
                 new Certificate() { ID="3", ProfileID=3, CityID="LAN", OperatorID="MOBIFONE", Address="Ba"},
             };
-
         }
 
         [TestMethod]
@@ -44,12 +43,11 @@ namespace BTS.UnitTest.ServiceTest
             _mockCertificateRepository.Setup(m => m.GetMultiPaging(x => true, out totalRow, 1, 10, null)).Returns(_listCertificate);
 
             // call action
-            var result = _CertificateService.getAll(out totalRow) as List<Certificate>;
+            var result = _CertificateService.getAll(out totalRow, true) as List<Certificate>;
 
             // check Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count);
-
         }
     }
 }

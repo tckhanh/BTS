@@ -31,7 +31,7 @@ namespace BTS.Web.Api
 
             return CreateHttpResponse(request, () =>
             {
-                var listBtsCertificate = _certificateService.getAll(out totalRow);
+                var listBtsCertificate = _certificateService.getAll(out totalRow, true);
 
                 var listBtsCertificateVm = Mapper.Map<List<CertificateViewModel>>(listBtsCertificate);
 

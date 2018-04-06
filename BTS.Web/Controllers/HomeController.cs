@@ -13,6 +13,7 @@ using System.Web.Helpers;
 
 namespace BTS.Web.Controllers
 {
+    [Authorize]
     public class HomeController : BaseController
     {
         //IProductCategoryService _productCategoryService;
@@ -31,6 +32,10 @@ namespace BTS.Web.Controllers
         [OutputCache(Duration = 60, Location = System.Web.UI.OutputCacheLocation.Client)]
         public ActionResult Index()
         {
+            int countBTS = 0;
+            IEnumerable<Certificate> data = _btsCertificateService.getAll(out countBTS, true).ToList();
+            ViewBag.Certificates = Mapper.Map<List<CertificateViewModel>>(data);
+
             var statisticData = _stattisticService.GetStatisticCertificateByYear();
 
             //var slideModel = _commonService.GetSlides();
@@ -39,12 +44,18 @@ namespace BTS.Web.Controllers
             //homeViewModel.Slides = slideView;
 
             //var lastestProductModel = _CertificateService.GetLastest(3);
+
             //var topSaleProductModel = _CertificateService.GetHotProduct(3);
             //var lastestProductViewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(lastestProductModel);
             //var topSaleProductViewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(topSaleProductModel);
             //homeViewModel.StatisticCertificateByOperator = _stattisticService.GetStatisticCertificateByOperator();
             //homeViewModel.StatisticCertificateByOperatorCity = _stattisticService.GetStatisticCertificateByOperatorCity();
-            return View(homeViewModel);
+            return View(ViewBag.Certificates);
+        }
+
+        public ActionResult Index_Test()
+        {
+            return View();
         }
 
         [ChildActionOnly]
@@ -88,6 +99,21 @@ namespace BTS.Web.Controllers
             List<BTS.Common.ViewModels.StatisticCertificate> dataSumary = _stattisticService.GetStatisticCertificateByYear().ToList();
 
             return Json(dataSumary, JsonRequestBehavior.AllowGet);
+        }
+
+        //GET: Ajax List Category
+
+        public JsonResult loadDataTableBE()
+        {
+            int countItem;
+            IEnumerable<Certificate> data = _btsCertificateService.getAll(out countItem, true).ToList();
+            IEnumerable<CertificateViewModel> dataViewModel = Mapper.Map<List<CertificateViewModel>>(data);
+            if (countItem > 0)
+            {
+                //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };
+                return Json(new { aaData = dataViewModel }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { aaData = "" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

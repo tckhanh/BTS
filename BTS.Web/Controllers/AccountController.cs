@@ -213,9 +213,7 @@ namespace BTS.Web.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOut()
+        public ActionResult Logout()
         {
             IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
             authenticationManager.SignOut();

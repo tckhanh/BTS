@@ -3,6 +3,7 @@ using BTS.Common.ViewModels;
 using BTS.Model.Models;
 using BTS.Service;
 using BTS.Web.Common;
+using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
