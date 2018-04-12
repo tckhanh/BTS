@@ -31,6 +31,8 @@ namespace BTS.Data.Repository
         IEnumerable<Certificate> getLastOwnCertificates(string btsCode, string operatorID);
 
         IEnumerable<Certificate> getLastNoOwnCertificates(string btsCode, string operatorID);
+
+        IEnumerable<string> GetIssueYears();
     }
 
     public class CertificateRepository : RepositoryBase<Certificate>, ICertificateRepository
@@ -213,6 +215,14 @@ namespace BTS.Data.Repository
                          orderby certificate.IssuedDate descending
                          select certificate;
             return query2;
+        }
+
+        public IEnumerable<string> GetIssueYears()
+        {
+            IEnumerable<string> query1 = from certificate in DbContext.Certificates
+                                         group certificate by certificate.IssuedDate.Value.Year into OperatorGroup
+                                         select OperatorGroup.Key.ToString();
+            return query1;
         }
     }
 }

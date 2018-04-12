@@ -13,20 +13,19 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="~/Assets/admin/libs/Ionicons/css/ionicons.min.css">
     <!-- DataTables -->
-    <link rel="stylesheet" href="~/Assets/admin/libs/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    @*<link rel="stylesheet" href="~/Assets/admin/libs/datatables.net-bs/css/dataTables.bootstrap.min.css">*@
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.16/datatables.min.css" />
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Assets/admin/libs/adminLTE/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="~/Assets/admin/libs/adminLTE/dist/css/skins/_all-skins.min.css">
+
     <!-- Morris chart -->
     <link rel="stylesheet" href="~/Assets/admin/libs/morris.js/morris.css">
     <!-- jvectormap -->
     <link rel="stylesheet" href="~/Assets/admin/libs/jvectormap/jquery-jvectormap.css">
-    <!-- Date Picker -->
-    <link rel="stylesheet" href="~/Assets/admin/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="~/Assets/admin/libs/bootstrap-daterangepicker/daterangepicker.css">
+
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="~/Assets/admin/libs/adminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
@@ -38,9 +37,11 @@
     <![endif]-->
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    @RenderSection("headCSS", required: false)
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">    
+<body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
         <!--header-->
         @{Html.RenderAction("Header", "Home");}
@@ -62,10 +63,10 @@
         <div class="control-sidebar-bg"></div>
     </div>
     <!-- ./wrapper -->
-
+    @*<script src="https://cdn.plot.ly/plotly-basic-latest.min.js"></script>*@
     <!-- jQuery 3 -->
     <script src="~/Assets/admin/libs/jquery/dist/jquery.min.js"></script>
-    <script src="~/Assets/admin/libs/jquery/dist/jquery.min.js"></script>
+
     <!-- Bootstrap 3.3.7 -->
     <script src="~/Assets/admin/libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- DataTables -->
@@ -77,11 +78,10 @@
     <script src="~/Assets/admin/libs/fastclick/lib/fastclick.js"></script>
     <!-- AdminLTE App -->
     <script src="~/Assets/admin/libs/adminLTE/dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->    
+    <!-- AdminLTE for demo purposes -->
     <script src="~/Assets/admin/libs/adminLTE/dist/js/demo.js"></script>
 
     <!-- page script -->
     @RenderSection("footerJS", required: false)
-
 </body>
 </html>

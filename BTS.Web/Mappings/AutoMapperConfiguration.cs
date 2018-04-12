@@ -12,7 +12,8 @@ namespace BTS.Web.Mappings
     {
         public static IMapper GetMapper()
         {
-            var config = new MapperConfiguration(cfg => {
+            var config = new MapperConfiguration(cfg =>
+            {
                 cfg.CreateMap<Applicant, ApplicantViewModel>();
                 cfg.CreateMap<Operator, OperatorViewModel>();
                 //lots more maps...?
@@ -24,11 +25,12 @@ namespace BTS.Web.Mappings
 
         public static void Configure()
         {
-            Mapper.Initialize(cfg => {
+            Mapper.Initialize(cfg =>
+            {
                 cfg.CreateMap<InCaseOf, InCaseOfViewModel>();
                 cfg.CreateMap<Applicant, ApplicantViewModel>();
                 cfg.CreateMap<Certificate, CertificateViewModel>();
-                cfg.CreateMap<City, CityViewModel>();                
+                cfg.CreateMap<City, CityViewModel>();
                 cfg.CreateMap<Operator, OperatorViewModel>();
                 cfg.CreateMap<Model.Models.Profile, ProfileViewModel>();
                 cfg.CreateMap<SubBtsInCert, SubBtsInCertViewModel>();
@@ -37,12 +39,12 @@ namespace BTS.Web.Mappings
                 cfg.CreateMap<Slide, SlideViewModel>();
                 cfg.CreateMap<Page, PageViewModel>();
                 cfg.CreateMap<ContactDetail, ContactDetailViewModel>();
-                
+
                 cfg.CreateMap<ApplicationGroup, ApplicationGroupViewModel>();
                 cfg.CreateMap<ApplicationRole, ApplicationRoleViewModel>();
                 cfg.CreateMap<ApplicationUser, ApplicationUserViewModel>();
                 /* etc */
-            });            
+            });
         }
     }
 }

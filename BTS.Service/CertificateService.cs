@@ -39,7 +39,11 @@ namespace BTS.Service
 
         IEnumerable<Certificate> getCertificateByOperator(string operatorID);
 
+        IEnumerable<Certificate> getCertificateProfile(int profileID);
+
         Certificate getByID(string ID);
+
+        IEnumerable<string> getIssueYears();
 
         void Save();
     }
@@ -146,6 +150,16 @@ namespace BTS.Service
         public IEnumerable<Certificate> getCertificateByOperator(string operatorID)
         {
             return _CertificateRepository.GetMulti(x => x.OperatorID == operatorID);
+        }
+
+        public IEnumerable<string> getIssueYears()
+        {
+            return _CertificateRepository.GetIssueYears();
+        }
+
+        public IEnumerable<Certificate> getCertificateProfile(int profileID)
+        {
+            return _CertificateRepository.GetMulti(x => x.ProfileID == profileID);
         }
     }
 }

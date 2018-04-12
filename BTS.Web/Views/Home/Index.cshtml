@@ -5,28 +5,117 @@
 }
 
 @section footerJS {
+    <script src="~/Assets/admin/libs/moment/moment.js"></script>
     <script>
         $(function () {
-            var Controller = $('#admin-data-table').attr("data-controller");
-            var Action = $('#admin-data-table').attr("data-action");
-            var urlTBData = "/" + Controller + "/" + Action;
-            $("#admin-data-table").dataTable({
+            //$("#admin-data-table-1").dataTable({
+            //    "processing": true,
+            //    "info": true,
+            //    "ajax": {
+            //        "url": "/Home/loadDataTableBE",
+            //        "type": "GET",
+            //        "dataType": "json"
+            //    },
+            //    "columns": [
+            //        { "data": "ID", "autoWidth": true },
+            //        { "data": "OperatorID", "autoWidth": true },
+            //        { "data": "BtsCode", "autoWidth": true },
+            //        {
+            //            "data": "IssuedDate", "autoWidth": true
+            //        },
+            //        { "data": "ExpiredDate", "autoWidth": true }
+            //    ]
+            //});
+
+            $("#admin-data-table-2").dataTable({
                 "processing": true,
                 "info": true,
                 "ajax": {
-                    "url": urlTBData,
-                    "type": "GET",
-                    "dataSrc": "aaData"
+                    "url": "/Home/loadDataTableBE",
+                    "type": "POST",
+                    "dataSrc": "aaData",
+                    "data": function (d) {
+                        d.ID = $('#txtID').val().trim();
+                        d.OperatorID = $('#ddOperatorID').val().trim();
+                    }
                 },
                 "columns": [
                     { "data": "ID" },
                     { "data": "OperatorID" },
                     { "data": "BtsCode" },
                     {
-                        "data": "IssuedDate"                      
+                        "data": "IssuedDate"
                     },
                     { "data": "ExpiredDate" }
                 ]
+            });
+
+            //$("#admin-data-table-3").dataTable({
+            //    "processing": true, // for show processing bar
+            //    "serverSide": true, // for processing on side server
+            //    "filter": false,    // for not display search box
+            //    "orderMulti": false,// for disable multicolumn order
+            //    "ajax": {
+            //        "url": "/Home/loadDataServerSide",
+            //        "type": "POST",
+            //        "datatype": "json"
+            //    },
+            //    "columns": [
+            //        { "data": "ID", "name": "ID", "autoWidth": true },
+            //        { "data": "OperatorID", "name": "OperatorID", "autoWidth": true },
+            //        { "data": "BtsCode", "name": "BtsCode", "autoWidth": true },
+            //        {
+            //            "data": "IssuedDate", "name": "IssuedDate", "autoWidth": true
+            //        },
+            //        { "data": "ExpiredDate", "name": "ExpiredDate", "autoWidth": true }
+            //    ]
+            //});
+
+            var searchString = {
+                ID: $('#txtID').val().trim(),
+                OperatorID: $('#ddOperatorID').val().trim()
+            };
+
+            $("#admin-data-table-4").DataTable({
+                "processing": true, // for show processing bar
+                "serverSide": true, // for processing on side server
+                "filter": false,    // for not display search box
+                "orderMulti": false,// for disable multicolumn order
+                //"dom": '<"top"i>rt<"bottom"lp><"clear">', // for hide default Search box
+                "ajax": {
+                    "url": "/Home/loadCustomDataServerSide",
+                    "type": "POST",
+                    "datatype": "json",
+                    "data": function (d) {
+                        d.ID = $('#txtID').val().trim();
+                        d.OperatorID = $('#ddOperatorID').val().trim();
+                    }
+                },
+                "columns": [
+                    { "data": "ID", "name": "ID", "autoWidth": true },  // index 0
+                    { "data": "OperatorID", "name": "OperatorID", "autoWidth": true },  // index 1
+                    { "data": "BtsCode", "name": "BtsCode", "autoWidth": true },        // index 2
+                    {
+                        "data": "IssuedDate", "name": "IssuedDate", "autoWidth": true,  // index 3
+                        "render": function (data, type, row) {
+                            return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
+                        }
+                    },
+                    {
+                        "data": "ExpiredDate", "name": "ExpiredDate", "autoWidth": true, // index 4
+                        "render": function (data, type, row) {
+                            return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
+                        }
+                    }]
+            });
+
+            //Apply custom Search on dataTable here
+            var oTable4 = $('#admin-data-table-4').DataTable();
+            var oTable2 = $('#admin-data-table-2').DataTable();
+            $('#btnSearch').click(function () {
+                // hit search on Server
+                oTable4.draw();
+                oTable2.ajax.reload();
             });
         });
     </script>
@@ -56,7 +145,29 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="admin-data-table" class="table table-bordered table-hover" data-controller="Home" data-action="loadDataTableBE">
+
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Max GCNKD</td>
+                                    <td><input type="text" id="txtID" /></td>
+                                    <td>Nhà mang</td>
+                                    <td>
+                                        <select id="ddOperatorID">
+                                            <option value="">Tất cả</option>
+                                            <option value="MOBIFONE">MOBIFONE</option>
+                                            <option value="VINAPHONE">VINAPHONE</option>
+                                            <option value="VIETTEL">VIETTEL</option>
+                                            <option value="VNMOBILE">VNMOBILE</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="button" id="btnSearch" value="Tìm kiếm" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table id="admin-data-table-4" class="table table-bordered table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -67,7 +178,43 @@
                                 </tr>
                             </thead>
                         </table>
-                        }
+
+                        @*<table id="admin-data-table-1" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>OperatorID</th>
+                                        <th>BtsCode</th>
+                                        <th>IssuedDate</th>
+                                        <th>ExpiredDate</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        *@
+
+                        <table id="admin-data-table-2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>OperatorID</th>
+                                    <th>BtsCode</th>
+                                    <th>IssuedDate</th>
+                                    <th>ExpiredDate</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        @*<table id="admin-data-table-3" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>OperatorID</th>
+                                        <th>BtsCode</th>
+                                        <th>IssuedDate</th>
+                                        <th>ExpiredDate</th>
+                                    </tr>
+                                </thead>
+                            </table>*@
                     </div>
                     <!-- /.box-body -->
                 </div>
