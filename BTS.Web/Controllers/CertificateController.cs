@@ -46,6 +46,8 @@ namespace BTS.Web.Controllers
             var CityID = Request.Form.GetValues("CityID").FirstOrDefault();
             var OperatorID = Request.Form.GetValues("OperatorID").FirstOrDefault();
             var ProfileID = Request.Form.GetValues("ProfileID").FirstOrDefault();
+            var BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress").FirstOrDefault().ToLower();
+
             DateTime StartDate, EndDate;
             if (!DateTime.TryParse(Request.Form.GetValues("StartDate").FirstOrDefault(), out StartDate))
                 Console.Write("Loi chuyen doi kieu");
@@ -74,6 +76,11 @@ namespace BTS.Web.Controllers
             if (!(string.IsNullOrEmpty(ProfileID)))
             {
                 Items = Items.Where(x => x.ProfileID.ToString() == ProfileID);
+            }
+
+            if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
+            {
+                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress));
             }
 
             var recordsFiltered = Items.Count();

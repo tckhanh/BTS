@@ -12,16 +12,18 @@ namespace BTS.Web.Controllers
 {
     public class PageController : BaseController
     {
-        IPageService _pageService;
+        private IPageService _pageService;
+
         public PageController(IPageService pageService, IErrorService errorService) : base(errorService)
         {
             this._pageService = pageService;
         }
+
         // GET: Page
         public ActionResult Index(string alias)
         {
             var page = _pageService.GetByAlias(alias);
-            var model = Mapper.Map<Page,PageViewModel>(page);
+            var model = Mapper.Map<WebPage, PageViewModel>(page);
             return View(model);
         }
     }

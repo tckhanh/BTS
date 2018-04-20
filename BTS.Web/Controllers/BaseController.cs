@@ -27,17 +27,17 @@ namespace BTS.Web.Controllers
             this._errorService = errorService;
         }
 
-        protected bool ExecuteDatabase(Func<string, int> function, string excelConnectionString)
+        // Thuc hien lenh ghi Log neu có loi va nem loi ra ngoai
+        protected void ExecuteDatabase(Func<string, int> function, string excelConnectionString)
         {
-            Error error = new Error();
             int idReturn = 0;
+            string description = "";
             try
             {
                 idReturn = function.Invoke(excelConnectionString);
             }
             catch (DbEntityValidationException ex)
             {
-                string description = "";
                 foreach (var eve in ex.EntityValidationErrors)
                 {
                     Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
@@ -48,53 +48,34 @@ namespace BTS.Web.Controllers
                         description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
                     }
                 }
-
-                error.Controller = ex.Source;
-                error.Description = description;
-                error.CreatedDate = DateTime.Now;
-                error.Message = ex.Message;
-                error.StackTrace = ex.StackTrace;
+                LogError(ex, description);
+                throw;
             }
             catch (DbUpdateException ex)
             {
-                error.CreatedDate = DateTime.Now;
-                error.Message = ex.Message;
-                error.StackTrace = ex.StackTrace;
+                LogError(ex);
+                throw;
             }
             catch (Exception ex)
             {
-                error.CreatedDate = DateTime.Now;
-                error.Message = ex.Message;
-                error.StackTrace = ex.StackTrace;
+                LogError(ex);
+                throw;
             }
             finally
             {
             }
-
-            if (string.IsNullOrEmpty(error.Message))
-            {
-                return true;
-                //return new Message(idReturn, false, "Success");
-            }
-            else
-            {
-                LogError(error);
-                return false;
-                //return new Message(idReturn, true, error.Message);
-            }
         }
 
-        protected bool ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, out int ID)
+        protected void ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, out int ID)
         {
-            Error error = new Error();
             ID = 0;
+            string description = "";
             try
             {
                 ID = function.Invoke(excelConnectionString, 0);
             }
             catch (DbEntityValidationException ex)
             {
-                string description = "";
                 foreach (var eve in ex.EntityValidationErrors)
                 {
                     Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
@@ -105,53 +86,34 @@ namespace BTS.Web.Controllers
                         description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
                     }
                 }
-
-                error.Controller = ex.Source;
-                error.Description = description;
-                error.CreatedDate = DateTime.Now;
-                error.Message = ex.Message;
-                error.StackTrace = ex.StackTrace;
+                LogError(ex, description);
+                throw;
             }
             catch (DbUpdateException ex)
             {
-                error.CreatedDate = DateTime.Now;
-                error.Message = ex.Message;
-                error.StackTrace = ex.StackTrace;
+                LogError(ex);
+                throw;
             }
             catch (Exception ex)
             {
-                error.CreatedDate = DateTime.Now;
-                error.Message = ex.Message;
-                error.StackTrace = ex.StackTrace;
+                LogError(ex);
+                throw;
             }
             finally
             {
             }
-
-            if (string.IsNullOrEmpty(error.Message))
-            {
-                return true;
-                //return new Message(idReturn, false, "Success");
-            }
-            else
-            {
-                LogError(error);
-                return false;
-                //return new Message(idReturn, true, error.Message);
-            }
         }
 
-        protected bool ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, int ID)
+        protected void ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, int ID)
         {
-            Error error = new Error();
             int idReturn = 0;
+            string description = "";
             try
             {
                 idReturn = function.Invoke(excelConnectionString, ID);
             }
             catch (DbEntityValidationException ex)
             {
-                string description = "";
                 foreach (var eve in ex.EntityValidationErrors)
                 {
                     Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
@@ -163,47 +125,36 @@ namespace BTS.Web.Controllers
                     }
                 }
 
-                error.Controller = ex.Source;
-                error.Description = description;
-                error.CreatedDate = DateTime.Now;
-                error.Message = ex.Message;
-                error.StackTrace = ex.StackTrace;
+                LogError(ex, description);
+                throw;
             }
             catch (DbUpdateException ex)
             {
-                error.CreatedDate = DateTime.Now;
-                error.Message = ex.Message;
-                error.StackTrace = ex.StackTrace;
+                LogError(ex);
+                throw;
             }
             catch (Exception ex)
             {
-                error.CreatedDate = DateTime.Now;
-                error.Message = ex.Message;
-                error.StackTrace = ex.StackTrace;
+                LogError(ex);
+                throw;
             }
             finally
             {
             }
-
-            if (string.IsNullOrEmpty(error.Message))
-            {
-                return true;
-                //return new Message(idReturn, false, "Success");
-            }
-            else
-            {
-                LogError(error);
-                return false;
-                //return new Message(idReturn, true, error.Message);
-            }
         }
 
-        private void LogError(Error error)
+        public void LogError(Exception e, string description = "")
         {
-            TempData["error"] = error.Message;
+            TempData["error"] = e.Message;
             try
             {
-                error = _errorService.Create(error);
+                Error error = new Error();
+                error.Controller = e.Source;
+                error.CreatedDate = DateTime.Now;
+                error.Message = e.Message;
+                error.Description = description;
+                error.StackTrace = e.StackTrace;
+                _errorService.Create(error);
                 _errorService.Save();
             }
             catch (DbEntityValidationException ex)

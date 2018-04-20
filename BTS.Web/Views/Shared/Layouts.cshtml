@@ -42,6 +42,12 @@
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
+    <div>
+        <input type="hidden" id="success" value="@TempData["success"]" />
+        <input type="hidden" id="info" value="@TempData["info"]" />
+        <input type="hidden" id="warning" value="@TempData["warning"]" />
+        <input type="hidden" id="error" value="@TempData["error"]" />
+    </div>
     <div class="wrapper">
         <!--header-->
         @{Html.RenderAction("Header", "Home");}
@@ -81,6 +87,8 @@
     <!-- AdminLTE for demo purposes -->
     <script src="~/Assets/admin/libs/adminLTE/dist/js/demo.js"></script>
 
+    <script src="~/Assets/admin/libs/toastr/toastr.min.js"></script>
+    <script src="~/Assets/client/js/common/message.js"></script>
     <!-- page script -->
     @RenderSection("footerJS", required: false)
 </body>

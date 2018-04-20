@@ -55,7 +55,7 @@
     <section class="content">
         <div class="row col-md-12">
             <!-- SELECT2 EXAMPLE -->
-            <div class="box box-default col-md-8">
+            <div class="box box-default">
                 <div class="box-header with-border">
                     <h3 class="BTS-title">LỌC GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
                     <div class="box-tools pull-right">
@@ -68,13 +68,14 @@
                     <div class="clearfix"></div>
                     <div class="row">
                         <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                            @Html.AntiForgeryToken()
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-6 col-sm-6 col-xs-12" for="DateRange">
                                         Khoảng thời gian<span class="required"></span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="text" name="DateRange" value="" style="width:100%" />
+                                        <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -86,7 +87,7 @@
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in cities)
                                             {
-                                                <option value="@item.ID">@item.Name</option>
+                                            <option value="@item.ID">@item.Name</option>
                                             }
                                         </select>
                                     </div>
@@ -103,7 +104,7 @@
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in operators)
                                             {
-                                                <option value="@item.ID">@item.ID _ @item.Name</option>
+                                            <option value="@item.ID">@item.ID _ @item.Name</option>
                                             }
                                         </select>
                                     </div>
@@ -117,12 +118,22 @@
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in profiles)
                                             {
-                                                <option value="@item.ID">@item.BtsQuantity BTS _ @item.ApplicantID _ @item.ProfileNum</option>
+                                            <option value="@item.ID">@item.BtsQuantity BTS _ @item.ApplicantID _ @item.ProfileNum</option>
                                             }
                                         </select>
                                     </div>
                                 </div>
                                 <div class="ln_solid"></div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
+                                        Mã trạm/Địa chỉ trạm <span class="required"></span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input id="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">

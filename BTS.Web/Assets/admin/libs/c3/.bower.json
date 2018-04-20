@@ -36,6 +36,6 @@
     "commit": "3ca01bdf5cd6c99eab777a02ce5aa6ddc9087825"
   },
   "_source": "https://github.com/masayuki0812/c3.git",
-  "_target": "*",
+  "_target": "~0.5.3",
   "_originalSource": "c3"
 }

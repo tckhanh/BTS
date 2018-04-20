@@ -109,7 +109,6 @@
                 </li>
             </ul>
             <!-- /.control-sidebar-menu -->
-
         </div>
         <!-- /.tab-pane -->
         <!-- Stats tab content -->
@@ -118,6 +117,7 @@
         <!-- Settings tab content -->
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
+                @Html.AntiForgeryToken()
                 <h3 class="control-sidebar-heading">General Settings</h3>
 
                 <div class="form-group">

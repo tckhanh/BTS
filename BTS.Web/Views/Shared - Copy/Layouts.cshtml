@@ -78,6 +78,7 @@
     @*<script src="~/Assets/admin/libs/adminLTE/dist/js/pages/dashboard.js"></script>*@
     <!-- AdminLTE for demo purposes -->
     @*<script src="~/Assets/admin/libs/adminLTE/dist/js/demo.js"></script>*@
+
     <script src="~/Assets/admin/libs/toastr/toastr.min.js"></script>
     <script src="~/Assets/client/js/common/message.js"></script>
 </head>
@@ -225,6 +226,7 @@
                 <!-- Settings tab content -->
                 <div class="tab-pane" id="control-sidebar-settings-tab">
                     <form method="post">
+                        @Html.AntiForgeryToken()
                         <h3 class="control-sidebar-heading">General Settings</h3>
 
                         <div class="form-group">

@@ -37,7 +37,7 @@ namespace BTS.Web.Mappings
 
                 cfg.CreateMap<Footer, FooterViewModel>();
                 cfg.CreateMap<Slide, SlideViewModel>();
-                cfg.CreateMap<Page, PageViewModel>();
+                cfg.CreateMap<WebPage, PageViewModel>();
                 cfg.CreateMap<ContactDetail, ContactDetailViewModel>();
 
                 cfg.CreateMap<ApplicationGroup, ApplicationGroupViewModel>();

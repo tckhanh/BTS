@@ -30,6 +30,7 @@ function initDataTable() {
                 d.ProfileID = $('#ProfileID').val().trim();
                 d.StartDate = startDate.toISOString();
                 d.EndDate = endDate.toISOString();
+                d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
             }
         },
         "columns": [
@@ -184,9 +185,9 @@ function loadCertificatePivotTable() {
 
     $("#pivotTable").pivotUI(inputFunction,
     {
+        renderers: renderers,
         rows: ["OperatorID"],
         cols: ["CityID"],
-        renderers: renderers,
         rendererName: "Horizontal Stacked Bar Chart",
         rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
     });

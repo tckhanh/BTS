@@ -168,7 +168,7 @@ namespace BTS.Web.App_Start
             {
                 try
                 {
-                    var page = new Page()
+                    var page = new WebPage()
                     {
                         Name = "Giới thiệu",
                         Alias = "gioi-thieu",

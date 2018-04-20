@@ -1,17 +1,31 @@
 ﻿$(function () {
-    if ($('#success').val()) {
-        displayMessage($('#success').val(), 'success');
-    }
-    if ($('#info').val()) {
-        displayMessage($('#info').val(), 'info');
-    }
-    if ($('#warning').val()) {
-        displayMessage($('#warning').val(), 'warning');
-    }
-    if ($('#error').val()) {
-        displayMessage($('#error').val(), 'error');
-    }
+    checkMessage();
 });
+
+var checkMessage = function () {
+    var error = $('#error').val();
+    var success = $('#success').val();
+    var info = $('#info').val();
+    var warning = $('#warning').val();
+
+    if (success != null) {
+        displayMessage(success, 'success');
+        return true;
+    }
+    if (info != null) {
+        displayMessage(info, 'info');
+        return true;
+    }
+    if (warning != null) {
+        displayMessage(warning, 'warning');
+        return true;
+    }
+    if (error != null) {
+        displayMessage(error, 'error');
+        return false;
+    }
+};
+
 var displayMessage = function (message, msgType) {
     toastr.options = {
         "closeButton": true,

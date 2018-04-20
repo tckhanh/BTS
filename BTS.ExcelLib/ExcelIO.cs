@@ -1,113 +1,256 @@
-﻿using System;
+﻿using BTS.Common;
+using BTS.Model.Models;
+using BTS.Service;
+using System;
 using System.Data;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Web.Services;
+using System.Web.UI;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace BTS.ExcelLib
 {
-    public static class ExcelIO
+    // Class ExcelIO tuong duong nhu Class BaseController
+    public class ExcelIO
     {
-        public static DataTable ReadSheet(string excelConnectionString, string sheetName)
+        private IErrorService _errorService;
+
+        public ExcelIO(IErrorService errorService)
         {
-            DataTable dt = new DataTable();
-
-            //Create Connection to Excel work book and add oledb namespace
-            OleDbConnection excelConnection = new OleDbConnection(excelConnectionString);
-
-            // Read Data from Sheet
-            string query = string.Format("Select * from [{0}]", sheetName + "$");
-
-            OleDbDataAdapter dataAdapter = new OleDbDataAdapter(query, excelConnection);
-            excelConnection.Close();
-            //dataAdapter.FillSchema(dt, SchemaType.Source);
-            //foreach (DataColumn cl in dt.Columns)
-            //{
-            //    cl.DataType = typeof(string);
-            //}
-            dataAdapter.Fill(dt);
-
-            // dt = BuildHeadersFromFirstRowThenRemoveFirstRow(dt);
-
-            return dt;
+            _errorService = errorService;
         }
 
-        private static DataTable BuildHeadersFromFirstRowThenRemoveFirstRow(DataTable dt)
-        {
-            DataRow firstRow = dt.Rows[0];
-
-            for (int i = 0; i < dt.Columns.Count; i++)
-            {
-                if (!string.IsNullOrWhiteSpace(firstRow[i].ToString())) // handle empty cell
-                    dt.Columns[i].ColumnName = firstRow[i].ToString().Trim();
-            }
-
-            dt.Rows.RemoveAt(0);
-
-            return dt;
-        }
-
-        public static bool FormatColumnDecimalToText(string fullFileName)
+        public void LogError(Exception e, string description = "")
         {
             try
             {
-                Excel.Application ExcelApp = new Excel.Application();
-                Excel.Workbook ExcelWorkbook = ExcelApp.Workbooks.Open(fullFileName);
-                ExcelApp.Visible = false;
+                WebMsgBox.Show(e.Message);
 
-                //Looping through all available sheets
-                foreach (Excel.Worksheet ExcelWorksheet in ExcelWorkbook.Sheets)
+                Error error = new Error();
+                error.Controller = e.Source;
+                error.CreatedDate = DateTime.Now;
+                error.Message = e.Message;
+                error.Description = description;
+                error.StackTrace = e.StackTrace;
+                _errorService.Create(error);
+                _errorService.Save();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
                 {
-                    //Selecting the worksheet where we want to perform action
-                    ExcelWorksheet.Select(Type.Missing);
-
-                    for (int col = 1; col < ExcelWorksheet.UsedRange.Columns.Count; col++)
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    foreach (var ve in eve.ValidationErrors)
                     {
-                        if (ExcelWorksheet.Cells[1, col] == Common.CommonConstants.Sheet_Certificate_Longtitude || ExcelWorksheet.Cells[1, col] == Common.CommonConstants.Sheet_Certificate_Latitude ||
-                            ExcelWorksheet.Cells[1, col] == Common.CommonConstants.Sheet_Certificate_MaxHeightIn100m || ExcelWorksheet.Cells[1, col] == Common.CommonConstants.Sheet_Certificate_MinAntenHeight ||
-                            ExcelWorksheet.Cells[1, col] == Common.CommonConstants.Sheet_Certificate_OffsetHeight || ExcelWorksheet.Cells[1, col] == Common.CommonConstants.Sheet_Certificate_SafeLimit)
-                        {
-                            ExcelWorksheet.Columns[col].NumberFormat = "@";
-                        }
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
                     }
                 }
-
-                //saving excel file using Interop
-                ExcelWorkbook.Save();
-
-                //closing file and releasing resources
-                ExcelWorkbook.Close(Type.Missing, Type.Missing, Type.Missing);
-                Marshal.FinalReleaseComObject(ExcelWorkbook);
-                ExcelApp.Quit();
-                Marshal.FinalReleaseComObject(ExcelApp);
+            }
+            catch (DbUpdateException ex)
+            {
+                Trace.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
+                Trace.WriteLine(ex.Message);
+            }
+        }
+
+        public bool execNonQuery(string excelConnectionString, String sql)
+        {
+            using (OleDbConnection excelConnection = new OleDbConnection(excelConnectionString))
+            {
+                try
+                {
+                    OleDbCommand myCommand = new OleDbCommand();
+                    excelConnection.Open();
+                    myCommand.Connection = excelConnection;
+                    myCommand.CommandText = sql;
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    string description = "";
+                    foreach (var eve in ex.EntityValidationErrors)
+                    {
+                        Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                        description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                            description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                        }
+                    }
+
+                    LogError(ex, description);
+                    Trace.WriteLine(ex.ToString());
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    LogError(ex);
+                    Trace.WriteLine(ex.ToString());
+                    throw;
+                }
+                finally
+                {
+                    if (excelConnection != null)
+                        excelConnection.Close();
+                }
+            }
+        }
+
+        public DataTable execQuery(string excelConnectionString, string sql)
+        {
+            using (OleDbConnection excelConnection = new OleDbConnection(excelConnectionString))
+            {
+                try
+                {
+                    DataTable dt = new DataTable();
+                    OleDbDataAdapter dataAdapter = new OleDbDataAdapter(sql, excelConnection);
+                    dataAdapter.Fill(dt);
+                    return dt;
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    string description = "";
+                    foreach (var eve in ex.EntityValidationErrors)
+                    {
+                        Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                        description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                            description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                        }
+                    }
+
+                    LogError(ex, description);
+                    Trace.WriteLine(ex.ToString());
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    LogError(ex);
+                    Trace.WriteLine(ex.ToString());
+                    throw;
+                }
+                finally
+                {
+                    if (excelConnection != null)
+                        excelConnection.Close();
+                }
+            }
+        }
+
+        public DataTable ReadSheet(string excelConnectionString, string sheetName)
+        {
+            string query = string.Format("Select * from [{0}]", sheetName + "$");
+            return execQuery(excelConnectionString, query);
+        }
+
+        public bool UpdateDataInSheet(string excelConnectionString, String SheetName, string keyField, string dataField, DataTable dt)
+        {
+            bool result = true;
+            string query = "";
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (!String.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_LastCertificateNo].ToString()))
+                {
+                    query = "Update [" + SheetName + "$] set " + dataField + " = '" + dt.Rows[i][dataField] + "' where " + keyField + " = '" + dt.Rows[i][keyField] + "'";
+                    result = execNonQuery(excelConnectionString, query) && result;
+                }
+            }
+            return result;
+        }
+
+        public bool FormatColumnDecimalToText(string fullFileName)
+        {
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkBook = new Excel.Workbook();
+            object misValue = System.Reflection.Missing.Value;
+            try
+            {
+                xlApp.Visible = false;
+                xlWorkBook = xlApp.Workbooks.Open(fullFileName, 0, false, 5, "", "", false, Excel.XlPlatform.xlWindows, "", true, false, 0, true, 1, 0);   //@"H:\TestFile.xlsx"
+
+                //Looping through all available sheets
+                foreach (Excel.Worksheet xlWorkSheet in xlWorkBook.Sheets)
+                {
+                    //Selecting the worksheet where we want to perform action
+                    xlWorkSheet.Select(Type.Missing);
+
+                    for (int col = 1; col < xlWorkSheet.UsedRange.Columns.Count; col++)
+                    {
+                        if (xlWorkSheet.Cells[1, col].Value != null)
+                        {
+                            if (xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_Longtitude || xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_Latitude ||
+                            xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_MaxHeightIn100m || xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_MinAntenHeight ||
+                            xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_OffsetHeight || xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_SafeLimit ||
+                            xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_BtsCode)
+                            {
+                                xlWorkSheet.Columns[col].NumberFormat = "@";
+                            }
+                        }
+                    }
+                    Marshal.ReleaseComObject(xlWorkSheet);
+                }
+
+                xlWorkBook.Save();
+                return true;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string description = "";
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+
+                LogError(ex, description);
                 Trace.WriteLine(ex.ToString());
-                return false;
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                Trace.WriteLine(ex.ToString());
+                throw;
             }
             finally
             {
+                xlWorkBook.Close(misValue, misValue, misValue);
+                xlApp.Quit();
+                // release all the application object from the memory
+                Marshal.ReleaseComObject(xlApp);
+                Marshal.ReleaseComObject(xlWorkBook);
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
-            return true;
         }
 
-        public static void AddNewColumns(string fullFileName, string sheetName, string colNames)
+        public bool AddNewColumns(string fullFileName, string sheetName, string colNames)
         {
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkBook = new Excel.Workbook();
+            Excel.Worksheet xlWorkSheet = new Excel.Worksheet();
             Excel.Range rng;
             object misValue = System.Reflection.Missing.Value;
-
             try
             {
-                xlApp = new Excel.Application();
                 xlApp.Visible = false;
                 xlWorkBook = xlApp.Workbooks.Open(fullFileName, 0, false, 5, "", "", false, Excel.XlPlatform.xlWindows, "", true, false, 0, true, 1, 0);   //@"H:\TestFile.xlsx"
                 xlWorkSheet = (Excel.Worksheet)xlWorkBook.Sheets[sheetName];
@@ -118,7 +261,7 @@ namespace BTS.ExcelLib
                 int colCount = rng.Columns.Count;
                 int rowCount = rng.Rows.Count;
                 rng = (Excel.Range)xlWorkSheet.Cells[rowCount, colCount];
-                Excel.Range newColumn = rng.EntireColumn;
+                //Excel.Range newColumn = rng.EntireColumn;
 
                 string[] columns = colNames.Split(new Char[] { ';' });
                 for (int i = 0; i < columns.Length; i++)
@@ -130,129 +273,234 @@ namespace BTS.ExcelLib
                 //xlWorkBook.SaveAs(@"H:\TestFile.xlsx", misValue, misValue, misValue, misValue, misValue,
                 //    Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
                 xlWorkBook.Save();
-                xlWorkBook.Close(misValue, misValue, misValue);
-                xlApp.Quit();
+                Marshal.ReleaseComObject(rng);
+                return true;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string description = "";
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
 
-                // release all the application object from the memory
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(rng);
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkSheet);
-                Marshal.ReleaseComObject(xlWorkBook);
-                Marshal.ReleaseComObject(xlApp);
+                LogError(ex, description);
+                Trace.WriteLine(ex.ToString());
+                throw;
             }
             catch (Exception ex)
             {
+                LogError(ex);
                 Trace.WriteLine(ex.ToString());
+                throw;
             }
             finally
             {
+                xlWorkBook.Close(misValue, misValue, misValue);
+                xlApp.Quit();
+                // release all the application object from the memory
+                Marshal.ReleaseComObject(xlApp);
+                Marshal.ReleaseComObject(xlWorkSheet);
+                Marshal.ReleaseComObject(xlWorkBook);
+
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
         }
 
-        public static void ExportToExcel()
-        {
-            SqlConnection cnn;
-            string connectionString = null;
-            string sql = null;
-            string data = null;
-            int i = 0;
-            int j = 0;
+        //private DataTable BuildHeadersFromFirstRowThenRemoveFirstRow(DataTable dt)
+        //{
+        //    DataRow firstRow = dt.Rows[0];
 
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
+        //    for (int i = 0; i < dt.Columns.Count; i++)
+        //    {
+        //        if (!string.IsNullOrWhiteSpace(firstRow[i].ToString())) // handle empty cell
+        //            dt.Columns[i].ColumnName = firstRow[i].ToString().Trim();
+        //    }
 
-            xlApp = new Excel.Application();
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+        //    dt.Rows.RemoveAt(0);
 
-            connectionString = "data source=servername;initial catalog=databasename;user id=username;password=password;";
-            cnn = new SqlConnection(connectionString);
-            cnn.Open();
-            sql = "SELECT * FROM Product";
-            SqlDataAdapter dscmd = new SqlDataAdapter(sql, cnn);
-            DataSet ds = new DataSet();
-            dscmd.Fill(ds);
+        //    return dt;
+        //}
 
-            for (i = 0; i <= ds.Tables[0].Rows.Count - 1; i++)
-            {
-                for (j = 0; j <= ds.Tables[0].Columns.Count - 1; j++)
-                {
-                    data = ds.Tables[0].Rows[i].ItemArray[j].ToString();
-                    xlWorkSheet.Cells[i + 1, j + 1] = data;
-                }
-            }
+        //public void ExportToExcel()
+        //{
+        //    try
+        //    {
+        //        SqlConnection cnn;
+        //        string connectionString = null;
+        //        string sql = null;
+        //        string data = null;
+        //        int i = 0;
+        //        int j = 0;
 
-            xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
+        //        Excel.Application xlApp;
+        //        Excel.Workbook xlWorkBook;
+        //        Excel.Worksheet xlWorkSheet;
+        //        object misValue = System.Reflection.Missing.Value;
 
-            releaseObject(xlWorkSheet);
-            releaseObject(xlWorkBook);
-            releaseObject(xlApp);
+        //        xlApp = new Excel.Application();
+        //        xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //        xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-            //MessageBox.Show("Excel file created , you can find the file c:\\csharp.net-informations.xls");
-        }
+        //        connectionString = "data source=servername;initial catalog=databasename;user id=username;password=password;";
+        //        cnn = new SqlConnection(connectionString);
+        //        cnn.Open();
+        //        sql = "SELECT * FROM Product";
+        //        SqlDataAdapter dscmd = new SqlDataAdapter(sql, cnn);
+        //        DataSet ds = new DataSet();
+        //        dscmd.Fill(ds);
 
-        private static void AddSheet()
-        {
-            Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+        //        for (i = 0; i <= ds.Tables[0].Rows.Count - 1; i++)
+        //        {
+        //            for (j = 0; j <= ds.Tables[0].Columns.Count - 1; j++)
+        //            {
+        //                data = ds.Tables[0].Rows[i].ItemArray[j].ToString();
+        //                xlWorkSheet.Cells[i + 1, j + 1] = data;
+        //            }
+        //        }
 
-            if (xlApp == null)
-            {
-                Trace.WriteLine("Excel is not properly installed!!");
-                return;
-            }
+        //        xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //        xlWorkBook.Close(true, misValue, misValue);
+        //        xlApp.Quit();
 
-            xlApp.DisplayAlerts = false;
-            string filePath = @"d:\test.xlsx";
-            Excel.Workbook xlWorkBook = xlApp.Workbooks.Open(filePath, 0, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, 0, true, false, false);
-            Excel.Sheets worksheets = xlWorkBook.Worksheets;
+        //        releaseObject(xlWorkSheet);
+        //        releaseObject(xlWorkBook);
+        //        releaseObject(xlApp);
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        string description = "";
+        //        foreach (var eve in ex.EntityValidationErrors)
+        //        {
+        //            Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+        //            description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+        //            foreach (var ve in eve.ValidationErrors)
+        //            {
+        //                Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+        //                description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+        //            }
+        //        }
 
-            var xlNewSheet = (Excel.Worksheet)worksheets.Add(worksheets[1], Type.Missing, Type.Missing, Type.Missing);
-            xlNewSheet.Name = "newsheet";
-            xlNewSheet.Cells[1, 1] = "New sheet content";
+        //        LogError(ex, description);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
 
-            xlNewSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            xlNewSheet.Select();
+        //    //MessageBox.Show("Excel file created , you can find the file c:\\csharp.net-informations.xls");
+        //}
 
-            xlWorkBook.Save();
-            xlWorkBook.Close();
+        //private void AddSheet(string fullFileName, string sheetName)
+        //{
+        //    try
+        //    {
+        //        Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
 
-            releaseObject(xlNewSheet);
-            releaseObject(worksheets);
-            releaseObject(xlWorkBook);
-            releaseObject(xlApp);
+        //        if (xlApp == null)
+        //        {
+        //            Trace.WriteLine("Excel is not properly installed!!");
+        //            return;
+        //        }
 
-            Trace.WriteLine("New Worksheet Created!");
-        }
+        //        xlApp.DisplayAlerts = false;
+        //        Excel.Workbook xlWorkBook = xlApp.Workbooks.Open(fullFileName, 0, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, 0, true, false, false);
+        //        Excel.Sheets worksheets = xlWorkBook.Worksheets;
 
-        private static void DeleteSheet()
-        {
-            Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+        //        var xlNewSheet = (Excel.Worksheet)worksheets.Add(worksheets[1], Type.Missing, Type.Missing, Type.Missing);
+        //        xlNewSheet.Name = sheetName;
 
-            if (xlApp == null)
-            {
-                Trace.WriteLine("Excel is not properly installed!!");
-                return;
-            }
+        //        xlWorkBook.Save();
+        //        xlWorkBook.Close();
 
-            xlApp.DisplayAlerts = false;
-            string filePath = @"d:\test.xlsx";
-            Excel.Workbook xlWorkBook = xlApp.Workbooks.Open(filePath, 0, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, 0, true, false, false);
-            Excel.Sheets worksheets = xlWorkBook.Worksheets;
-            worksheets[1].Delete();
-            xlWorkBook.Save();
-            xlWorkBook.Close();
+        //        releaseObject(xlNewSheet);
+        //        releaseObject(worksheets);
+        //        releaseObject(xlWorkBook);
+        //        releaseObject(xlApp);
 
-            releaseObject(worksheets);
-            releaseObject(xlWorkBook);
-            releaseObject(xlApp);
+        //        Trace.WriteLine("New Worksheet Created!");
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        string description = "";
+        //        foreach (var eve in ex.EntityValidationErrors)
+        //        {
+        //            Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+        //            description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+        //            foreach (var ve in eve.ValidationErrors)
+        //            {
+        //                Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+        //                description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+        //            }
+        //        }
 
-            Trace.WriteLine("Worksheet Deleted!");
-        }
+        //        LogError(ex, description);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        //private void DeleteSheet(string fullFileName, string sheetName)
+        //{
+        //    try
+        //    {
+        //        Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+
+        //        if (xlApp == null)
+        //        {
+        //            Trace.WriteLine("Excel is not properly installed!!");
+        //            return;
+        //        }
+
+        //        xlApp.DisplayAlerts = false;
+        //        Excel.Workbook xlWorkBook = xlApp.Workbooks.Open(fullFileName, 0, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, 0, true, false, false);
+        //        Excel.Sheets worksheets = xlWorkBook.Worksheets;
+        //        worksheets[sheetName].Delete();
+        //        xlWorkBook.Save();
+        //        xlWorkBook.Close();
+
+        //        releaseObject(worksheets);
+        //        releaseObject(xlWorkBook);
+        //        releaseObject(xlApp);
+
+        //        Trace.WriteLine("Worksheet Deleted!");
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        string description = "";
+        //        foreach (var eve in ex.EntityValidationErrors)
+        //        {
+        //            Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+        //            description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+        //            foreach (var ve in eve.ValidationErrors)
+        //            {
+        //                Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+        //                description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+        //            }
+        //        }
+
+        //        LogError(ex, description);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
 
         //Format Excel cells to store values as text
 
@@ -345,387 +593,545 @@ namespace BTS.ExcelLib
         // First we MERGE excel cell and create the heading , then the students name and totals make as BOLD .
         // And finally create a border for the whole mark list part.
 
-        private static void CreateMarkList()
-        {
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
-            Excel.Range chartRange;
-
-            xlApp = new Excel.Application();
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-            //add data
-            xlWorkSheet.Cells[4, 2] = "";
-            xlWorkSheet.Cells[4, 3] = "Student1";
-            xlWorkSheet.Cells[4, 4] = "Student2";
-            xlWorkSheet.Cells[4, 5] = "Student3";
-
-            xlWorkSheet.Cells[5, 2] = "Term1";
-            xlWorkSheet.Cells[5, 3] = "80";
-            xlWorkSheet.Cells[5, 4] = "65";
-            xlWorkSheet.Cells[5, 5] = "45";
-
-            xlWorkSheet.Cells[6, 2] = "Term2";
-            xlWorkSheet.Cells[6, 3] = "78";
-            xlWorkSheet.Cells[6, 4] = "72";
-            xlWorkSheet.Cells[6, 5] = "60";
-
-            xlWorkSheet.Cells[7, 2] = "Term3";
-            xlWorkSheet.Cells[7, 3] = "82";
-            xlWorkSheet.Cells[7, 4] = "80";
-            xlWorkSheet.Cells[7, 5] = "65";
-
-            xlWorkSheet.Cells[8, 2] = "Term4";
-            xlWorkSheet.Cells[8, 3] = "75";
-            xlWorkSheet.Cells[8, 4] = "82";
-            xlWorkSheet.Cells[8, 5] = "68";
-
-            xlWorkSheet.Cells[9, 2] = "Total";
-            xlWorkSheet.Cells[9, 3] = "315";
-            xlWorkSheet.Cells[9, 4] = "299";
-            xlWorkSheet.Cells[9, 5] = "238";
-
-            xlWorkSheet.get_Range("b2", "e3").Merge(false);
-
-            chartRange = xlWorkSheet.get_Range("b2", "e3");
-            chartRange.FormulaR1C1 = "MARK LIST";
-            chartRange.HorizontalAlignment = 3;
-            chartRange.VerticalAlignment = 3;
-            chartRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
-            chartRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
-            chartRange.Font.Size = 20;
-
-            chartRange = xlWorkSheet.get_Range("b4", "e4");
-            chartRange.Font.Bold = true;
-            chartRange = xlWorkSheet.get_Range("b9", "e9");
-            chartRange.Font.Bold = true;
-
-            chartRange = xlWorkSheet.get_Range("b2", "e9");
-            chartRange.BorderAround(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic, Excel.XlColorIndex.xlColorIndexAutomatic);
-
-            xlWorkBook.SaveAs("d:\\csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-
-            releaseObject(xlApp);
-            releaseObject(xlWorkBook);
-            releaseObject(xlWorkSheet);
-
-            Trace.WriteLine("File created !");
-        }
-
-        private static void InsertPicture()
-        {
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
-
-            xlApp = new Excel.Application();
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-            //add some text
-            xlWorkSheet.Cells[1, 1] = "http://csharp.net-informations.com";
-            xlWorkSheet.Cells[2, 1] = "Adding picture in Excel File";
-
-            xlWorkSheet.Shapes.AddPicture("C:\\csharp-xl-picture.JPG", Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 50, 50, 300, 45);
-
-            xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-
-            releaseObject(xlApp);
-            releaseObject(xlWorkBook);
-            releaseObject(xlWorkSheet);
-
-            Trace.WriteLine("File created !");
-        }
-
-        private static void InsertBackgroundPicture()
-        {
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
-
-            xlApp = new Excel.Application();
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-            xlWorkSheet.SetBackgroundPicture("C:\\csharp-xl-picture.JPG");
-
-            //add some text
-            xlWorkSheet.Cells[1, 1] = "http://csharp.net-informations.com";
-            xlWorkSheet.Cells[2, 1] = "Adding background in Excel File";
-
-            xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-
-            releaseObject(xlApp);
-            releaseObject(xlWorkBook);
-            releaseObject(xlWorkSheet);
-
-            Trace.WriteLine("File created !");
-        }
-
-        private static void CreateChart()
-        {
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
-
-            xlApp = new Excel.Application();
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-            //add data
-            xlWorkSheet.Cells[1, 1] = "";
-            xlWorkSheet.Cells[1, 2] = "Student1";
-            xlWorkSheet.Cells[1, 3] = "Student2";
-            xlWorkSheet.Cells[1, 4] = "Student3";
-
-            xlWorkSheet.Cells[2, 1] = "Term1";
-            xlWorkSheet.Cells[2, 2] = "80";
-            xlWorkSheet.Cells[2, 3] = "65";
-            xlWorkSheet.Cells[2, 4] = "45";
-
-            xlWorkSheet.Cells[3, 1] = "Term2";
-            xlWorkSheet.Cells[3, 2] = "78";
-            xlWorkSheet.Cells[3, 3] = "72";
-            xlWorkSheet.Cells[3, 4] = "60";
-
-            xlWorkSheet.Cells[4, 1] = "Term3";
-            xlWorkSheet.Cells[4, 2] = "82";
-            xlWorkSheet.Cells[4, 3] = "80";
-            xlWorkSheet.Cells[4, 4] = "65";
-
-            xlWorkSheet.Cells[5, 1] = "Term4";
-            xlWorkSheet.Cells[5, 2] = "75";
-            xlWorkSheet.Cells[5, 3] = "82";
-            xlWorkSheet.Cells[5, 4] = "68";
-
-            Excel.Range chartRange;
-
-            Excel.ChartObjects xlCharts = (Excel.ChartObjects)xlWorkSheet.ChartObjects(Type.Missing);
-            Excel.ChartObject myChart = (Excel.ChartObject)xlCharts.Add(10, 80, 300, 250);
-            Excel.Chart chartPage = myChart.Chart;
-
-            chartRange = xlWorkSheet.get_Range("A1", "d5");
-            chartPage.SetSourceData(chartRange, misValue);
-            chartPage.ChartType = Excel.XlChartType.xlColumnClustered;
-
-            //export chart as picture file
-            chartPage.Export(@"C:\excel_chart_export.bmp", "BMP", misValue);
-
-            xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-
-            releaseObject(xlWorkSheet);
-            releaseObject(xlWorkBook);
-            releaseObject(xlApp);
-
-            Trace.WriteLine("Excel file created , you can find the file c:\\csharp.net-informations.xls");
-        }
-
-        private static void Validation()
-        {
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            Excel.Range chartRange;
-            object misValue = System.Reflection.Missing.Value;
-
-            xlApp = new Excel.Application();
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-            chartRange = xlWorkSheet.get_Range("b2", "e9");
-            xlWorkSheet.get_Range("B5", "D5").Validation.Add(Excel.XlDVType.xlValidateInputOnly, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, misValue, misValue);
-            xlWorkSheet.get_Range("B5", "D5").Validation.IgnoreBlank = true;
-            xlWorkSheet.get_Range("B5", "B5").FormulaR1C1 = "Click Here to see Notes";
-            xlWorkSheet.get_Range("B5", "D5").Validation.InputTitle = "csharp.net-informations.com";
-            xlWorkSheet.get_Range("B5", "D5").Validation.ErrorTitle = "Error in Title";
-            xlWorkSheet.get_Range("B5", "D5").Validation.InputMessage = "Here is the notes embeded - you can enter 255 characters maximum in notes ";
-            xlWorkSheet.get_Range("B5", "D5").Validation.ErrorMessage = "Error in Notes";
-            xlWorkSheet.get_Range("B5", "D5").Validation.ShowInput = true;
-            xlWorkSheet.get_Range("B5", "D5").Validation.ShowError = true;
-
-            xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-
-            releaseObject(xlWorkSheet);
-            releaseObject(xlWorkBook);
-            releaseObject(xlApp);
-
-            Trace.WriteLine("Excel file created , you can find the file c:\\csharp-Excel.xls");
-        }
-
-        private static void ReadDataToDataSet()
-        {
-            try
-            {
-                OleDbConnection MyConnection;
-                DataSet DtSet;
-                OleDbDataAdapter MyCommand;
-                MyConnection = new OleDbConnection("provider=Microsoft.Jet.OLEDB.4.0;Data Source='c:\\csharp.net-informations.xls';Extended Properties=Excel 8.0;");
-                MyCommand = new OleDbDataAdapter("select * from [Sheet1$]", MyConnection);
-                MyCommand.TableMappings.Add("Table", "TestTable");
-                DtSet = new DataSet();
-                MyCommand.Fill(DtSet);
-                //dataGridView1.DataSource = DtSet.Tables[0];
-                MyConnection.Close();
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.ToString());
-            }
-        }
-
-        private static void InsertDataByOleDB()
-        {
-            try
-            {
-                OleDbConnection MyConnection;
-                OleDbCommand myCommand = new OleDbCommand();
-                string sql = null;
-                MyConnection = new OleDbConnection("provider=Microsoft.Jet.OLEDB.4.0;Data Source='c:\\csharp.net-informations.xls';Extended Properties=Excel 8.0;");
-                MyConnection.Open();
-                myCommand.Connection = MyConnection;
-                sql = "Insert into [Sheet1$] (id,name) values('5','e')";
-                myCommand.CommandText = sql;
-                myCommand.ExecuteNonQuery();
-                MyConnection.Close();
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.ToString());
-            }
-        }
-
-        private static void UpdateDataByOleDB()
-        {
-            try
-            {
-                OleDbConnection MyConnection;
-                OleDbCommand myCommand = new OleDbCommand();
-                string sql = null;
-                MyConnection = new OleDbConnection("provider=Microsoft.Jet.OLEDB.4.0;Data Source='c:\\csharp.net-informations.xls';Extended Properties=Excel 8.0;");
-                MyConnection.Open();
-                myCommand.Connection = MyConnection;
-                sql = "Update [Sheet1$] set name = 'New Name' where id=1";
-                myCommand.CommandText = sql;
-                myCommand.ExecuteNonQuery();
-                MyConnection.Close();
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex.ToString());
-            }
-        }
-
-        private static void ImportFromDatabase()
-        {
-            SqlConnection cnn;
-            string connectionString = null;
-            string sql = null;
-            string data = null;
-            int i = 0;
-            int j = 0;
-
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
-
-            xlApp = new Excel.Application();
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-
-            connectionString = "data source=servername;initial catalog=databasename;user id=username;password=password;";
-            cnn = new SqlConnection(connectionString);
-            cnn.Open();
-            sql = "SELECT * FROM Product";
-            SqlDataAdapter dscmd = new SqlDataAdapter(sql, cnn);
-            DataSet ds = new DataSet();
-            dscmd.Fill(ds);
-
-            for (i = 0; i <= ds.Tables[0].Rows.Count - 1; i++)
-            {
-                for (j = 0; j <= ds.Tables[0].Columns.Count - 1; j++)
-                {
-                    data = ds.Tables[0].Rows[i].ItemArray[j].ToString();
-                    xlWorkSheet.Cells[i + 1, j + 1] = data;
-                }
-            }
-
-            xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-
-            releaseObject(xlWorkSheet);
-            releaseObject(xlWorkBook);
-            releaseObject(xlApp);
-
-            Trace.WriteLine("Excel file created , you can find the file c:\\csharp.net-informations.xls");
-        }
-
-        private static void ImportFromGridView(DataTable dataGridView1)
-        {
-            Excel.Application xlApp;
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet;
-            object misValue = System.Reflection.Missing.Value;
-
-            xlApp = new Excel.Application();
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            int i = 0;
-            int j = 0;
-
-            for (i = 0; i <= dataGridView1.Rows.Count - 1; i++)
-            {
-                for (j = 0; j <= dataGridView1.Columns.Count - 1; j++)
-                {
-                    string cell = dataGridView1.Rows[i].ItemArray[j].ToString();
-                    xlWorkSheet.Cells[i + 1, j + 1] = cell;
-                }
-            }
-
-            xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-
-            releaseObject(xlWorkSheet);
-            releaseObject(xlWorkBook);
-            releaseObject(xlApp);
-
-            Trace.WriteLine("Excel file created , you can find the file c:\\csharp.net-informations.xls");
-        }
-
-        private static void releaseObject(object obj)
-        {
-            try
-            {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
-                obj = null;
-            }
-            catch (Exception ex)
-            {
-                obj = null;
-                Trace.WriteLine("Exception Occured while releasing object " + ex.ToString());
-            }
-            finally
-            {
-                GC.Collect();
-            }
-        }
+        //private void CreateMarkList()
+        //{
+        //    Excel.Application xlApp;
+        //    Excel.Workbook xlWorkBook;
+        //    Excel.Worksheet xlWorkSheet;
+        //    object misValue = System.Reflection.Missing.Value;
+        //    Excel.Range chartRange;
+
+        //    xlApp = new Excel.Application();
+        //    xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //    xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+        //    //add data
+        //    xlWorkSheet.Cells[4, 2] = "";
+        //    xlWorkSheet.Cells[4, 3] = "Student1";
+        //    xlWorkSheet.Cells[4, 4] = "Student2";
+        //    xlWorkSheet.Cells[4, 5] = "Student3";
+
+        //    xlWorkSheet.Cells[5, 2] = "Term1";
+        //    xlWorkSheet.Cells[5, 3] = "80";
+        //    xlWorkSheet.Cells[5, 4] = "65";
+        //    xlWorkSheet.Cells[5, 5] = "45";
+
+        //    xlWorkSheet.Cells[6, 2] = "Term2";
+        //    xlWorkSheet.Cells[6, 3] = "78";
+        //    xlWorkSheet.Cells[6, 4] = "72";
+        //    xlWorkSheet.Cells[6, 5] = "60";
+
+        //    xlWorkSheet.Cells[7, 2] = "Term3";
+        //    xlWorkSheet.Cells[7, 3] = "82";
+        //    xlWorkSheet.Cells[7, 4] = "80";
+        //    xlWorkSheet.Cells[7, 5] = "65";
+
+        //    xlWorkSheet.Cells[8, 2] = "Term4";
+        //    xlWorkSheet.Cells[8, 3] = "75";
+        //    xlWorkSheet.Cells[8, 4] = "82";
+        //    xlWorkSheet.Cells[8, 5] = "68";
+
+        //    xlWorkSheet.Cells[9, 2] = "Total";
+        //    xlWorkSheet.Cells[9, 3] = "315";
+        //    xlWorkSheet.Cells[9, 4] = "299";
+        //    xlWorkSheet.Cells[9, 5] = "238";
+
+        //    xlWorkSheet.get_Range("b2", "e3").Merge(false);
+
+        //    chartRange = xlWorkSheet.get_Range("b2", "e3");
+        //    chartRange.FormulaR1C1 = "MARK LIST";
+        //    chartRange.HorizontalAlignment = 3;
+        //    chartRange.VerticalAlignment = 3;
+        //    chartRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
+        //    chartRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Red);
+        //    chartRange.Font.Size = 20;
+
+        //    chartRange = xlWorkSheet.get_Range("b4", "e4");
+        //    chartRange.Font.Bold = true;
+        //    chartRange = xlWorkSheet.get_Range("b9", "e9");
+        //    chartRange.Font.Bold = true;
+
+        //    chartRange = xlWorkSheet.get_Range("b2", "e9");
+        //    chartRange.BorderAround(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlMedium, Excel.XlColorIndex.xlColorIndexAutomatic, Excel.XlColorIndex.xlColorIndexAutomatic);
+
+        //    xlWorkBook.SaveAs("d:\\csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //    xlWorkBook.Close(true, misValue, misValue);
+        //    xlApp.Quit();
+
+        //    releaseObject(xlApp);
+        //    releaseObject(xlWorkBook);
+        //    releaseObject(xlWorkSheet);
+
+        //    Trace.WriteLine("File created !");
+        //}
+
+        //private void InsertPicture()
+        //{
+        //    Excel.Application xlApp;
+        //    Excel.Workbook xlWorkBook;
+        //    Excel.Worksheet xlWorkSheet;
+        //    object misValue = System.Reflection.Missing.Value;
+
+        //    xlApp = new Excel.Application();
+        //    xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //    xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+        //    //add some text
+        //    xlWorkSheet.Cells[1, 1] = "http://csharp.net-informations.com";
+        //    xlWorkSheet.Cells[2, 1] = "Adding picture in Excel File";
+
+        //    xlWorkSheet.Shapes.AddPicture("C:\\csharp-xl-picture.JPG", Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 50, 50, 300, 45);
+
+        //    xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //    xlWorkBook.Close(true, misValue, misValue);
+        //    xlApp.Quit();
+
+        //    releaseObject(xlApp);
+        //    releaseObject(xlWorkBook);
+        //    releaseObject(xlWorkSheet);
+
+        //    Trace.WriteLine("File created !");
+        //}
+
+        //private void InsertBackgroundPicture()
+        //{
+        //    Excel.Application xlApp;
+        //    Excel.Workbook xlWorkBook;
+        //    Excel.Worksheet xlWorkSheet;
+        //    object misValue = System.Reflection.Missing.Value;
+
+        //    xlApp = new Excel.Application();
+        //    xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //    xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+        //    xlWorkSheet.SetBackgroundPicture("C:\\csharp-xl-picture.JPG");
+
+        //    //add some text
+        //    xlWorkSheet.Cells[1, 1] = "http://csharp.net-informations.com";
+        //    xlWorkSheet.Cells[2, 1] = "Adding background in Excel File";
+
+        //    xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //    xlWorkBook.Close(true, misValue, misValue);
+        //    xlApp.Quit();
+
+        //    releaseObject(xlApp);
+        //    releaseObject(xlWorkBook);
+        //    releaseObject(xlWorkSheet);
+
+        //    Trace.WriteLine("File created !");
+        //}
+
+        //private void CreateChart()
+        //{
+        //    Excel.Application xlApp;
+        //    Excel.Workbook xlWorkBook;
+        //    Excel.Worksheet xlWorkSheet;
+        //    object misValue = System.Reflection.Missing.Value;
+
+        //    xlApp = new Excel.Application();
+        //    xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //    xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+        //    //add data
+        //    xlWorkSheet.Cells[1, 1] = "";
+        //    xlWorkSheet.Cells[1, 2] = "Student1";
+        //    xlWorkSheet.Cells[1, 3] = "Student2";
+        //    xlWorkSheet.Cells[1, 4] = "Student3";
+
+        //    xlWorkSheet.Cells[2, 1] = "Term1";
+        //    xlWorkSheet.Cells[2, 2] = "80";
+        //    xlWorkSheet.Cells[2, 3] = "65";
+        //    xlWorkSheet.Cells[2, 4] = "45";
+
+        //    xlWorkSheet.Cells[3, 1] = "Term2";
+        //    xlWorkSheet.Cells[3, 2] = "78";
+        //    xlWorkSheet.Cells[3, 3] = "72";
+        //    xlWorkSheet.Cells[3, 4] = "60";
+
+        //    xlWorkSheet.Cells[4, 1] = "Term3";
+        //    xlWorkSheet.Cells[4, 2] = "82";
+        //    xlWorkSheet.Cells[4, 3] = "80";
+        //    xlWorkSheet.Cells[4, 4] = "65";
+
+        //    xlWorkSheet.Cells[5, 1] = "Term4";
+        //    xlWorkSheet.Cells[5, 2] = "75";
+        //    xlWorkSheet.Cells[5, 3] = "82";
+        //    xlWorkSheet.Cells[5, 4] = "68";
+
+        //    Excel.Range chartRange;
+
+        //    Excel.ChartObjects xlCharts = (Excel.ChartObjects)xlWorkSheet.ChartObjects(Type.Missing);
+        //    Excel.ChartObject myChart = (Excel.ChartObject)xlCharts.Add(10, 80, 300, 250);
+        //    Excel.Chart chartPage = myChart.Chart;
+
+        //    chartRange = xlWorkSheet.get_Range("A1", "d5");
+        //    chartPage.SetSourceData(chartRange, misValue);
+        //    chartPage.ChartType = Excel.XlChartType.xlColumnClustered;
+
+        //    //export chart as picture file
+        //    chartPage.Export(@"C:\excel_chart_export.bmp", "BMP", misValue);
+
+        //    xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //    xlWorkBook.Close(true, misValue, misValue);
+        //    xlApp.Quit();
+
+        //    releaseObject(xlWorkSheet);
+        //    releaseObject(xlWorkBook);
+        //    releaseObject(xlApp);
+
+        //    Trace.WriteLine("Excel file created , you can find the file c:\\csharp.net-informations.xls");
+        //}
+
+        //private void Validation()
+        //{
+        //    Excel.Application xlApp;
+        //    Excel.Workbook xlWorkBook;
+        //    Excel.Worksheet xlWorkSheet;
+        //    Excel.Range chartRange;
+        //    object misValue = System.Reflection.Missing.Value;
+
+        //    xlApp = new Excel.Application();
+        //    xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //    xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+        //    chartRange = xlWorkSheet.get_Range("b2", "e9");
+        //    xlWorkSheet.get_Range("B5", "D5").Validation.Add(Excel.XlDVType.xlValidateInputOnly, Excel.XlDVAlertStyle.xlValidAlertStop, Excel.XlFormatConditionOperator.xlBetween, misValue, misValue);
+        //    xlWorkSheet.get_Range("B5", "D5").Validation.IgnoreBlank = true;
+        //    xlWorkSheet.get_Range("B5", "B5").FormulaR1C1 = "Click Here to see Notes";
+        //    xlWorkSheet.get_Range("B5", "D5").Validation.InputTitle = "csharp.net-informations.com";
+        //    xlWorkSheet.get_Range("B5", "D5").Validation.ErrorTitle = "Error in Title";
+        //    xlWorkSheet.get_Range("B5", "D5").Validation.InputMessage = "Here is the notes embeded - you can enter 255 characters maximum in notes ";
+        //    xlWorkSheet.get_Range("B5", "D5").Validation.ErrorMessage = "Error in Notes";
+        //    xlWorkSheet.get_Range("B5", "D5").Validation.ShowInput = true;
+        //    xlWorkSheet.get_Range("B5", "D5").Validation.ShowError = true;
+
+        //    xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //    xlWorkBook.Close(true, misValue, misValue);
+        //    xlApp.Quit();
+
+        //    releaseObject(xlWorkSheet);
+        //    releaseObject(xlWorkBook);
+        //    releaseObject(xlApp);
+
+        //    Trace.WriteLine("Excel file created , you can find the file c:\\csharp-Excel.xls");
+        //}
+
+        //private void ReadDataToDataSet()
+        //{
+        //    try
+        //    {
+        //        OleDbConnection MyConnection;
+        //        DataSet DtSet;
+        //        OleDbDataAdapter MyCommand;
+        //        MyConnection = new OleDbConnection("provider=Microsoft.Jet.OLEDB.4.0;Data Source='c:\\csharp.net-informations.xls';Extended Properties=Excel 8.0;");
+        //        MyCommand = new OleDbDataAdapter("select * from [Sheet1$]", MyConnection);
+        //        MyCommand.TableMappings.Add("Table", "TestTable");
+        //        DtSet = new DataSet();
+        //        MyCommand.Fill(DtSet);
+        //        //dataGridView1.DataSource = DtSet.Tables[0];
+        //        MyConnection.Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        //private void InsertDataByOleDB()
+        //{
+        //    try
+        //    {
+        //        OleDbConnection MyConnection;
+        //        OleDbCommand myCommand = new OleDbCommand();
+        //        string sql = null;
+        //        using (MyConnection = new OleDbConnection("provider=Microsoft.Jet.OLEDB.4.0;Data Source='c:\\csharp.net-informations.xls';Extended Properties=Excel 8.0;"))
+        //        {
+        //            MyConnection.Open();
+        //            myCommand.Connection = MyConnection;
+        //            sql = "Insert into [Sheet1$] (id,name) values('5','e')";
+        //            myCommand.CommandText = sql;
+        //            myCommand.ExecuteNonQuery();
+        //            MyConnection.Close();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        //public void ClearDataInSheet(string excelConnectionString, String SheetName)
+        //{
+        //    try
+        //    {
+        //        OleDbConnection MyConnection;
+        //        OleDbCommand myCommand = new OleDbCommand();
+        //        string sql = null;
+        //        using (MyConnection = new OleDbConnection(excelConnectionString))
+        //        {
+        //            MyConnection.Open();
+        //            myCommand.Connection = MyConnection;
+        //            sql = "DELETE FROM [" + SheetName + "$]";
+        //            myCommand.CommandText = sql;
+        //            myCommand.ExecuteNonQuery();
+        //            MyConnection.Close();
+        //        }
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        string description = "";
+        //        foreach (var eve in ex.EntityValidationErrors)
+        //        {
+        //            Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+        //            description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+        //            foreach (var ve in eve.ValidationErrors)
+        //            {
+        //                Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+        //                description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+        //            }
+        //        }
+
+        //        LogError(ex, description);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        //public void InsertDataInSheet(string excelConnectionString, String SheetName, DataTable dt)
+        //{
+        //    try
+        //    {
+        //        OleDbConnection MyConnection;
+        //        OleDbCommand myCommand = new OleDbCommand();
+        //        string sql = null;
+        //        using (MyConnection = new OleDbConnection(excelConnectionString))
+        //        {
+        //            MyConnection.Open();
+        //            myCommand.Connection = MyConnection;
+
+        //            sql = "Insert into [" + SheetName + "]$ (id,name) values('5','e')";
+        //            myCommand.CommandText = sql;
+        //            myCommand.ExecuteNonQuery();
+
+        //            MyConnection.Close();
+        //        }
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        string description = "";
+        //        foreach (var eve in ex.EntityValidationErrors)
+        //        {
+        //            Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+        //            description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+        //            foreach (var ve in eve.ValidationErrors)
+        //            {
+        //                Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+        //                description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+        //            }
+        //        }
+
+        //        LogError(ex, description);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        //private void UpdateDataByOleDB()
+        //{
+        //    try
+        //    {
+        //        OleDbConnection MyConnection;
+        //        OleDbCommand myCommand = new OleDbCommand();
+        //        string sql = null;
+        //        using (MyConnection = new OleDbConnection("provider=Microsoft.Jet.OLEDB.4.0;Data Source='c:\\csharp.net-informations.xls';Extended Properties=Excel 8.0;"))
+        //        {
+        //            MyConnection.Open();
+        //            myCommand.Connection = MyConnection;
+        //            sql = "Update [Sheet1$] set name = 'New Name' where id=1";
+        //            myCommand.CommandText = sql;
+        //            myCommand.ExecuteNonQuery();
+        //            MyConnection.Close();
+        //        }
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        string description = "";
+        //        foreach (var eve in ex.EntityValidationErrors)
+        //        {
+        //            Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+        //            description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+        //            foreach (var ve in eve.ValidationErrors)
+        //            {
+        //                Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+        //                description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+        //            }
+        //        }
+
+        //        LogError(ex, description);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        //private void ImportFromDatabase()
+        //{
+        //    try
+        //    {
+        //        SqlConnection cnn;
+        //        string connectionString = null;
+        //        string sql = null;
+        //        string data = null;
+        //        int i = 0;
+        //        int j = 0;
+
+        //        Excel.Application xlApp;
+        //        Excel.Workbook xlWorkBook;
+        //        Excel.Worksheet xlWorkSheet;
+        //        object misValue = System.Reflection.Missing.Value;
+
+        //        xlApp = new Excel.Application();
+        //        xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //        xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+        //        connectionString = "data source=servername;initial catalog=databasename;user id=username;password=password;";
+        //        using (cnn = new SqlConnection(connectionString))
+        //        {
+        //            cnn.Open();
+        //            sql = "SELECT * FROM Product";
+        //            SqlDataAdapter dscmd = new SqlDataAdapter(sql, cnn);
+        //            DataSet ds = new DataSet();
+        //            dscmd.Fill(ds);
+
+        //            for (i = 0; i <= ds.Tables[0].Rows.Count - 1; i++)
+        //            {
+        //                for (j = 0; j <= ds.Tables[0].Columns.Count - 1; j++)
+        //                {
+        //                    data = ds.Tables[0].Rows[i].ItemArray[j].ToString();
+        //                    xlWorkSheet.Cells[i + 1, j + 1] = data;
+        //                }
+        //            }
+
+        //            xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //            xlWorkBook.Close(true, misValue, misValue);
+        //            xlApp.Quit();
+
+        //            releaseObject(xlWorkSheet);
+        //            releaseObject(xlWorkBook);
+        //            releaseObject(xlApp);
+
+        //            Trace.WriteLine("Excel file created , you can find the file c:\\csharp.net-informations.xls");
+        //        }
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        string description = "";
+        //        foreach (var eve in ex.EntityValidationErrors)
+        //        {
+        //            Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+        //            description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+        //            foreach (var ve in eve.ValidationErrors)
+        //            {
+        //                Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+        //                description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+        //            }
+        //        }
+
+        //        LogError(ex, description);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        //private void ImportFromGridView(DataTable dataGridView1)
+        //{
+        //    try
+        //    {
+        //        Excel.Application xlApp;
+        //        Excel.Workbook xlWorkBook;
+        //        Excel.Worksheet xlWorkSheet;
+        //        object misValue = System.Reflection.Missing.Value;
+
+        //        xlApp = new Excel.Application();
+        //        xlWorkBook = xlApp.Workbooks.Add(misValue);
+        //        xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+        //        int i = 0;
+        //        int j = 0;
+
+        //        for (i = 0; i <= dataGridView1.Rows.Count - 1; i++)
+        //        {
+        //            for (j = 0; j <= dataGridView1.Columns.Count - 1; j++)
+        //            {
+        //                string cell = dataGridView1.Rows[i].ItemArray[j].ToString();
+        //                xlWorkSheet.Cells[i + 1, j + 1] = cell;
+        //            }
+        //        }
+
+        //        xlWorkBook.SaveAs("csharp.net-informations.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+        //        xlWorkBook.Close(true, misValue, misValue);
+        //        xlApp.Quit();
+
+        //        releaseObject(xlWorkSheet);
+        //        releaseObject(xlWorkBook);
+        //        releaseObject(xlApp);
+
+        //        Trace.WriteLine("Excel file created , you can find the file c:\\csharp.net-informations.xls");
+        //    }
+        //    catch (DbEntityValidationException ex)
+        //    {
+        //        string description = "";
+        //        foreach (var eve in ex.EntityValidationErrors)
+        //        {
+        //            Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+        //            description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+        //            foreach (var ve in eve.ValidationErrors)
+        //            {
+        //                Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+        //                description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+        //            }
+        //        }
+
+        //        LogError(ex, description);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        Trace.WriteLine(ex.ToString());
+        //    }
+        //}
+
+        //private void releaseObject(object obj)
+        //{
+        //    try
+        //    {
+        //        System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+        //        obj = null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        obj = null;
+        //        Trace.WriteLine("Exception Occured while releasing object " + ex.ToString());
+        //    }
+        //    finally
+        //    {
+        //        GC.Collect();
+        //    }
+        //}
     }
 }

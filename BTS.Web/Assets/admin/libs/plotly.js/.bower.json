@@ -31,6 +31,6 @@
     "commit": "0bf33a9ee5ad564c6f405f33761614a9160b4087"
   },
   "_source": "https://github.com/plotly/plotly.js.git",
-  "_target": "*",
+  "_target": "~1.35.2",
   "_originalSource": "plotly.js"
 }

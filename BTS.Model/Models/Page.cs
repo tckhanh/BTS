@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BTS.Model.Models
 {
     [Table("Pages")]
-    public class Page : Auditable, IMetable
+    public class WebPage : Auditable, IMetable
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

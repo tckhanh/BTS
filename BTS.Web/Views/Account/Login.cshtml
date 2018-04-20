@@ -20,7 +20,7 @@
     <!-- Theme style -->
     <link href="~/Assets/admin/libs/adminLTE/dist/css/AdminLTE.min.css" rel="stylesheet" />
     <!-- iCheck -->
-    <link href="~/Assets/admin/libs/adminLTE/plugins/iCheck/square/blue.css" rel="stylesheet" />    
+    <link href="~/Assets/admin/libs/adminLTE/plugins/iCheck/square/blue.css" rel="stylesheet" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,12 +43,13 @@
 
             @using (Html.BeginForm("Login", "Account", new { returnUrl = @ViewBag.ReturnUrl }, FormMethod.Post))
             {
+                @Html.AntiForgeryToken()
                 @Html.ValidationSummary(false, "", new { @class = "error" })
                 <div class="form-group has-feedback">
-                    @Html.TextBoxFor(model => model.UserName, new {@class="form-control", @placeholder="Tài khoản" })
+                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Tài khoản" })
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
-                <div class="form-group has-feedback">                    
+                <div class="form-group has-feedback">
                     @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Mật khẩu" })
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
@@ -58,7 +59,7 @@
                             <label>
                                 @Html.CheckBoxFor(model => model.RememberMe)
                                 Nhớ mật khẩu?
-                            </label>                           
+                            </label>
                         </div>
                     </div>
                     <!-- /.col -->

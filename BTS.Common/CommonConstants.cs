@@ -10,6 +10,9 @@
         public static string CartSession = "CartSession";
         public static string CurrentCulture { set; get; }
 
+        public const string Status_Error = "Error";
+        public const string Status_Success = "Success";
+
         public const string ProductTag = "product";
         public const string PostTag = "post";
         public const string DefaultFooterId = "default";
@@ -61,6 +64,7 @@
         public const string Sheet_Profile_FeeReceiptDate = "FeeReceiptDate";
 
         public const string Sheet_Bts = "Bts";
+        public const string Sheet_Bts_OperatorID = "OperatorID";
         public const string Sheet_Bts_BtsCode = "BtsCode";
         public const string Sheet_Bts_Address = "Address";
         public const string Sheet_Bts_CityID = "CityID";
@@ -68,6 +72,7 @@
         public const string Sheet_Bts_Latitude = "Latitude";
         public const string Sheet_Bts_InCaseOfID = "InCaseOfID";
         public const string Sheet_Bts_IsCertificated = "IsCertificated";
+        public const string Sheet_Bts_LastCertificateNo = "LastCertificateNo";
 
         public const string Sheet_Certificate = "Certificate";
         public const string Sheet_Certificate_BtsCode = "BtsCode";
@@ -98,5 +103,7 @@
 
         public const string IssuePalce = "Tp. Hồ Chí Minh";
         public const string Signer = "Trần Công Khanh";
+
+        public const string ImportCER = "ImportCER";
     }
 }

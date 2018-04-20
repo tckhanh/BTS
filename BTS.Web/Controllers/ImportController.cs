@@ -18,11 +18,13 @@ namespace BTS.Web.Controllers
         // GET: Import
         private IImportService _importService;
 
+        private ExcelIO _excelIO;
         private NumberFormatInfo provider;
 
         public ImportController(IImportService importService, IErrorService errorService) : base(errorService)
         {
             this._importService = importService;
+            _excelIO = new ExcelIO(errorService);
             provider = new NumberFormatInfo();
             provider.NumberDecimalSeparator = ",";
             provider.NumberGroupSeparator = ".";
@@ -37,7 +39,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(HttpPostedFileBase file)
+        public ActionResult Index(HttpPostedFileBase file, string ImportAction)
         {
             int result = 0;
             if (Request.Files["file"].ContentLength > 0)
@@ -47,49 +49,57 @@ namespace BTS.Web.Controllers
                 if (fileExtension == ".xls" || fileExtension == ".xlsx")
                 {
                     string fileLocation = Server.MapPath("~/ImportData/") + Request.Files["file"].FileName;
-                    if (System.IO.File.Exists(fileLocation))
+                    try
                     {
-                        System.IO.File.Delete(fileLocation);
-                    }
-                    Request.Files["file"].SaveAs(fileLocation);
+                        if (System.IO.File.Exists(fileLocation))
+                            System.IO.File.Delete(fileLocation);
 
-                    ExcelIO.FormatColumnDecimalToText(fileLocation);
+                        Request.Files["file"].SaveAs(fileLocation);
 
-                    string excelConnectionString = string.Empty;
-                    //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 ;HDR=Yes;IMEX=2\"";
-                    excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes;IMEX=1; TypeGuessRows=0;ImportMixedTypes=Text\"";
-                    //connection String for xls file format.
-                    if (fileExtension == ".xls")
-                    {
-                        //excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1\"";
-                        excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1;TypeGuessRows=0;ImportMixedTypes=Text\"";
-                    }
-                    //connection String for xlsx file format.
-                    else if (fileExtension == ".xlsx")
-                    {
-                        //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                        _excelIO.FormatColumnDecimalToText(fileLocation);
+
+                        string excelConnectionString = string.Empty;
+                        //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 ;HDR=Yes;IMEX=2\"";
                         excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes;IMEX=1; TypeGuessRows=0;ImportMixedTypes=Text\"";
+                        //connection String for xls file format.
+                        if (fileExtension == ".xls")
+                        {
+                            //excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1\"";
+                            excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1;TypeGuessRows=0;ImportMixedTypes=Text\"";
+                        }
+                        //connection String for xlsx file format.
+                        else if (fileExtension == ".xlsx")
+                        {
+                            //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                            excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes;IMEX=1; TypeGuessRows=0;ImportMixedTypes=Text\"";
+                        }
+                        int ProfileID = 0;
+
+                        ExecuteDatabase(ImportInCaseOf, excelConnectionString);
+                        ExecuteDatabase(ImportLab, excelConnectionString);
+                        ExecuteDatabase(ImportCity, excelConnectionString);
+                        ExecuteDatabase(ImportOperator, excelConnectionString);
+                        ExecuteDatabase(ImportApplicant, excelConnectionString);
+                        ExecuteDatabase(ImportProfile, excelConnectionString, out ProfileID);
+                        ExecuteDatabase(ImportBts, excelConnectionString, ProfileID);
+                        if (ImportAction == CommonConstants.ImportCER)
+                            ExecuteDatabase(ImportCertificate, excelConnectionString, ProfileID);
+
+                        //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
                     }
-                    int ProfileID = 0;
-
-                    if (ExecuteDatabase(ImportInCaseOf, excelConnectionString))
-                        if (ExecuteDatabase(ImportLab, excelConnectionString))
-                            if (ExecuteDatabase(ImportCity, excelConnectionString))
-                                if (ExecuteDatabase(ImportOperator, excelConnectionString))
-                                    if (ExecuteDatabase(ImportApplicant, excelConnectionString))
-                                        if (ExecuteDatabase(ImportProfile, excelConnectionString, out ProfileID))
-                                            if (ExecuteDatabase(ImportBts, excelConnectionString, ProfileID))
-                                                ExecuteDatabase(ImportCertificate, excelConnectionString, ProfileID);
-
-                    //ExcelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
+                    catch (Exception e)
+                    {
+                        // Base Controller đã ghi Log Error rồi
+                        return Json(new { Status = CommonConstants.Status_Error, Message = e.Message }, JsonRequestBehavior.AllowGet);
+                    }
                 }
             }
-            return View();
+            return Json(new { Status = CommonConstants.Status_Success, Message = "Import Certificate Finished !" }, JsonRequestBehavior.AllowGet);
         }
 
         private int ImportInCaseOf(string excelConnectionString)
         {
-            DataTable dt = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_InCaseOf);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_InCaseOf);
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -109,7 +119,7 @@ namespace BTS.Web.Controllers
 
         private int ImportLab(string excelConnectionString)
         {
-            DataTable dt = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Lab);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Lab);
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -132,7 +142,7 @@ namespace BTS.Web.Controllers
 
         private int ImportCity(string excelConnectionString)
         {
-            DataTable dt = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_City);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_City);
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -152,7 +162,7 @@ namespace BTS.Web.Controllers
 
         private int ImportOperator(string excelConnectionString)
         {
-            DataTable dt = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Operator);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Operator);
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -172,7 +182,7 @@ namespace BTS.Web.Controllers
 
         private int ImportApplicant(string excelConnectionString)
         {
-            DataTable dt = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Applicant);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Applicant);
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -196,7 +206,7 @@ namespace BTS.Web.Controllers
 
         private int ImportProfile(string excelConnectionString, int proFileID)
         {
-            DataTable dt = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Profile);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Profile);
             var Item = new Profile();
             proFileID = 0;
             if (!string.IsNullOrEmpty(dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantID].ToString()))
@@ -240,7 +250,7 @@ namespace BTS.Web.Controllers
 
         private int ImportBts(string excelConnectionString, int proFileID)
         {
-            DataTable dt = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Bts);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Bts);
             string operatorID = _importService.getApplicant(proFileID).OperatorID;
 
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -293,7 +303,7 @@ namespace BTS.Web.Controllers
 
         private int ImportCertificate(string excelConnectionString, int proFileID)
         {
-            DataTable dt = ExcelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Certificate);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Certificate);
             string operatorID = _importService.getApplicant(proFileID).OperatorID;
 
             for (int i = 0; i < dt.Rows.Count; i++)

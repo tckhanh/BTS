@@ -5,8 +5,10 @@
     "adminLTE": "~2.4.2",
     "Leaflet.markercluster": "~1.3.0",
     "pivottable": "~2.20.0",
-    "c3": "*",
-    "plotly.js": "~1.35.2"
+    "c3": "~0.5.3",
+    "plotly.js": "~1.35.2",
+    "jquery-form": "*",
+    "toastr": "~2.1.2"
   },
   "resolutions": {
     "jquery": "1.9.1 - 3"
