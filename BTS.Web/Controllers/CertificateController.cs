@@ -54,13 +54,16 @@ namespace BTS.Web.Controllers
             if (!DateTime.TryParse(Request.Form.GetValues("EndDate").FirstOrDefault(), out EndDate))
                 Console.Write("Loi chuyen doi kieu");
 
-            IEnumerable<Certificate> Items = _certificateService.getAll(out countItem, true).ToList();
-
             // searching ...
+            IEnumerable<Certificate> Items;
 
             if (StartDate != null && EndDate != null)
             {
-                Items = Items.Where(x => StartDate.CompareTo(Convert.ToDateTime(x.IssuedDate)) <= 0);
+                Items = _certificateService.getAll(out countItem, true, StartDate, EndDate).ToList();
+            }
+            else
+            {
+                Items = _certificateService.getAll(out countItem, true).ToList();
             }
 
             if (!(string.IsNullOrEmpty(CityID)))

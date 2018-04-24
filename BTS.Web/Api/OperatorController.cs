@@ -93,7 +93,7 @@ namespace BTS.Web.Api
                     Operator newOperator = new Operator();
                     newOperator.UpdateOperator(operatorVm);
                     newOperator = _operatorService.Add(newOperator);
-                    _operatorService.Save();
+                    _operatorService.SaveChanges();
 
                     var responseData = Mapper.Map<Operator, OperatorViewModel>(newOperator);
 
@@ -121,7 +121,7 @@ namespace BTS.Web.Api
                     dbOperator.UpdateOperator(operatorVm);
 
                     _operatorService.Update(dbOperator);
-                    _operatorService.Save();
+                    _operatorService.SaveChanges();
 
                     var responData = Mapper.Map<Operator, OperatorViewModel>(dbOperator);
                     response = request.CreateResponse(HttpStatusCode.OK, responData);
@@ -139,7 +139,7 @@ namespace BTS.Web.Api
             {
                 HttpResponseMessage response = null;
                 var dbOperator = _operatorService.Delete(id);
-                _operatorService.Save();
+                _operatorService.SaveChanges();
 
                 var responData = Mapper.Map<Operator, OperatorViewModel>(dbOperator);
                 response = request.CreateResponse(HttpStatusCode.OK, responData);
@@ -162,7 +162,7 @@ namespace BTS.Web.Api
                 {
                     _operatorService.Delete(item);
                 }
-                _operatorService.Save();
+                _operatorService.SaveChanges();
 
                 response = request.CreateResponse(HttpStatusCode.OK, listOperators.Count);
 

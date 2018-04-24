@@ -8,7 +8,14 @@
     "c3": "~0.5.3",
     "plotly.js": "~1.35.2",
     "jquery-form": "*",
-    "toastr": "~2.1.2"
+    "jquery-validation": "*",
+    "toastr": "~2.1.2",
+    "datatables-buttons": "~1.2.0",
+    "jszip": "~3.1.5",
+    "pdfmake": "~0.1.36",
+    "notify": "",
+    "angular": "~1.5.5",
+    "angular-ui-router": "~0.3.2"
   },
   "resolutions": {
     "jquery": "1.9.1 - 3"

@@ -9,22 +9,27 @@ using System.Threading.Tasks;
 
 namespace BTS.Service
 {
-
     public interface IOperatorService
     {
-
         Operator Add(Operator newOperator);
+
         void Update(Operator newOperator);
+
         Operator Delete(string ID);
+
         IEnumerable<Operator> getAll();
+
         IEnumerable<Operator> getAll(string keyword);
+
         Operator getByID(string ID);
-        void Save();
+
+        void SaveChanges();
     }
+
     public class OperatorService : IOperatorService
     {
-        IOperatorRepository _operatorRepository;
-        IUnitOfWork _unitOfWork;
+        private IOperatorRepository _operatorRepository;
+        private IUnitOfWork _unitOfWork;
 
         public OperatorService(IOperatorRepository operatorRepository, IUnitOfWork unitOfWork)
         {
@@ -60,7 +65,7 @@ namespace BTS.Service
             return _operatorRepository.GetSingleById(ID);
         }
 
-        public void Save()
+        public void SaveChanges()
         {
             _unitOfWork.Commit();
         }

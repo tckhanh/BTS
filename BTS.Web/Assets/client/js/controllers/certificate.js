@@ -16,42 +16,106 @@ function initDataTable() {
         endDate = end;
     });
 
-    $("#CertificatedataTable").dataTable({
-        "processing": true,
-        "info": true,
-        "selector": true,
-        "ajax": {
-            "async": false,
-            "url": "/Certificate/loadCertificate",
-            "type": "POST",
-            "data": function (d) {
-                d.CityID = $('#CityID').val().trim();
-                d.OperatorID = $('#OperatorID').val().trim();
-                d.ProfileID = $('#ProfileID').val().trim();
-                d.StartDate = startDate.toISOString();
-                d.EndDate = endDate.toISOString();
-                d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-            }
-        },
-        "columns": [
-            { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
-            { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
-            { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
-            { "data": "Address", "name": "Address", "width": "40%" },        // index 3
-            { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
-            {
-                "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
-                "render": function (data, type, row) {
-                    return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
+    var userRoleAdmin = '@(Request.IsAuthenticated && User.IsInRole("Admin")) ? "true" : "false")';
+
+    if (userRoleAdmin) {
+        $("#CertificatedataTable").dataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'colvis',
+                    text: 'Ẩn/hiện cột',
+                    className: 'btn-success'
+                },
+                {
+                    extend: 'excel',
+                    text: 'Xuất Excel',
+                    className: 'btn-success',
+                },
+                {
+                    extend: 'pdf',
+                    text: 'Xuất Pdf',
+                    className: 'btn-success'
+                },
+                {
+                    extend: 'print',
+                    text: 'In ấn',
+                    className: 'btn-success'
+                }
+            ],
+            "processing": true,
+            "info": true,
+            "selector": true,
+            "ajax": {
+                "async": false,
+                "url": "/Certificate/loadCertificate",
+                "type": "POST",
+                "data": function (d) {
+                    d.CityID = $('#CityID').val().trim();
+                    d.OperatorID = $('#OperatorID').val().trim();
+                    d.ProfileID = $('#ProfileID').val().trim();
+                    d.StartDate = startDate.toISOString();
+                    d.EndDate = endDate.toISOString();
+                    d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
                 }
             },
-            {
-                "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
-                "render": function (data, type, row) {
-                    return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
+            "columns": [
+                { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
+                { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
+                { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
+                { "data": "Address", "name": "Address", "width": "40%" },        // index 3
+                { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
+                {
+                    "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
+                    "render": function (data, type, row) {
+                        return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
+                    }
+                },
+                {
+                    "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
+                    "render": function (data, type, row) {
+                        return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
+                    }
+                }]
+        });
+    } else {
+        $("#CertificatedataTable").dataTable({
+            "processing": true,
+            "info": true,
+            "selector": true,
+            "ajax": {
+                "async": false,
+                "url": "/Certificate/loadCertificate",
+                "type": "POST",
+                "data": function (d) {
+                    d.CityID = $('#CityID').val().trim();
+                    d.OperatorID = $('#OperatorID').val().trim();
+                    d.ProfileID = $('#ProfileID').val().trim();
+                    d.StartDate = startDate.toISOString();
+                    d.EndDate = endDate.toISOString();
+                    d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
                 }
-            }]
-    });
+            },
+            "columns": [
+                { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
+                { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
+                { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
+                { "data": "Address", "name": "Address", "width": "40%" },        // index 3
+                { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
+                {
+                    "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
+                    "render": function (data, type, row) {
+                        return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
+                    }
+                },
+                {
+                    "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
+                    "render": function (data, type, row) {
+                        return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
+                    }
+                }]
+        });
+    }
 }
 
 function getData() {
@@ -191,8 +255,6 @@ function loadCertificatePivotTable() {
         rendererName: "Horizontal Stacked Bar Chart",
         rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
     });
-
-    
- }
+}
 
 loadCertificatePivotTable();
