@@ -1,0 +1,23 @@
+﻿#MyDataTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: medium;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#MyDataTable td, #MyDataTable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#MyDataTable tr:nth-child(even){background-color: #f5ebb8;}
+
+#MyDataTable tr:hover {background-color: #73edf1;}
+
+#MyDataTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #1069a9;
+    color: white;
+}

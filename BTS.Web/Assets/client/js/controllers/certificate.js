@@ -19,7 +19,7 @@ function initDataTable() {
     var userRoleAdmin = '@(Request.IsAuthenticated && User.IsInRole("Admin")) ? "true" : "false")';
 
     if (userRoleAdmin) {
-        $("#CertificatedataTable").dataTable({
+        $("#MyDataTable").dataTable({
             dom: 'Bfrtip',
             buttons: [
                 {
@@ -76,10 +76,13 @@ function initDataTable() {
                     "render": function (data, type, row) {
                         return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
                     }
-                }]
+                }],
+            "language": {
+                url: '/localization/vi_VI.json'
+            }
         });
     } else {
-        $("#CertificatedataTable").dataTable({
+        $("#MyDataTable").dataTable({
             "processing": true,
             "info": true,
             "selector": true,
@@ -113,7 +116,10 @@ function initDataTable() {
                     "render": function (data, type, row) {
                         return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
                     }
-                }]
+                }],
+            "language": {
+                url: '/localization/vi_VI.json'
+            }
         });
     }
 }
@@ -137,7 +143,7 @@ function loadCertificatedBTS() {
 
     //var markers = getData();
     //Apply custom Search on dataTable here
-    var oTable2 = $('#CertificatedataTable').DataTable();
+    var oTable2 = $('#MyDataTable').DataTable();
     var markers = oTable2.rows().data();
 
     for (var i = 0; i < markers.length; ++i) {
@@ -182,7 +188,7 @@ function loadCertificatedBTS() {
 }
 
 $('#btnSearch').click(function () {
-    $('#CertificatedataTable').DataTable().ajax.reload();
+    $('#MyDataTable').DataTable().ajax.reload();
     if (map != undefined && map != null && markerClusters != null) {
         map.removeLayer(markerClusters);
         markerClusters.clearLayers();
@@ -196,9 +202,9 @@ $('#btnSearch').click(function () {
 
 initDataTable();
 
-var table = $('#CertificatedataTable').DataTable();
+var table = $('#MyDataTable').DataTable();
 
-$('#CertificatedataTable tbody').on('click', 'tr', function () {
+$('#MyDataTable tbody').on('click', 'tr', function () {
     if ($(this).hasClass('selected')) {
         $(this).removeClass('selected');
     }
@@ -229,7 +235,7 @@ $("a[href='#mapTab']").on('shown.bs.tab', function (e) {
 loadCertificatedBTS();
 
 function loadCertificatePivotTable() {
-    var oTable2 = $('#CertificatedataTable').DataTable();
+    var oTable2 = $('#MyDataTable').DataTable();
     var pivotTableData = oTable2.rows().data();
 
     var inputFunction = function (callback) {

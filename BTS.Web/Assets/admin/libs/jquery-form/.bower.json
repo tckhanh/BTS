@@ -47,6 +47,6 @@
     "commit": "4beae57bc92402e2d03ca66b5ae2942d0c94c695"
   },
   "_source": "https://github.com/jquery-form/form.git",
-  "_target": "*",
+  "_target": "~4.2.2",
   "_originalSource": "jquery-form"
 }

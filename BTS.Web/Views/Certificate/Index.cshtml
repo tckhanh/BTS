@@ -19,6 +19,7 @@
     <link href="~/Assets/admin/libs/datatables-buttons/css/buttons.dataTables.css" rel="stylesheet" />
 
     <link href="~/Assets/client/css/custom.css" rel="stylesheet" />
+    <link href="~/Assets/client/css/custom-DataTable.css" rel="stylesheet" />
 }
 
 @section footerJS{
@@ -42,9 +43,9 @@
     <script src="~/Assets/admin/libs/pdfmake/build/vfs_fonts.js"></script>
     <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.html5.js"></script>
     <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.print.js"></script>
-<script src="~/Assets/admin/libs/datatables-buttons/js/buttons.colVis.js"></script>
+    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.colVis.js"></script>
+    <script src="~/Assets/client/js/controllers/certificateController.js"></script>
 
-    <script src="~/Assets/client/js/controllers/certificate.js"></script>
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -181,7 +182,7 @@
                             <!-- /.box-header -->
                             <div class="box-body">
 
-                                <table id="CertificatedataTable" class="table table-bordered table-striped" style="width:100%">
+                                <table id="MyDataTable" class="table table-bordered table-striped" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Số Giấy CNKĐ</th>

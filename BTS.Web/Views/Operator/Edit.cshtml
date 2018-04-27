@@ -1,0 +1,26 @@
+﻿@model BTS.Web.Models.OperatorViewModel
+@{
+    Layout = null;
+    ViewBag.Title = "Sửa đổi";
+}
+
+@using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+{
+    @Html.HiddenFor(model => model.ID)
+    <div class="form-group">
+        @Html.LabelFor(model => model.ID, new { @class = "control-label" })
+        @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control", id = "txtID", readOnly = "true" } })
+        @Html.ValidationMessageFor(model => model.ID)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", id = "txtName" } })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <input type="" value="Reset" class="btn" />
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+}

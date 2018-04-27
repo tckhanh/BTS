@@ -2,9 +2,6 @@
     cursor: wait;
 }
 
-.table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: khaki;
-}
 
 a.user-profile {
     color: #5E6974 !important;
@@ -21,7 +18,7 @@ table.dataTable tbody tr.selected {
     background: rgba(38, 185, 154, 0.16);
 }
 
-    table.dataTable tbody tr.selected td {
+table.dataTable tbody tr.selected td {
         border-top: 1px solid rgba(38, 185, 154, 0.4);
         border-bottom: 1px solid rgba(38, 185, 154, 0.4);
     }
@@ -30,6 +27,7 @@ table.dataTable tbody tr.selected {
     font-size: 26px;
     font-weight: 800;
     color: darkblue;
+    text-align: center;
 }
 
 .tag {

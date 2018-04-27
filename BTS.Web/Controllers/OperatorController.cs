@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BTS.Web.Infrastructure.Extensions;
+using System.Web.Script.Serialization;
 
 namespace BTS.Web.Controllers
 {
@@ -33,6 +34,18 @@ namespace BTS.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult Add()
+        {
+            return View(new OperatorViewModel());
+        }
+
+        [HttpGet]
+        public ActionResult Edit(string id)
+        {
+            return View(Mapper.Map<OperatorViewModel>(_operatorService.getByID(id)));
+        }
+
+        [HttpGet]
         public ActionResult AddOrEdit(string id = "")
         {
             if (string.IsNullOrEmpty(id))
@@ -44,8 +57,43 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddOrEdit(OperatorViewModel itemVm)
+        public ActionResult SaveData(OperatorViewModel itemVm)
         {
+            if (string.IsNullOrEmpty(itemVm.ID))
+            {
+                Operator newItem = new Operator();
+                newItem.UpdateOperator(itemVm);
+                _operatorService.Add(newItem);
+                _operatorService.SaveChanges();
+                return Json(new { success = true, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var dbItem = _operatorService.getByID(itemVm.ID);
+                if (dbItem == null)
+                {
+                    Operator newItem = new Operator();
+                    newItem.UpdateOperator(itemVm);
+                    _operatorService.Add(newItem);
+                    _operatorService.SaveChanges();
+                    return Json(new { success = true, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    dbItem.UpdateOperator(itemVm);
+                    _operatorService.Update(dbItem);
+                    _operatorService.SaveChanges();
+                    return Json(new { success = true, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SaveData_Tedu(string strOperator)
+        {
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            OperatorViewModel itemVm = serializer.Deserialize<OperatorViewModel>(strOperator);
+
             if (string.IsNullOrEmpty(itemVm.ID))
             {
                 Operator newItem = new Operator();

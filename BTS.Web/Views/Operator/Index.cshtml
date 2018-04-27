@@ -5,47 +5,11 @@
 }
 
 @section headCSS{
-    <link href="~/Assets/admin/libs/datatables-buttons/css/buttons.dataTables.css" rel="stylesheet" />
     <link href="~/Assets/client/css/custom.css" rel="stylesheet" />
 }
 
-@section footerJS{
-    <script src="~/Assets/admin/libs/datatables-buttons/js/dataTables.buttons.js"></script>
-    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.flash.js"></script>
-    <script src="~/Assets/admin/libs/jszip/dist/jszip.min.js"></script>
-    <script src="~/Assets/admin/libs/pdfmake/build/pdfmake.min.js"></script>
-    <script src="~/Assets/admin/libs/pdfmake/build/vfs_fonts.js"></script>
-    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.html5.js"></script>
-    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.print.js"></script>
-    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.colVis.js"></script>
+@section footerJS{    
     <script src="~/Assets/client/js/controllers/operator.js"></script>
-    <script>
-        var Popup, dataTable;
-        $(document).ready(function () {
-            dataTable = $("#OperatorDataTable").DataTable({
-                "ajax": {
-                    "url": "/Operator/GetData",
-                    "type": "GET",
-                    "datatype": "json"
-                },
-                "columns": [
-                    { "data": "ID" },
-                    { "data": "Name" },
-                    {
-                        "data": "ID", "render": function (data) {
-                            return "<a class='btn btn-default btn-sm' onclick=PopupForm('@Url.Action("AddOrEdit","Operator")/" + data + "')><i class='fa fa-pencil'></i> Edit</a><a class='btn btn-danger btn-sm' style='margin-left:5px' onclick=Delete(" + data + ")><i class='fa fa-trash'></i> Delete</a>";
-                        },
-                        "orderable": false,
-                        "searchable": false,
-                        "width": "150px"
-                    }
-                ],
-                "language": {
-                    "emptyTable": "No data found, Please click on <b>Add New</b> Button"
-                }
-            });
-        });
-    </script>
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -74,7 +38,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-
+                        <a class="btn btn-success" style="margin-bottom:10px" onclick="PopupForm('@Url.Action("Add","Operator")')"><i cl><i class="fa fa-plus"></i> Thêm mới</a>
                         <table id="OperatorDataTable" class="table table-bordered table-striped" style="width:100%">
                             <thead>
                                 <tr>
