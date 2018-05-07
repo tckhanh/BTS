@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BTS.Model.Models
@@ -7,13 +9,29 @@ namespace BTS.Model.Models
     public class ApplicationGroup
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { set; get; }
+        public string ID { set; get; }
 
         [StringLength(250)]
         public string Name { set; get; }
 
         [StringLength(250)]
         public string Description { set; get; }
+
+        public virtual ICollection<ApplicationRoleGroup> ApplicationRoles { get; set; }
+        public virtual ICollection<ApplicationUserGroup> ApplicationUsers { get; set; }
+          public ApplicationGroup()
+        {
+            this.ID = Guid.NewGuid().ToString();
+            this.ApplicationRoles = new List<ApplicationRoleGroup>();
+            this.ApplicationUsers = new List<ApplicationUserGroup>();
+        }             
+        public ApplicationGroup(string name):this()        {
+            Name = name;
+        }
+
+        public ApplicationGroup(string name, string description): this(name)
+        {
+            this.Description = description;
+        }
     }
 }

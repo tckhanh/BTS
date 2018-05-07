@@ -25,10 +25,10 @@ namespace BTS.Service
         void Delete(string id);
 
         //Add roles to a sepcify group
-        bool AddRolesToGroup(IEnumerable<ApplicationRoleGroup> roleGroups, int groupId);
+        bool AddRolesToGroup(IEnumerable<ApplicationRoleGroup> roleGroups, string groupId);
 
         //Get list role by group id
-        IEnumerable<ApplicationRole> GetListRoleByGroupId(int groupId);
+        IEnumerable<ApplicationRole> GetListRoleByGroupId(string groupId);
 
         void Save();
     }
@@ -54,7 +54,7 @@ namespace BTS.Service
             return _appRoleRepository.Add(appRole);
         }
 
-        public bool AddRolesToGroup(IEnumerable<ApplicationRoleGroup> roleGroups, int groupId)
+        public bool AddRolesToGroup(IEnumerable<ApplicationRoleGroup> roleGroups, string groupId)
         {
             _appRoleGroupRepository.DeleteMulti(x => x.GroupId == groupId);
             foreach (var roleGroup in roleGroups)
@@ -101,7 +101,7 @@ namespace BTS.Service
             _appRoleRepository.Update(AppRole);
         }
 
-        public IEnumerable<ApplicationRole> GetListRoleByGroupId(int groupId)
+        public IEnumerable<ApplicationRole> GetListRoleByGroupId(string groupId)
         {
             return _appRoleRepository.GetListRoleByGroupId(groupId);
         }

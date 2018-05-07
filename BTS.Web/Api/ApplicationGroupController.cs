@@ -77,11 +77,11 @@ namespace BTS.Web.Api
             });
         }
 
-        [Route("detail/{id:int}")]
+        [Route("detail/{id}")]
         [HttpGet]
-        public HttpResponseMessage Details(HttpRequestMessage request, int id)
+        public HttpResponseMessage Details(HttpRequestMessage request, string id)
         {
-            if (id == 0)
+            if (string.IsNullOrEmpty(id))
             {
                 return request.CreateErrorResponse(HttpStatusCode.BadRequest, nameof(id) + " is required.");
             }
@@ -118,7 +118,7 @@ namespace BTS.Web.Api
                         listRoleGroup.Add(new ApplicationRoleGroup()
                         {
                             GroupId = appGroup.ID,
-                            RoleId = role.Id
+                            RoleId = role.ID
                         });
                     }
                     _appRoleService.AddRolesToGroup(listRoleGroup, appGroup.ID);
@@ -157,7 +157,7 @@ namespace BTS.Web.Api
                         listRoleGroup.Add(new ApplicationRoleGroup()
                         {
                             GroupId = appGroup.ID,
-                            RoleId = role.Id
+                            RoleId = role.ID
                         });
                     }
                     _appRoleService.AddRolesToGroup(listRoleGroup, appGroup.ID);
@@ -190,7 +190,7 @@ namespace BTS.Web.Api
 
         [HttpDelete]
         [Route("delete")]
-        public HttpResponseMessage Delete(HttpRequestMessage request, int id)
+        public HttpResponseMessage Delete(HttpRequestMessage request, string id)
         {
             var appGroup = _appGroupService.Delete(id);
             _appGroupService.Save();
@@ -210,7 +210,7 @@ namespace BTS.Web.Api
                 }
                 else
                 {
-                    var listItem = new JavaScriptSerializer().Deserialize<List<int>>(checkedList);
+                    var listItem = new JavaScriptSerializer().Deserialize<List<string>>(checkedList);
                     foreach (var item in listItem)
                     {
                         _appGroupService.Delete(item);

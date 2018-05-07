@@ -2,9 +2,50 @@
 {
     public class CommonConstants
     {
-        public static string MEMBER_GROUP = "MEMBER";
-        public static string ADMIN_GROUP = "ADMIN";
-        public static string MOD_GROUP = "MOD";
+        public const string SUPERADMIN_GROUP = "SUPERADMIN";
+        public const string DIRECTOR_GROUP = "DIRECTOR";
+        public const string VERTIFICATIONHEADER_GROUP = "HEADER";
+        public const string VERTIFICATION_GROUP = "VERTIFICATION";
+        public const string LAB_GROUP = "LAB";
+        public const string STTT_GROUP = "STTT";
+
+        public const string SUPERADMIN_GROUP_NAME = "Quản trị hệ thống";
+        public const string DIRECTOR_GROUP_NAME = "Lãnh đạo Trung tâm";
+        public const string VERTIFICATIONHEADER_GROUP_NAME = "Quản lý Kiểm định";
+        public const string VERTIFICATION_GROUP_NAME = "Chuyên viên kiểm định";
+        public const string LAB_GROUP_NAME = "Chuyên viên đo kiểm";
+        public const string STTT_GROUP_NAME = "Sở TTTT";
+
+        public const string SuperAdmin_Name = "admin";
+        public const string SuperAdmin_FullName = "Trần Công Khanh";
+        public const string SuperAdmin_Email = "tckhanh.p@gmail.com";
+        public const bool SuperAdmin_EmailConfirmed = true;
+        public const string SuperAdmin_Password = "Pa@ssword";
+
+        public const string System_Admin_Role = "System_Admin";
+        public const string Data_CanView_Role = "Data_CanView";
+        public const string Data_CanViewDetail_Role = "Data_CanViewDetail";
+        public const string Data_CanViewChart_Role = "Data_CanViewChart";
+        public const string Data_CanViewStatitics_Role = "Data_CanViewStatitics";
+        public const string Data_CanAdd_Role = "Data_CanAdd";
+        public const string Data_CanImport_Role = "Data_CanImport";
+        public const string Data_CanExport_Role = "Data_CanExport";
+        public const string Data_CanEdit_Role = "Data_CanEdit";
+        public const string Data_CanDisable_Role = "Data_CanDisable";
+        public const string Data_CanDelete_Role = "Data_CanDelete";
+
+        public const string System_Admin_Role_Name = "Quản trị hệ thống";
+        public const string Data_CanView_Role_Name = "Xem dữ liệu";
+        public const string Data_CanViewDetail_Role_Name = "Xem chi tiết dữ liệu";
+        public const string Data_CanViewChart_Role_Name = "Xem biểu đồ";
+        public const string Data_CanViewStatitics_Role_Name = "Xem dữ liệu thống kê";
+        public const string Data_CanAdd_Role_Name = "Thêm dữ liệu";
+        public const string Data_CanImport_Role_Name = "Nhập dữ liệu";
+        public const string Data_CanExport_Role_Name = "Xuất dữ liệu";
+        public const string Data_CanEdit_Role_Name = "Sửa dữ liệu";
+        public const string Data_CanDisable_Role_Name = "Xóa tạm dữ liệu";
+        public const string Data_CanDelete_Role_Name = "Xóa bỏ dữ liệu";
+
         public static string USER_SESSION = "USER_SESSION";
         public static string SESSION_CREDENTIALS = "SESSION_CREDENTIALS";
         public static string CartSession = "CartSession";

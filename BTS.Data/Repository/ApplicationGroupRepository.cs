@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using BTS.Data.Infrastructure;
 using BTS.Model.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BTS.Data.Repositories
 {
     public interface IApplicationGroupRepository : IRepository<ApplicationGroup>
     {
         IEnumerable<ApplicationGroup> GetListGroupByUserId(string userId);
-        IEnumerable<ApplicationUser> GetListUserByGroupId(int groupId);
+        IEnumerable<IdentityUser> GetListUserByGroupId(string groupId);
     }
     public class ApplicationGroupRepository : RepositoryBase<ApplicationGroup>, IApplicationGroupRepository
     {
@@ -30,7 +31,7 @@ namespace BTS.Data.Repositories
             return query;
         }
 
-        public IEnumerable<ApplicationUser> GetListUserByGroupId(int groupId)
+        public IEnumerable<IdentityUser> GetListUserByGroupId(string groupId)
         {
             var query = from g in DbContext.ApplicationGroups
                         join ug in DbContext.ApplicationUserGroups

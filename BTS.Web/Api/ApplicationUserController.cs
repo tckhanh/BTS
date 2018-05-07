@@ -79,7 +79,7 @@ namespace BTS.Web.Api
             else
             {
                 var applicationUserViewModel = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user.Result);
-                var listGroup = _appGroupService.GetListGroupByUserId(applicationUserViewModel.Id);
+                var listGroup = _appGroupService.GetListGroupByUserId(applicationUserViewModel.ID);
                 applicationUserViewModel.Groups = Mapper.Map<IEnumerable<ApplicationGroup>, IEnumerable<ApplicationGroupViewModel>>(listGroup);
                 return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
             }
@@ -146,7 +146,7 @@ namespace BTS.Web.Api
         {
             if (ModelState.IsValid)
             {
-                var appUser = await _userManager.FindByIdAsync(applicationUserViewModel.Id);
+                var appUser = await _userManager.FindByIdAsync(applicationUserViewModel.ID);
                 try
                 {
                     appUser.UpdateUser(applicationUserViewModel);
@@ -159,7 +159,7 @@ namespace BTS.Web.Api
                             listAppUserGroup.Add(new ApplicationUserGroup()
                             {
                                 GroupId = group.ID,
-                                UserId = applicationUserViewModel.Id
+                                UserId = applicationUserViewModel.ID
                             });
                             //add role to user
                             var listRole = _appRoleService.GetListRoleByGroupId(group.ID);
@@ -169,7 +169,7 @@ namespace BTS.Web.Api
                                 await _userManager.AddToRoleAsync(appUser.Id, role.Name);
                             }
                         }
-                        _appGroupService.AddUserToGroups(listAppUserGroup, applicationUserViewModel.Id);
+                        _appGroupService.AddUserToGroups(listAppUserGroup, applicationUserViewModel.ID);
                         _appGroupService.Save();
                         return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
                     }

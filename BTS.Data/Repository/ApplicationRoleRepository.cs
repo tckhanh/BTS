@@ -10,7 +10,7 @@ namespace BTS.Data.Repositories
 {
     public interface IApplicationRoleRepository : IRepository<ApplicationRole>
     {
-        IEnumerable<ApplicationRole> GetListRoleByGroupId(int groupId);
+        IEnumerable<ApplicationRole> GetListRoleByGroupId(string groupId);
     }
     public class ApplicationRoleRepository : RepositoryBase<ApplicationRole>, IApplicationRoleRepository
     {
@@ -18,7 +18,7 @@ namespace BTS.Data.Repositories
         {
 
         }
-        public IEnumerable<ApplicationRole> GetListRoleByGroupId(int groupId)
+        public IEnumerable<ApplicationRole> GetListRoleByGroupId(string groupId)
         {
             var query = from g in DbContext.ApplicationRoles
                         join ug in DbContext.ApplicationRoleGroups

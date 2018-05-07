@@ -13,7 +13,7 @@ namespace BTS.Model.Models
     {
         [Key]
         [Column(Order = 1)]
-        public int GroupId { set; get; }
+        public string GroupId { set; get; }
 
         [Column(Order = 2)]
         [StringLength(128)]

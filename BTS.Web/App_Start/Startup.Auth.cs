@@ -25,7 +25,7 @@ namespace BTS.Web.App_Start
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
-            app.CreatePerOwinContext<UserManager<ApplicationUser>>(CreateManager);
+            //app.CreatePerOwinContext<UserManager<ApplicationUser>>(CreateManager);
 
             app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
             {
@@ -125,11 +125,11 @@ namespace BTS.Web.App_Start
             }
         }
 
-        private static UserManager<ApplicationUser> CreateManager(IdentityFactoryOptions<UserManager<ApplicationUser>> options, IOwinContext context)
-        {
-            var userStore = new UserStore<ApplicationUser>(context.Get<BTSDbContext>());
-            var owinManager = new UserManager<ApplicationUser>(userStore);
-            return owinManager;
-        }
+        //private static UserManager<ApplicationUser> CreateManager(IdentityFactoryOptions<UserManager<ApplicationUser>> options, IOwinContext context)
+        //{
+        //    var userStore = new UserStore<ApplicationUser>(context.Get<BTSDbContext>());
+        //    var owinManager = new UserManager<ApplicationUser>(userStore);
+        //    return owinManager;
+        //}
     }
 }

@@ -12,8 +12,6 @@ var certificateController = {
         certificateController.loadData();
         certificateController.registerEventDataTable();
         certificateController.registerEvent();
-        certificateController.loadMap();
-        certificateController.loadPivotTable();
     },
     registerEventDataTable: function () {
         var table = $("#MyDataTable").DataTable();
@@ -35,15 +33,6 @@ var certificateController = {
     registerEvent: function () {
         $('#btnSearch').off('click').on('click', function () {
             $('#MyDataTable').DataTable().ajax.reload();
-            if (myMap != undefined && myMap != null && myMarkerClusters != null) {
-                myMap.removeLayer(myMarkerClusters);
-                myMarkerClusters.clearLayers();
-                //myMap.eachLayer(function (layer) {
-                //    myMap.removeLayer(layer);
-                //});
-                certificateController.loadMap();
-            }
-            certificateController.loadPivotTable();
         });
 
         $("a[href='#mapTab']").on('shown.bs.tab', function (e) {
@@ -118,183 +107,200 @@ var certificateController = {
                 });
 
         if (userRoleAdmin) {
-            $("#MyDataTable").dataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    {
-                        extend: 'colvis',
-                        text: 'Ẩn/hiện cột',
-                        className: 'btn-success'
-                    },
-                    {
-                        extend: 'excel',
-                        text: 'Xuất Excel',
-                        className: 'btn-success',
-                    },
-                    {
-                        extend: 'pdf',
-                        text: 'Xuất Pdf',
-                        className: 'btn-success'
-                    },
-                    {
-                        extend: 'print',
-                        text: 'In ấn',
-                        className: 'btn-success'
+            $("#MyDataTable")
+                .on('xhr.dt', function (e, settings, json, xhr) {
+                    if (myMap != undefined && myMap != null && myMarkerClusters != null) {
+                        myMap.removeLayer(myMarkerClusters);
+                        myMarkerClusters.clearLayers();
+                        //myMap.eachLayer(function (layer) {
+                        //    myMap.removeLayer(layer);
+                        //});
                     }
-                ],
-                "processing": true,
-                "info": true,
-                "selector": true,
-                "ajax": {
-                    "async": false,
-                    "url": "/Certificate/loadCertificate",
-                    "type": "POST",
-                    "data": function (d) {
-                        d.CityID = $('#CityID').val().trim();
-                        d.OperatorID = $('#OperatorID').val().trim();
-                        d.ProfileID = $('#ProfileID').val().trim();
-                        d.StartDate = startDate.toISOString();
-                        d.EndDate = endDate.toISOString();
-                        d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-                    }
-                },
-                "columns": [
-                    { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
-                    { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
-                    { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
-                    { "data": "Address", "name": "Address", "width": "40%" },        // index 3
-                    { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
-                    {
-                        "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
-                        "render": function (data, type, row) {
-                            return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
+                    certificateController.loadMap(json.data);
+                    certificateController.loadPivotTable(json.data);
+                })
+                .dataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'colvis',
+                            text: 'Ẩn/hiện cột',
+                            className: 'btn-success'
+                        },
+                        {
+                            extend: 'excel',
+                            text: 'Xuất Excel',
+                            className: 'btn-success',
+                        },
+                        {
+                            extend: 'pdf',
+                            text: 'Xuất Pdf',
+                            className: 'btn-success'
+                        },
+                        {
+                            extend: 'print',
+                            text: 'In ấn',
+                            className: 'btn-success'
+                        }
+                    ],
+                    "processing": true,
+                    "info": true,
+                    "selector": true,
+                    "ajax": {
+                        "async": true,
+                        "url": "/Certificate/loadCertificate",
+                        "type": "POST",
+                        "data": function (d) {
+                            d.CityID = $('#CityID').val().trim();
+                            d.OperatorID = $('#OperatorID').val().trim();
+                            d.ProfileID = $('#ProfileID').val().trim();
+                            d.StartDate = startDate.toISOString();
+                            d.EndDate = endDate.toISOString();
+                            d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
                         }
                     },
-                    {
-                        "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
-                        "render": function (data, type, row) {
-                            return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
-                        }
-                    }],
-                "language": {
-                    url: '/localization/vi_VI.json'
-                }
-            });
-        } else {
-            $("#MyDataTable").dataTable({
-                "processing": true,
-                "info": true,
-                "selector": true,
-                "ajax": {
-                    "async": false,
-                    "url": "/Certificate/loadCertificate",
-                    "type": "POST",
-                    "data": function (d) {
-                        d.CityID = $('#CityID').val().trim();
-                        d.OperatorID = $('#OperatorID').val().trim();
-                        d.ProfileID = $('#ProfileID').val().trim();
-                        d.StartDate = startDate.toISOString();
-                        d.EndDate = endDate.toISOString();
-                        d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
+                    "columns": [
+                        { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
+                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
+                        { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
+                        { "data": "Address", "name": "Address", "width": "40%" },        // index 3
+                        { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
+                        {
+                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
+                            "render": function (data, type, row) {
+                                return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
+                            }
+                        },
+                        {
+                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
+                            "render": function (data, type, row) {
+                                return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
+                            }
+                        }],
+                    "language": {
+                        url: '/localization/vi_VI.json'
                     }
-                },
-                "columns": [
-                    { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
-                    { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
-                    { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
-                    { "data": "Address", "name": "Address", "width": "40%" },        // index 3
-                    { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
-                    {
-                        "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
-                        "render": function (data, type, row) {
-                            return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
-                        }
-                    },
-                    {
-                        "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
-                        "render": function (data, type, row) {
-                            return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
-                        }
-                    }],
-                "language": {
-                    url: '/localization/vi_VI.json'
-                }
-            });
-        }
-    },
-    loadMap: function () {
-        var myURL = $('script[src$="leaflet.js"]').attr('src').replace('leaflet.js', '');
-        //Apply custom Search on dataTable here
-        var oTable2 = $('#MyDataTable').DataTable();
-        var markers = oTable2.rows().data();
-
-        for (var i = 0; i < markers.length; ++i) {
-            var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
-                        '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
-                        '<br/><b>G.CNKĐ:</b> ' + markers[i].ID +
-                        '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
-            var img24 = 'images/pin24.png';
-            var img48 = 'images/pin48.png';
-            if (markers[i].OperatorID == "VINAPHONE") {
-                img24 = 'images/vinaphone24.png';
-                img48 = 'images/vinaphone48.png';
-            } else if (markers[i].OperatorID == "MOBIFONE") {
-                img24 = 'images/mobifone24.png';
-                img48 = 'images/mobifone48.png';
-            } else if (markers[i].OperatorID == "VIETTEL") {
-                img24 = 'images/viettel24.png';
-                img48 = 'images/viettel48.png';
-            } else if (markers[i].OperatorID == "VNMOBILE") {
-                img24 = 'images/vnmobile24.png';
-                img48 = 'images/vnmobile48.png';
-            }
-
-            var myIcon = L.icon({
-                iconUrl: myURL + img24,
-                iconRetinaUrl: myURL + img48,
-                iconSize: [29, 24],
-                iconAnchor: [9, 21],
-                popupAnchor: [0, -14]
-            });
-
-            var m = L.marker([markers[i].Latitude, markers[i].Longtitude], { icon: myIcon })
-                            .bindPopup(popup);
-            myMarkerClusters.addLayer(m);
-        }
-        myMap.addLayer(myMarkerClusters);
-
-        $("#output").pivotUI($("#input"), {
-            rows: ["color"],
-            cols: ["shape"]
-        });
-    },
-    loadPivotTable: function () {
-        var oTable2 = $('#MyDataTable').DataTable();
-        var pivotTableData = oTable2.rows().data();
-
-        var inputFunction = function (callback) {
-            pivotTableData.each(function (element, index) {
-                callback({
-                    OperatorID: element.OperatorID,
-                    cityID: element.CityID,
-                    year: moment(element.IssuedDate).year()
                 });
-            });
+        } else {
+            $("#MyDataTable")
+                .on('xhr.dt', function (e, settings, json, xhr) {
+                    if (myMap != undefined && myMap != null && myMarkerClusters != null) {
+                        myMap.removeLayer(myMarkerClusters);
+                        myMarkerClusters.clearLayers();
+                        //myMap.eachLayer(function (layer) {
+                        //    myMap.removeLayer(layer);
+                        //});
+                    }
+                    if (json != null) {
+                        var data = json.data;
+                        certificateController.loadMap(data);
+                        certificateController.loadPivotTable(data);
+                    }
+
+                })
+                .dataTable({
+                    "processing": true,
+                    "info": true,
+                    "selector": true,
+                    "ajax": {
+                        "async": true,
+                        "url": "/Certificate/loadCertificate",
+                        "type": "POST",
+                        "data": function (d) {
+                            d.CityID = $('#CityID').val().trim();
+                            d.OperatorID = $('#OperatorID').val().trim();
+                            d.ProfileID = $('#ProfileID').val().trim();
+                            d.StartDate = startDate.toISOString();
+                            d.EndDate = endDate.toISOString();
+                            d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
+                        }
+                    },
+                    "columns": [
+                        { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
+                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
+                        { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
+                        { "data": "Address", "name": "Address", "width": "40%" },        // index 3
+                        { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
+                        {
+                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
+                            "render": function (data, type, row) {
+                                return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
+                            }
+                        },
+                        {
+                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
+                            "render": function (data, type, row) {
+                                return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
+                            }
+                        }],
+                    "language": {
+                        url: '/localization/vi_VI.json'
+                    }
+                });
+        }
+    },
+    loadMap: function (markers) {
+        var myURL = $('script[src$="leaflet.js"]').attr('src').replace('leaflet.js', '');
+        if (markers != null) {
+            for (var i = 0; i < markers.length; ++i) {
+                var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
+                            '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
+                            '<br/><b>G.CNKĐ:</b> ' + markers[i].ID +
+                            '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
+                var img24 = 'images/pin24.png';
+                var img48 = 'images/pin48.png';
+                if (markers[i].OperatorID == "VINAPHONE") {
+                    img24 = 'images/vinaphone24.png';
+                    img48 = 'images/vinaphone48.png';
+                } else if (markers[i].OperatorID == "MOBIFONE") {
+                    img24 = 'images/mobifone24.png';
+                    img48 = 'images/mobifone48.png';
+                } else if (markers[i].OperatorID == "VIETTEL") {
+                    img24 = 'images/viettel24.png';
+                    img48 = 'images/viettel48.png';
+                } else if (markers[i].OperatorID == "VNMOBILE") {
+                    img24 = 'images/vnmobile24.png';
+                    img48 = 'images/vnmobile48.png';
+                }
+
+                var myIcon = L.icon({
+                    iconUrl: myURL + img24,
+                    iconRetinaUrl: myURL + img48,
+                    iconSize: [29, 24],
+                    iconAnchor: [9, 21],
+                    popupAnchor: [0, -14]
+                });
+
+                var m = L.marker([markers[i].Latitude, markers[i].Longtitude], { icon: myIcon })
+                                .bindPopup(popup);
+                myMarkerClusters.addLayer(m);
+            }
+            myMap.addLayer(myMarkerClusters);
+        }
+    },
+    loadPivotTable: function (pivotTableData) {
+        var inputFunction = function (callback) {
+            for (var i = 0; i < pivotTableData.length; ++i){
+                callback({
+                    OperatorID: pivotTableData[i].OperatorID,
+                    cityID: pivotTableData[i].CityID,
+                    year: moment(pivotTableData[i].IssuedDate).year()
+                });
+            }
         };
 
         // This example adds Plotly chart renderers.
 
         var derivers = $.pivotUtilities.derivers;
         var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.plotly_renderers);
-
         $("#pivotTable").pivotUI(inputFunction,
-        {
-            renderers: renderers,
-            rows: ["OperatorID"],
-            cols: ["CityID"],
-            rendererName: "Horizontal Stacked Bar Chart",
-            rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
-        });
+                {
+                    renderers: renderers,
+                    rows: ["OperatorID"],
+                    cols: ["CityID"],
+                    rendererName: "Horizontal Stacked Bar Chart",
+                    rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
+                });
     }
 }
 

@@ -20,7 +20,7 @@ namespace BTS.Web.Common
 
             List<string> privilegeLevels = this.GetCredentialByLoggedInUser(session.UserName); // Call another method to get rights of the user from DB
 
-            if (privilegeLevels.Contains(this.RoleID) || session.GroupID == CommonConstants.ADMIN_GROUP)
+            if (privilegeLevels.Contains(this.RoleID) || session.GroupID == CommonConstants.SUPERADMIN_GROUP)
             {
                 return true;
             }

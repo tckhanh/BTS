@@ -12,7 +12,7 @@ namespace BTS.Model.Models
 
         [Key]
         [Column(Order = 2)]
-        public int GroupId { set; get; }
+        public string GroupId { set; get; }
 
         [ForeignKey("UserId")]
         public virtual ApplicationUser ApplicationUser { set; get; }

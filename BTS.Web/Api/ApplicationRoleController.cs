@@ -115,7 +115,7 @@ namespace BTS.Web.Api
         {
             if (ModelState.IsValid)
             {
-                var appRole = _appRoleService.GetDetail(applicationRoleViewModel.Id);
+                var appRole = _appRoleService.GetDetail(applicationRoleViewModel.ID);
                 try
                 {
                     appRole.UpdateApplicationRole(applicationRoleViewModel, "update");

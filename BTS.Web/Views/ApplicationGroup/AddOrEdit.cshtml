@@ -1,0 +1,66 @@
+﻿@model BTS.Web.Models.ApplicationGroupViewModel
+
+@{
+    ViewBag.Title = "AddOrEdit";
+    Layout = null;
+    IEnumerable<BTS.Web.Models.ApplicationRoleViewModel> Roles = ViewBag.Roles;
+}
+
+@using (Html.BeginForm("AddOrEdit", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationGroup", new { id = 0 }) }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.ID)
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+
+                @if (Roles != null)
+                {
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Danh sách các quyền</label>
+                        <div class="col-md-9">
+                            @foreach (var item in Roles)
+                            {
+                                if (@Model.Roles.Contains(item.Name) == true)
+                                {
+                                    <label class="col-md-4"><input type="checkbox" checked="checked" /> @item.Name</label>
+                                }
+                                else
+                                { <label class="col-md-4"><input type="checkbox" /> @item.Name</label>
+                                }
+
+                            }
+                        </div>
+                    </div>
+
+                }
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value=" Lưu" class="btn btn-primary" />
+                        @if (Model.ID != 0)
+                        {
+                            <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationGroup",new{id = 0})',false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
