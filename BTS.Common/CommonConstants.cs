@@ -20,7 +20,7 @@
         public const string SuperAdmin_FullName = "Trần Công Khanh";
         public const string SuperAdmin_Email = "tckhanh.p@gmail.com";
         public const bool SuperAdmin_EmailConfirmed = true;
-        public const string SuperAdmin_Password = "Pa@ssword";
+        public const string SuperAdmin_Password = "P@ssword";
 
         public const string System_Admin_Role = "System_Admin";
         public const string Data_CanView_Role = "Data_CanView";
@@ -34,17 +34,17 @@
         public const string Data_CanDisable_Role = "Data_CanDisable";
         public const string Data_CanDelete_Role = "Data_CanDelete";
 
-        public const string System_Admin_Role_Name = "Quản trị hệ thống";
-        public const string Data_CanView_Role_Name = "Xem dữ liệu";
-        public const string Data_CanViewDetail_Role_Name = "Xem chi tiết dữ liệu";
-        public const string Data_CanViewChart_Role_Name = "Xem biểu đồ";
-        public const string Data_CanViewStatitics_Role_Name = "Xem dữ liệu thống kê";
-        public const string Data_CanAdd_Role_Name = "Thêm dữ liệu";
-        public const string Data_CanImport_Role_Name = "Nhập dữ liệu";
-        public const string Data_CanExport_Role_Name = "Xuất dữ liệu";
-        public const string Data_CanEdit_Role_Name = "Sửa dữ liệu";
-        public const string Data_CanDisable_Role_Name = "Xóa tạm dữ liệu";
-        public const string Data_CanDelete_Role_Name = "Xóa bỏ dữ liệu";
+        public const string System_Admin_Role_Description = "Quản trị hệ thống";
+        public const string Data_CanView_Role_Description = "Xem dữ liệu";
+        public const string Data_CanViewDetail_Role_Description = "Xem chi tiết dữ liệu";
+        public const string Data_CanViewChart_Role_Description = "Xem biểu đồ";
+        public const string Data_CanViewStatitics_Role_Description = "Xem dữ liệu thống kê";
+        public const string Data_CanAdd_Role_Description = "Thêm dữ liệu";
+        public const string Data_CanImport_Role_Description = "Nhập dữ liệu";
+        public const string Data_CanExport_Role_Description = "Xuất dữ liệu";
+        public const string Data_CanEdit_Role_Description = "Sửa dữ liệu";
+        public const string Data_CanDisable_Role_Description = "Xóa tạm dữ liệu";
+        public const string Data_CanDelete_Role_Description = "Xóa bỏ dữ liệu";
 
         public static string USER_SESSION = "USER_SESSION";
         public static string SESSION_CREDENTIALS = "SESSION_CREDENTIALS";

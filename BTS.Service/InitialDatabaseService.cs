@@ -1,30 +1,27 @@
 ﻿using BTS.Common;
 using BTS.Data;
-using BTS.Data.Infrastructure;
-using BTS.Data.Repositories;
 using BTS.Model.Models;
-using BTS.Service;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace BTS.Web.App_Start
+namespace BTS.Service
 {
-    public partial class Startup
+    public class InitialDatabaseService
     {
         private IApplicationGroupService _appGroupService;
         private IApplicationRoleService _appRoleService;
         private IErrorService _errorService;
         private BTSDbContext context;
 
-        public Startup(IErrorService errorService, IApplicationRoleService appRoleService,
+        public InitialDatabaseService(IErrorService errorService, IApplicationRoleService appRoleService,
                        IApplicationGroupService appGroupService)
         {
             _appGroupService = appGroupService;
@@ -32,7 +29,7 @@ namespace BTS.Web.App_Start
             _errorService = errorService;
         }
 
-        private void CreateConfigTitle(BTSDbContext context)
+        private void CreateConfigTitle()
         {
             if (!context.SystemConfigs.Any(x => x.Code == "HomeTitle"))
             {

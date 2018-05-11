@@ -12,7 +12,7 @@ using System.Web;
 
 namespace BTS.Web.App_Start
 {
-    public class ApplicationGroupManager
+    public class ApplicationGroupManager1
     {
         private ApplicationGroupStore _groupStore;
         private BTSDbContext _db;
@@ -21,7 +21,6 @@ namespace BTS.Web.App_Start
 
         public ApplicationGroupManager()
         {
-
             //_db = HttpContext.Current.GetOwinContext().Get<BTSDbContext>();
             _db = new BTSDbContext();
             //_userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
@@ -30,9 +29,7 @@ namespace BTS.Web.App_Start
 
             _roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             _userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(_db));
-
         }
-
 
         public IQueryable<ApplicationGroup> Groups
         {
@@ -42,13 +39,11 @@ namespace BTS.Web.App_Start
             }
         }
 
-
         public async Task<IdentityResult> CreateGroupAsync(ApplicationGroup group)
         {
             await _groupStore.CreateAsync(group);
             return IdentityResult.Success;
         }
-
 
         public IdentityResult CreateGroup(ApplicationGroup group)
         {
@@ -56,8 +51,7 @@ namespace BTS.Web.App_Start
             return IdentityResult.Success;
         }
 
-
-        public IdentityResult SetRoleGroups(string groupId, params string[] roleNames)
+        public IdentityResult SetGroupRoles(string groupId, params string[] roleNames)
         {
             // Clear all the roles associated with this group:
             var thisGroup = this.FindById(groupId);
@@ -79,7 +73,6 @@ namespace BTS.Web.App_Start
             }
             return IdentityResult.Success;
         }
-
 
         public async Task<IdentityResult> SetGroupRolesAsync(string groupId, params string[] roleNames)
         {
@@ -104,7 +97,6 @@ namespace BTS.Web.App_Start
             return IdentityResult.Success;
         }
 
-
         public async Task<IdentityResult> SetUserGroupsAsync(string userId, params string[] groupIds)
         {
             // Clear current group membership:
@@ -128,7 +120,6 @@ namespace BTS.Web.App_Start
             return IdentityResult.Success;
         }
 
-
         public IdentityResult SetUserGroups(string userId, params string[] groupIds)
         {
             // Clear current group membership:
@@ -151,7 +142,6 @@ namespace BTS.Web.App_Start
             this.RefreshUserGroupRoles(userId);
             return IdentityResult.Success;
         }
-
 
         public IdentityResult RefreshUserGroupRoles(string userId)
         {
@@ -181,7 +171,6 @@ namespace BTS.Web.App_Start
             return IdentityResult.Success;
         }
 
-
         public async Task<IdentityResult> RefreshUserGroupRolesAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -209,7 +198,6 @@ namespace BTS.Web.App_Start
 
             return IdentityResult.Success;
         }
-
 
         public async Task<IdentityResult> DeleteGroupAsync(string groupId)
         {
@@ -239,7 +227,6 @@ namespace BTS.Web.App_Start
             return IdentityResult.Success;
         }
 
-
         public IdentityResult DeleteGroup(string groupId)
         {
             var group = this.FindById(groupId);
@@ -268,7 +255,6 @@ namespace BTS.Web.App_Start
             return IdentityResult.Success;
         }
 
-
         public async Task<IdentityResult> UpdateGroupAsync(ApplicationGroup group)
         {
             await _groupStore.UpdateAsync(group);
@@ -278,7 +264,6 @@ namespace BTS.Web.App_Start
             }
             return IdentityResult.Success;
         }
-
 
         public IdentityResult UpdateGroup(ApplicationGroup group)
         {
@@ -290,18 +275,15 @@ namespace BTS.Web.App_Start
             return IdentityResult.Success;
         }
 
-
         public IdentityResult ClearUserGroups(string userId)
         {
             return this.SetUserGroups(userId, new string[] { });
         }
 
-
         public async Task<IdentityResult> ClearUserGroupsAsync(string userId)
         {
             return await this.SetUserGroupsAsync(userId, new string[] { });
         }
-
 
         public async Task<IEnumerable<ApplicationGroup>> GetUserGroupsAsync(string userId)
         {
@@ -312,7 +294,6 @@ namespace BTS.Web.App_Start
             return await userGroups;
         }
 
-
         public IEnumerable<ApplicationGroup> GetUserGroups(string userId)
         {
             var result = new List<ApplicationGroup>();
@@ -321,7 +302,6 @@ namespace BTS.Web.App_Start
                               select g).ToList();
             return userGroups;
         }
-
 
         public async Task<IEnumerable<ApplicationRole>> GetGroupRolesAsync(string groupId)
         {
@@ -333,7 +313,6 @@ namespace BTS.Web.App_Start
             return (IEnumerable<ApplicationRole>)groupRoles;
         }
 
-
         public IEnumerable<ApplicationRole> GetGroupRoles(string groupId)
         {
             var grp = _db.ApplicationGroups.FirstOrDefault(g => g.ID == groupId);
@@ -343,7 +322,6 @@ namespace BTS.Web.App_Start
                              select r;
             return (IEnumerable<ApplicationRole>)groupRoles;
         }
-
 
         public IEnumerable<ApplicationUser> GetGroupUsers(string groupId)
         {
@@ -356,7 +334,6 @@ namespace BTS.Web.App_Start
             }
             return users;
         }
-
 
         public async Task<IEnumerable<ApplicationUser>> GetGroupUsersAsync(string groupId)
         {
@@ -371,7 +348,6 @@ namespace BTS.Web.App_Start
             return users;
         }
 
-
         public IEnumerable<ApplicationRoleGroup> GetUserGroupRoles(string userId)
         {
             var userGroups = this.GetUserGroups(userId);
@@ -382,7 +358,6 @@ namespace BTS.Web.App_Start
             }
             return userGroupRoles;
         }
-
 
         public async Task<IEnumerable<ApplicationRoleGroup>> GetUserGroupRolesAsync(string userId)
         {
@@ -395,12 +370,10 @@ namespace BTS.Web.App_Start
             return userGroupRoles;
         }
 
-
         public async Task<ApplicationGroup> FindByIdAsync(string id)
         {
             return await _groupStore.FindByIdAsync(id);
         }
-
 
         public ApplicationGroup FindById(string id)
         {

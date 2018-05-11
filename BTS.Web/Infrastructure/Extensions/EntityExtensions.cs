@@ -79,7 +79,7 @@ namespace BTS.Web.Infrastructure.Extensions
             appGroup.Description = appGroupViewModel.Description;
         }
 
-        public static void UpdateApplicationRole(this ApplicationRole appRole, ApplicationRoleViewModel appRoleViewModel, String action ="add")
+        public static void UpdateApplicationRole(this ApplicationRole appRole, ApplicationRoleViewModel appRoleViewModel, String action = "add")
         {
             if (action == "add")
                 appRole.Id = Guid.NewGuid().ToString();
@@ -89,7 +89,6 @@ namespace BTS.Web.Infrastructure.Extensions
 
         public static void UpdateUser(this ApplicationUser appUser, ApplicationUserViewModel appUserViewModel)
         {
-            appUser.Id = appUserViewModel.ID;
             appUser.FullName = appUserViewModel.FullName;
             appUser.BirthDay = appUserViewModel.BirthDay;
             appUser.Email = appUserViewModel.Email;

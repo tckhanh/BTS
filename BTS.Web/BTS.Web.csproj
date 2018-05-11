@@ -239,8 +239,6 @@
     <Compile Include="Api\InCaseOfController.cs" />
     <Compile Include="Api\OperatorController.cs" />
     <Compile Include="Api\StatisticController.cs" />
-    <Compile Include="App_Start\ApplicationGroupManager.cs" />
-    <Compile Include="App_Start\ApplicationGroupStore.cs" />
     <Compile Include="App_Start\ApplicationSignInManager.cs" />
     <Compile Include="App_Start\ApplicationUserManager.cs" />
     <Compile Include="App_Start\ApplicationUserStore.cs" />
@@ -8987,6 +8985,7 @@
     <Content Include="Assets\client\js\common.js" />
     <Content Include="Assets\client\js\common\message.js" />
     <Content Include="Assets\client\js\common\notify.min.js" />
+    <Content Include="Assets\client\js\controllers\applicationUserController.js" />
     <Content Include="Assets\client\js\controllers\commonController - Copy.js" />
     <Content Include="Assets\client\js\controllers\commonController.js" />
     <Content Include="Assets\client\js\controllers\certificateController_v1.js" />
@@ -9117,6 +9116,8 @@
     <Folder Include="Assets\admin\libs\inputmask\dist\min\inputmask\dependencyLibs\" />
     <Folder Include="Assets\admin\libs\inputmask\dist\min\inputmask\global\" />
     <Folder Include="Assets\admin\libs\inputmask\dist\min\inputmask\phone-codes\" />
+    <Folder Include="Assets\admin\libs\ngBootbox\typings\angularjs\" />
+    <Folder Include="Assets\admin\libs\ngBootbox\typings\jquery\" />
     <Folder Include="Assets\client\font-awesome-4.6.3\" />
     <Folder Include="Assets\client\images\" />
     <Folder Include="ImportData\" />
@@ -9143,7 +9144,6 @@
     <Content Include="app\shared\views\SideBar.html" />
     <Content Include="app\shared\views\RightSideBar.html" />
     <Content Include="bower - Copy.json" />
-    <Compile Include="App_Start\Startup.Data.cs" />
     <Content Include=".bowerrc" />
     <Content Include="bower.json" />
     <Content Include="Assets\admin\libs\adminLTE\.bower.json" />
@@ -10333,9 +10333,6 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Assets\admin\libs\moment\moment.d.ts" />
-    <TypeScriptCompile Include="Assets\admin\libs\ngBootbox\typings\angularjs\angular.d.ts" />
-    <TypeScriptCompile Include="Assets\admin\libs\ngBootbox\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Assets\admin\libs\ngBootbox\typings\tsd.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -5,13 +5,13 @@
     Layout = null;
 }
 
-@using (Html.BeginForm("AddOrEdit", "ApplicationUser", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = 0 }) }))//data-resetUrl
+@using (Html.BeginForm("AddOrEdit", "ApplicationUser", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = "" }) }))//data-resetUrl
 {
     @Html.AntiForgeryToken()
     <div class="row">
         <div class="form-horizontal">
             @Html.ValidationSummary(true)
-            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.ID)
             @Html.HiddenFor(model => model.ImagePath)
 
             <div class="col-md-8">
@@ -23,7 +23,7 @@
                         @Html.ValidationMessageFor(model => model.FullName)
                     </div>
                 </div>
-              <div class="form-group">
+                <div class="form-group">
                     @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
                         @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
@@ -34,7 +34,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
-                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" } )
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Password)
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
-                        @Html.EditorFor(model => model.Email, new  { @class = "form-control" } )
+                        @Html.EditorFor(model => model.Email, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Email)
                     </div>
                 </div>
@@ -62,34 +62,52 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Groups, new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @{ GetData('/'); }
-                        @Html.EditorFor(model => model.BirthDay, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.BirthDay)
-                    </div>
+                    @Html.LabelFor(model => model.GroupsList, new { @class = "control-label col-md-3" })
+
+                    <span class=" col-md-9">
+                        @*<table>
+                                <tr>
+                                    <th>
+                                        Select
+                                    </th>
+                                    <th>
+                                        Group
+                                    </th>
+                                </tr>
+                                @Html.EditorFor(model => model.GroupsList)
+                            </table>*@
+
+                        @foreach (var item in Model.GroupsList)
+                        {
+                            <div>
+                                <input type="checkbox" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                @Html.Label(item.Text, new { @class = "control-label" })
+                            </div>
+                        }
+                    </span>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Submit" class="btn btn-default" />
-                        @if (string.IsNullOrEmpty(Model.Id))
-da                            <a class="btn btn-success" onclick="refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationUser",new{id=0})',false)"><i class="fa fa-plus"></i> Add New</a>
+                        @if (string.IsNullOrEmpty(Model.ID))
+                        {
+                            <a class="btn btn-success" onclick="refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationUser",new{id = ""})',false)"><i class="fa fa-plus"></i> Add New</a>
                         }
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ImagePath, new { @class = "control-label col-md-3" })
-                    <div class="col-md-10">
-                        <img src="@Url.Content(Model.ImagePath)" style="margin:10px" height="200" width="200" id="imagePreview" />
-                        <input type="file" name="ImageUpload" accept="image/jpeg, image/png" onchange="ShowImagePreview(this,document.getElementById('imagePreview'))" />
-                    </div>
+                    @if (!string.IsNullOrEmpty(Model.ImagePath))
+                    {
+                        @Html.LabelFor(model => model.ImagePath, new { @class = "control-label col-md-3" })
+                        <div class="col-md-10">
+                            <img src="@Url.Content(Model.ImagePath)" style="margin:10px" height="200" width="200" id="imagePreview" />
+                            <input type="file" name="ImageUpload" accept="image/jpeg, image/png" onchange="ShowImagePreview(this,document.getElementById('imagePreview'))" />
+                        </div>
+                    }
                 </div>
             </div>
-
         </div>
     </div>
 }
-
-

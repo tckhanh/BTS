@@ -35,8 +35,8 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    <a class="btn btn-primary btn-sm" onclick="Edit('@Url.Action("AddOrEdit", "ApplicationUser", new { id=@item.Id})')"><i class="fa fa-pencil fa-lg"></i></a>
-                    <a class="btn btn-danger btn-sm" onclick="Delete('@Url.Action("Delete", "ApplicationUser", new { id=@item.Id})')"><i class="fa fa-trash fa-lg"></i></a>
+                    <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUser", new { id=@item.ID})')"><i class="fa fa-pencil fa-lg"></i></a>
+                    <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "ApplicationUser", new { id=@item.ID})')"><i class="fa fa-trash fa-lg"></i></a>
                 </td>
             </tr>
         }

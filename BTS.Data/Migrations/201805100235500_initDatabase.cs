@@ -3,7 +3,7 @@ namespace BTS.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class resetDatabase : DbMigration
+    public partial class initDatabase : DbMigration
     {
         public override void Up()
         {
@@ -89,7 +89,7 @@ namespace BTS.Data.Migrations
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
                 .ForeignKey("dbo.ApplicationRoles", t => t.IdentityRole_Id)
-                .ForeignKey("dbo.IdentityUsers", t => t.IdentityUser_Id)
+                .ForeignKey("dbo.ApplicationUsers", t => t.IdentityUser_Id)
                 .Index(t => t.IdentityRole_Id)
                 .Index(t => t.IdentityUser_Id);
             
@@ -102,12 +102,12 @@ namespace BTS.Data.Migrations
                     })
                 .PrimaryKey(t => new { t.UserId, t.GroupId })
                 .ForeignKey("dbo.ApplicationGroups", t => t.GroupId, cascadeDelete: true)
-                .ForeignKey("dbo.IdentityUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("dbo.ApplicationUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.GroupId);
             
             CreateTable(
-                "dbo.IdentityUsers",
+                "dbo.ApplicationUsers",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
@@ -141,7 +141,7 @@ namespace BTS.Data.Migrations
                         IdentityUser_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.UserId)
-                .ForeignKey("dbo.IdentityUsers", t => t.IdentityUser_Id)
+                .ForeignKey("dbo.ApplicationUsers", t => t.IdentityUser_Id)
                 .Index(t => t.IdentityUser_Id);
             
             CreateTable(
@@ -154,7 +154,7 @@ namespace BTS.Data.Migrations
                         IdentityUser_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.UserId)
-                .ForeignKey("dbo.IdentityUsers", t => t.IdentityUser_Id)
+                .ForeignKey("dbo.ApplicationUsers", t => t.IdentityUser_Id)
                 .Index(t => t.IdentityUser_Id);
             
             CreateTable(
@@ -501,9 +501,9 @@ namespace BTS.Data.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.ApplicationUserRoles", "IdentityUser_Id", "dbo.IdentityUsers");
-            DropForeignKey("dbo.ApplicationUserLogins", "IdentityUser_Id", "dbo.IdentityUsers");
-            DropForeignKey("dbo.ApplicationUserClaims", "IdentityUser_Id", "dbo.IdentityUsers");
+            DropForeignKey("dbo.ApplicationUserRoles", "IdentityUser_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.ApplicationUserLogins", "IdentityUser_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.ApplicationUserClaims", "IdentityUser_Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.SubBtsInCerts", "OperatorID", "dbo.Operators");
             DropForeignKey("dbo.SubBtsInCerts", "CertificateID", "dbo.Certificates");
             DropForeignKey("dbo.ApplicationUserRoles", "IdentityRole_Id", "dbo.ApplicationRoles");
@@ -518,7 +518,7 @@ namespace BTS.Data.Migrations
             DropForeignKey("dbo.Btss", "OperatorID", "dbo.Operators");
             DropForeignKey("dbo.Btss", "InCaseOfID", "dbo.InCaseOfs");
             DropForeignKey("dbo.Btss", "CityID", "dbo.Cities");
-            DropForeignKey("dbo.ApplicationUserGroups", "UserId", "dbo.IdentityUsers");
+            DropForeignKey("dbo.ApplicationUserGroups", "UserId", "dbo.ApplicationUsers");
             DropForeignKey("dbo.ApplicationUserGroups", "GroupId", "dbo.ApplicationGroups");
             DropForeignKey("dbo.ApplicationRoleGroups", "RoleId", "dbo.ApplicationRoles");
             DropForeignKey("dbo.ApplicationRoleGroups", "GroupId", "dbo.ApplicationGroups");
@@ -565,7 +565,7 @@ namespace BTS.Data.Migrations
             DropTable("dbo.Btss");
             DropTable("dbo.ApplicationUserLogins");
             DropTable("dbo.ApplicationUserClaims");
-            DropTable("dbo.IdentityUsers");
+            DropTable("dbo.ApplicationUsers");
             DropTable("dbo.ApplicationUserGroups");
             DropTable("dbo.ApplicationUserRoles");
             DropTable("dbo.ApplicationRoles");

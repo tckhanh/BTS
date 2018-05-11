@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-3">Danh sách các quyền</label>
                         <div class="col-md-9">
-                            @foreach (var item in Roles)
+                            @*@foreach (var item in Roles)
                             {
                                 if (@Model.Roles.Contains(item.Name) == true)
                                 {
@@ -45,7 +45,7 @@
                                 { <label class="col-md-4"><input type="checkbox" /> @item.Name</label>
                                 }
 
-                            }
+                            }*@
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value=" Lưu" class="btn btn-primary" />
-                        @if (Model.ID != 0)
+                        @if (!string.IsNullOrEmpty(Model.ID))
                         {
                             <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationGroup",new{id = 0})',false)"><i class="fa fa-plus"></i> Thêm mới</a>
                         }

@@ -8,6 +8,7 @@ using BTS.Data.Infrastructure;
 using BTS.Data.Repositories;
 using BTS.Model.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
 namespace BTS.Service
 {
@@ -18,6 +19,8 @@ namespace BTS.Service
         IEnumerable<ApplicationGroup> GetAll(int page, int pageSize, out int totalRow, string filter);
 
         IEnumerable<ApplicationGroup> GetAll();
+
+        ApplicationGroup GetByID(string id);
 
         ApplicationGroup Add(ApplicationGroup appGroup);
 
@@ -33,6 +36,7 @@ namespace BTS.Service
 
         void Save();
     }
+
     public class ApplicationGroupService : IApplicationGroupService
     {
         private IApplicationGroupRepository _appGroupRepository;
@@ -103,6 +107,26 @@ namespace BTS.Service
             return true;
         }
 
+        public bool AddUserToGroups(IEnumerable<ApplicationGroup> groups, string userId)
+        {
+            var listAppUserGroup = new List<ApplicationUserGroup>();
+            foreach (var group in groups)
+            {
+                listAppUserGroup.Add(new ApplicationUserGroup()
+                {
+                    GroupId = group.ID,
+                    UserId = userId
+                });
+            }
+
+            _appUserGroupRepository.DeleteMulti(x => x.UserId == userId);
+            foreach (var userGroup in listAppUserGroup)
+            {
+                _appUserGroupRepository.Add(userGroup);
+            }
+            return true;
+        }
+
         public IEnumerable<ApplicationGroup> GetListGroupByUserId(string userId)
         {
             return _appGroupRepository.GetListGroupByUserId(userId);
@@ -111,6 +135,11 @@ namespace BTS.Service
         public IEnumerable<IdentityUser> GetListUserByGroupId(string groupId)
         {
             return _appGroupRepository.GetListUserByGroupId(groupId);
+        }
+
+        public ApplicationGroup GetByID(string id)
+        {
+            return _appGroupRepository.GetSingleById(id);
         }
     }
 }

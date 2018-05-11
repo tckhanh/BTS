@@ -52,7 +52,6 @@ namespace BTS.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
             if (modelBuilder == null)
             {
                 throw new ArgumentNullException("modelBuilder");
@@ -63,10 +62,6 @@ namespace BTS.Data
             modelBuilder.Entity<IdentityUserLogin>().HasKey(i => i.UserId).ToTable("ApplicationUserLogins");
             modelBuilder.Entity<IdentityRole>().ToTable("ApplicationRoles");
             modelBuilder.Entity<IdentityUserClaim>().HasKey(i => i.UserId).ToTable("ApplicationUserClaims");
-
-
-            
-
         }
     }
 }

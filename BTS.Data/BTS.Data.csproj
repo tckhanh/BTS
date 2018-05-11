@@ -72,13 +72,9 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201805060224208_resetDatabase.cs" />
-    <Compile Include="Migrations\201805060224208_resetDatabase.Designer.cs">
-      <DependentUpon>201805060224208_resetDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805060303445_ApplicationUser.cs" />
-    <Compile Include="Migrations\201805060303445_ApplicationUser.Designer.cs">
-      <DependentUpon>201805060303445_ApplicationUser.cs</DependentUpon>
+    <Compile Include="Migrations\201805100235500_initDatabase.cs" />
+    <Compile Include="Migrations\201805100235500_initDatabase.Designer.cs">
+      <DependentUpon>201805100235500_initDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,11 +118,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805060224208_resetDatabase.resx">
-      <DependentUpon>201805060224208_resetDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805060303445_ApplicationUser.resx">
-      <DependentUpon>201805060303445_ApplicationUser.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805100235500_initDatabase.resx">
+      <DependentUpon>201805100235500_initDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

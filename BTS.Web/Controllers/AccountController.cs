@@ -65,7 +65,7 @@ namespace BTS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = _userManager.Find(model.UserName, model.Password);
+                var user = _userManager.Find(model.UserName, model.Password);
                 if (user != null)
                 {
                     IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;

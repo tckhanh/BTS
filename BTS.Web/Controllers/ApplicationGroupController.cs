@@ -29,7 +29,6 @@ namespace BTS.Web.Controllers
             _userManager = userManager;
         }
 
-
         public ActionResult Index()
         {
             return View();
@@ -40,7 +39,7 @@ namespace BTS.Web.Controllers
             return View(GetAll());
         }
 
-        IEnumerable<ApplicationGroupViewModel> GetAll()
+        private IEnumerable<ApplicationGroupViewModel> GetAll()
         {
             var model = _appGroupService.GetAll();
             return Mapper.Map<IEnumerable<ApplicationGroupViewModel>>(model);
@@ -49,10 +48,9 @@ namespace BTS.Web.Controllers
         public ActionResult AddOrEdit(string id = "")
         {
             ApplicationGroupViewModel Item = new ApplicationGroupViewModel();
-            if (string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id))
             {
                 var DbItem = _appGroupService.GetDetail(id);
-
 
                 if (DbItem != null)
                 {
@@ -62,11 +60,9 @@ namespace BTS.Web.Controllers
                 }
 
                 ViewBag.Roles = Mapper.Map<IEnumerable<ApplicationRole>, IEnumerable<ApplicationRoleViewModel>>(_appRoleService.GetAll());
-
             }
             return View(Item);
         }
-
 
         [HttpPost]
         public async Task<ActionResult> AddOrEdit(ApplicationGroupViewModel Item)
@@ -98,7 +94,6 @@ namespace BTS.Web.Controllers
                     _appRoleService.Save();
 
                     return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
-
                 }
                 else
                 {
@@ -133,18 +128,15 @@ namespace BTS.Web.Controllers
                             await _userManager.AddToRoleAsync(user.Id, roleName);
                         }
                     }
-                    
+
                     return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
-
                 }
-
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-
 
         public async Task<ActionResult> Delete(string id)
         {

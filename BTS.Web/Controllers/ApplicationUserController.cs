@@ -12,6 +12,7 @@ using System.IO;
 using BTS.Web.Infrastructure.Extensions;
 using System.Threading.Tasks;
 using BTS.Common.Exceptions;
+using Microsoft.AspNet.Identity;
 
 namespace BTS.Web.Controllers
 {
@@ -43,36 +44,70 @@ namespace BTS.Web.Controllers
             return View(GetAll());
         }
 
-        IEnumerable<ApplicationUserViewModel> GetAll()
+        private IEnumerable<ApplicationUserViewModel> GetAll()
         {
             var model = _userManager.Users;
             return Mapper.Map<IEnumerable<ApplicationUserViewModel>>(model);
         }
 
-        public ActionResult AddOrEdit(string id = "")
+        public async Task<ActionResult> AddOrEdit(string id = "")
         {
             ApplicationUserViewModel Item = new ApplicationUserViewModel();
             if (!string.IsNullOrEmpty(id))
             {
-                var DbItem = _userManager.FindByIdAsync(id);
-
-
-                if (DbItem != null)
+                var DbItem = await _userManager.FindByIdAsync(id);
+                if (DbItem == null)
                 {
-                    Item = Mapper.Map<ApplicationUserViewModel>(DbItem.Result);
-                    var listGroup = _appGroupService.GetListGroupByUserId(id);
-                    Item.Groups = Mapper.Map<IEnumerable<ApplicationGroup>, IEnumerable<ApplicationGroupViewModel>>(listGroup);
+                    return HttpNotFound();
                 }
+                else
+                {
+                    var allGroup = _appGroupService.GetAll();
+                    var listGroup = _appGroupService.GetListGroupByUserId(id);
 
+                    Item = Mapper.Map<ApplicationUserViewModel>(DbItem);
+
+                    // load the roles/Roles for selection in the form:
+                    foreach (var groupItem in allGroup)
+                    {
+                        var listItem = new SelectListItem()
+                        {
+                            Text = groupItem.Description,
+                            Value = groupItem.ID,
+                            Selected = listGroup.Any(g => g.ID == groupItem.ID)
+                        };
+                        Item.GroupsList.Add(listItem);
+                    }
+                    return View(Item);
+                }
             }
-            return View(Item);
+            else
+            {
+                var allGroup = _appGroupService.GetAll();
+
+                // load the roles/Roles for selection in the form:
+                foreach (var groupItem in allGroup)
+                {
+                    var listItem = new SelectListItem()
+                    {
+                        Text = groupItem.Description,
+                        Value = groupItem.ID,
+                        Selected = false
+                    };
+                    Item.GroupsList.Add(listItem);
+                }
+                return View(Item);
+            }
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddOrEdit(ApplicationUserViewModel Item)
+        public async Task<ActionResult> AddOrEdit(ApplicationUserViewModel Item, params string[] selectedItems)
         {
             try
             {
+                IdentityResult result;
+                ApplicationUser newAppUser;
+
                 if (Item.ImageUpload != null)
                 {
                     string fileName = Path.GetFileNameWithoutExtension(Item.ImageUpload.FileName);
@@ -84,72 +119,43 @@ namespace BTS.Web.Controllers
 
                 if (string.IsNullOrEmpty(Item.ID))
                 {
-                    var newAppUser = new ApplicationUser();
+                    newAppUser = new ApplicationUser();
                     newAppUser.UpdateUser(Item);
-
-                    newAppUser.Id = Guid.NewGuid().ToString();
-                    var result = await _userManager.CreateAsync(newAppUser, Item.Password);
-                    if (result.Succeeded)
-                    {
-                        var listAppUserGroup = new List<ApplicationUserGroup>();
-                        foreach (var group in Item.Groups)
-                        {
-                            listAppUserGroup.Add(new ApplicationUserGroup()
-                            {
-                                GroupId = group.ID,
-                                UserId = newAppUser.Id
-                            });
-                            //add role to user
-                            var listRole = _appRoleService.GetListRoleByGroupId(group.ID);
-                            foreach (var role in listRole)
-                            {
-                                await _userManager.RemoveFromRoleAsync(newAppUser.Id, role.Name);
-                                await _userManager.AddToRoleAsync(newAppUser.Id, role.Name);
-                            }
-                        }
-                        _appGroupService.AddUserToGroups(listAppUserGroup, newAppUser.Id);
-                        _appGroupService.Save();
-
-                        return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                        return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
-
+                    result = await _userManager.CreateAsync(newAppUser, Item.Password);
                 }
                 else
                 {
-                    var appUser = await _userManager.FindByIdAsync(Item.ID);
+                    newAppUser = await _userManager.FindByIdAsync(Item.ID);
 
-                    appUser.UpdateUser(Item);
-                    var result = await _userManager.UpdateAsync(appUser);
-                    if (result.Succeeded)
-                    {
-                        var listAppUserGroup = new List<ApplicationUserGroup>();
-                        foreach (var group in Item.Groups)
-                        {
-                            listAppUserGroup.Add(new ApplicationUserGroup()
-                            {
-                                GroupId = group.ID,
-                                UserId = Item.ID
-                            });
-                            //add role to user
-                            var listRole = _appRoleService.GetListRoleByGroupId(group.ID);
-                            foreach (var role in listRole)
-                            {
-                                await _userManager.RemoveFromRoleAsync(appUser.Id, role.Name);
-                                await _userManager.AddToRoleAsync(appUser.Id, role.Name);
-                            }
-                        }
-                        _appGroupService.AddUserToGroups(listAppUserGroup, Item.ID);
-                        _appGroupService.Save();
-
-                        return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                        return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
-
+                    newAppUser.UpdateUser(Item);
+                    result = await _userManager.UpdateAsync(newAppUser);
                 }
+                if (result.Succeeded)
+                {
+                    var listAppUserGroup = new List<ApplicationUserGroup>();
+                    selectedItems = selectedItems ?? new string[] { };
+                    foreach (var group in selectedItems)
+                    {
+                        listAppUserGroup.Add(new ApplicationUserGroup()
+                        {
+                            GroupId = group,
+                            UserId = newAppUser.Id
+                        });
+                        //add role to user
+                        var listRole = _appRoleService.GetListRoleByGroupId(group);
+                        foreach (var role in listRole)
+                        {
+                            await _userManager.RemoveFromRoleAsync(newAppUser.Id, role.Name);
+                            await _userManager.AddToRoleAsync(newAppUser.Id, role.Name);
+                        }
+                    }
+                    _appGroupService.AddUserToGroups(listAppUserGroup, newAppUser.Id);
+                    _appGroupService.Save();
 
+                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                    return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
