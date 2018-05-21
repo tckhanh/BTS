@@ -76,6 +76,10 @@
     <Compile Include="Migrations\201805100235500_initDatabase.Designer.cs">
       <DependentUpon>201805100235500_initDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805210137214_update_1.cs" />
+    <Compile Include="Migrations\201805210137214_update_1.Designer.cs">
+      <DependentUpon>201805210137214_update_1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ApplicantRepository.cs" />
@@ -120,6 +124,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201805100235500_initDatabase.resx">
       <DependentUpon>201805100235500_initDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805210137214_update_1.resx">
+      <DependentUpon>201805210137214_update_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

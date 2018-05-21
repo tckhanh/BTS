@@ -16,7 +16,6 @@ namespace BTS.Model.Models
         public string GroupId { set; get; }
 
         [Column(Order = 2)]
-        [StringLength(128)]
         [Key]
         public string RoleId { set; get; }
 

@@ -17,19 +17,22 @@ namespace BTS.Model.Models
         [StringLength(250)]
         public string Description { set; get; }
 
-        public virtual ICollection<ApplicationRoleGroup> ApplicationRoles { get; set; }
-        public virtual ICollection<ApplicationUserGroup> ApplicationUsers { get; set; }
-          public ApplicationGroup()
+        public virtual IEnumerable<ApplicationRoleGroup> ApplicationRoles { get; set; }
+        public virtual IEnumerable<ApplicationUserGroup> ApplicationUsers { get; set; }
+
+        public ApplicationGroup()
         {
             this.ID = Guid.NewGuid().ToString();
             this.ApplicationRoles = new List<ApplicationRoleGroup>();
             this.ApplicationUsers = new List<ApplicationUserGroup>();
-        }             
-        public ApplicationGroup(string name):this()        {
+        }
+
+        public ApplicationGroup(string name) : this()
+        {
             Name = name;
         }
 
-        public ApplicationGroup(string name, string description): this(name)
+        public ApplicationGroup(string name, string description) : this(name)
         {
             this.Description = description;
         }

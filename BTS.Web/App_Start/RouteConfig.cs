@@ -19,7 +19,7 @@ namespace BTS.Web
             routes.MapRoute(
                  name: "Home",
                  url: "trang-chu.html",
-                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                 defaults: new { controller = "Certificate", action = "Index", id = UrlParameter.Optional },
                  namespaces: new string[] { "BTS.Web.Controllers" }
                 );
 

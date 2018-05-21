@@ -13,14 +13,30 @@ namespace BTS.Model.Models
     // Must be expressed in terms of our custom Role and other types:
     public class ApplicationUser : IdentityUser
     {
-        [MaxLength(255)]
         [Required]
+        [MaxLength(255)]
         public string FullName { get; set; }
 
         [MaxLength(255)]
         public string Address { get; set; }
 
         public DateTime? BirthDay { get; set; }
+
+        [MaxLength(50)]
+        public string FatherLand { get; set; }
+
+        [MaxLength(50)]
+        public string Level { get; set; }
+
+        [MaxLength(150)]
+        public string EducationalField { get; set; }
+
+        public DateTime? EntryDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        [MaxLength(255)]
+        public string JobPositions { get; set; }
 
         [MaxLength(555)]
         public string ImagePath { get; set; }

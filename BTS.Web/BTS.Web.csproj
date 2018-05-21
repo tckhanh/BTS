@@ -260,6 +260,7 @@
     <Compile Include="Controllers\ApplicationRoleController.cs" />
     <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BtsController.cs" />
     <Compile Include="Controllers\CertificateController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PivotTableController.cs" />
     <Compile Include="Controllers\ApplicationUserController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -282,7 +284,9 @@
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\ApplicantViewModel.cs" />
     <Compile Include="Models\ApplicationGroupViewModel.cs" />
+    <Compile Include="Models\ApplicationRoleGroupViewModel.cs" />
     <Compile Include="Models\ApplicationRoleViewModel.cs" />
+    <Compile Include="Models\ApplicationUserGroupViewModel.cs" />
     <Compile Include="Models\ApplicationUserViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
     <Compile Include="Models\CertificateViewModel.cs" />
@@ -9123,7 +9127,9 @@
     <Folder Include="ImportData\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\BTSCertiticate\" />
+    <Folder Include="Views\Bts\" />
     <Folder Include="Views\Employee\" />
+    <Folder Include="Views\Profile\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>

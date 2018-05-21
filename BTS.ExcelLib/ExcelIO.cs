@@ -173,9 +173,10 @@ namespace BTS.ExcelLib
 
         public bool FormatColumnDecimalToText(string fullFileName)
         {
-            Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkBook = new Excel.Workbook();
             object misValue = System.Reflection.Missing.Value;
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkBook = null;
+
             try
             {
                 xlApp.Visible = false;
@@ -187,7 +188,7 @@ namespace BTS.ExcelLib
                     //Selecting the worksheet where we want to perform action
                     xlWorkSheet.Select(Type.Missing);
 
-                    for (int col = 1; col < xlWorkSheet.UsedRange.Columns.Count; col++)
+                    for (int col = 1; col <= xlWorkSheet.UsedRange.Columns.Count; col++)
                     {
                         if (xlWorkSheet.Cells[1, col].Value != null)
                         {
@@ -232,7 +233,7 @@ namespace BTS.ExcelLib
             }
             finally
             {
-                xlWorkBook.Close(misValue, misValue, misValue);
+                if (xlWorkBook != null) xlWorkBook.Close(misValue, misValue, misValue);
                 xlApp.Quit();
                 // release all the application object from the memory
                 Marshal.ReleaseComObject(xlApp);

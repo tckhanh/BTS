@@ -5,7 +5,6 @@ namespace BTS.Model.Models
 {
     public class ApplicationUserGroup
     {
-        [StringLength(128)]
         [Key]
         [Column(Order = 1)]
         public string UserId { set; get; }
