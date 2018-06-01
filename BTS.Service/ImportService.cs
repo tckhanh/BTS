@@ -23,6 +23,8 @@ namespace BTS.Service
 
         Certificate findCertificate(string ID);
 
+        NoCertificate findNoCertificate(string BtsCode, int ProfileID);
+
         bool Add(InCaseOf item);
 
         bool Add(Lab item);
@@ -39,6 +41,8 @@ namespace BTS.Service
 
         bool Add(Certificate item);
 
+        bool Add(NoCertificate item);
+
         bool Add(SubBtsInCert item);
 
         void Update(InCaseOf newInCaseOf);
@@ -48,6 +52,8 @@ namespace BTS.Service
         void Update(Bts newBts);
 
         void Update(Certificate newCertificate);
+
+        void Delete(Bts bts);
 
         void RemoveSubBtsInCert(string CertificateID);
 
@@ -70,6 +76,7 @@ namespace BTS.Service
         private IProfileRepository _profileRepository;
         private IBtsRepository _btsRepository;
         private ICertificateRepository _certificateRepository;
+        private INoCertificateRepository _noCertificateRepository;
         private ISubBTSinCertRepository _subBTSinCertRepository;
         private IUnitOfWork _unitOfWork;
 
@@ -170,6 +177,15 @@ namespace BTS.Service
             return true;
         }
 
+        public bool Add(NoCertificate item)
+        {
+            if (_noCertificateRepository.GetSingleById(item.ID) == null)
+            {
+                _noCertificateRepository.Add(item);
+            }
+            return true;
+        }
+
         public bool Add(SubBtsInCert item)
         {
             if (_subBTSinCertRepository.GetSingleById(item.ID) == null)
@@ -218,6 +234,11 @@ namespace BTS.Service
             return _certificateRepository.GetSingleByCondition(x => x.ID == ID);
         }
 
+        public NoCertificate findNoCertificate(string BtsCode, int ProfileID)
+        {
+            return _noCertificateRepository.GetSingleByCondition(x => x.BtsCode == BtsCode && x.ProfileID == ProfileID);
+        }
+
         public SubBtsInCert findSubBts(string certificateID, string btsCode, string operatorID)
         {
             return _subBTSinCertRepository.GetSingleByCondition(x => x.CertificateID == certificateID && x.BtsCode == btsCode && x.OperatorID == operatorID);
@@ -242,6 +263,11 @@ namespace BTS.Service
         public Certificate getLastNoOwnCertificate(string btsCode, string operatorID)
         {
             return _certificateRepository.getLastNoOwnCertificates(btsCode, operatorID).FirstOrDefault();
+        }
+
+        public void Delete(Bts bts)
+        {
+            _btsRepository.Delete(bts);
         }
     }
 }

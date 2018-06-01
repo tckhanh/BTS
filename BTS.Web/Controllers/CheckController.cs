@@ -213,8 +213,6 @@ namespace BTS.Web.Controllers
                 Item.ProfileDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ProfileDate].ToString());
                 Item.BtsQuantity = int.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_BtsQuantity].ToString());
                 Item.ApplyDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ApplyDate].ToString());
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_ValidDate].ToString().Length > 0)
-                    Item.ValidDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ValidDate].ToString());
                 if (dt.Rows[0][CommonConstants.Sheet_Profile_Fee].ToString().Length > 0)
                 {
                     //int fee;

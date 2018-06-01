@@ -108,6 +108,7 @@
     <Compile Include="Models\Lab.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MenuGroup.cs" />
+    <Compile Include="Models\NoCertificate.cs" />
     <Compile Include="Models\Operator.cs" />
     <Compile Include="Models\Page.cs" />
     <Compile Include="Models\Profile.cs" />

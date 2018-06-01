@@ -7,13 +7,13 @@ namespace BTS.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class initDatabase : IMigrationMetadata
+    public sealed partial class updateDatabase_2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(initDatabase));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(updateDatabase_2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805100235500_initDatabase"; }
+            get { return "201805250333273_updateDatabase_2"; }
         }
         
         string IMigrationMetadata.Source

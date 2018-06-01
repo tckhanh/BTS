@@ -11,16 +11,11 @@
 @section footerJS{
     <script src="~/Assets/admin/libs/moment/moment.js"></script>
     <script src="~/Assets/client/js/controllers/commonController.js"></script>
-    <script>
-        function activatejQueryTable() {
-            $("#MyDataTable").DataTable();
-        }
-
+    @*<script>
         $(function () {
-            activatejQueryTable();
+            commonController.activatejQueryTable();
         });
-
-    </script>
+    </script>*@
 }
 <br />
 
@@ -46,7 +41,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header with-border">
-                        <h3 class="BTS-title">DANH SÁCH CÁC LOẠI TRƯỜNG HỢP KIỂM ĐỊNH</h3>
+                        <h3 class="BTS-title">DANH SÁCH NGƯỜI DÙNG</h3>
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                             @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
@@ -54,26 +49,13 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        @*<a id="btnAddNew" class="btn btn-success" style="margin-bottom:10px"><i cl><i class="fa fa-plus"></i> Thêm mới</a>
-                            <table id="MyDataTable" class="table table-bordered table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Mã loại KĐ</th>
-                                        <th>Tên loại KĐ</th>
-                                        <th>Ngày tạo</th>
-                                        <th>Ngày cập nhật</th>
-                                        <th>Thao tác</th>
-                                    </tr>
-                                </thead>
-                            </table>*@
-
                         <ul class="nav nav-tabs">
-                            <li><a data-toggle="tab" href="#firstTab">View All</a></li>
-                            <li class="active"><a data-toggle="tab" href="#secondTab">Add New</a></li>
+                            <li class="active"><a data-toggle="tab" href="#firstTab">Danh sách</a></li>
+                            <li><a data-toggle="tab" href="#secondTab">Thêm mới</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div id="firstTab" class="tab-pane fade in">@Html.Action("ViewAll")</div>
-                            <div id="secondTab" class="tab-pane fade in active">@Html.Action("AddOrEdit")</div>
+                            <div id="firstTab" class="tab-pane fade in active">@Html.Action("ViewAll")</div>
+                            <div id="secondTab" class="tab-pane fade in">@Html.Action("AddOrEdit")</div>
                         </div>
                     </div>
                     <!-- /.box-body -->

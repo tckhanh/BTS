@@ -3,7 +3,7 @@ namespace BTS.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initDatabase : DbMigration
+    public partial class InitDatabase : DbMigration
     {
         public override void Up()
         {
@@ -125,6 +125,12 @@ namespace BTS.Data.Migrations
                         FullName = c.String(maxLength: 255),
                         Address = c.String(maxLength: 255),
                         BirthDay = c.DateTime(),
+                        FatherLand = c.String(maxLength: 50),
+                        Level = c.String(maxLength: 50),
+                        EducationalField = c.String(maxLength: 150),
+                        EntryDate = c.DateTime(),
+                        EndDate = c.DateTime(),
+                        JobPositions = c.String(maxLength: 255),
                         ImagePath = c.String(maxLength: 555),
                         Discriminator = c.String(nullable: false, maxLength: 128),
                     })
@@ -233,7 +239,6 @@ namespace BTS.Data.Migrations
                         ProfileDate = c.DateTime(nullable: false, storeType: "date"),
                         BtsQuantity = c.Int(),
                         ApplyDate = c.DateTime(nullable: false, storeType: "date"),
-                        ValidDate = c.DateTime(storeType: "date"),
                         Fee = c.Int(),
                         FeeAnnounceNum = c.String(maxLength: 30),
                         FeeAnnounceDate = c.DateTime(storeType: "date"),
@@ -397,6 +402,42 @@ namespace BTS.Data.Migrations
                 .Index(t => t.GroupID);
             
             CreateTable(
+                "dbo.NoCertificates",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        ProfileID = c.Int(),
+                        OperatorID = c.String(nullable: false, maxLength: 10),
+                        BtsCode = c.String(nullable: false, maxLength: 100),
+                        Address = c.String(nullable: false, maxLength: 255),
+                        CityID = c.String(nullable: false, maxLength: 3),
+                        Longtitude = c.Double(),
+                        Latitude = c.Double(),
+                        InCaseOfID = c.Int(nullable: false),
+                        LabID = c.String(maxLength: 20),
+                        TestReportNo = c.String(maxLength: 30),
+                        TestReportDate = c.DateTime(nullable: false, storeType: "date"),
+                        Reason = c.String(nullable: false, maxLength: 255),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
+                        DeletedDate = c.DateTime(),
+                        DeletedBy = c.String(maxLength: 256),
+                    })
+                .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
+                .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
+                .ForeignKey("dbo.Labs", t => t.LabID)
+                .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
+                .ForeignKey("dbo.Profiles", t => t.ProfileID)
+                .Index(t => t.ProfileID)
+                .Index(t => t.OperatorID)
+                .Index(t => t.CityID)
+                .Index(t => t.InCaseOfID)
+                .Index(t => t.LabID);
+            
+            CreateTable(
                 "dbo.Pages",
                 c => new
                     {
@@ -507,6 +548,11 @@ namespace BTS.Data.Migrations
             DropForeignKey("dbo.SubBtsInCerts", "OperatorID", "dbo.Operators");
             DropForeignKey("dbo.SubBtsInCerts", "CertificateID", "dbo.Certificates");
             DropForeignKey("dbo.ApplicationUserRoles", "IdentityRole_Id", "dbo.ApplicationRoles");
+            DropForeignKey("dbo.NoCertificates", "ProfileID", "dbo.Profiles");
+            DropForeignKey("dbo.NoCertificates", "OperatorID", "dbo.Operators");
+            DropForeignKey("dbo.NoCertificates", "LabID", "dbo.Labs");
+            DropForeignKey("dbo.NoCertificates", "InCaseOfID", "dbo.InCaseOfs");
+            DropForeignKey("dbo.NoCertificates", "CityID", "dbo.Cities");
             DropForeignKey("dbo.Menus", "GroupID", "dbo.MenuGroups");
             DropForeignKey("dbo.Certificates", "ProfileID", "dbo.Profiles");
             DropForeignKey("dbo.Certificates", "OperatorID", "dbo.Operators");
@@ -525,6 +571,11 @@ namespace BTS.Data.Migrations
             DropForeignKey("dbo.Applicants", "OperatorID", "dbo.Operators");
             DropIndex("dbo.SubBtsInCerts", new[] { "OperatorID" });
             DropIndex("dbo.SubBtsInCerts", new[] { "CertificateID" });
+            DropIndex("dbo.NoCertificates", new[] { "LabID" });
+            DropIndex("dbo.NoCertificates", new[] { "InCaseOfID" });
+            DropIndex("dbo.NoCertificates", new[] { "CityID" });
+            DropIndex("dbo.NoCertificates", new[] { "OperatorID" });
+            DropIndex("dbo.NoCertificates", new[] { "ProfileID" });
             DropIndex("dbo.Menus", new[] { "GroupID" });
             DropIndex("dbo.Certificates", new[] { "LabID" });
             DropIndex("dbo.Certificates", new[] { "InCaseOfID" });
@@ -551,6 +602,7 @@ namespace BTS.Data.Migrations
             DropTable("dbo.SubBtsInCerts");
             DropTable("dbo.Slides");
             DropTable("dbo.Pages");
+            DropTable("dbo.NoCertificates");
             DropTable("dbo.Menus");
             DropTable("dbo.MenuGroups");
             DropTable("dbo.Footers");

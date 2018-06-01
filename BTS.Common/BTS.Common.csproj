@@ -53,6 +53,7 @@
     <Compile Include="ViewModels\CertificateStatisticViewModel.cs" />
     <Compile Include="ViewModels\commonDataChart.cs" />
     <Compile Include="ViewModels\Message.cs" />
+    <Compile Include="ViewModels\StatisticNoCertificate.cs" />
     <Compile Include="ViewModels\StatisticCertificate.cs" />
     <Compile Include="ViewModels\StatisticSubBtsInCert.cs" />
     <Compile Include="WebMsgBox.cs" />

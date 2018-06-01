@@ -17,12 +17,28 @@ namespace BTS.Web.Models
         [StringLength(255, ErrorMessage = "Họ tên người dùng không quá 255 ký tự")]
         public string FullName { set; get; }
 
+        [Display(Name = "Tài khoản đăng nhập")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tài khoản đăng nhập")]
+        public string UserName { set; get; }
+
+        [Display(Name = "Mật khẩu")]        
+        public string Password { set; get; }
+
+        [Display(Name = "Hộp thư Email")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Hộp thư Email")]
+        public string Email { set; get; }
+
+        [Display(Name = "Số điện thoại")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số điện thoại")]
+        public string PhoneNumber { set; get; }
+
         [Display(Name = "Địa chỉ")]
         [StringLength(255, ErrorMessage = "Địa chỉ không quá 255 ký tự")]
         public string Address { get; set; }
 
         [Display(Name = "Ngày sinh")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? BirthDay { set; get; }
 
         [Display(Name = "Quê quán")]
@@ -39,10 +55,12 @@ namespace BTS.Web.Models
 
         [Display(Name = "Ngày vào cơ quan")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? EntryDate { get; set; }
 
         [Display(Name = "Ngày vào rời cơ quan")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? EndDate { get; set; }
 
         [Display(Name = "Các vị trí công việc đã đảm nhiệm")]
@@ -53,22 +71,13 @@ namespace BTS.Web.Models
         [Display(Name = "Tập tin ảnh")]
         public string ImagePath { get; set; }
 
+        public HttpPostedFileBase ImageUpload { get; set; }
+
         public virtual IEnumerable<ApplicationGroupViewModel> Groups { get; set; }
 
-        [Display(Name = "Hộp thư Email")]
-        public string Email { set; get; }
-
-        [Display(Name = "Mật khẩu")]
-        public string Password { set; get; }
-
-        [Display(Name = "Tài khoản")]
-        public string UserName { set; get; }
-
-        [Display(Name = "Số điện thoại")]
-        public string PhoneNumber { set; get; }
-
-        public HttpPostedFileBase ImageUpload { get; set; }
+        [Display(Name = "Nhóm người dùng")]
         public ICollection<SelectListItem> GroupsList { get; set; }
+
         public ICollection<SelectListItem> RolesList { get; set; }
 
         public ApplicationUserViewModel()

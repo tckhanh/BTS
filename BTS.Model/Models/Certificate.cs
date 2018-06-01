@@ -13,7 +13,7 @@ namespace BTS.Model.Models
         [StringLength(16)]
         public string ID { get; set; }
 
-        public int? ProfileID { get; set; }
+        public int ProfileID { get; set; }
 
         [Required]
         [StringLength(10)]
@@ -78,6 +78,9 @@ namespace BTS.Model.Models
         [Required]
         public string SubBtsAntenNums { get; set; }
 
+        [StringLength(50)]
+        public string SharedAntens { get; set; }
+
         [StringLength(150)]
         [Required]
         public string SubBtsConfigurations { get; set; }
@@ -99,6 +102,8 @@ namespace BTS.Model.Models
         public double? MaxHeightIn100m { get; set; }
 
         public double? OffsetHeight { get; set; }
+
+        public bool MeasuringExposure { get; set; } = false;
 
         public double? SafeLimit { get; set; }
 

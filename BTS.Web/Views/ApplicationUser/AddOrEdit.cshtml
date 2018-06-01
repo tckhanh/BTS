@@ -10,12 +10,10 @@
     @Html.AntiForgeryToken()
     <div class="row">
         <div class="form-horizontal">
-            @Html.ValidationSummary(true)
-            @Html.HiddenFor(model => model.ID)
-            @Html.HiddenFor(model => model.ImagePath)
-
-            <div class="col-md-8">
-
+            <div class="col-md-9 col-sm-9 col-xs-12">
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ID)
+                @Html.HiddenFor(model => model.ImagePath)
                 <div class="form-group">
                     @Html.LabelFor(model => model.FullName, new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
@@ -23,26 +21,40 @@
                         @Html.ValidationMessageFor(model => model.FullName)
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.UserName)
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Password)
+                @if (string.IsNullOrEmpty(Model.ID))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.UserName)
+                        </div>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @readonly = "true" })
+                            @Html.ValidationMessageFor(model => model.UserName)
+                        </div>
+                    </div>
+                }
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
-                        @Html.EditorFor(model => model.Email, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Email)
                     </div>
                 </div>
@@ -54,28 +66,77 @@
                         @Html.ValidationMessageFor(model => model.PhoneNumber)
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.BirthDay, new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.BirthDay, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.BirthDay)
+
+                @if (!string.IsNullOrEmpty(Model.ID))
+                {
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Address)
+                        </div>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BirthDay, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.BirthDay, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.BirthDay)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FatherLand, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.FatherLand, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.FatherLand)
+                        </div>
+                    </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Level, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Level, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Level)
+                            </div>
+                        </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.EducationalField, new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(model => model.EducationalField, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.EducationalField)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.EntryDate, new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.EntryDate, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.EntryDate)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.EndDate, new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.EndDate, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.EndDate)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.JobPositions, new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextAreaFor(model => model.JobPositions, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.JobPositions)
+                                </div>
+                            </div>
+                }
                 <div class="form-group">
                     @Html.LabelFor(model => model.GroupsList, new { @class = "control-label col-md-3" })
-
                     <span class=" col-md-9">
-                        @*<table>
-                                <tr>
-                                    <th>
-                                        Select
-                                    </th>
-                                    <th>
-                                        Group
-                                    </th>
-                                </tr>
-                                @Html.EditorFor(model => model.GroupsList)
-                            </table>*@
 
                         @foreach (var item in Model.GroupsList)
                         {
@@ -88,22 +149,22 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Submit" class="btn btn-default" />
+                        <input type="submit" value="Cập nhật" class="btn btn-default" />
                         @if (string.IsNullOrEmpty(Model.ID))
                         {
-                            <a class="btn btn-success" onclick="refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationUser",new{id = ""})',false)"><i class="fa fa-plus"></i> Add New</a>
+                            <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationUser",new{id = ""})',false)"><i class="fa fa-plus"></i> Add New</a>
                         }
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                @Html.LabelFor(model => model.ImagePath, new { @class = "control-label" })
                 <div class="form-group">
                     @if (!string.IsNullOrEmpty(Model.ImagePath))
                     {
-                        @Html.LabelFor(model => model.ImagePath, new { @class = "control-label col-md-3" })
-                        <div class="col-md-10">
-                            <img src="@Url.Content(Model.ImagePath)" style="margin:10px" height="200" width="200" id="imagePreview" />
-                            <input type="file" name="ImageUpload" accept="image/jpeg, image/png" onchange="ShowImagePreview(this,document.getElementById('imagePreview'))" />
+                        <div class="col-md-12">
+                            <img src="@Url.Content(Model.ImagePath)" style="margin:10px" height="200" width="150" id="imagePreview" />
+                            <input type="file" name="ImageUpload" accept="image/jpeg, image/png" onchange="commonController.ShowImagePreview(this,document.getElementById('imagePreview'))" />
                         </div>
                     }
                 </div>

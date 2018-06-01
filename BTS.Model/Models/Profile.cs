@@ -27,9 +27,6 @@ namespace BTS.Model.Models
         [Column(TypeName = "date")]
         public DateTime ApplyDate { get; set; }
 
-        [Column(TypeName = "date")]
-        public DateTime? ValidDate { get; set; }
-
         public int? Fee { get; set; }
 
         [StringLength(30)]

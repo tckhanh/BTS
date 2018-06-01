@@ -133,6 +133,7 @@
         public const string Sheet_Certificate_SubBtsOperatorIDs = "SubBtsOperatorIDs";
         public const string Sheet_Certificate_SubBtsEquipments = "SubBtsEquipments";
         public const string Sheet_Certificate_SubBtsAntenNums = "SubBtsAntenNums";
+        public const string Sheet_Certificate_SharedAntens = "SharedAntens";
         public const string Sheet_Certificate_SubBtsConfigurations = "SubBtsConfigurations";
         public const string Sheet_Certificate_SubBtsPowerSums = "SubBtsPowerSums";
         public const string Sheet_Certificate_SubBtsBands = "SubBtsBands";
@@ -140,11 +141,25 @@
         public const string Sheet_Certificate_MinAntenHeight = "MinAntenHeight";
         public const string Sheet_Certificate_MaxHeightIn100m = "MaxHeightIn100m";
         public const string Sheet_Certificate_OffsetHeight = "OffsetHeight";
+        public const string Sheet_Certificate_MeasuringExposure = "MeasuringExposure";
         public const string Sheet_Certificate_SafeLimit = "SafeLimit";
+
+        public const string Sheet_NoCertificate = "NoCertificate";
+        public const string Sheet_NoCertificate_BtsCode = "BtsCode";
+        public const string Sheet_NoCertificate_Address = "Address";
+        public const string Sheet_NoCertificate_CityID = "CityID";
+        public const string Sheet_NoCertificate_Longtitude = "Longtitude";
+        public const string Sheet_NoCertificate_Latitude = "Latitude";
+        public const string Sheet_NoCertificate_InCaseOfID = "InCaseOfID";
+        public const string Sheet_NoCertificate_LabID = "LabID";
+        public const string Sheet_NoCertificate_TestReportNo = "TestReportNo";
+        public const string Sheet_NoCertificate_TestReportDate = "TestReportDate";
+        public const string Sheet_NoCertificate_Reason = "Reason";
 
         public const string IssuePalce = "Tp. Hồ Chí Minh";
         public const string Signer = "Trần Công Khanh";
 
         public const string ImportCER = "ImportCER";
+        public const string ImportBTS = "ImportBTS";
     }
 }

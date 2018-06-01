@@ -289,6 +289,7 @@
     <Compile Include="Models\ApplicationUserGroupViewModel.cs" />
     <Compile Include="Models\ApplicationUserViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
+    <Compile Include="Models\NoCertificateViewModel.cs" />
     <Compile Include="Models\CertificateViewModel.cs" />
     <Compile Include="Models\CityViewModel.cs" />
     <Compile Include="Models\ContactDetailViewModel.cs" />
@@ -9125,6 +9126,7 @@
     <Folder Include="Assets\client\font-awesome-4.6.3\" />
     <Folder Include="Assets\client\images\" />
     <Folder Include="ImportData\" />
+    <Folder Include="Sample File\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\BTSCertiticate\" />
     <Folder Include="Views\Bts\" />
@@ -10158,7 +10160,6 @@
     <Content Include="Assets\admin\libs\jquery-form\package-lock.json" />
     <Content Include="Assets\admin\libs\jquery-form\test\ajax\json.json" />
     <Content Include="Assets\admin\libs\jquery-form\_config.yml" />
-    <Content Include="Sample File\Import BTS Certificate Sample.xlsx" />
     <Content Include="Assets\admin\libs\toastr\.bower.json" />
     <Content Include="Assets\admin\libs\toastr\bower.json" />
     <Content Include="Assets\admin\libs\toastr\LICENSE" />
@@ -10305,7 +10306,6 @@
     <Content Include="Views\Certificate\Index - Copy %282%29.cshtml" />
     <Content Include="Views\Import\Index.cshtml" />
     <Content Include="Views\Check\Index.cshtml" />
-    <Content Include="Sample File\Check BTS Sample.xlsx" />
     <Content Include="Views\Operator\AddOrEdit.cshtml" />
     <Content Include="Views\Operator\Add.cshtml" />
     <Content Include="Views\Operator\Edit.cshtml" />

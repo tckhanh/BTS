@@ -16,10 +16,9 @@ namespace BTS.Web.Models
         [MaxLength(255, ErrorMessage = "Tên Doanh nghiệp tối đa 255 ký tự")]
         public string Name { get; set; }
 
-        public virtual ICollection<ApplicantViewModel> Applicants { get; set; }
-
-        public virtual ICollection<CertificateViewModel> BTSCertificates { get; set; }
-
-        public virtual ICollection<SubBtsInCertViewModel> SubBTSs { get; set; }
+        public virtual IEnumerable<ApplicantViewModel> Applicants { get; set; }
+        public virtual IEnumerable<BtsViewModel> Btss { get; set; }
+        public virtual IEnumerable<CertificateViewModel> Certificates { get; set; }
+        public virtual IEnumerable<SubBtsInCertViewModel> SubBtsInCerts { get; set; }
     }
 }

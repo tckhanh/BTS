@@ -72,13 +72,17 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201805100235500_initDatabase.cs" />
-    <Compile Include="Migrations\201805100235500_initDatabase.Designer.cs">
-      <DependentUpon>201805100235500_initDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201805240531246_InitDatabase.cs" />
+    <Compile Include="Migrations\201805240531246_InitDatabase.Designer.cs">
+      <DependentUpon>201805240531246_InitDatabase.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805210137214_update_1.cs" />
-    <Compile Include="Migrations\201805210137214_update_1.Designer.cs">
-      <DependentUpon>201805210137214_update_1.cs</DependentUpon>
+    <Compile Include="Migrations\201805250333273_updateDatabase_2.cs" />
+    <Compile Include="Migrations\201805250333273_updateDatabase_2.Designer.cs">
+      <DependentUpon>201805250333273_updateDatabase_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805300908557_updateDatabase_3.cs" />
+    <Compile Include="Migrations\201805300908557_updateDatabase_3.Designer.cs">
+      <DependentUpon>201805300908557_updateDatabase_3.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +92,7 @@
     <Compile Include="Repository\ApplicationRoleRepository.cs" />
     <Compile Include="Repository\ApplicationUserGroupRepository.cs" />
     <Compile Include="Repository\BtsRepository.cs" />
+    <Compile Include="Repository\NoCertificateRepository.cs" />
     <Compile Include="Repository\CertificateRepository.cs" />
     <Compile Include="Repository\CityRepository.cs" />
     <Compile Include="Repository\ContactDetailRepository.cs" />
@@ -122,11 +127,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805100235500_initDatabase.resx">
-      <DependentUpon>201805100235500_initDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805240531246_InitDatabase.resx">
+      <DependentUpon>201805240531246_InitDatabase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805210137214_update_1.resx">
-      <DependentUpon>201805210137214_update_1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805250333273_updateDatabase_2.resx">
+      <DependentUpon>201805250333273_updateDatabase_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805300908557_updateDatabase_3.resx">
+      <DependentUpon>201805300908557_updateDatabase_3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

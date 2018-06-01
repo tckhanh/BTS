@@ -58,20 +58,24 @@ namespace BTS.Web.Controllers
 
                         _excelIO.FormatColumnDecimalToText(fileLocation);
 
+                        //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
+                        //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
+
                         string excelConnectionString = string.Empty;
                         //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 ;HDR=Yes;IMEX=2\"";
-                        excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes;IMEX=1; TypeGuessRows=0;ImportMixedTypes=Text\"";
+                        //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes;IMEX=1; TypeGuessRows=0;ImportMixedTypes=Text\"";
+                        excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0; HDR=Yes;IMEX=1\"";
                         //connection String for xls file format.
                         if (fileExtension == ".xls")
                         {
                             //excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1\"";
-                            excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1;TypeGuessRows=0;ImportMixedTypes=Text\"";
+                            excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1\"";
                         }
                         //connection String for xlsx file format.
                         else if (fileExtension == ".xlsx")
                         {
                             //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
-                            excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes;IMEX=1; TypeGuessRows=0;ImportMixedTypes=Text\"";
+                            excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0; HDR=Yes;IMEX=1\"";
                         }
                         int ProfileID = 0;
 
@@ -81,9 +85,13 @@ namespace BTS.Web.Controllers
                         ExecuteDatabase(ImportOperator, excelConnectionString);
                         ExecuteDatabase(ImportApplicant, excelConnectionString);
                         ExecuteDatabase(ImportProfile, excelConnectionString, out ProfileID);
-                        ExecuteDatabase(ImportBts, excelConnectionString, ProfileID);
+                        if (ImportAction == CommonConstants.ImportBTS)
+                            ExecuteDatabase(ImportBts, excelConnectionString, ProfileID);
                         if (ImportAction == CommonConstants.ImportCER)
+                        {
                             ExecuteDatabase(ImportCertificate, excelConnectionString, ProfileID);
+                            ExecuteDatabase(ImportNoCertificate, excelConnectionString, ProfileID);
+                        }
 
                         //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
                     }
@@ -216,8 +224,6 @@ namespace BTS.Web.Controllers
                 Item.ProfileDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ProfileDate].ToString());
                 Item.BtsQuantity = int.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_BtsQuantity].ToString());
                 Item.ApplyDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ApplyDate].ToString());
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_ValidDate].ToString().Length > 0)
-                    Item.ValidDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ValidDate].ToString());
                 if (dt.Rows[0][CommonConstants.Sheet_Profile_Fee].ToString().Length > 0)
                 {
                     //int fee;
@@ -356,6 +362,10 @@ namespace BTS.Web.Controllers
                     Item.SubBtsAntenNums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenNums].ToString();
                     SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
 
+                    Item.SharedAntens = dt.Rows[i][CommonConstants.Sheet_Certificate_SharedAntens].ToString();
+
+                    Item.MeasuringExposure = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MeasuringExposure].ToString());
+
                     Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands].ToString();
                     SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
 
@@ -388,11 +398,9 @@ namespace BTS.Web.Controllers
                         Bts dbBts = _importService.findBts(proFileID, Item.BtsCode);
                         if (dbBts != null)
                         {
-                            dbBts.IssuedCertificateID = Item.ID;
-                            dbBts.UpdatedDate = DateTime.Now;
-                            _importService.Update(dbBts);
+                            _importService.Delete(dbBts);
+                            _importService.Save();
                         }
-
                         _importService.Save();
 
                         for (int j = 0; j < Item.SubBtsQuantity; j++)
@@ -412,6 +420,49 @@ namespace BTS.Web.Controllers
                             _importService.Add(subBtsItem);
                             _importService.Save();
                         }
+                    }
+                }
+            }
+            return 1;
+        }
+
+        private int ImportNoCertificate(string excelConnectionString, int proFileID)
+        {
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_NoCertificate);
+            string operatorID = _importService.getApplicant(proFileID).OperatorID;
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString()))
+                {
+                    var Item = new NoCertificate();
+                    string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
+
+                    Item.ProfileID = proFileID;
+                    Item.OperatorID = operatorID;
+                    Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_NoCertificate_BtsCode].ToString();
+                    Item.Address = dt.Rows[i][CommonConstants.Sheet_NoCertificate_Address].ToString();
+                    Item.CityID = dt.Rows[i][CommonConstants.Sheet_NoCertificate_CityID].ToString();
+                    if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_Longtitude].ToString().Length > 0)
+                        Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_Longtitude].ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_Latitude].ToString().Length > 0)
+                        Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_Latitude].ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_InCaseOfID].ToString().Length > 0)
+                        Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_InCaseOfID].ToString());
+
+                    Item.LabID = dt.Rows[i][CommonConstants.Sheet_NoCertificate_LabID].ToString();
+
+                    Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_NoCertificate_TestReportNo].ToString();
+                    Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_TestReportDate].ToString());
+                    Item.Reason = dt.Rows[i][CommonConstants.Sheet_NoCertificate_Reason].ToString();
+
+                    _importService.Add(Item);
+
+                    Bts dbBts = _importService.findBts(proFileID, Item.BtsCode);
+                    if (dbBts != null)
+                    {
+                        _importService.Delete(dbBts);
+                        _importService.Save();
                     }
                 }
             }

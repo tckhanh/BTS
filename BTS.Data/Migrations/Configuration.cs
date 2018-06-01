@@ -223,8 +223,11 @@
                             GroupId = groupItem.ID,
                             RoleId = dbRole.Id
                         };
-                        context.ApplicationRoleGroups.Add(appRoleGroup);
-                        context.SaveChanges();
+                        if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                        {
+                            context.ApplicationRoleGroups.Add(appRoleGroup);
+                            context.SaveChanges();
+                        }
                     }
                 }
 
@@ -248,8 +251,11 @@
                             GroupId = groupItem.ID,
                             RoleId = dbRole.Id
                         };
-                        context.ApplicationRoleGroups.Add(appRoleGroup);
-                        context.SaveChanges();
+                        if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                        {
+                            context.ApplicationRoleGroups.Add(appRoleGroup);
+                            context.SaveChanges();
+                        }
                     }
                 }
 
@@ -277,8 +283,11 @@
                                 GroupId = groupItem.ID,
                                 RoleId = dbRole.Id
                             };
-                            context.ApplicationRoleGroups.Add(appRoleGroup);
-                            context.SaveChanges();
+                            if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                            {
+                                context.ApplicationRoleGroups.Add(appRoleGroup);
+                                context.SaveChanges();
+                            }
                         }
                     }
                 }
@@ -304,8 +313,11 @@
                                 GroupId = groupItem.ID,
                                 RoleId = dbRole.Id
                             };
-                            context.ApplicationRoleGroups.Add(appRoleGroup);
-                            context.SaveChanges();
+                            if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                            {
+                                context.ApplicationRoleGroups.Add(appRoleGroup);
+                                context.SaveChanges();
+                            }
                         }
                     }
                 }
@@ -328,8 +340,11 @@
                                 GroupId = groupItem.ID,
                                 RoleId = dbRole.Id
                             };
-                            context.ApplicationRoleGroups.Add(appRoleGroup);
-                            context.SaveChanges();
+                            if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                            {
+                                context.ApplicationRoleGroups.Add(appRoleGroup);
+                                context.SaveChanges();
+                            }
                         }
                     }
                 }
@@ -352,8 +367,11 @@
                                 GroupId = groupItem.ID,
                                 RoleId = dbRole.Id
                             };
-                            context.ApplicationRoleGroups.Add(appRoleGroup);
-                            context.SaveChanges();
+                            if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                            {
+                                context.ApplicationRoleGroups.Add(appRoleGroup);
+                                context.SaveChanges();
+                            }
                         }
                     }
                 }
@@ -386,20 +404,23 @@
                         GroupId = groupItem.ID,
                         UserId = userItem.Id
                     };
-                    context.ApplicationUserGroups.Add(appUserGroup);
-                    context.SaveChanges();
-
-                    //add role to user
-                    var listRole = from g in context.ApplicationRoles
-                                   join ug in context.ApplicationRoleGroups
-                                   on g.Id equals ug.RoleId
-                                   where ug.GroupId == groupItem.ID
-                                   select g;
-
-                    foreach (var item in listRole)
+                    if (context.ApplicationUserGroups.FirstOrDefault(x => x.GroupId == appUserGroup.GroupId && x.UserId == appUserGroup.UserId) == null)
                     {
-                        _userManager.RemoveFromRole(userItem.Id, item.Name);
-                        _userManager.AddToRole(userItem.Id, item.Name);
+                        context.ApplicationUserGroups.Add(appUserGroup);
+                        context.SaveChanges();
+
+                        //add role to user
+                        var listRole = from g in context.ApplicationRoles
+                                       join ug in context.ApplicationRoleGroups
+                                       on g.Id equals ug.RoleId
+                                       where ug.GroupId == groupItem.ID
+                                       select g;
+
+                        foreach (var item in listRole)
+                        {
+                            _userManager.RemoveFromRole(userItem.Id, item.Name);
+                            _userManager.AddToRole(userItem.Id, item.Name);
+                        }
                     }
                 }
             }

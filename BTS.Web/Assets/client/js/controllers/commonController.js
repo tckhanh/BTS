@@ -5,7 +5,8 @@
             $("#loaderbody").removeClass('hide');
         }).bind('ajaxStop', function () {
             $("#loaderbody").addClass('hide');
-        });        
+        });
+        commonController.activatejQueryTable();
     },
     registerEventDataTable: function () {
     },
@@ -108,7 +109,7 @@
             url: url,
             success: function (response) {
                 $("#secondTab").html(response);
-                $('ul.nav.nav-tabs a:eq(1)').html('Edit');
+                $('ul.nav.nav-tabs a:eq(1)').html('Sửa đổi');
                 $('ul.nav.nav-tabs a:eq(1)').tab('show');
             }
         });
@@ -134,9 +135,13 @@
         }
     },
 
-    //activatejQueryTable: function () {
-    //    $("#MyDataTable").DataTable();
-    //}
+    activatejQueryTable: function () {
+        $("#MyDataTable").DataTable({
+            "language": {
+                url: '/localization/vi_VI.json'
+            }
+        });
+    }
 };
 
 commonController.init();

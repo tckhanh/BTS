@@ -21,6 +21,7 @@ namespace BTS.Web.Infrastructure.Extensions
             certificate.SubBtsQuantity = btsCertificateVm.SubBtsQuantity;
             certificate.SubBtsAntenHeights = btsCertificateVm.SubBtsAntenHeights;
             certificate.SubBtsAntenNums = btsCertificateVm.SubBtsAntenNums;
+            certificate.SharedAntens = btsCertificateVm.SharedAntens;
             certificate.SubBtsBands = btsCertificateVm.SubBtsBands;
             certificate.SubBtsCodes = btsCertificateVm.SubBtsCodes;
             certificate.SubBtsConfigurations = btsCertificateVm.SubBtsConfigurations;
@@ -32,6 +33,7 @@ namespace BTS.Web.Infrastructure.Extensions
             certificate.TestReportNo = btsCertificateVm.TestReportNo;
             certificate.TestReportDate = btsCertificateVm.TestReportDate;
 
+            certificate.MeasuringExposure = btsCertificateVm.MeasuringExposure;
             certificate.SafeLimit = btsCertificateVm.SafeLimit;
             certificate.IssuedPlace = btsCertificateVm.IssuedPlace;
             certificate.IssuedDate = btsCertificateVm.IssuedDate;
@@ -90,10 +92,16 @@ namespace BTS.Web.Infrastructure.Extensions
         public static void UpdateUser(this ApplicationUser appUser, ApplicationUserViewModel appUserViewModel)
         {
             appUser.FullName = appUserViewModel.FullName;
-            appUser.BirthDay = appUserViewModel.BirthDay;
             appUser.Email = appUserViewModel.Email;
-            appUser.UserName = appUserViewModel.UserName;
             appUser.PhoneNumber = appUserViewModel.PhoneNumber;
+            appUser.Address = appUserViewModel.Address;
+            appUser.BirthDay = appUserViewModel.BirthDay;
+            appUser.FatherLand = appUserViewModel.FatherLand;
+            appUser.Level = appUserViewModel.Level;
+            appUser.EducationalField = appUserViewModel.EducationalField;
+            appUser.EntryDate = appUserViewModel.EntryDate;
+            appUser.EndDate = appUserViewModel.EndDate;
+            appUser.JobPositions = appUserViewModel.JobPositions;
             appUser.ImagePath = appUserViewModel.ImagePath;
         }
 
