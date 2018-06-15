@@ -10,6 +10,7 @@ using BTS.Model.Models;
 using Microsoft.Owin.Security.OAuth;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity.EntityFramework;
+using BTS.Data.ApplicationModels;
 
 [assembly: OwinStartup(typeof(BTS.Web.App_Start.Startup))]
 
@@ -21,8 +22,10 @@ namespace BTS.Web.App_Start
         private void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context, user manager and signin manager to use a single instance per request
+            // Configure the db context, user manager and role manager to use a single instance per request
             app.CreatePerOwinContext(BTSDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
             //app.CreatePerOwinContext<UserManager<ApplicationUser>>(CreateManager);

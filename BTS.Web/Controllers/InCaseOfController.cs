@@ -52,6 +52,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult SaveData(string strSenderObj)
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -108,6 +109,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult Delete(int id)
         {
             _inCaseOfService.Delete(id);

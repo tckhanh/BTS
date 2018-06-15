@@ -117,7 +117,7 @@ namespace BTS.Web.Api
                 }
                 else
                 {
-                    var dbCity = _cityService.getByID(cityVm.ID);
+                    var dbCity = _cityService.getByID(cityVm.Id);
                     dbCity.UpdateCity(cityVm);
 
                     _cityService.Update(dbCity);

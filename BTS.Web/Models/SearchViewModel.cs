@@ -7,7 +7,7 @@ namespace BTS.Web.Models
 {
     public class SearchViewModel
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string OperatorID { get; set; }
     }
 }

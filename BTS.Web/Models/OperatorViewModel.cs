@@ -10,7 +10,7 @@ namespace BTS.Web.Models
     {
         [Required(ErrorMessage = "Yêu cầu nhập Mã Doanh nghiệp")]
         [MaxLength(10, ErrorMessage = "Mã Doanh nghiệp tối đa 10 ký tự")]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         [Required(ErrorMessage = "Yêu cầu nhập Tên Doanh nghiệp")]
         [MaxLength(255, ErrorMessage = "Tên Doanh nghiệp tối đa 255 ký tự")]

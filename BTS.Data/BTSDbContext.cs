@@ -1,4 +1,5 @@
-﻿using BTS.Model.Models;
+﻿using BTS.Data.ApplicationModels;
+using BTS.Model.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -8,16 +9,15 @@ using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace BTS.Data
 {
-    public class BTSDbContext : IdentityDbContext
+    // Must be expressed in terms of our custom types:
+    public class BTSDbContext
+        : IdentityDbContext<ApplicationUser, ApplicationRole,
+        string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
     {
-        public BTSDbContext() : base("BTSConnection")
-        {
-            this.Configuration.LazyLoadingEnabled = false;
-        }
-
         public DbSet<InCaseOf> InCaseOfs { get; set; }
         public DbSet<Lab> Labs { get; set; }
         public DbSet<City> Cities { get; set; }
@@ -41,9 +41,18 @@ namespace BTS.Data
         public DbSet<ContactDetail> ContactDetails { set; get; }
         public DbSet<Feedback> Feedbacks { set; get; }
         public DbSet<ApplicationGroup> ApplicationGroups { set; get; }
-        public DbSet<ApplicationRole> ApplicationRoles { set; get; }
         public DbSet<ApplicationRoleGroup> ApplicationRoleGroups { set; get; }
         public DbSet<ApplicationUserGroup> ApplicationUserGroups { set; get; }
+
+        public BTSDbContext() : base("BTSConnection")
+        {
+            this.Configuration.LazyLoadingEnabled = false;
+        }
+
+        static BTSDbContext()
+        {
+            Database.SetInitializer<BTSDbContext>(new IdentityDbInit());
+        }
 
         public static BTSDbContext Create()
         {
@@ -52,16 +61,14 @@ namespace BTS.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            if (modelBuilder == null)
-            {
-                throw new ArgumentNullException("modelBuilder");
-            }
-            // Keep this:
-            modelBuilder.Entity<IdentityUser>().ToTable("ApplicationUsers");
             modelBuilder.Entity<IdentityUserRole>().HasKey(i => new { i.UserId, i.RoleId }).ToTable("ApplicationUserRoles");
             modelBuilder.Entity<IdentityUserLogin>().HasKey(i => i.UserId).ToTable("ApplicationUserLogins");
-            modelBuilder.Entity<IdentityRole>().ToTable("ApplicationRoles");
+            //modelBuilder.Entity<IdentityRole>().ToTable("ApplicationRoles");
             modelBuilder.Entity<IdentityUserClaim>().HasKey(i => i.UserId).ToTable("ApplicationUserClaims");
         }
+    }
+
+    public class IdentityDbInit : NullDatabaseInitializer<BTSDbContext>
+    {
     }
 }

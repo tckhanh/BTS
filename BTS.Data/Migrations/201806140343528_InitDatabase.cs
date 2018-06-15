@@ -22,8 +22,6 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
@@ -39,8 +37,6 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -48,11 +44,11 @@ namespace BTS.Data.Migrations
                 "dbo.ApplicationGroups",
                 c => new
                     {
-                        ID = c.String(nullable: false, maxLength: 128),
+                        Id = c.String(nullable: false, maxLength: 128),
                         Name = c.String(maxLength: 250),
                         Description = c.String(maxLength: 250),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.ApplicationRoleGroups",
@@ -72,9 +68,8 @@ namespace BTS.Data.Migrations
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
-                        Name = c.String(),
                         Description = c.String(maxLength: 250),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -84,14 +79,15 @@ namespace BTS.Data.Migrations
                     {
                         UserId = c.String(nullable: false, maxLength: 128),
                         RoleId = c.String(nullable: false, maxLength: 128),
-                        IdentityRole_Id = c.String(maxLength: 128),
-                        IdentityUser_Id = c.String(maxLength: 128),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
+                        ApplicationRole_Id = c.String(maxLength: 128),
+                        ApplicationUser_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
-                .ForeignKey("dbo.ApplicationRoles", t => t.IdentityRole_Id)
-                .ForeignKey("dbo.ApplicationUsers", t => t.IdentityUser_Id)
-                .Index(t => t.IdentityRole_Id)
-                .Index(t => t.IdentityUser_Id);
+                .ForeignKey("dbo.ApplicationRoles", t => t.ApplicationRole_Id)
+                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
+                .Index(t => t.ApplicationRole_Id)
+                .Index(t => t.ApplicationUser_Id);
             
             CreateTable(
                 "dbo.ApplicationUserGroups",
@@ -111,6 +107,17 @@ namespace BTS.Data.Migrations
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
+                        FullName = c.String(nullable: false, maxLength: 255),
+                        Address = c.String(maxLength: 255),
+                        BirthDay = c.DateTime(),
+                        FatherLand = c.String(maxLength: 50),
+                        Level = c.String(maxLength: 50),
+                        EducationalField = c.String(maxLength: 150),
+                        EntryDate = c.DateTime(),
+                        EndDate = c.DateTime(),
+                        JobPositions = c.String(maxLength: 255),
+                        ImagePath = c.String(maxLength: 555),
+                        Locked = c.Boolean(nullable: false),
                         Email = c.String(),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -122,17 +129,6 @@ namespace BTS.Data.Migrations
                         LockoutEnabled = c.Boolean(nullable: false),
                         AccessFailedCount = c.Int(nullable: false),
                         UserName = c.String(),
-                        FullName = c.String(maxLength: 255),
-                        Address = c.String(maxLength: 255),
-                        BirthDay = c.DateTime(),
-                        FatherLand = c.String(maxLength: 50),
-                        Level = c.String(maxLength: 50),
-                        EducationalField = c.String(maxLength: 150),
-                        EntryDate = c.DateTime(),
-                        EndDate = c.DateTime(),
-                        JobPositions = c.String(maxLength: 255),
-                        ImagePath = c.String(maxLength: 555),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -144,11 +140,12 @@ namespace BTS.Data.Migrations
                         Id = c.Int(nullable: false),
                         ClaimType = c.String(),
                         ClaimValue = c.String(),
-                        IdentityUser_Id = c.String(maxLength: 128),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
+                        ApplicationUser_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.UserId)
-                .ForeignKey("dbo.ApplicationUsers", t => t.IdentityUser_Id)
-                .Index(t => t.IdentityUser_Id);
+                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
+                .Index(t => t.ApplicationUser_Id);
             
             CreateTable(
                 "dbo.ApplicationUserLogins",
@@ -157,11 +154,12 @@ namespace BTS.Data.Migrations
                         UserId = c.String(nullable: false, maxLength: 128),
                         LoginProvider = c.String(),
                         ProviderKey = c.String(),
-                        IdentityUser_Id = c.String(maxLength: 128),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
+                        ApplicationUser_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.UserId)
-                .ForeignKey("dbo.ApplicationUsers", t => t.IdentityUser_Id)
-                .Index(t => t.IdentityUser_Id);
+                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
+                .Index(t => t.ApplicationUser_Id);
             
             CreateTable(
                 "dbo.Btss",
@@ -185,8 +183,6 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
@@ -208,8 +204,6 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -224,8 +218,6 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -247,8 +239,6 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Applicants", t => t.ApplicantID)
@@ -259,7 +249,7 @@ namespace BTS.Data.Migrations
                 c => new
                     {
                         ID = c.String(nullable: false, maxLength: 16),
-                        ProfileID = c.Int(),
+                        ProfileID = c.Int(nullable: false),
                         OperatorID = c.String(nullable: false, maxLength: 10),
                         BtsCode = c.String(nullable: false, maxLength: 100),
                         Address = c.String(nullable: false, maxLength: 255),
@@ -279,6 +269,7 @@ namespace BTS.Data.Migrations
                         SubBtsOperatorIDs = c.String(nullable: false, maxLength: 150),
                         SubBtsEquipments = c.String(nullable: false, maxLength: 255),
                         SubBtsAntenNums = c.String(nullable: false, maxLength: 150),
+                        SharedAntens = c.String(maxLength: 50),
                         SubBtsConfigurations = c.String(nullable: false, maxLength: 150),
                         SubBtsPowerSums = c.String(nullable: false, maxLength: 150),
                         SubBtsBands = c.String(nullable: false, maxLength: 150),
@@ -286,20 +277,19 @@ namespace BTS.Data.Migrations
                         MinAntenHeight = c.Double(),
                         MaxHeightIn100m = c.Double(),
                         OffsetHeight = c.Double(),
+                        MeasuringExposure = c.Boolean(nullable: false),
                         SafeLimit = c.Double(),
                         CreatedDate = c.DateTime(),
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
                 .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
                 .ForeignKey("dbo.Labs", t => t.LabID)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
-                .ForeignKey("dbo.Profiles", t => t.ProfileID)
+                .ForeignKey("dbo.Profiles", t => t.ProfileID, cascadeDelete: true)
                 .Index(t => t.ProfileID)
                 .Index(t => t.OperatorID)
                 .Index(t => t.CityID)
@@ -319,8 +309,6 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -406,7 +394,7 @@ namespace BTS.Data.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        ProfileID = c.Int(),
+                        ProfileID = c.Int(nullable: false),
                         OperatorID = c.String(nullable: false, maxLength: 10),
                         BtsCode = c.String(nullable: false, maxLength: 100),
                         Address = c.String(nullable: false, maxLength: 255),
@@ -422,15 +410,13 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
                 .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
                 .ForeignKey("dbo.Labs", t => t.LabID)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
-                .ForeignKey("dbo.Profiles", t => t.ProfileID)
+                .ForeignKey("dbo.Profiles", t => t.ProfileID, cascadeDelete: true)
                 .Index(t => t.ProfileID)
                 .Index(t => t.OperatorID)
                 .Index(t => t.CityID)
@@ -452,8 +438,6 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -491,8 +475,6 @@ namespace BTS.Data.Migrations
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
-                        DeletedDate = c.DateTime(),
-                        DeletedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Certificates", t => t.CertificateID)
@@ -542,12 +524,8 @@ namespace BTS.Data.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.ApplicationUserRoles", "IdentityUser_Id", "dbo.ApplicationUsers");
-            DropForeignKey("dbo.ApplicationUserLogins", "IdentityUser_Id", "dbo.ApplicationUsers");
-            DropForeignKey("dbo.ApplicationUserClaims", "IdentityUser_Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.SubBtsInCerts", "OperatorID", "dbo.Operators");
             DropForeignKey("dbo.SubBtsInCerts", "CertificateID", "dbo.Certificates");
-            DropForeignKey("dbo.ApplicationUserRoles", "IdentityRole_Id", "dbo.ApplicationRoles");
             DropForeignKey("dbo.NoCertificates", "ProfileID", "dbo.Profiles");
             DropForeignKey("dbo.NoCertificates", "OperatorID", "dbo.Operators");
             DropForeignKey("dbo.NoCertificates", "LabID", "dbo.Labs");
@@ -564,9 +542,13 @@ namespace BTS.Data.Migrations
             DropForeignKey("dbo.Btss", "OperatorID", "dbo.Operators");
             DropForeignKey("dbo.Btss", "InCaseOfID", "dbo.InCaseOfs");
             DropForeignKey("dbo.Btss", "CityID", "dbo.Cities");
+            DropForeignKey("dbo.ApplicationUserRoles", "ApplicationUser_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.ApplicationUserLogins", "ApplicationUser_Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.ApplicationUserGroups", "UserId", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.ApplicationUserClaims", "ApplicationUser_Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.ApplicationUserGroups", "GroupId", "dbo.ApplicationGroups");
             DropForeignKey("dbo.ApplicationRoleGroups", "RoleId", "dbo.ApplicationRoles");
+            DropForeignKey("dbo.ApplicationUserRoles", "ApplicationRole_Id", "dbo.ApplicationRoles");
             DropForeignKey("dbo.ApplicationRoleGroups", "GroupId", "dbo.ApplicationGroups");
             DropForeignKey("dbo.Applicants", "OperatorID", "dbo.Operators");
             DropIndex("dbo.SubBtsInCerts", new[] { "OperatorID" });
@@ -587,12 +569,12 @@ namespace BTS.Data.Migrations
             DropIndex("dbo.Btss", new[] { "CityID" });
             DropIndex("dbo.Btss", new[] { "OperatorID" });
             DropIndex("dbo.Btss", new[] { "ProfileID" });
-            DropIndex("dbo.ApplicationUserLogins", new[] { "IdentityUser_Id" });
-            DropIndex("dbo.ApplicationUserClaims", new[] { "IdentityUser_Id" });
+            DropIndex("dbo.ApplicationUserLogins", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.ApplicationUserClaims", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.ApplicationUserGroups", new[] { "GroupId" });
             DropIndex("dbo.ApplicationUserGroups", new[] { "UserId" });
-            DropIndex("dbo.ApplicationUserRoles", new[] { "IdentityUser_Id" });
-            DropIndex("dbo.ApplicationUserRoles", new[] { "IdentityRole_Id" });
+            DropIndex("dbo.ApplicationUserRoles", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.ApplicationUserRoles", new[] { "ApplicationRole_Id" });
             DropIndex("dbo.ApplicationRoleGroups", new[] { "RoleId" });
             DropIndex("dbo.ApplicationRoleGroups", new[] { "GroupId" });
             DropIndex("dbo.Applicants", new[] { "OperatorID" });

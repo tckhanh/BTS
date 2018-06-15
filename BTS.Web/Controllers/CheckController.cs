@@ -41,6 +41,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CheckBTS(HttpPostedFileBase file)
         {
             try

@@ -1,4 +1,5 @@
-﻿@{
+﻿@using BTS.Common
+@{
     ViewBag.Title = "Role";
     Layout = "~/Views/Shared/Layouts.cshtml";
 }
@@ -11,16 +12,6 @@
 @section footerJS{
     <script src="~/Assets/admin/libs/moment/moment.js"></script>
     <script src="~/Assets/client/js/controllers/commonController.js"></script>
-    <script>
-        function activatejQueryTable() {
-            $("#MyDataTable").DataTable();
-        }
-
-        $(function () {
-            activatejQueryTable();
-        });
-
-    </script>
 }
 <br />
 
@@ -54,13 +45,16 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <ul class="nav nav-tabs">
-                            <li><a data-toggle="tab" href="#firstTab"> Xem</a></li>
-                            <li class="active"><a data-toggle="tab" href="#secondTab"> Thêm mới</a></li>
+                        <ul class="nav nav-tabs nav-pills">
+                            <li class="active"><a data-toggle="tab" href="#firstTab"> Xem</a></li>
+                            @if (User.IsInRole())
+                            {
+                                <li><a data-toggle="tab" href="#secondTab"> Thêm mới</a></li>
+                            }
                         </ul>
                         <div class="tab-content">
-                            <div id="firstTab" class="tab-pane fade in">@Html.Action("ViewAll")</div>
-                            <div id="secondTab" class="tab-pane fade in active">@Html.Action("AddOrEdit")</div>
+                            <div id="firstTab" class="tab-pane fade in active">@Html.Action("ViewAll")</div>
+                            <div id="secondTab" class="tab-pane fade in">@Html.Action("AddOrEdit")</div>
                         </div>
                     </div>
                     <!-- /.box-body -->

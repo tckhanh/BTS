@@ -8,7 +8,7 @@ namespace BTS.Web.Models
 {
     public class InCaseOfViewModel
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Mã Trường hợp Kiểm định")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Mã Trường hợp Kiểm định")]

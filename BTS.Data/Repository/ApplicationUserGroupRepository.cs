@@ -5,18 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using BTS.Data.Infrastructure;
 using BTS.Model.Models;
+using BTS.Data.ApplicationModels;
 
 namespace BTS.Data.Repositories
 {
     public interface IApplicationUserGroupRepository : IRepository<ApplicationUserGroup>
     {
-
     }
+
     public class ApplicationUserGroupRepository : RepositoryBase<ApplicationUserGroup>, IApplicationUserGroupRepository
     {
         public ApplicationUserGroupRepository(IDbFactory dbFactory) : base(dbFactory)
         {
-
         }
     }
 }

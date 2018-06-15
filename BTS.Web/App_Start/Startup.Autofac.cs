@@ -14,6 +14,7 @@ using BTS.Model.Models;
 using System.Web;
 using Microsoft.Owin.Security.DataProtection;
 using BTS.Data.InfraError;
+using BTS.Data.ApplicationModels;
 
 namespace BTS.Web.App_Start
 {
@@ -36,7 +37,7 @@ namespace BTS.Web.App_Start
             builder.RegisterType<BTSDbContext>().AsSelf().InstancePerRequest();
 
             //Asp.net Identity
-            builder.RegisterType<ApplicationUserStore>().As<IUserStore<ApplicationUser>>().InstancePerRequest();
+            builder.RegisterType<ApplicationUserStore>().As<IUserStore<ApplicationUser, string>>().InstancePerRequest();
             builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<ApplicationSignInManager>().AsSelf().InstancePerRequest();
             builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();

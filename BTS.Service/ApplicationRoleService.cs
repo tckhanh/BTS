@@ -7,6 +7,7 @@ using BTS.Common.Exceptions;
 using BTS.Data.Infrastructure;
 using BTS.Data.Repositories;
 using BTS.Model.Models;
+using BTS.Data.ApplicationModels;
 
 namespace BTS.Service
 {

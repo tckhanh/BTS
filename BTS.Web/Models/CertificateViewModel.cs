@@ -11,7 +11,7 @@ namespace BTS.Web.Models
     {
         [Key]
         [Display(Name = "Số giấy CNKĐ")]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         [Display(Name = "Mã số hồ sơ")]
         public int ProfileID { get; set; }

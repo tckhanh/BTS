@@ -117,7 +117,7 @@ namespace BTS.Web.Api
                 }
                 else
                 {
-                    var dbInCaseOf = _inCaseOfService.getByID(inCaseOfVm.ID);
+                    var dbInCaseOf = _inCaseOfService.getByID(inCaseOfVm.Id);
                     dbInCaseOf.UpdateInCaseOf(inCaseOfVm);
 
                     _inCaseOfService.Update(dbInCaseOf);

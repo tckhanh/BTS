@@ -15,6 +15,8 @@ using BTS.Model.Models;
 using BTS.Web.App_Start;
 using BTS.Web.Models;
 using BTS.Service;
+using static BTS.Web.Models.AccountViewModel;
+using BTS.Data.ApplicationModels;
 
 namespace BTS.Web.Controllers
 {
@@ -23,10 +25,8 @@ namespace BTS.Web.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IErrorService errorService) : base(errorService)
+        public AccountController(IErrorService errorService) : base(errorService)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
         }
 
         public ApplicationSignInManager SignInManager
@@ -61,16 +61,17 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                var user = _userManager.Find(model.UserName, model.Password);
+                var user = UserManager.Find(model.UserName, model.Password);
                 if (user != null)
                 {
                     IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
                     authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                    ClaimsIdentity identity = _userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                    ClaimsIdentity identity = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthenticationProperties props = new AuthenticationProperties();
                     props.IsPersistent = model.RememberMe;
                     authenticationManager.SignIn(props, identity);
@@ -167,18 +168,19 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [CaptchaValidation("CaptchaCode", "registerCaptcha", "Mã xác nhận không đúng")]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var userByEmail = await _userManager.FindByEmailAsync(model.Email);
+                var userByEmail = await UserManager.FindByEmailAsync(model.Email);
                 if (userByEmail != null)
                 {
                     ModelState.AddModelError("email", "Email đã tồn tại");
                     return View(model);
                 }
-                var userByUserName = await _userManager.FindByNameAsync(model.UserName);
+                var userByUserName = await UserManager.FindByNameAsync(model.UserName);
                 if (userByUserName != null)
                 {
                     ModelState.AddModelError("email", "Tài khoản đã tồn tại");
@@ -195,11 +197,11 @@ namespace BTS.Web.Controllers
                     Address = model.Address
                 };
 
-                await _userManager.CreateAsync(user, model.Password);
+                await UserManager.CreateAsync(user, model.Password);
 
-                var adminUser = await _userManager.FindByEmailAsync(model.Email);
+                var adminUser = await UserManager.FindByEmailAsync(model.Email);
                 if (adminUser != null)
-                    await _userManager.AddToRolesAsync(adminUser.Id, new string[] { "User" });
+                    await UserManager.AddToRolesAsync(adminUser.Id, new string[] { "User" });
 
                 string content = System.IO.File.ReadAllText(Server.MapPath("/Assets/client/template/newuser.html"));
                 content = content.Replace("{{UserName}}", adminUser.FullName);

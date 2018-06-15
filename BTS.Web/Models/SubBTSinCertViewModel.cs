@@ -8,7 +8,7 @@ namespace BTS.Web.Models
 {
     public class SubBtsInCertViewModel
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Số Giấy CNKĐ")]
         [StringLength(16, ErrorMessage = "Số Giấy CNKĐ không quá 16 ký tự")]

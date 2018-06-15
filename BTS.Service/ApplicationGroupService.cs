@@ -9,6 +9,7 @@ using BTS.Data.Repositories;
 using BTS.Model.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
+using BTS.Data.ApplicationModels;
 
 namespace BTS.Service
 {
@@ -28,11 +29,28 @@ namespace BTS.Service
 
         ApplicationGroup Delete(string id);
 
-        bool AddUserToGroups(IEnumerable<ApplicationUserGroup> groups, string userId);
+        bool AddUserToGroups(IEnumerable<ApplicationGroup> groups, string userId);
 
-        IEnumerable<ApplicationGroup> GetListGroupByUserId(string userId);
+        bool AddUserToGroups(IEnumerable<ApplicationUserGroup> userGroups);
 
-        IEnumerable<IdentityUser> GetListUserByGroupId(string groupId);
+        bool AddRolesToGroup(IEnumerable<ApplicationRole> roles, string groupId);
+
+        bool AddRolesToGroup(IEnumerable<ApplicationRoleGroup> roleGroups);
+
+        bool DeleteRolesFromGroup(string groupId);
+
+        bool DeleteUserFromGroups(string userId);
+
+        IEnumerable<ApplicationGroup> GetGroupsByUserId(string userId);
+
+        IEnumerable<ApplicationGroup> GetGroupsByRoleId(string roleId);
+
+        ICollection<ApplicationUser> GetUsersByGroupId(string groupId);
+
+        //Get list role by group id
+        IEnumerable<ApplicationRole> GetRolesByGroupId(string groupId);
+
+        IEnumerable<ApplicationRole> GetLogicRolesByUserId(string userId);
 
         void Save();
     }
@@ -40,16 +58,19 @@ namespace BTS.Service
     public class ApplicationGroupService : IApplicationGroupService
     {
         private IApplicationGroupRepository _appGroupRepository;
-        private IUnitOfWork _unitOfWork;
         private IApplicationUserGroupRepository _appUserGroupRepository;
+        private IApplicationRoleGroupRepository _appRoleGroupRepository;
+        private IUnitOfWork _unitOfWork;
 
         public ApplicationGroupService(IUnitOfWork unitOfWork,
             IApplicationUserGroupRepository appUserGroupRepository,
+            IApplicationRoleGroupRepository appRoleGroupRepository,
             IApplicationGroupRepository appGroupRepository)
         {
-            this._appGroupRepository = appGroupRepository;
-            this._appUserGroupRepository = appUserGroupRepository;
-            this._unitOfWork = unitOfWork;
+            _appGroupRepository = appGroupRepository;
+            _appUserGroupRepository = appUserGroupRepository;
+            _appRoleGroupRepository = appRoleGroupRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public ApplicationGroup Add(ApplicationGroup appGroup)
@@ -92,14 +113,13 @@ namespace BTS.Service
 
         public void Update(ApplicationGroup appGroup)
         {
-            if (_appGroupRepository.CheckContains(x => x.Name == appGroup.Name && x.ID != appGroup.ID))
+            if (_appGroupRepository.CheckContains(x => x.Name == appGroup.Name && x.Id != appGroup.Id))
                 throw new NameDuplicatedException("Tên không được trùng");
             _appGroupRepository.Update(appGroup);
         }
 
-        public bool AddUserToGroups(IEnumerable<ApplicationUserGroup> userGroups, string userId)
+        public bool AddUserToGroups(IEnumerable<ApplicationUserGroup> userGroups)
         {
-            _appUserGroupRepository.DeleteMulti(x => x.UserId == userId);
             foreach (var userGroup in userGroups)
             {
                 _appUserGroupRepository.Add(userGroup);
@@ -107,39 +127,81 @@ namespace BTS.Service
             return true;
         }
 
+        public bool DeleteUserFromGroups(string userId)
+        {
+            _appUserGroupRepository.DeleteMulti(x => x.UserId == userId);
+            return true;
+        }
+
         public bool AddUserToGroups(IEnumerable<ApplicationGroup> groups, string userId)
         {
-            var listAppUserGroup = new List<ApplicationUserGroup>();
             foreach (var group in groups)
             {
-                listAppUserGroup.Add(new ApplicationUserGroup()
+                _appUserGroupRepository.Add(new ApplicationUserGroup()
                 {
-                    GroupId = group.ID,
+                    GroupId = group.Id,
                     UserId = userId
                 });
-            }
-
-            _appUserGroupRepository.DeleteMulti(x => x.UserId == userId);
-            foreach (var userGroup in listAppUserGroup)
-            {
-                _appUserGroupRepository.Add(userGroup);
             }
             return true;
         }
 
-        public IEnumerable<ApplicationGroup> GetListGroupByUserId(string userId)
+        public bool AddRolesToGroup(IEnumerable<ApplicationRoleGroup> roleGroups)
         {
-            return _appGroupRepository.GetListGroupByUserId(userId);
+            foreach (var roleGroup in roleGroups)
+            {
+                _appRoleGroupRepository.Add(roleGroup);
+            }
+            return true;
         }
 
-        public IEnumerable<IdentityUser> GetListUserByGroupId(string groupId)
+        public bool AddRolesToGroup(IEnumerable<ApplicationRole> roles, string groupId)
         {
-            return _appGroupRepository.GetListUserByGroupId(groupId);
+            foreach (var role in roles)
+            {
+                _appRoleGroupRepository.Add(new ApplicationRoleGroup()
+                {
+                    RoleId = role.Id,
+                    GroupId = groupId
+                });
+            }
+            return true;
+        }
+
+        public bool DeleteRolesFromGroup(string groupId)
+        {
+            _appRoleGroupRepository.DeleteMulti(x => x.GroupId == groupId);
+            return true;
+        }
+
+        public IEnumerable<ApplicationGroup> GetGroupsByUserId(string userId)
+        {
+            return _appGroupRepository.GetGroupsByUserId(userId);
+        }
+
+        public ICollection<ApplicationUser> GetUsersByGroupId(string groupId)
+        {
+            return _appGroupRepository.GetUsersByGroupId(groupId);
         }
 
         public ApplicationGroup GetByID(string id)
         {
             return _appGroupRepository.GetSingleById(id);
+        }
+
+        public IEnumerable<ApplicationRole> GetRolesByGroupId(string groupId)
+        {
+            return _appGroupRepository.GetRolesByGroupId(groupId);
+        }
+
+        public IEnumerable<ApplicationRole> GetLogicRolesByUserId(string userId)
+        {
+            return _appGroupRepository.GetLogicRolesByUserId(userId);
+        }
+
+        public IEnumerable<ApplicationGroup> GetGroupsByRoleId(string roleId)
+        {
+            return _appGroupRepository.GetGroupsByRoleId(roleId);
         }
     }
 }

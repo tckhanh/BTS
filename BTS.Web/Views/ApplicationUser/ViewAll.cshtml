@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<BTS.Web.Models.ApplicationUserViewModel>
-
+@using BTS.Common
 @{
     ViewBag.Title = "ViewAll";
     Layout = null;
@@ -35,11 +35,34 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUser", new { id=@item.ID})')"><i class="fa fa-pencil fa-lg"></i></a>
-                    <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "ApplicationUser", new { id=@item.ID})')"><i class="fa fa-trash fa-lg"></i></a>
+                    @if (User.IsInRole(CommonConstants.System_CanViewDetail_Role))
+                    {
+                        <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("AddOrEdit", "ApplicationUser", new { id = @item.Id, act = CommonConstants.Action_Detail })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
+                    }
+
+                    @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
+                    {
+                        <a class="btn btn-success btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUser", new { id = @item.Id, act = CommonConstants.Action_Edit })')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
+                    }
+
+                    @if (User.IsInRole(CommonConstants.System_CanLock_Role))
+                    {
+                        if (item.Locked)
+                        {
+                            <a class="btn btn-warning btn-sm" onclick="commonController.Lock('@Url.Action("Lock", "ApplicationUser", new { id=@item.Id})')" data-toggle="tooltip" data-placement="top" title="Mở khóa"><i class="fa fa-unlock fa-lg"></i></a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-warning btn-sm" onclick="commonController.Lock('@Url.Action("Lock", "ApplicationUser", new { id=@item.Id})')" data-toggle="tooltip" data-placement="top" title="Khóa"><i class="fa fa-lock fa-lg"></i></a>
+                        }
+                    }
+
+                    @if (User.IsInRole(CommonConstants.System_CanDelete_Role))
+                    {
+                        <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "ApplicationUser", new { id=@item.Id})')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
-

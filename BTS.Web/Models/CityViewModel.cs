@@ -10,7 +10,7 @@ namespace BTS.Web.Models
     {
         [Display(Name = "Mã Tỉnh/Thành phố")]
         [StringLength(3, ErrorMessage = "Mã Tỉnh/Thành phố không quá 3 ký tự")]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         [Display(Name = "Tên Tỉnh/Thành phố")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tên Tỉnh/Thành phố")]

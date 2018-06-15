@@ -10,23 +10,20 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BTS.Web.Infrastructure.Extensions;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
+using BTS.Data.ApplicationModels;
 
 namespace BTS.Web.Controllers
 {
     public class ApplicationRoleController : BaseController
     {
-        private IApplicationRoleService _appRoleService;
-        private ApplicationUserManager _userManager;
+        private IApplicationGroupService _appGroupService;
 
-        public ApplicationRoleController(IErrorService errorService,
-            IApplicationRoleService appRoleService,
-            ApplicationUserManager userManager,
-            IApplicationRoleService appGroupService) : base(errorService)
+        public ApplicationRoleController(IErrorService errorService, IApplicationGroupService appGroupService) : base(errorService)
         {
-            _appRoleService = appRoleService;
-            _userManager = userManager;
+            _appGroupService = appGroupService;
         }
-
 
         public ActionResult Index()
         {
@@ -35,58 +32,125 @@ namespace BTS.Web.Controllers
 
         public ActionResult ViewAll()
         {
-            return View(GetAll());
+            return View(Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles.OrderByDescending(x => x.Name)));
         }
 
-        IEnumerable<ApplicationRoleViewModel> GetAll()
-        {
-            var model = _appRoleService.GetAll();
-            return Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(model);
-        }
-
-        public ActionResult AddOrEdit(string id = "")
+        public async Task<ActionResult> AddOrEdit(string id = "")
         {
             ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
             if (!string.IsNullOrEmpty(id))
             {
-                var DbItem = _appRoleService.GetDetail(id);
+                var DbItem = await RoleManager.FindByIdAsync(id);
 
                 if (DbItem != null)
                 {
                     ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
-                }
 
+                    var allGroup = _appGroupService.GetAll();
+                    var listGroup = _appGroupService.GetGroupsByRoleId(id);
+                    foreach (var groupItem in allGroup)
+                    {
+                        var listItem = new SelectListItem()
+                        {
+                            Text = groupItem.Description,
+                            Value = groupItem.Id,
+                            Selected = listGroup.Any(g => g.Id == groupItem.Id)
+                        };
+                        ItemVm.GroupList.Add(listItem);
+                    }
+
+                    var allUser = UserManager.Users;
+                    foreach (var userItem in allUser)
+                    {
+                        if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))
+                        {
+                            var listItem = new SelectListItem()
+                            {
+                                Text = userItem.FullName,
+                                Value = userItem.Id,
+                                Selected = await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name)
+                            };
+                            ItemVm.UserList.Add(listItem);
+                        }
+                    }
+                }
             }
             return View(ItemVm);
         }
 
+        public async Task<ActionResult> Detail(string id = "")
+        {
+            ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
+            if (!string.IsNullOrEmpty(id))
+            {
+                var DbItem = await RoleManager.FindByIdAsync(id);
+
+                if (DbItem != null)
+                {
+                    ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
+
+                    var allGroup = _appGroupService.GetAll();
+                    var listGroup = _appGroupService.GetGroupsByRoleId(id);
+                    foreach (var groupItem in allGroup)
+                    {
+                        var listItem = new SelectListItem()
+                        {
+                            Text = groupItem.Name,
+                            Value = groupItem.Id,
+                            Selected = listGroup.Any(g => g.Id == groupItem.Id)
+                        };
+                        ItemVm.GroupList.Add(listItem);
+                    }
+
+                    var allUser = UserManager.Users;
+                    foreach (var userItem in allUser)
+                    {
+                        if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))
+                        {
+                            var listItem = new SelectListItem()
+                            {
+                                Text = userItem.FullName,
+                                Value = userItem.Id,
+                                Selected = await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name)
+                            };
+                            ItemVm.UserList.Add(listItem);
+                        }
+                    }
+                }
+            }
+            return View(ItemVm);
+        }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddOrEdit(ApplicationRoleViewModel Item)
         {
             try
             {
-                if (string.IsNullOrEmpty(Item.ID))
+                if (ModelState.IsValid)
                 {
-                    ApplicationRole newItem = new ApplicationRole();
-                    newItem.UpdateApplicationRole(Item);
-                    
-                    _appRoleService.Add(newItem);
-                    _appRoleService.Save();
-
-                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
-
+                    if (string.IsNullOrEmpty(Item.Id))
+                    {
+                        var role = new ApplicationRole(Item.Name, Item.Description);
+                        var roleresult = await RoleManager.CreateAsync(role);
+                        if (!roleresult.Succeeded)
+                        {
+                            return Json(new { success = false, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
+                        }
+                        return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        var editItem = await RoleManager.FindByIdAsync(Item.Id);
+                        editItem.UpdateApplicationRole(Item, "update");
+                        await RoleManager.UpdateAsync(editItem);
+                        return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-                    var editItem = _appRoleService.GetDetail(Item.ID);
-
-                    editItem.UpdateApplicationRole(Item,"update");
-                    _appRoleService.Update(editItem);
-                    _appRoleService.Save();      
-                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
                 }
-
             }
             catch (Exception ex)
             {
@@ -94,14 +158,26 @@ namespace BTS.Web.Controllers
             }
         }
 
-
         public async Task<ActionResult> Delete(string id)
         {
             try
             {
-                _appRoleService.Delete(id);
-                _appRoleService.Save();
-                return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                var role = await RoleManager.FindByIdAsync(id);
+                if (role == null)
+                {
+                    return HttpNotFound();
+                }
+
+                if (_appGroupService.GetGroupsByRoleId(id) != null)
+                {
+                    return Json(new { success = false, message = "Không thể xóa Quyền đã cấp cho Nhóm người dùng" }, JsonRequestBehavior.AllowGet);
+                }
+
+                IdentityResult result = await RoleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", RoleManager.Roles), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { success = false, message = "Xóa dữ liệu không thành công" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<BTS.Web.Models.ApplicationRoleViewModel>
-
+@using BTS.Common
 @{
     ViewBag.Title = "ViewAll";
     Layout = null;
@@ -29,11 +29,14 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationRole", new { id=@item.ID})')"><i class="fa fa-pencil fa-lg"></i></a>
-                    <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "ApplicationRole", new { id=@item.ID})')"><i class="fa fa-trash fa-lg"></i></a>
+                    @if (User.IsInRole("System_Admin"))
+                    {
+                        <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationRole", new { id = @item.Id, action = "Edit" })')"><i class="fa fa-pencil fa-lg"></i></a>
+
+                        <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "ApplicationRole", new { id = @item.Id })')"><i class="fa fa-trash fa-lg"></i></a>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
-

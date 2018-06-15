@@ -1,0 +1,151 @@
+﻿@model BTS.Web.Models.ApplicationUserViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "AddOrEdit";
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "ApplicationUser", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add }) }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            <div class="col-md-9 col-sm-9 col-xs-12">
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.ImagePath)
+                @Html.HiddenFor(model => model.UserName)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FullName, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.FullName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.FullName)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PhoneNumber, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Locked, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Locked, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Locked)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Address)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BirthDay, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.BirthDay, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.BirthDay)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FatherLand, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.FatherLand, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.FatherLand)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Level, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Level, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Level)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EducationalField, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.EducationalField, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EducationalField)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EntryDate, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.EntryDate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EntryDate)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EndDate, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.EndDate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EndDate)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.JobPositions, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(model => model.JobPositions, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.JobPositions)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.GroupList, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+
+                        @foreach (var item in Model.GroupList)
+                        {
+                            <div class="col-md-6">
+                                <input type="checkbox" text="@item.Text" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                @Html.Label(item.Text, new { @class = "control-label" })
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                @Html.LabelFor(model => model.ImagePath, new { @class = "control-label" })
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @if (!string.IsNullOrEmpty(Model.ImagePath))
+                        {
+                            <img src="@Url.Content(Model.ImagePath)" style="margin:10px" height="200" width="150" id="imagePreview" />
+                        }
+                        <input type="file" name="ImageUpload" accept="image/jpeg, image/png" onchange="commonController.ShowImagePreview(this,document.getElementById('imagePreview'))" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}

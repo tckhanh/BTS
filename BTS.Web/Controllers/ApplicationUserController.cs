@@ -13,6 +13,10 @@ using BTS.Web.Infrastructure.Extensions;
 using System.Threading.Tasks;
 using BTS.Common.Exceptions;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using static BTS.Web.Models.AccountViewModel;
+using BTS.Data.ApplicationModels;
+using BTS.Common;
 
 namespace BTS.Web.Controllers
 {
@@ -20,18 +24,48 @@ namespace BTS.Web.Controllers
     {
         private ApplicationUserManager _userManager;
         private IApplicationGroupService _appGroupService;
-        private IApplicationRoleService _appRoleService;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext()
+                    .GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         public ApplicationUserController(
             IApplicationGroupService appGroupService,
-            IApplicationRoleService appRoleService,
-            ApplicationUserManager userManager,
             IErrorService errorService)
             : base(errorService)
         {
-            _appRoleService = appRoleService;
             _appGroupService = appGroupService;
-            _userManager = userManager;
+        }
+
+        public ICollection<SelectListItem> ListRolesOfUser(string id = "")
+        {
+            ICollection<SelectListItem> allRolesOfUser = new List<SelectListItem>();
+            IEnumerable<ApplicationRole> listRoles = RoleManager.Roles;
+            foreach (var roleItem in listRoles)
+            {
+                allRolesOfUser.Add(new SelectListItem()
+                {
+                    Value = roleItem.Id,
+                    Text = roleItem.Name,
+                    Selected = false
+                });
+            }
+
+            IEnumerable<ApplicationGroup> listGroupOfUser = _appGroupService.GetGroupsByUserId(id);
+            foreach (var groupItem in listGroupOfUser)
+            {
+                IEnumerable<ApplicationRole> listRoleOfGroup = _appGroupService.GetRolesByGroupId(groupItem.Id);
+            }
+            return allRolesOfUser;
         }
 
         public ActionResult Index()
@@ -44,42 +78,63 @@ namespace BTS.Web.Controllers
             return View(GetAll());
         }
 
+        public async Task<ActionResult> DetailRoles(string id = "")
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            var model = new UserPermissionsViewModel(user);
+            return View(model);
+        }
+
         private IEnumerable<ApplicationUserViewModel> GetAll()
         {
-            var model = _userManager.Users;
+            var model = UserManager.Users.ToList();
             return Mapper.Map<IEnumerable<ApplicationUserViewModel>>(model);
         }
 
-        public async Task<ActionResult> AddOrEdit(string id = "")
+        public async Task<ActionResult> AddOrEdit(string act, string id = "")
         {
             ApplicationUserViewModel Item = new ApplicationUserViewModel();
-            if (!string.IsNullOrEmpty(id))
+            if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
-                var DbItem = await _userManager.FindByIdAsync(id);
+                var DbItem = await UserManager.FindByIdAsync(id);
                 if (DbItem == null)
                 {
                     return HttpNotFound();
                 }
                 else
                 {
-                    var allGroup = _appGroupService.GetAll();
-                    var listGroup = _appGroupService.GetListGroupByUserId(id);
-
                     Item = Mapper.Map<ApplicationUserViewModel>(DbItem);
-                    Item.Password = DbItem.PasswordHash;
 
-                    // load the roles/Roles for selection in the form:
+                    var allGroup = _appGroupService.GetAll();
+                    var listGroup = _appGroupService.GetGroupsByUserId(id);
                     foreach (var groupItem in allGroup)
                     {
                         var listItem = new SelectListItem()
                         {
                             Text = groupItem.Description,
-                            Value = groupItem.ID,
-                            Selected = listGroup.Any(g => g.ID == groupItem.ID)
+                            Value = groupItem.Id,
+                            Selected = listGroup.Any(g => g.Id == groupItem.Id)
                         };
-                        Item.GroupsList.Add(listItem);
+                        Item.GroupList.Add(listItem);
                     }
-                    return View(Item);
+
+                    var allRole = RoleManager.Roles.OrderByDescending(x => x.Name);
+                    var listRole = await UserManager.GetRolesAsync(id);
+                    foreach (var roleItem in allRole)
+                    {
+                        var listItem = new SelectListItem()
+                        {
+                            Text = roleItem.Description,
+                            Value = roleItem.Id,
+                            Selected = listRole.Any(g => g == roleItem.Name)
+                        };
+                        Item.RoleList.Add(listItem);
+                    }
+
+                    if (act == CommonConstants.Action_Detail)
+                        return View("Detail", Item);
+                    else
+                        return View("Edit", Item);
                 }
             }
             else
@@ -92,16 +147,17 @@ namespace BTS.Web.Controllers
                     var listItem = new SelectListItem()
                     {
                         Text = groupItem.Description,
-                        Value = groupItem.ID,
+                        Value = groupItem.Id,
                         Selected = false
                     };
-                    Item.GroupsList.Add(listItem);
+                    Item.GroupList.Add(listItem);
                 }
-                return View(Item);
+                return View("Add", Item);
             }
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddOrEdit(ApplicationUserViewModel Item, params string[] selectedItems)
         {
             try
@@ -120,23 +176,27 @@ namespace BTS.Web.Controllers
                         Item.ImageUpload.SaveAs(Path.Combine(Server.MapPath("~/AppFiles/Images/"), fileName));
                     }
 
-                    if (string.IsNullOrEmpty(Item.ID))
+                    if (string.IsNullOrEmpty(Item.Id))
                     {
                         newAppUser = new ApplicationUser();
                         newAppUser.UpdateUser(Item);
-                        result = await _userManager.CreateAsync(newAppUser, Item.Password);
+                        result = await UserManager.CreateAsync(newAppUser, Item.Password);
                     }
                     else
                     {
-                        newAppUser = await _userManager.FindByIdAsync(Item.ID);
+                        newAppUser = await UserManager.FindByIdAsync(Item.Id);
 
                         newAppUser.UpdateUser(Item);
-                        result = await _userManager.UpdateAsync(newAppUser);
+                        result = await UserManager.UpdateAsync(newAppUser);
                     }
                     if (result.Succeeded)
                     {
+                        _appGroupService.DeleteUserFromGroups(newAppUser.Id);
+                        _appGroupService.Save();
+
                         var listAppUserGroup = new List<ApplicationUserGroup>();
                         selectedItems = selectedItems ?? new string[] { };
+
                         foreach (var group in selectedItems)
                         {
                             listAppUserGroup.Add(new ApplicationUserGroup()
@@ -144,16 +204,12 @@ namespace BTS.Web.Controllers
                                 GroupId = group,
                                 UserId = newAppUser.Id
                             });
-                            //add role to user
-                            var listRole = _appRoleService.GetListRoleByGroupId(group);
-                            foreach (var role in listRole)
-                            {
-                                await _userManager.RemoveFromRoleAsync(newAppUser.Id, role.Name);
-                                await _userManager.AddToRoleAsync(newAppUser.Id, role.Name);
-                            }
+
+                            _appGroupService.AddUserToGroups(listAppUserGroup);
+                            _appGroupService.Save();
                         }
-                        _appGroupService.AddUserToGroups(listAppUserGroup, newAppUser.Id);
-                        _appGroupService.Save();
+                        var newUserRoles = _appGroupService.GetLogicRolesByUserId(newAppUser.Id);
+                        await updateRoles(newAppUser.Id, newUserRoles);
 
                         return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
@@ -171,12 +227,31 @@ namespace BTS.Web.Controllers
             }
         }
 
+        public async Task<ActionResult> Lock(string id)
+        {
+            try
+            {
+                var appUser = await UserManager.FindByIdAsync(id);
+                appUser.Locked = !appUser.Locked;
+                var result = await UserManager.UpdateAsync(appUser);
+                if (result.Succeeded)
+                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Locked/UnLocked Successfully" }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public async Task<ActionResult> Delete(string id)
         {
             try
             {
-                var appUser = await _userManager.FindByIdAsync(id);
-                var result = await _userManager.DeleteAsync(appUser);
+                var appUser = await UserManager.FindByIdAsync(id);
+
+                var result = await UserManager.DeleteAsync(appUser);
                 if (result.Succeeded)
                     return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
                 else

@@ -8,9 +8,9 @@ namespace BTS.Web.Models
 {
     public class ContactDetailViewModel
     {
-        public int ID { set; get; }
+        public int Id { set; get; }
 
-        [Required(ErrorMessage ="Tên không được trống")]
+        [Required(ErrorMessage = "Tên không được trống")]
         public string Name { set; get; }
 
         [MaxLength(50, ErrorMessage = "Số điện thoại không vượt quá 50 ký tự")]

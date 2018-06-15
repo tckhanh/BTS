@@ -57,9 +57,10 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SaveData(OperatorViewModel itemVm)
         {
-            if (string.IsNullOrEmpty(itemVm.ID))
+            if (string.IsNullOrEmpty(itemVm.Id))
             {
                 Operator newItem = new Operator();
                 newItem.UpdateOperator(itemVm);
@@ -69,7 +70,7 @@ namespace BTS.Web.Controllers
             }
             else
             {
-                var dbItem = _operatorService.getByID(itemVm.ID);
+                var dbItem = _operatorService.getByID(itemVm.Id);
                 if (dbItem == null)
                 {
                     Operator newItem = new Operator();
@@ -89,12 +90,13 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SaveData_Tedu(string strOperator)
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             OperatorViewModel itemVm = serializer.Deserialize<OperatorViewModel>(strOperator);
 
-            if (string.IsNullOrEmpty(itemVm.ID))
+            if (string.IsNullOrEmpty(itemVm.Id))
             {
                 Operator newItem = new Operator();
                 newItem.UpdateOperator(itemVm);
@@ -104,7 +106,7 @@ namespace BTS.Web.Controllers
             }
             else
             {
-                var dbItem = _operatorService.getByID(itemVm.ID);
+                var dbItem = _operatorService.getByID(itemVm.Id);
                 dbItem.UpdateOperator(itemVm);
 
                 _operatorService.Update(dbItem);
@@ -115,6 +117,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(string id)
         {
             _operatorService.Delete(id);

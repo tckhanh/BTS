@@ -76,7 +76,7 @@ namespace BTS.Web.Api
                 }
                 else
                 {
-                    var certificate = _certificateService.getByID(certificateVm.ID);
+                    var certificate = _certificateService.getByID(certificateVm.Id);
                     certificate.UpdateCertificate(certificateVm);
 
                     _certificateService.Update(certificate);

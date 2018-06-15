@@ -13,6 +13,7 @@ using BTS.Web.App_Start;
 using BTS.Web.Infrastructure.Core;
 using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
+using BTS.Data.ApplicationModels;
 
 namespace BTS.Web.Api
 {
@@ -79,7 +80,7 @@ namespace BTS.Web.Api
             else
             {
                 var applicationUserViewModel = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user.Result);
-                var listGroup = _appGroupService.GetListGroupByUserId(applicationUserViewModel.ID);
+                var listGroup = _appGroupService.GetListGroupByUserId(applicationUserViewModel.Id);
                 applicationUserViewModel.Groups = Mapper.Map<IEnumerable<ApplicationGroup>, IEnumerable<ApplicationGroupViewModel>>(listGroup);
                 return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
             }
@@ -105,11 +106,11 @@ namespace BTS.Web.Api
                         {
                             listAppUserGroup.Add(new ApplicationUserGroup()
                             {
-                                GroupId = group.ID,
+                                GroupId = group.Id,
                                 UserId = newAppUser.Id
                             });
                             //add role to user
-                            var listRole = _appRoleService.GetListRoleByGroupId(group.ID);
+                            var listRole = _appRoleService.GetListRoleByGroupId(group.Id);
                             foreach (var role in listRole)
                             {
                                 await _userManager.RemoveFromRoleAsync(newAppUser.Id, role.Name);
@@ -146,7 +147,7 @@ namespace BTS.Web.Api
         {
             if (ModelState.IsValid)
             {
-                var appUser = await _userManager.FindByIdAsync(applicationUserViewModel.ID);
+                var appUser = await _userManager.FindByIdAsync(applicationUserViewModel.Id);
                 try
                 {
                     appUser.UpdateUser(applicationUserViewModel);
@@ -158,18 +159,18 @@ namespace BTS.Web.Api
                         {
                             listAppUserGroup.Add(new ApplicationUserGroup()
                             {
-                                GroupId = group.ID,
-                                UserId = applicationUserViewModel.ID
+                                GroupId = group.Id,
+                                UserId = applicationUserViewModel.Id
                             });
                             //add role to user
-                            var listRole = _appRoleService.GetListRoleByGroupId(group.ID);
+                            var listRole = _appRoleService.GetListRoleByGroupId(group.Id);
                             foreach (var role in listRole)
                             {
                                 await _userManager.RemoveFromRoleAsync(appUser.Id, role.Name);
                                 await _userManager.AddToRoleAsync(appUser.Id, role.Name);
                             }
                         }
-                        _appGroupService.AddUserToGroups(listAppUserGroup, applicationUserViewModel.ID);
+                        _appGroupService.AddUserToGroups(listAppUserGroup, applicationUserViewModel.Id);
                         _appGroupService.Save();
                         return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
                     }

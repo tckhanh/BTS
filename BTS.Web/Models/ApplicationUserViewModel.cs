@@ -10,7 +10,7 @@ namespace BTS.Web.Models
     public class ApplicationUserViewModel
     {
         [Display(Name = "Mã người dùng")]
-        public string ID { set; get; }
+        public string Id { set; get; }
 
         [Display(Name = "Họ tên người dùng")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Họ tên người dùng")]
@@ -21,8 +21,12 @@ namespace BTS.Web.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tài khoản đăng nhập")]
         public string UserName { set; get; }
 
-        [Display(Name = "Mật khẩu")]        
+        [Display(Name = "Mật khẩu")]
         public string Password { set; get; }
+
+        [Display(Name = "Xác nhận Mật khẩu")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Xác nhận mật khẩu không trùng với Mật khẩu")]
+        public string ConfirmPassword { set; get; }
 
         [Display(Name = "Hộp thư Email")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Hộp thư Email")]
@@ -71,20 +75,24 @@ namespace BTS.Web.Models
         [Display(Name = "Tập tin ảnh")]
         public string ImagePath { get; set; }
 
+        [Display(Name = "Bị khóa")]
+        public bool Locked { get; set; } = true;
+
         public HttpPostedFileBase ImageUpload { get; set; }
 
         public virtual IEnumerable<ApplicationGroupViewModel> Groups { get; set; }
 
         [Display(Name = "Nhóm người dùng")]
-        public ICollection<SelectListItem> GroupsList { get; set; }
+        public ICollection<SelectListItem> GroupList { get; set; }
 
-        public ICollection<SelectListItem> RolesList { get; set; }
+        [Display(Name = "Danh sách các Quyền được cấp")]
+        public ICollection<SelectListItem> RoleList { get; set; }
 
         public ApplicationUserViewModel()
         {
             ImagePath = "~/AppFiles/Images/default.png";
-            GroupsList = new List<SelectListItem>();
-            RolesList = new List<SelectListItem>();
+            GroupList = new List<SelectListItem>();
+            RoleList = new List<SelectListItem>();
         }
     }
 }

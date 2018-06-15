@@ -16,23 +16,25 @@ namespace BTS.Web.Controllers
 {
     public class ContactController : BaseController
     {
-        IContactDetailService _contactDetailService;
-        IFeedbackService _feedbackService;
+        private IContactDetailService _contactDetailService;
+        private IFeedbackService _feedbackService;
+
         public ContactController(IContactDetailService contactDetailService, IFeedbackService feedbackService, IErrorService errorService) : base(errorService)
         {
             this._contactDetailService = contactDetailService;
             this._feedbackService = feedbackService;
         }
+
         // GET: Contact
         public ActionResult Index()
         {
-
             FeedbackViewModel viewModel = new FeedbackViewModel();
             viewModel.ContactDetail = GetDetail();
             return View(viewModel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [CaptchaValidation("CaptchaCode", "contactCaptcha", "Mã xác nhận không đúng")]
         public ActionResult SendFeedback(FeedbackViewModel feedbackViewModel)
         {
@@ -44,7 +46,6 @@ namespace BTS.Web.Controllers
                 _feedbackService.Save();
 
                 ViewData["SuccessMsg"] = "Gửi phản hồi thành công";
-             
 
                 string content = System.IO.File.ReadAllText(Server.MapPath("/Assets/client/template/contact_template.html"));
                 content = content.Replace("{{Name}}", feedbackViewModel.Name);
@@ -58,7 +59,6 @@ namespace BTS.Web.Controllers
                 feedbackViewModel.Email = "";
             }
             feedbackViewModel.ContactDetail = GetDetail();
-
 
             return View("Index", feedbackViewModel);
         }

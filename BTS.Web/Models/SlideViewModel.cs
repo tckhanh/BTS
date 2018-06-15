@@ -7,7 +7,7 @@ namespace BTS.Web.Models
 {
     public class SlideViewModel
     {
-        public int ID { set; get; }
+        public int Id { set; get; }
         public string Name { set; get; }
 
         public string Description { set; get; }

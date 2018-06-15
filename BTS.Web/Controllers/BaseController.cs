@@ -1,8 +1,11 @@
 ﻿using BTS.Common;
 using BTS.Common.ViewModels;
+using BTS.Data.ApplicationModels;
 using BTS.Model.Models;
 using BTS.Service;
+using BTS.Web.App_Start;
 using BTS.Web.Common;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
@@ -12,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -21,10 +25,85 @@ namespace BTS.Web.Controllers
     public class BaseController : Controller
     {
         private IErrorService _errorService;
+        private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
 
         public BaseController(IErrorService errorService)
         {
-            this._errorService = errorService;
+            _errorService = errorService;
+        }
+
+        protected ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            set
+            {
+                _userManager = value;
+            }
+        }
+
+        protected ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
+        protected async Task<bool> updateRoles(string userId, IEnumerable<ApplicationRole> roles)
+        {
+            string description = "";
+            try
+            {
+                //Xóa Roles cũ Tạo Roles mới cho User
+                var userRoles = await UserManager.GetRolesAsync(userId);
+                foreach (var role in userRoles)
+                {
+                    await UserManager.RemoveFromRoleAsync(userId, role);
+                }
+
+                foreach (var role in roles)
+                {
+                    await UserManager.AddToRoleAsync(userId, role.Name);
+                }
+
+                return true;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+                LogError(ex, description);
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            finally
+            {
+            }
         }
 
         // Thuc hien lenh ghi Log neu có loi va nem loi ra ngoai

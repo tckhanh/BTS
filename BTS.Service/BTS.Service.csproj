@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationGroupService.cs" />
-    <Compile Include="ApplicationRoleService.cs" />
     <Compile Include="CertificateService.cs" />
     <Compile Include="CityService.cs" />
     <Compile Include="CommonService.cs" />

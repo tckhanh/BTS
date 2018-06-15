@@ -46,6 +46,8 @@
     },
     resetForm: function () {
     },
+    cancelForm: function () {
+    },
 
     deleteItem: function (id) {
     },
@@ -66,7 +68,7 @@
             var ajaxConfig = {
                 type: 'POST',
                 url: form.action,
-                data: new FormData(form),                
+                data: new FormData(form),
                 success: function (response) {
                     if (response.success) {
                         $("#firstTab").html(response.html);
@@ -96,7 +98,19 @@
             url: resetUrl,
             success: function (response) {
                 $("#secondTab").html(response);
-                $('ul.nav.nav-tabs a:eq(1)').html('Add New');
+                $('ul.nav.nav-tabs a:eq(1)').html(' Thêm mới');
+                if (showViewTab)
+                    $('ul.nav.nav-tabs a:eq(0)').tab('show');
+            }
+        });
+    },
+
+    refreshShowTab: function (resetUrl, showViewTab) {
+        $.ajax({
+            type: 'GET',
+            url: resetUrl,
+            success: function (response) {
+                $('ul.nav.nav-tabs a:eq(1)').html(' Thêm mới');
                 if (showViewTab)
                     $('ul.nav.nav-tabs a:eq(0)').tab('show');
             }
@@ -113,6 +127,37 @@
                 $('ul.nav.nav-tabs a:eq(1)').tab('show');
             }
         });
+    },
+
+    Detail: function (url) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (response) {
+                $("#secondTab").html(response);
+                $('ul.nav.nav-tabs a:eq(1)').html('Chi tiết');
+                $('ul.nav.nav-tabs a:eq(1)').tab('show');
+            }
+        });
+    },
+    Lock: function (url) {
+        if (confirm('Bạn có chắc chắn muốn Khóa/ Mở khóa dữ liệu này không?') == true) {
+            $.ajax({
+                type: 'POST',
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        $("#firstTab").html(response.html);
+                        $.notify(response.message, "warn");
+                        if (typeof activatejQueryTable !== 'undefined' && $.isFunction(activatejQueryTable))
+                            activatejQueryTable();
+                    }
+                    else {
+                        $.notify(response.message, "error");
+                    }
+                }
+            });
+        }
     },
 
     Delete: function (url) {

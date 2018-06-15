@@ -8,7 +8,5 @@ namespace BTS.Model.Abstract
         string CreatedBy { set; get; }
         DateTime? UpdatedDate { set; get; }
         string UpdatedBy { set; get; }
-        DateTime? DeletedDate { set; get; }
-        string DeletedBy { set; get; }
     }
 }

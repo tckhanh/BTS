@@ -39,6 +39,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult loadCertificate()
         {
             int countItem;

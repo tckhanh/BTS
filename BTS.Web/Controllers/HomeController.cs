@@ -11,7 +11,7 @@ using System.Web.Script.Serialization;
 
 namespace BTS.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : BaseController
     {
         //IProductCategoryService _productCategoryService;
@@ -135,6 +135,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public JsonResult loadDataServerSide()
         {
             var draw = Request.Form.GetValues("draw").FirstOrDefault();

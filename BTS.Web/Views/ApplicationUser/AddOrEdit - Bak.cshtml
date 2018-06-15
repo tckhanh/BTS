@@ -1,0 +1,15 @@
+﻿@model BTS.Web.Models.ApplicationUserViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "AddOrEdit";
+    Layout = null;
+}
+
+@if (string.IsNullOrEmpty(Model.Id))
+{
+    RenderPage("Add.cshtml", Model);
+}
+else
+{
+    RenderPage("Edit.cshtml", Model);
+}

@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace BTS.Web.App_Start
+namespace BTS.Data.ApplicationModels
 {// Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {

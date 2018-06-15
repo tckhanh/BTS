@@ -117,7 +117,7 @@ namespace BTS.Web.Api
                 }
                 else
                 {
-                    var dbOperator = _operatorService.getByID(operatorVm.ID);
+                    var dbOperator = _operatorService.getByID(operatorVm.Id);
                     dbOperator.UpdateOperator(operatorVm);
 
                     _operatorService.Update(dbOperator);

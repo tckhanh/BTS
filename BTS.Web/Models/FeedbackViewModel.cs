@@ -8,10 +8,10 @@ namespace BTS.Web.Models
 {
     public class FeedbackViewModel
     {
-        public int ID { set; get; }
+        public int Id { set; get; }
 
-        [MaxLength(250,ErrorMessage ="Tên không được quá 250 ký tự")]
-        [Required(ErrorMessage ="Tên phải nhập")]
+        [MaxLength(250, ErrorMessage = "Tên không được quá 250 ký tự")]
+        [Required(ErrorMessage = "Tên phải nhập")]
         public string Name { set; get; }
 
         [MaxLength(250, ErrorMessage = "Email không được quá 250 ký tự")]
@@ -22,7 +22,7 @@ namespace BTS.Web.Models
 
         public DateTime CreatedDate { set; get; }
 
-        [Required(ErrorMessage ="Phải nhập trạng thái")]
+        [Required(ErrorMessage = "Phải nhập trạng thái")]
         public bool Status { set; get; }
 
         public ContactDetailViewModel ContactDetail { set; get; }

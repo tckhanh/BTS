@@ -1,4 +1,5 @@
-﻿using BTS.Model.Models;
+﻿using BTS.Data.ApplicationModels;
+using BTS.Model.Models;
 using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ namespace BTS.Web.Infrastructure.Extensions
     {
         public static void UpdateCertificate(this Certificate certificate, CertificateViewModel btsCertificateVm)
         {
-            certificate.ID = btsCertificateVm.ID;
             certificate.ProfileID = btsCertificateVm.ProfileID;
             certificate.Longtitude = btsCertificateVm.Longtitude;
             certificate.Latitude = btsCertificateVm.Latitude;
@@ -44,24 +44,19 @@ namespace BTS.Web.Infrastructure.Extensions
 
         public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)
         {
-            myInCaseOf.ID = inCaseOfVm.ID;
             myInCaseOf.Code = inCaseOfVm.Code;
             myInCaseOf.Name = inCaseOfVm.Name;
             myInCaseOf.UpdatedBy = inCaseOfVm.UpdatedBy;
             myInCaseOf.UpdatedDate = inCaseOfVm.UpdatedDate;
-            myInCaseOf.DeletedBy = inCaseOfVm.DeletedBy;
-            myInCaseOf.DeletedDate = inCaseOfVm.DeletedDate;
         }
 
         public static void UpdateCity(this City myCity, CityViewModel cityVm)
         {
-            myCity.ID = cityVm.ID;
             myCity.Name = cityVm.Name;
         }
 
         public static void UpdateOperator(this Operator myoperator, OperatorViewModel operatorVm)
         {
-            myoperator.ID = operatorVm.ID;
             myoperator.Name = operatorVm.Name;
         }
 
@@ -76,7 +71,6 @@ namespace BTS.Web.Infrastructure.Extensions
 
         public static void UpdateApplicationGroup(this ApplicationGroup appGroup, ApplicationGroupViewModel appGroupViewModel)
         {
-            appGroup.ID = appGroupViewModel.ID;
             appGroup.Name = appGroupViewModel.Name;
             appGroup.Description = appGroupViewModel.Description;
         }
@@ -107,7 +101,6 @@ namespace BTS.Web.Infrastructure.Extensions
 
         public static void UpdateGroup(this ApplicationGroup appGroup, ApplicationGroupViewModel appGroupViewModel)
         {
-            appGroup.ID = appGroupViewModel.ID;
             appGroup.Name = appGroupViewModel.Name;
             appGroup.Description = appGroupViewModel.Description;
         }

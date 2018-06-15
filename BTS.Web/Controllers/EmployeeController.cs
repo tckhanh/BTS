@@ -49,6 +49,7 @@ namespace Asp.NETMVCCRUD.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddOrEdit(Operator emp)
         {
             using (BTSDbContext db = new BTSDbContext())
@@ -69,6 +70,7 @@ namespace Asp.NETMVCCRUD.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(string id)
         {
             using (BTSDbContext db = new BTSDbContext())

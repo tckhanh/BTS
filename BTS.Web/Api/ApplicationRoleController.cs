@@ -12,6 +12,7 @@ using BTS.Service;
 using BTS.Web.Infrastructure.Core;
 using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
+using BTS.Data.ApplicationModels;
 
 namespace BTS.Web.Api
 {
@@ -115,7 +116,7 @@ namespace BTS.Web.Api
         {
             if (ModelState.IsValid)
             {
-                var appRole = _appRoleService.GetDetail(applicationRoleViewModel.ID);
+                var appRole = _appRoleService.GetDetail(applicationRoleViewModel.Id);
                 try
                 {
                     appRole.UpdateApplicationRole(applicationRoleViewModel, "update");

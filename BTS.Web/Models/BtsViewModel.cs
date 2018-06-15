@@ -9,7 +9,7 @@ namespace BTS.Web.Models
     public class BtsViewModel
     {
         [Display(Name = "Mã")]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Mã số hồ sơ")]
         public int ProfileID { get; set; }

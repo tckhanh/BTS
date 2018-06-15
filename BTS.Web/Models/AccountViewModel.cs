@@ -1,4 +1,5 @@
 ﻿using BTS.Data;
+using BTS.Data.ApplicationModels;
 using BTS.Model.Models;
 using System;
 using System.Collections.Generic;
@@ -29,66 +30,6 @@ namespace BTS.Web.Models
             [Compare("NewPassword", ErrorMessage =
                 "The new password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-        }
-
-        public class LoginViewModel
-        {
-            [Required]
-            [Display(Name = "User name")]
-            public string UserName { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            [Display(Name = "Remember me?")]
-            public bool RememberMe { get; set; }
-        }
-
-        public class RegisterViewModel
-        {
-            [Required]
-            [Display(Name = "User name")]
-            public string UserName { get; set; }
-
-            [Required]
-            [StringLength(100, ErrorMessage =
-                "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage =
-                "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-
-            // New Fields added to extend Application User class:
-
-            [Required]
-            [Display(Name = "First Name")]
-            public string FullName { get; set; }
-
-            [Required]
-            [Display(Name = "Last Name")]
-            public string LastName { get; set; }
-
-            [Required]
-            public string Email { get; set; }
-
-            // Return a pre-poulated instance of AppliationUser:
-            public ApplicationUser GetUser()
-            {
-                var user = new ApplicationUser()
-                {
-                    UserName = this.UserName,
-                    FullName = this.FullName,
-                    Email = this.Email,
-                };
-                return user;
-            }
         }
 
         public class EditUserViewModel
@@ -230,7 +171,7 @@ namespace BTS.Web.Models
             public SelectGroupEditorViewModel(ApplicationGroup group)
             {
                 this.GroupName = group.Name;
-                this.GroupId = group.ID;
+                this.GroupId = group.Id;
             }
 
             public bool Selected { get; set; }
@@ -252,13 +193,13 @@ namespace BTS.Web.Models
             public SelectGroupRolesViewModel(ApplicationGroup group)
                 : this()
             {
-                this.GroupId = group.ID;
+                this.GroupId = group.Id;
                 this.GroupName = group.Name;
 
                 var Db = new BTSDbContext();
 
                 // Add all available roles to the list of EditorViewModels:
-                var allRoles = Db.ApplicationRoles;
+                var allRoles = Db.Roles;
                 foreach (var role in allRoles)
                 {
                     // An EditorViewModel will be used by Editor Template:
@@ -268,7 +209,7 @@ namespace BTS.Web.Models
 
                 // Set the Selected property to true for those roles for
                 // which the current user is a member:
-                foreach (var groupRole in group.ApplicationRoles)
+                foreach (var groupRole in group.ApplicationRoleGroups)
                 {
                     var checkGroupRole =
                         this.Roles.Find(r => r.RoleName == groupRole.ApplicationRole.Name);
@@ -285,7 +226,7 @@ namespace BTS.Web.Models
         {
             public UserPermissionsViewModel()
             {
-                this.Roles = new List<RoleViewModel>();
+                this.Roles = new List<string>();
             }
 
             // Enable initialization with an instance of ApplicationUser:
@@ -296,16 +237,14 @@ namespace BTS.Web.Models
                 this.FullName = user.FullName;
                 foreach (var role in user.Roles)
                 {
-                    var appRole = (ApplicationRole)role.Role;
-                    var pvm = new RoleViewModel(appRole);
-                    this.Roles.Add(pvm);
+                    this.Roles.Add(role.RoleId);
                 }
             }
 
             public string UserName { get; set; }
             public string FullName { get; set; }
             public string LastName { get; set; }
-            public List<RoleViewModel> Roles { get; set; }
+            public List<string> Roles { get; set; }
         }
     }
 }

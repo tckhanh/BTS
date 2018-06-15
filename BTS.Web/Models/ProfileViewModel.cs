@@ -9,7 +9,7 @@ namespace BTS.Web.Models
 {
     public class ProfileViewModel
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Mã đơn vị")]
         [StringLength(50)]

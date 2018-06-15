@@ -1,4 +1,5 @@
 ﻿using BTS.Data;
+using BTS.Data.ApplicationModels;
 using BTS.Model.Models;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,11 @@ namespace BTS.Web.App_Start
             private set;
         }
 
-
         public DbSet<ApplicationGroup> DbEntitySet
         {
             get;
             private set;
         }
-
 
         public IQueryable<ApplicationGroup> EntitySet
         {
@@ -33,37 +32,31 @@ namespace BTS.Web.App_Start
             }
         }
 
-
         public GroupStore(BTSDbContext context)
         {
             this.Context = context;
             this.DbEntitySet = context.Set<ApplicationGroup>();
         }
 
-
         public void Create(ApplicationGroup entity)
         {
             this.DbEntitySet.Add(entity);
         }
-
 
         public void Delete(ApplicationGroup entity)
         {
             this.DbEntitySet.Remove(entity);
         }
 
-
         public virtual Task<ApplicationGroup> GetByIdAsync(object id)
         {
             return this.DbEntitySet.FindAsync(new object[] { id });
         }
 
-
         public virtual ApplicationGroup GetById(object id)
         {
             return this.DbEntitySet.Find(new object[] { id });
         }
-
 
         public virtual void Update(ApplicationGroup entity)
         {

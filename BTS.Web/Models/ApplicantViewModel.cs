@@ -10,7 +10,7 @@ namespace BTS.Web.Models
     {
         [Display(Name = "Mã Đơn vị nộp hồ sơ")]
         [StringLength(50, ErrorMessage = "Mã đơn vị nộp hồ sơ không quá 50 ký tự")]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tên đơn vị nộp hồ sơ")]
         [StringLength(255, ErrorMessage = "Tên đơn vị nộp hồ sơ không quá 255 ký tự")]

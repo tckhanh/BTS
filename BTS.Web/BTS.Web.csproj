@@ -229,19 +229,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\AccountController.cs" />
-    <Compile Include="Api\ApplicationGroupController.cs" />
-    <Compile Include="Api\ApplicationRoleController.cs" />
-    <Compile Include="Api\ApplicationUserController.cs" />
-    <Compile Include="Api\BtsCertificateController.cs" />
-    <Compile Include="Api\CityController.cs" />
-    <Compile Include="Api\HomeController.cs" />
-    <Compile Include="Api\InCaseOfController.cs" />
-    <Compile Include="Api\OperatorController.cs" />
-    <Compile Include="Api\StatisticController.cs" />
-    <Compile Include="App_Start\ApplicationSignInManager.cs" />
-    <Compile Include="App_Start\ApplicationUserManager.cs" />
-    <Compile Include="App_Start\ApplicationUserStore.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\GroupStore.cs" />
     <Compile Include="App_Start\Startup.Autofac.cs" />
@@ -280,8 +267,10 @@
     <Compile Include="Infrastructure\Core\ApiControllerBase.cs" />
     <Compile Include="Infrastructure\Core\PaginationSet.cs" />
     <Compile Include="Infrastructure\Core\WriteLog.cs" />
+    <Compile Include="Infrastructure\Extensions\AuthorizeRolesAttribute.cs" />
     <Compile Include="Infrastructure\Extensions\EntityExtensions.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
+    <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\ApplicantViewModel.cs" />
     <Compile Include="Models\ApplicationGroupViewModel.cs" />
     <Compile Include="Models\ApplicationRoleGroupViewModel.cs" />
@@ -289,6 +278,7 @@
     <Compile Include="Models\ApplicationUserGroupViewModel.cs" />
     <Compile Include="Models\ApplicationUserViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NoCertificateViewModel.cs" />
     <Compile Include="Models\CertificateViewModel.cs" />
     <Compile Include="Models\CityViewModel.cs" />
@@ -299,7 +289,6 @@
     <Compile Include="Models\FooterViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\InCaseOfViewModel.cs" />
-    <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\OperatorViewModel.cs" />
     <Compile Include="Models\PageViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
@@ -9100,7 +9089,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\ApplicationUser\Index.cshtml" />
-    <Content Include="Views\ApplicationUser\AddOrEdit.cshtml" />
+    <Content Include="Views\ApplicationUser\AddOrEdit - Bak.cshtml" />
     <Content Include="Views\ApplicationUser\ViewAll.cshtml" />
     <Content Include="Views\ApplicationRole\Index.cshtml" />
     <Content Include="Views\ApplicationRole\AddOrEdit.cshtml" />
@@ -9108,6 +9097,11 @@
     <Content Include="Views\ApplicationGroup\AddOrEdit.cshtml" />
     <Content Include="Views\ApplicationGroup\Index.cshtml" />
     <Content Include="Views\ApplicationGroup\ViewAll.cshtml" />
+    <Content Include="Views\ApplicationGroup\Detail.cshtml" />
+    <Content Include="Views\ApplicationUser\Add.cshtml" />
+    <Content Include="Views\ApplicationUser\Edit.cshtml" />
+    <Content Include="Views\ApplicationUser\AddOrEdit - Copy.cshtml" />
+    <Content Include="Views\ApplicationUser\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />
@@ -10358,7 +10352,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8118</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

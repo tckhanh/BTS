@@ -39,6 +39,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(HttpPostedFileBase file, string ImportAction)
         {
             int result = 0;

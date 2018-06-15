@@ -17,10 +17,5 @@ namespace BTS.Model.Abstract
 
         [StringLength(256)]
         public string UpdatedBy { set; get; }
-
-        public DateTime? DeletedDate { set; get; }
-
-        [StringLength(256)]
-        public string DeletedBy { set; get; }
     }
 }
