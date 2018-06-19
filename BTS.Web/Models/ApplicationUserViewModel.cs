@@ -22,9 +22,11 @@ namespace BTS.Web.Models
         public string UserName { set; get; }
 
         [Display(Name = "Mật khẩu")]
+        [DataType(DataType.Password)]
         public string Password { set; get; }
 
         [Display(Name = "Xác nhận Mật khẩu")]
+        [DataType(DataType.Password)]
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Xác nhận mật khẩu không trùng với Mật khẩu")]
         public string ConfirmPassword { set; get; }
 

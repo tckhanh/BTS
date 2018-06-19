@@ -189,13 +189,13 @@ namespace BTS.Data.Repository
 
         public IEnumerable<Certificate> getLastOwnCertificates(string btsCode, string operatorID)
         {
-            IEnumerable<SubBtsInCert> query1 = from subBtsInCert in DbContext.SubBtsInCerts
-                                               where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
-                                               select subBtsInCert;
+            IEnumerable<string> query1 = (from subBtsInCert in DbContext.SubBtsInCerts
+                                          where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
+                                          select subBtsInCert.CertificateID).Distinct();
 
-            var query2 = from certificate in DbContext.Certificates
-                         join item1 in query1
-                         on certificate.ID equals item1.CertificateID
+            var query2 = from item1 in query1
+                         join certificate in DbContext.Certificates
+                         on item1 equals certificate.ID
                          where certificate.OperatorID == operatorID
                          orderby certificate.IssuedDate descending
                          select certificate;
@@ -204,17 +204,29 @@ namespace BTS.Data.Repository
 
         public IEnumerable<Certificate> getLastNoOwnCertificates(string btsCode, string operatorID)
         {
-            IEnumerable<SubBtsInCert> query1 = from subBtsInCert in DbContext.SubBtsInCerts
-                                               where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
-                                               select subBtsInCert;
+            IEnumerable<string> query1 = (from subBtsInCert in DbContext.SubBtsInCerts
+                                          where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
+                                          select subBtsInCert.CertificateID).Distinct();
 
-            var query2 = from certificate in DbContext.Certificates
-                         join item1 in query1
-                         on certificate.ID equals item1.CertificateID
+            var query2 = from item1 in query1
+                         join certificate in DbContext.Certificates
+                         on item1 equals certificate.ID
                          where certificate.OperatorID != operatorID
                          orderby certificate.IssuedDate descending
                          select certificate;
             return query2;
+
+            //IEnumerable<SubBtsInCert> query1 = from subBtsInCert in DbContext.SubBtsInCerts
+            //                                   where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
+            //                                   select subBtsInCert;
+
+            //var query2 = from certificate in DbContext.Certificates
+            //             join item1 in query1
+            //             on certificate.ID equals item1.CertificateID
+            //             where certificate.OperatorID != operatorID
+            //             orderby certificate.IssuedDate descending
+            //             select certificate;
+            //return query2;
         }
 
         public IEnumerable<string> GetIssueYears()

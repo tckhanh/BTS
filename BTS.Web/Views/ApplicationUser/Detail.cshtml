@@ -40,7 +40,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Locked, new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
-                        @Html.EditorFor(model => model.Locked, new { @class = "form-control", disabled = "disabled" })
+                        @Html.CheckBoxFor(model => model.Locked, new { disabled = "disabled" })
                     </div>
                 </div>
 
@@ -143,7 +143,7 @@
                         }
                         @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
                         {
-                            <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUser", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i class="fa fa-plus"></i> Sửa đổi</a>
+                            <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUser", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i class="fa fa-pencil"></i> Sửa đổi</a>                            
                         }
 
                         @if (User.IsInRole(CommonConstants.System_CanDelete_Role))

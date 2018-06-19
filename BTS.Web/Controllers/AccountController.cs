@@ -23,7 +23,6 @@ namespace BTS.Web.Controllers
     public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
 
         public AccountController(IErrorService errorService) : base(errorService)
         {
@@ -38,18 +37,6 @@ namespace BTS.Web.Controllers
             private set
             {
                 _signInManager = value;
-            }
-        }
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
             }
         }
 
@@ -71,10 +58,11 @@ namespace BTS.Web.Controllers
                 {
                     IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
                     authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                    ClaimsIdentity identity = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                    ClaimsIdentity identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthenticationProperties props = new AuthenticationProperties();
                     props.IsPersistent = model.RememberMe;
                     authenticationManager.SignIn(props, identity);
+
                     if (Url.IsLocalUrl(returnUrl))
                     {
                         return Redirect(returnUrl);
@@ -90,6 +78,13 @@ namespace BTS.Web.Controllers
                 }
             }
             return View(model);
+        }
+
+        public ActionResult Logout()
+        {
+            IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
+            authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -213,13 +208,6 @@ namespace BTS.Web.Controllers
             }
 
             return View();
-        }
-
-        public ActionResult Logout()
-        {
-            IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
-            authenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
         }
 
         #region Helpers

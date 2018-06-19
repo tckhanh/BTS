@@ -6,6 +6,7 @@ using BTS.Service;
 using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Web;
@@ -277,18 +278,17 @@ namespace BTS.Web.Controllers
                     if (dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID].ToString().Length > 0)
                         Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID].ToString());
 
-                    Certificate lastOwnCertificate = _importService.getLastOwnCertificate(Item.BtsCode, operatorID);
-                    if (lastOwnCertificate != null)
+                    IEnumerable<string> certIDs = _importService.getLastOwnCertificateIDs(Item.BtsCode, operatorID);
+
+                    if (certIDs != null)
                     {
-                        Item.LastOwnCertificateID = lastOwnCertificate.ID;
-                        Item.LastOwnOperatorID = lastOwnCertificate.OperatorID;
+                        Item.LastOwnCertificateIDs = string.Join(";", certIDs);
                     }
 
-                    Certificate lastNoOwnCertificate = _importService.getLastNoOwnCertificate(Item.BtsCode, operatorID);
-                    if (lastNoOwnCertificate != null)
+                    certIDs = _importService.getLastNoOwnCertificateIDs(Item.BtsCode, operatorID);
+                    if (certIDs != null)
                     {
-                        Item.LastNoOwnCertificateID = lastNoOwnCertificate.ID;
-                        Item.LastNoOwnOperatorID = lastNoOwnCertificate.OperatorID;
+                        Item.LastNoOwnCertificateIDs = string.Join(";", certIDs);
                     }
 
                     Bts dbBts = _importService.findBts(Item.ProfileID, Item.BtsCode);

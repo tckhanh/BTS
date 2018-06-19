@@ -9089,7 +9089,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\ApplicationUser\Index.cshtml" />
-    <Content Include="Views\ApplicationUser\AddOrEdit - Bak.cshtml" />
     <Content Include="Views\ApplicationUser\ViewAll.cshtml" />
     <Content Include="Views\ApplicationRole\Index.cshtml" />
     <Content Include="Views\ApplicationRole\AddOrEdit.cshtml" />
@@ -9097,11 +9096,17 @@
     <Content Include="Views\ApplicationGroup\AddOrEdit.cshtml" />
     <Content Include="Views\ApplicationGroup\Index.cshtml" />
     <Content Include="Views\ApplicationGroup\ViewAll.cshtml" />
-    <Content Include="Views\ApplicationGroup\Detail.cshtml" />
     <Content Include="Views\ApplicationUser\Add.cshtml" />
     <Content Include="Views\ApplicationUser\Edit.cshtml" />
-    <Content Include="Views\ApplicationUser\AddOrEdit - Copy.cshtml" />
+    <Content Include="Views\ApplicationUser\AddOrEdit - Bak.cshtml" />
     <Content Include="Views\ApplicationUser\Detail.cshtml" />
+    <Content Include="Views\ApplicationUser\Reset.cshtml" />
+    <Content Include="Views\ApplicationGroup\Add.cshtml" />
+    <Content Include="Views\ApplicationGroup\Edit.cshtml" />
+    <Content Include="Views\ApplicationGroup\Detail.cshtml" />
+    <Content Include="Views\ApplicationRole\Add.cshtml" />
+    <Content Include="Views\ApplicationRole\Edit.cshtml" />
+    <Content Include="Views\ApplicationRole\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />

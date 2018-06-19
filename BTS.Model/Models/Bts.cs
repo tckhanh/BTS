@@ -40,20 +40,11 @@ namespace BTS.Model.Models
 
         public int InCaseOfID { get; set; }
 
-        [StringLength(16)]
-        public string IssuedCertificateID { get; set; }
+        [StringLength(255)]
+        public string LastOwnCertificateIDs { get; set; }
 
-        [StringLength(16)]
-        public string LastOwnCertificateID { get; set; }
-
-        [StringLength(10)]
-        public string LastOwnOperatorID { get; set; }
-
-        [StringLength(16)]
-        public string LastNoOwnCertificateID { get; set; }
-
-        [StringLength(10)]
-        public string LastNoOwnOperatorID { get; set; }
+        [StringLength(255)]
+        public string LastNoOwnCertificateIDs { get; set; }
 
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }

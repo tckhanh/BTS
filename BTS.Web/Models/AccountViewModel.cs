@@ -13,23 +13,31 @@ namespace BTS.Web.Models
     {
         public class ManageUserViewModel
         {
-            [Required]
+            [Display(Name = "Mã người dùng")]
+            public string Id { set; get; }
+
+            [Display(Name = "Họ tên người dùng")]
+            [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Họ tên người dùng")]
+            [StringLength(255, ErrorMessage = "Họ tên người dùng không quá 255 ký tự")]
+            public string FullName { set; get; }
+
+            [Display(Name = "Tài khoản đăng nhập")]
+            [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tài khoản đăng nhập")]
+            public string UserName { set; get; }
+
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Mật khẩu hiện tại")]
             public string OldPassword { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage =
-                "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+            [Display(Name = "Mật khẩu")]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
-            public string NewPassword { get; set; }
+            [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mật khẩu mới")]
+            public string Password { set; get; }
 
+            [Display(Name = "Xác nhận Mật khẩu")]
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage =
-                "The new password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+            [Compare("Password", ErrorMessage = "Xác nhận mật khẩu không trùng với Mật khẩu")]
+            public string ConfirmPassword { set; get; }
         }
 
         public class EditUserViewModel

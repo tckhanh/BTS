@@ -129,6 +129,18 @@
         });
     },
 
+    Reset: function (url) {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (response) {
+                $("#secondTab").html(response);
+                $('ul.nav.nav-tabs a:eq(1)').html('Đặt lại mật khẩu');
+                $('ul.nav.nav-tabs a:eq(1)').tab('show');
+            }
+        });
+    },
+
     Detail: function (url) {
         $.ajax({
             type: 'GET',

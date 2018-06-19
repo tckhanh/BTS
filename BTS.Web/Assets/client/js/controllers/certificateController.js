@@ -160,7 +160,7 @@ var certificateController = {
                         }
                     },
                     "columns": [
-                        { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
+                        { "data": "Id", "name": "Id", "width": "20%" },                  // index 0
                         { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
                         { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
                         { "data": "Address", "name": "Address", "width": "40%" },        // index 3
@@ -245,7 +245,7 @@ var certificateController = {
             for (var i = 0; i < markers.length; ++i) {
                 var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
                             '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
-                            '<br/><b>G.CNKĐ:</b> ' + markers[i].ID +
+                            '<br/><b>G.CNKĐ:</b> ' + markers[i].Id +
                             '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
                 var img24 = 'images/pin24.png';
                 var img48 = 'images/pin48.png';

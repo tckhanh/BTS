@@ -61,6 +61,14 @@ namespace BTS.Service
 
         Applicant getApplicant(int proFileID);
 
+        IEnumerable<string> getLastOwnCertificateIDs(string btsCode, string operatorID);
+
+        IEnumerable<string> getLastNoOwnCertificateIDs(string btsCode, string operatorID);
+
+        IEnumerable<Certificate> getLastOwnCertificates(string btsCode, string operatorID);
+
+        IEnumerable<Certificate> getLastNoOwnCertificates(string btsCode, string operatorID);
+
         Certificate getLastOwnCertificate(string btsCode, string operatorID);
 
         Certificate getLastNoOwnCertificate(string btsCode, string operatorID);
@@ -80,7 +88,7 @@ namespace BTS.Service
         private ISubBTSinCertRepository _subBTSinCertRepository;
         private IUnitOfWork _unitOfWork;
 
-        public ImportService(IInCaseOfRepository inCaseOfRepository, ILabRepository labRepository, ICityRepository cityRepository, IOperatorRepository operatorRepository, IApplicantRepository applicantRepository, IProfileRepository profileRepository, IBtsRepository btsRepository, ICertificateRepository certificateRepository, ISubBTSinCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
+        public ImportService(IInCaseOfRepository inCaseOfRepository, ILabRepository labRepository, ICityRepository cityRepository, IOperatorRepository operatorRepository, IApplicantRepository applicantRepository, IProfileRepository profileRepository, IBtsRepository btsRepository, ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository, ISubBTSinCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
         {
             _inCaseOfRepository = inCaseOfRepository;
             _labRepository = labRepository;
@@ -90,6 +98,7 @@ namespace BTS.Service
             _profileRepository = profileRepository;
             _btsRepository = btsRepository;
             _certificateRepository = certificateRepository;
+            _noCertificateRepository = noCertificateRepository;
             _subBTSinCertRepository = subBTSinCertRepository;
 
             _unitOfWork = unitOfWork;
@@ -253,6 +262,26 @@ namespace BTS.Service
         {
             Profile profileItem = _profileRepository.GetSingleByCondition(x => x.ID == proFileID);
             return _applicantRepository.GetSingleByCondition(x => x.ID == profileItem.ApplicantID);
+        }
+
+        public IEnumerable<string> getLastOwnCertificateIDs(string btsCode, string operatorID)
+        {
+            return _certificateRepository.getLastOwnCertificates(btsCode, operatorID).Select(x => x.ID);
+        }
+
+        public IEnumerable<string> getLastNoOwnCertificateIDs(string btsCode, string operatorID)
+        {
+            return _certificateRepository.getLastNoOwnCertificates(btsCode, operatorID).Select(x => x.ID);
+        }
+
+        public IEnumerable<Certificate> getLastOwnCertificates(string btsCode, string operatorID)
+        {
+            return _certificateRepository.getLastOwnCertificates(btsCode, operatorID);
+        }
+
+        public IEnumerable<Certificate> getLastNoOwnCertificates(string btsCode, string operatorID)
+        {
+            return _certificateRepository.getLastNoOwnCertificates(btsCode, operatorID);
         }
 
         public Certificate getLastOwnCertificate(string btsCode, string operatorID)

@@ -17,26 +17,15 @@ using Microsoft.AspNet.Identity.Owin;
 using static BTS.Web.Models.AccountViewModel;
 using BTS.Data.ApplicationModels;
 using BTS.Common;
+using BTS.Data;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BTS.Web.Controllers
 {
+    [AuthorizeRoles(CommonConstants.System_CanView_Role)]
     public class ApplicationUserController : BaseController
     {
-        private ApplicationUserManager _userManager;
         private IApplicationGroupService _appGroupService;
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext()
-                    .GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
 
         public ApplicationUserController(
             IApplicationGroupService appGroupService,
@@ -91,10 +80,11 @@ namespace BTS.Web.Controllers
             return Mapper.Map<IEnumerable<ApplicationUserViewModel>>(model);
         }
 
+        [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanViewDetail_Role, CommonConstants.System_CanEdit_Role)]
         public async Task<ActionResult> AddOrEdit(string act, string id = "")
         {
             ApplicationUserViewModel Item = new ApplicationUserViewModel();
-            if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
+            if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit || act == CommonConstants.Action_Reset) && !string.IsNullOrEmpty(id))
             {
                 var DbItem = await UserManager.FindByIdAsync(id);
                 if (DbItem == null)
@@ -131,10 +121,18 @@ namespace BTS.Web.Controllers
                         Item.RoleList.Add(listItem);
                     }
 
-                    if (act == CommonConstants.Action_Detail)
-                        return View("Detail", Item);
-                    else
+                    if (act == CommonConstants.Action_Edit)
                         return View("Edit", Item);
+                    else if (act == CommonConstants.Action_Reset)
+                    {
+                        ManageUserViewModel user = new ManageUserViewModel();
+                        user.Id = Item.Id;
+                        user.FullName = Item.FullName;
+                        user.UserName = Item.UserName;
+                        return View("Reset", user);
+                    }
+                    else
+                        return View("Detail", Item);
                 }
             }
             else
@@ -158,6 +156,7 @@ namespace BTS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanEdit_Role)]
         public async Task<ActionResult> AddOrEdit(ApplicationUserViewModel Item, params string[] selectedItems)
         {
             try
@@ -191,25 +190,7 @@ namespace BTS.Web.Controllers
                     }
                     if (result.Succeeded)
                     {
-                        _appGroupService.DeleteUserFromGroups(newAppUser.Id);
-                        _appGroupService.Save();
-
-                        var listAppUserGroup = new List<ApplicationUserGroup>();
-                        selectedItems = selectedItems ?? new string[] { };
-
-                        foreach (var group in selectedItems)
-                        {
-                            listAppUserGroup.Add(new ApplicationUserGroup()
-                            {
-                                GroupId = group,
-                                UserId = newAppUser.Id
-                            });
-
-                            _appGroupService.AddUserToGroups(listAppUserGroup);
-                            _appGroupService.Save();
-                        }
-                        var newUserRoles = _appGroupService.GetLogicRolesByUserId(newAppUser.Id);
-                        await updateRoles(newAppUser.Id, newUserRoles);
+                        await UpdateUserGroups(newAppUser.Id, selectedItems);
 
                         return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
@@ -227,6 +208,60 @@ namespace BTS.Web.Controllers
             }
         }
 
+        private async Task UpdateUserGroups(string userID, string[] selectedItems)
+        {
+            _appGroupService.DeleteUserFromGroups(userID);
+            _appGroupService.Save();
+
+            var listAppUserGroup = new List<ApplicationUserGroup>();
+            selectedItems = selectedItems ?? new string[] { };
+
+            foreach (var group in selectedItems)
+            {
+                listAppUserGroup.Add(new ApplicationUserGroup()
+                {
+                    GroupId = group,
+                    UserId = userID
+                });
+
+                _appGroupService.AddUserToGroups(listAppUserGroup);
+                _appGroupService.Save();
+            }
+            var newUserRoles = _appGroupService.GetLogicRolesByUserId(userID);
+            await updateRoles(userID, newUserRoles);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.System_CanEdit_Role)]
+        public async Task<ActionResult> Reset(ManageUserViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    BTSDbContext context = new BTSDbContext();
+                    var store = new UserStore<ApplicationUser, ApplicationRole, string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>(context);
+                    //UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(store);
+
+                    String hashedNewPassword = UserManager.PasswordHasher.HashPassword(Item.Password);
+                    ApplicationUser cUser = await store.FindByIdAsync(Item.Id);
+                    await store.SetPasswordHashAsync(cUser, hashedNewPassword);
+                    await store.UpdateAsync(cUser);
+                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [AuthorizeRoles(CommonConstants.System_CanEdit_Role)]
         public async Task<ActionResult> Lock(string id)
         {
             try
@@ -245,11 +280,21 @@ namespace BTS.Web.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.System_CanDelete_Role)]
         public async Task<ActionResult> Delete(string id)
         {
             try
             {
                 var appUser = await UserManager.FindByIdAsync(id);
+                if (appUser == null)
+                {
+                    return HttpNotFound();
+                }
+
+                if (_appGroupService.GetGroupsByUserId(id) != null)
+                {
+                    return Json(new { success = false, message = "Không thể xóa Người dùng còn thuộc nhóm" }, JsonRequestBehavior.AllowGet);
+                }
 
                 var result = await UserManager.DeleteAsync(appUser);
                 if (result.Succeeded)

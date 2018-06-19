@@ -112,7 +112,6 @@ namespace BTS.Web.Infrastructure.Extensions
             Item.Longtitude = newItem.Longtitude;
             Item.Latitude = newItem.Latitude;
             Item.InCaseOfID = newItem.InCaseOfID;
-            Item.IssuedCertificateID = newItem.ID;
             Item.UpdatedDate = DateTime.Now;
         }
 
@@ -123,7 +122,6 @@ namespace BTS.Web.Infrastructure.Extensions
             Item.Longtitude = newItem.Longtitude;
             Item.Latitude = newItem.Latitude;
             Item.InCaseOfID = newItem.InCaseOfID;
-            Item.IssuedCertificateID = newItem.ID;
             Item.UpdatedDate = DateTime.Now;
         }
     }

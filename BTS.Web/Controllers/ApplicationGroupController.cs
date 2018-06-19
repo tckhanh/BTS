@@ -32,11 +32,6 @@ namespace BTS.Web.Controllers
             return View();
         }
 
-        public ActionResult Detail()
-        {
-            return View(GetAll());
-        }
-
         public ActionResult ViewAll()
         {
             return View(GetAll());
@@ -48,13 +43,11 @@ namespace BTS.Web.Controllers
             return Mapper.Map<IEnumerable<ApplicationGroupViewModel>>(model);
         }
 
-        [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanEdit_Role)]
+        [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanViewDetail_Role, CommonConstants.System_CanEdit_Role)]
         public async Task<ActionResult> AddOrEdit(string act, string id = "")
         {
-            ViewBag.action = act;
-
             ApplicationGroupViewModel Item = new ApplicationGroupViewModel();
-            if (!string.IsNullOrEmpty(id))
+            if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
                 var DbItem = _appGroupService.GetByID(id);
                 if (DbItem == null)
@@ -90,7 +83,10 @@ namespace BTS.Web.Controllers
                         Item.UserList.Add(listItem);
                     }
 
-                    return View(Item);
+                    if (act == CommonConstants.Action_Edit)
+                        return View("Edit", Item);
+                    else
+                        return View("Detail", Item);
                 }
             }
             else
@@ -106,7 +102,7 @@ namespace BTS.Web.Controllers
                     };
                     Item.RoleList.Add(listItem);
                 }
-                return View(Item);
+                return View("Add", Item);
             }
         }
 

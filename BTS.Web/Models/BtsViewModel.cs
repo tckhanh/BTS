@@ -43,25 +43,13 @@ namespace BTS.Web.Models
         [Display(Name = "TH Kiểm định")]
         public int InCaseOfID { get; set; }
 
-        [Display(Name = "Giấy CNKĐ")]
-        [StringLength(16, ErrorMessage = "Giấy CNKĐ gồm 16 ký tự")]
-        public string IssuedCertificateID { get; set; }
-
         [Display(Name = "Giấy CNKĐ đã cấp trước đó")]
-        [StringLength(16, ErrorMessage = "Giấy CNKĐ gồm 16 ký tự")]
-        public string LastOwnCertificateID { get; set; }
-
-        [Display(Name = "Mã Nhà mạng được cấp Giấy CNKĐ trước đó")]
-        [StringLength(10, ErrorMessage = "Mã Nhà mạng không quá 10 ký tự")]
-        public string LastOwnOperatorID { get; set; }
+        [StringLength(255, ErrorMessage = "Giấy CNKĐ gồm 16 ký tự")]
+        public string LastOwnCertificateIDs { get; set; }
 
         [Display(Name = "Giấy CNKĐ đã cấp cùng trước đó")]
-        [StringLength(16, ErrorMessage = "Giấy CNKĐ gồm 16 ký tự")]
-        public string LastNoOwnCertificateID { get; set; }
-
-        [Display(Name = "Nhà mạng được cấp cùng Giấy CNKĐ trước đó")]
-        [StringLength(10, ErrorMessage = "Mã Nhà mạng không quá 10 ký tự")]
-        public string LastNoOwnOperatorID { get; set; }
+        [StringLength(255, ErrorMessage = "Giấy CNKĐ gồm 16 ký tự")]
+        public string LastNoOwnCertificateIDs { get; set; }
 
         public virtual ProfileViewModel Profile { get; set; }
 

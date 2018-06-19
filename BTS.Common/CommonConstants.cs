@@ -19,6 +19,7 @@
         public const string Action_Add = "Add";
         public const string Action_Detail = "Detail";
         public const string Action_Edit = "Edit";
+        public const string Action_Reset = "Reset";
         public const string Action_Delete = "Delete";
 
         public const string SuperAdmin_Name = "admin";

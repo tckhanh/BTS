@@ -30,13 +30,13 @@
                 </td>
                 <td>
                     @if (User.IsInRole(CommonConstants.System_CanViewDetail_Role))
-                    {
-                        <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationGroup", new { id = @item.Id, act = "Detail"})')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
+                    {                     
+                        <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("AddOrEdit", "ApplicationGroup", new { id = @item.Id, act = CommonConstants.Action_Detail })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
                     }
 
                     @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
                     {
-                        <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationGroup", new { id = @item.Id, act = "Edit"})')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
+                        <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationGroup", new { id = @item.Id, act = CommonConstants.Action_Edit})')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
                     }
 
                     @if (User.IsInRole(CommonConstants.System_CanDelete_Role))

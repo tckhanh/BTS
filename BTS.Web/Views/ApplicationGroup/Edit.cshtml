@@ -1,0 +1,63 @@
+﻿@model BTS.Web.Models.ApplicationGroupViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "AddOrEdit";
+    Layout = null;
+    var action = ViewBag.action;
+    IEnumerable<BTS.Web.Models.ApplicationRoleViewModel> Roles = ViewBag.Roles;
+}
+@using (Html.BeginForm("AddOrEdit", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationGroup", new { id = "", act = "Add" }) }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-3" })
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RoleList, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+
+                        @foreach (var item in Model.RoleList)
+                        {
+                            <div class="col-md-6">
+                                <input type="checkbox" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                @Html.Label(item.Text, new { @class = "control-label" })
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @if (User.IsInRole(CommonConstants.System_CanAdd_Role))
+                        {
+                            <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationGroup", new {id = "", act = CommonConstants.Action_Add})',false)"><i class="fa fa-plus"></i>Thêm mới</a>
+                        }
+
+                        <a class=" btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationGroup",new {id = "", act = CommonConstants.Action_Add})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+
+                        <input type="submit" value=" Luu" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

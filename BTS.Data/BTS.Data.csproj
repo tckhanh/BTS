@@ -119,6 +119,10 @@
     <Compile Include="Migrations\201806140343528_InitDatabase.Designer.cs">
       <DependentUpon>201806140343528_InitDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806190809355_ModiBtsTable.cs" />
+    <Compile Include="Migrations\201806190809355_ModiBtsTable.Designer.cs">
+      <DependentUpon>201806190809355_ModiBtsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ApplicantRepository.cs" />
@@ -164,6 +168,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201806140343528_InitDatabase.resx">
       <DependentUpon>201806140343528_InitDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806190809355_ModiBtsTable.resx">
+      <DependentUpon>201806190809355_ModiBtsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

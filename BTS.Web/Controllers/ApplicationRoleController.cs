@@ -13,9 +13,11 @@ using BTS.Web.Infrastructure.Extensions;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using BTS.Data.ApplicationModels;
+using BTS.Common;
 
 namespace BTS.Web.Controllers
 {
+    [AuthorizeRoles(CommonConstants.System_CanView_Role)]
     public class ApplicationRoleController : BaseController
     {
         private IApplicationGroupService _appGroupService;
@@ -35,10 +37,11 @@ namespace BTS.Web.Controllers
             return View(Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles.OrderByDescending(x => x.Name)));
         }
 
-        public async Task<ActionResult> AddOrEdit(string id = "")
+        [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanViewDetail_Role, CommonConstants.System_CanEdit_Role)]
+        public async Task<ActionResult> AddOrEdit(string act, string id = "")
         {
             ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
-            if (!string.IsNullOrEmpty(id))
+            if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
                 var DbItem = await RoleManager.FindByIdAsync(id);
 
@@ -74,55 +77,63 @@ namespace BTS.Web.Controllers
                         }
                     }
                 }
+                if (act == CommonConstants.Action_Edit)
+                    return View("Edit", ItemVm);
+                else
+                    return View("Detail", ItemVm);
             }
-            return View(ItemVm);
-        }
-
-        public async Task<ActionResult> Detail(string id = "")
-        {
-            ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
-            if (!string.IsNullOrEmpty(id))
+            else
             {
-                var DbItem = await RoleManager.FindByIdAsync(id);
-
-                if (DbItem != null)
-                {
-                    ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
-
-                    var allGroup = _appGroupService.GetAll();
-                    var listGroup = _appGroupService.GetGroupsByRoleId(id);
-                    foreach (var groupItem in allGroup)
-                    {
-                        var listItem = new SelectListItem()
-                        {
-                            Text = groupItem.Name,
-                            Value = groupItem.Id,
-                            Selected = listGroup.Any(g => g.Id == groupItem.Id)
-                        };
-                        ItemVm.GroupList.Add(listItem);
-                    }
-
-                    var allUser = UserManager.Users;
-                    foreach (var userItem in allUser)
-                    {
-                        if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))
-                        {
-                            var listItem = new SelectListItem()
-                            {
-                                Text = userItem.FullName,
-                                Value = userItem.Id,
-                                Selected = await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name)
-                            };
-                            ItemVm.UserList.Add(listItem);
-                        }
-                    }
-                }
+                return View("Add", ItemVm);
             }
-            return View(ItemVm);
         }
+
+        //public async Task<ActionResult> Detail(string id = "")
+        //{
+        //    ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
+        //    if (!string.IsNullOrEmpty(id))
+        //    {
+        //        var DbItem = await RoleManager.FindByIdAsync(id);
+
+        //        if (DbItem != null)
+        //        {
+        //            ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
+
+        //            var allGroup = _appGroupService.GetAll();
+        //            var listGroup = _appGroupService.GetGroupsByRoleId(id);
+        //            foreach (var groupItem in allGroup)
+        //            {
+        //                var listItem = new SelectListItem()
+        //                {
+        //                    Text = groupItem.Name,
+        //                    Value = groupItem.Id,
+        //                    Selected = listGroup.Any(g => g.Id == groupItem.Id)
+        //                };
+        //                ItemVm.GroupList.Add(listItem);
+        //            }
+
+        //            var allUser = UserManager.Users;
+        //            foreach (var userItem in allUser)
+        //            {
+        //                if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))
+        //                {
+        //                    var listItem = new SelectListItem()
+        //                    {
+        //                        Text = userItem.FullName,
+        //                        Value = userItem.Id,
+        //                        Selected = await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name)
+        //                    };
+        //                    ItemVm.UserList.Add(listItem);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return View(ItemVm);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanEdit_Role)]
         public async Task<ActionResult> AddOrEdit(ApplicationRoleViewModel Item)
         {
             try
@@ -158,6 +169,7 @@ namespace BTS.Web.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.System_CanDelete_Role)]
         public async Task<ActionResult> Delete(string id)
         {
             try
