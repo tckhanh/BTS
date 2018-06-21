@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
@@ -43,61 +44,88 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+
+        //[ValidateAntiForgeryToken]
+        public JsonResult loadBTS()
+        {
+            string fileLocation = "", fileExtension = "";
+
+            if (Request.Form.GetValues("fileLocation") != null)
+                fileLocation = Request.Form.GetValues("fileLocation").FirstOrDefault();
+            if (Request.Form.GetValues("fileExtension") != null)
+                fileExtension = Request.Form.GetValues("fileExtension").FirstOrDefault();
+            if (string.IsNullOrEmpty(fileLocation) || string.IsNullOrEmpty(fileExtension))
+            {
+                return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
+            }
+
+            string excelConnectionString = _excelIO.CreateConnectionString(fileLocation, fileExtension);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Bts);
+            List<Bts> dataResult = new List<Bts>();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                dataResult.Add(new Bts()
+                {
+                    OperatorID = dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString(),
+                    BtsCode = dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(),
+                    Address = dt.Rows[i][CommonConstants.Sheet_Bts_Address].ToString(),
+                    LastOwnCertificateIDs = dt.Rows[i][CommonConstants.Sheet_Bts_LastOwnCertificateIDs].ToString(),
+                    ProFilesInProcess = dt.Rows[i][CommonConstants.Sheet_Bts_ProFileInProcess].ToString(),
+                    ReasonsNoCertificate = dt.Rows[i][CommonConstants.Sheet_Bts_ReasonNoCertificate].ToString(),
+                });
+            }
+
+            if (dt.Rows.Count > 0)
+            {
+                //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };
+                return Json(new { data = dataResult }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CheckBTS(HttpPostedFileBase file)
         {
+            string fileExtension = "";
+            string fileLocation = "";
             try
             {
                 if (Request.Files["file"].ContentLength > 0)
                 {
-                    string fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
+                    fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
 
                     if (fileExtension == ".xls" || fileExtension == ".xlsx")
                     {
                         string tmpFileName = Path.GetTempFileName();
-                        string fileLocation = Server.MapPath("~/ImportData/") + Request.Files["file"].FileName;
+                        fileLocation = Server.MapPath("~/ImportData/") + Request.Files["file"].FileName;
 
                         if (System.IO.File.Exists(fileLocation))
                             System.IO.File.Delete(fileLocation);
 
                         Request.Files["file"].SaveAs(fileLocation);
-                        _excelIO.AddNewColumns(fileLocation, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_LastCertificateNo);
-                        _excelIO.FormatColumnDecimalToText(fileLocation);
-
-                        string excelConnectionString, excelConnectionStringforUpdate = string.Empty;
-                        //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 ;HDR=Yes;IMEX=2\"";
-                        excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes;IMEX=1; TypeGuessRows=0;ImportMixedTypes=Text\"";
-                        excelConnectionStringforUpdate = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes; ReadOnly=false; IMEX=0; TypeGuessRows=0;ImportMixedTypes=Text\"";
-                        //connection String for xls file format.
-                        if (fileExtension == ".xls")
-                        {
-                            //excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1\"";
-                            excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1;TypeGuessRows=0;ImportMixedTypes=Text\"";
-                            excelConnectionStringforUpdate = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes; ReadOnly=false; IMEX=0; TypeGuessRows=0;ImportMixedTypes=Text\"";
-                        }
-                        //connection String for xlsx file format.
-                        else if (fileExtension == ".xlsx")
-                        {
-                            //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
-                            excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes;IMEX=1; TypeGuessRows=0;ImportMixedTypes=Text\"";
-                            excelConnectionStringforUpdate = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes; ReadOnly=false; IMEX=0; TypeGuessRows=0;ImportMixedTypes=Text\"";
-                        }
-
-                        ExecuteDatabase(UpdateLastCertificateNo, excelConnectionStringforUpdate);
 
                         //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
+                        _excelIO.AddNewColumns(fileLocation, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_LastOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_ProFileInProcess + ";" + CommonConstants.Sheet_Bts_ReasonNoCertificate);
+                        _excelIO.FormatColumnDecimalToText(fileLocation);
+
+                        string excelConnectionStringforUpdate = _excelIO.CreateConnectionStringForUpdate(fileLocation, fileExtension);
+                        ExecuteDatabase(UpdateCheckResult, excelConnectionStringforUpdate);
                     }
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { Status = CommonConstants.Status_Error, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { Status = CommonConstants.Status_Error, Message = ex.Message, fileLocation = fileLocation, fileExtension = fileExtension }, JsonRequestBehavior.AllowGet);
             }
 
-            return Json(new { Status = CommonConstants.Status_Success, Message = "Check BTS Finished !" }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = CommonConstants.Status_Success, Message = "Check BTS Finished !", fileLocation = fileLocation, fileExtension = fileExtension }, JsonRequestBehavior.AllowGet);
         }
 
-        private int UpdateLastCertificateNo(string excelConnectionString)
+        private int UpdateCheckResult(string excelConnectionString)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Bts);
 
@@ -105,18 +133,43 @@ namespace BTS.Web.Controllers
             {
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString()) && !string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString()))
                 {
-                    IEnumerable<string> certIDs = _importService.getLastOwnCertificateIDs(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
-                    if (certIDs != null)
+                    IEnumerable<string> ownCertIDs = _importService.getLastOwnCertificateIDs(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
+                    if (ownCertIDs != null)
                     {
-                        dt.Rows[i][CommonConstants.Sheet_Bts_LastCertificateNo] = string.Join("; ", certIDs);
+                        dt.Rows[i][CommonConstants.Sheet_Bts_LastOwnCertificateIDs] = string.Join("; ", ownCertIDs);
                     }
+
+                    IEnumerable<string> noOwncertIDs = _importService.getLastNoOwnCertificateIDs(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
+                    if (noOwncertIDs != null)
+                    {
+                        dt.Rows[i][CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs] = string.Join("; ", noOwncertIDs);
+                    }
+
+                    string dataString = "";
+                    IEnumerable<Profile> ProfilesBtsInProcess = _importService.findProfilesBtsInProcess(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
+                    foreach (var item in ProfilesBtsInProcess)
+                    {
+                        dataString += "Số " + item.ProfileNum + " ngày " + item.ProfileDate.ToString("dd/MM/yyyy") + " của " + item.ApplicantID + "\n";
+                    }
+                    dt.Rows[i][CommonConstants.Sheet_Bts_ProFileInProcess] = dataString;
+
+                    dataString = "";
+                    IEnumerable<NoCertificate> btsNoCertificate = _importService.findBtsNoCertificate(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
+                    foreach (var item in btsNoCertificate)
+                    {
+                        dataString += item.Reason + "\n";
+                    }
+                    dt.Rows[i][CommonConstants.Sheet_Bts_ReasonNoCertificate] = dataString;
                 }
             }
 
-            if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_LastCertificateNo, dt))
-                return 1;
-            else
-                return 0;
+            if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_LastOwnCertificateIDs, dt))
+                if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs, dt))
+                    if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_ProFileInProcess, dt))
+                        if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_ReasonNoCertificate, dt))
+                            return 1;
+
+            return 0;
         }
     }
 }

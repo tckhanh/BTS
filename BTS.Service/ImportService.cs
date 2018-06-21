@@ -72,6 +72,12 @@ namespace BTS.Service
         Certificate getLastOwnCertificate(string btsCode, string operatorID);
 
         Certificate getLastNoOwnCertificate(string btsCode, string operatorID);
+
+        IEnumerable<Profile> findProfilesBtsInProcess(string btsCode, string operatorID);
+
+        IEnumerable<Profile> findProfilestNoCertificate(string btsCode, string operatorID);
+
+        IEnumerable<NoCertificate> findBtsNoCertificate(string btsCode, string operatorID);
     }
 
     public class ImportService : IImportService
@@ -297,6 +303,21 @@ namespace BTS.Service
         public void Delete(Bts bts)
         {
             _btsRepository.Delete(bts);
+        }
+
+        public IEnumerable<Profile> findProfilesBtsInProcess(string btsCode, string operatorID)
+        {
+            return _profileRepository.findProfilesBtsInProcess(btsCode, operatorID);
+        }
+
+        public IEnumerable<Profile> findProfilestNoCertificate(string btsCode, string operatorID)
+        {
+            return _profileRepository.findProfilesBTSNoCertificate(btsCode, operatorID);
+        }
+
+        public IEnumerable<NoCertificate> findBtsNoCertificate(string btsCode, string operatorID)
+        {
+            return _noCertificateRepository.GetMulti(x => x.BtsCode == btsCode && x.OperatorID == operatorID);
         }
     }
 }

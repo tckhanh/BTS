@@ -76,7 +76,7 @@ namespace BTS.Service
             IEnumerable<Certificate> result;
             if (onlyValidCertificate)
             {
-                result = _CertificateRepository.GetMulti(x => x.ExpiredDate > DateTime.Today && x.IssuedDate >= startDate && x.IssuedDate <= endDate);
+                result = _CertificateRepository.GetMulti(x => x.ExpiredDate >= DateTime.Today && x.IssuedDate >= startDate && x.IssuedDate <= endDate);
             }
             else
             {
@@ -92,7 +92,7 @@ namespace BTS.Service
             IEnumerable<Certificate> result;
             if (onlyValidCertificate)
             {
-                result = _CertificateRepository.GetMulti(x => x.ExpiredDate > DateTime.Today);
+                result = _CertificateRepository.GetMulti(x => x.ExpiredDate >= DateTime.Today);
             }
             else
             {

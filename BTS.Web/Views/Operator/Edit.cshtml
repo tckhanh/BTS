@@ -6,6 +6,7 @@
 
 @using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
 {
+    @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.ID)
     <div class="form-group">
         @Html.LabelFor(model => model.ID, new { @class = "control-label" })

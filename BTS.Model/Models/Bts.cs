@@ -46,6 +46,12 @@ namespace BTS.Model.Models
         [StringLength(255)]
         public string LastNoOwnCertificateIDs { get; set; }
 
+        [StringLength(255)]
+        public string ProFilesInProcess { get; set; }
+
+        [StringLength(255)]
+        public string ReasonsNoCertificate { get; set; }
+
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }
 

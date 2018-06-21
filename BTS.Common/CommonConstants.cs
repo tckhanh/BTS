@@ -139,7 +139,10 @@
         public const string Sheet_Bts_Latitude = "Latitude";
         public const string Sheet_Bts_InCaseOfID = "InCaseOfID";
         public const string Sheet_Bts_IsCertificated = "IsCertificated";
-        public const string Sheet_Bts_LastCertificateNo = "LastCertificateNo";
+        public const string Sheet_Bts_LastOwnCertificateIDs = "LastOwnCertificateIDs";
+        public const string Sheet_Bts_LastNoOwnCertificateIDs = "LastNoOwnCertificateIDs";
+        public const string Sheet_Bts_ProFileInProcess = "ProFileInProcess";
+        public const string Sheet_Bts_ReasonNoCertificate = "ReasonNoCertificate";
 
         public const string Sheet_Certificate = "Certificate";
         public const string Sheet_Certificate_BtsCode = "BtsCode";

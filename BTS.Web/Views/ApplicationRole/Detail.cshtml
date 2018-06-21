@@ -25,7 +25,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
-                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control", disabled = "disabled" })
                         @Html.ValidationMessageFor(model => model.Description)
                     </div>
                 </div>
@@ -44,8 +44,10 @@
                             foreach (var item in Model.UserList)
                             {
                                 <div class="col-md-6">
-                                    <input disabled type="checkbox" name="selectedUserItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                                    @Html.Label(item.Text, new { @class = "control-label", disabled = "disabled" })
+                                    <label class="control-label">
+                                        <input disabled type="checkbox" name="selectedUserItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                        @item.Text
+                                    </label>
                                 </div>
                             }
                         }
@@ -66,8 +68,10 @@
                             foreach (var item in Model.GroupList)
                             {
                                 <div class="col-md-6">
-                                    <input disabled type="checkbox" name="selectedGroupItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                                    @Html.Label(item.Text, new { @class = "control-label", disabled = "disabled" })
+                                    <label class="control-label">
+                                        <input disabled type="checkbox" name="selectedGroupItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                        @item.Text
+                                    </label>
                                 </div>
                             }
                         }
@@ -90,9 +94,7 @@
                             <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "ApplicationRole", new { id=@Model.Id})')"><i class="fa fa-trash"></i> Xóa bỏ</a>
                         }
 
-                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
-
-                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>                        
                     </div>
                 </div>
             </div>

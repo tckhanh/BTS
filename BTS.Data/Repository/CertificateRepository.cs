@@ -43,12 +43,13 @@ namespace BTS.Data.Repository
 
         public IEnumerable<Certificate> GetMultiByBtsCode(string btsCode, bool onlyOwner = true)
         {
+            btsCode = btsCode.Trim().ToUpper();
             if (onlyOwner)
             {
                 var query = from certificate in DbContext.Certificates
                             join subBts in DbContext.SubBtsInCerts
                             on certificate.ID equals subBts.CertificateID
-                            where subBts.BtsCode == btsCode && subBts.OperatorID == certificate.OperatorID
+                            where subBts.BtsCode.Trim().ToUpper() == btsCode && subBts.OperatorID == certificate.OperatorID
                             orderby certificate.IssuedDate, certificate.ID descending
                             select certificate;
                 return query;
@@ -58,7 +59,7 @@ namespace BTS.Data.Repository
                 var query = from certificate in DbContext.Certificates
                             join subBts in DbContext.SubBtsInCerts
                             on certificate.ID equals subBts.CertificateID
-                            where subBts.BtsCode == btsCode
+                            where subBts.BtsCode.Trim().ToUpper() == btsCode
                             orderby certificate.IssuedDate, certificate.ID descending
                             select certificate;
                 return query;
@@ -67,12 +68,13 @@ namespace BTS.Data.Repository
 
         public IEnumerable<Certificate> GetMultiPagingByBtsCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10, bool onlyOwner = true)
         {
+            btsCode = btsCode.Trim().ToUpper();
             if (onlyOwner)
             {
                 var query = from certificate in DbContext.Certificates
                             join subBts in DbContext.SubBtsInCerts
                             on certificate.ID equals subBts.CertificateID
-                            where subBts.BtsCode == btsCode && subBts.OperatorID == certificate.OperatorID
+                            where subBts.BtsCode.Trim().ToUpper() == btsCode && subBts.OperatorID == certificate.OperatorID
                             orderby certificate.IssuedDate, certificate.ID descending
                             select certificate;
                 totalRow = query.Count();
@@ -83,7 +85,7 @@ namespace BTS.Data.Repository
                 var query = from certificate in DbContext.Certificates
                             join subBts in DbContext.SubBtsInCerts
                             on certificate.ID equals subBts.CertificateID
-                            where subBts.BtsCode == btsCode
+                            where subBts.BtsCode.Trim().ToUpper() == btsCode
                             orderby certificate.IssuedDate, certificate.ID descending
                             select certificate;
                 totalRow = query.Count();
@@ -189,8 +191,9 @@ namespace BTS.Data.Repository
 
         public IEnumerable<Certificate> getLastOwnCertificates(string btsCode, string operatorID)
         {
+            btsCode = btsCode.Trim().ToUpper();
             IEnumerable<string> query1 = (from subBtsInCert in DbContext.SubBtsInCerts
-                                          where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
+                                          where subBtsInCert.BtsCode.Trim().ToUpper() == btsCode && subBtsInCert.OperatorID == operatorID
                                           select subBtsInCert.CertificateID).Distinct();
 
             var query2 = from item1 in query1
@@ -204,8 +207,9 @@ namespace BTS.Data.Repository
 
         public IEnumerable<Certificate> getLastNoOwnCertificates(string btsCode, string operatorID)
         {
+            btsCode = btsCode.Trim().ToUpper();
             IEnumerable<string> query1 = (from subBtsInCert in DbContext.SubBtsInCerts
-                                          where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
+                                          where subBtsInCert.BtsCode.Trim().ToUpper() == btsCode && subBtsInCert.OperatorID == operatorID
                                           select subBtsInCert.CertificateID).Distinct();
 
             var query2 = from item1 in query1
@@ -217,7 +221,7 @@ namespace BTS.Data.Repository
             return query2;
 
             //IEnumerable<SubBtsInCert> query1 = from subBtsInCert in DbContext.SubBtsInCerts
-            //                                   where subBtsInCert.BtsCode == btsCode && subBtsInCert.OperatorID == operatorID
+            //                                   where subBtsInCert.BtsCode.Trim().ToUpper() == btsCode && subBtsInCert.OperatorID == operatorID
             //                                   select subBtsInCert;
 
             //var query2 = from certificate in DbContext.Certificates

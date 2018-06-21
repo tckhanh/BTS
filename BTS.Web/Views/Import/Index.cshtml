@@ -10,7 +10,7 @@
 @section footerJS{
     @*<script src="http://malsup.github.com/jquery.form.js"></script>*@
     <script src="~/Assets/admin/libs/jquery-form/dist/jquery.form.min.js"></script>
-    <script src="~/Assets/client/js/controllers/import.js"></script>
+    <script src="~/Assets/client/js/controllers/importController.js"></script>
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -53,7 +53,7 @@
                                     <label class="control-label col-md-6 col-sm-6 col-xs-12" for="ImportAction">
                                         Chọn loại dữ liệu nhập<span class="required"></span>
                                     </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-6 col-sm-6 col-xs-12">                                        
                                         <select id="ImportAction" name="ImportAction" class="form-control" required="required">
                                             <option value="@BTS.Common.CommonConstants.ImportBTS">BTS đăng ký kiểm định</option>
                                             <option selected="selected" value="@BTS.Common.CommonConstants.ImportCER">Giấy Chứng nhận BTS</option>
@@ -100,7 +100,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                        <button class="btn btn-primary" type="reset">Bỏ chọn</button>
+                                        <button class="btn btn-primary" type="reset" id="btnReset">Bỏ chọn</button>
                                         <input class="btn btn-success" type="submit" id="btnImport" value="Nhập dữ liệu" />
                                     </div>
                                 </div>

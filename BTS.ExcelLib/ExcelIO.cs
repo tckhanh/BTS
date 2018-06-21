@@ -26,6 +26,45 @@ namespace BTS.ExcelLib
             _errorService = errorService;
         }
 
+        public string CreateConnectionString(string fileLocation, string fileExtension)
+        {
+            string excelConnectionString = string.Empty;
+            //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 ;HDR=Yes;IMEX=2\"";
+            //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes;IMEX=1; TypeGuessRows=0;ImportMixedTypes=Text\"";
+            excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0; HDR=Yes;IMEX=1\"";
+            //connection String for xls file format.
+            if (fileExtension == ".xls")
+            {
+                //excelConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1\"";
+                excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1\"";
+            }
+            //connection String for xlsx file format.
+            else if (fileExtension == ".xlsx")
+            {
+                //excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+                excelConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0; HDR=Yes;IMEX=1\"";
+            }
+            return excelConnectionString;
+        }
+
+        public string CreateConnectionStringForUpdate(string fileLocation, string fileExtension)
+        {
+            string excelConnectionStringforUpdate = string.Empty;
+            excelConnectionStringforUpdate = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes; ReadOnly=false; IMEX=0; TypeGuessRows=0;ImportMixedTypes=Text\"";
+            //connection String for xls file format.
+            if (fileExtension == ".xls")
+            {
+                excelConnectionStringforUpdate = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 8.0;HDR=Yes; ReadOnly=false; IMEX=0; TypeGuessRows=0;ImportMixedTypes=Text\"";
+            }
+            //connection String for xlsx file format.
+            else if (fileExtension == ".xlsx")
+            {
+                excelConnectionStringforUpdate = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + fileLocation + ";Extended Properties=\"Excel 12.0 Xml; HDR=Yes; ReadOnly=false; IMEX=0; TypeGuessRows=0;ImportMixedTypes=Text\"";
+            }
+
+            return excelConnectionStringforUpdate;
+        }
+
         public void LogError(Exception e, string description = "")
         {
             try
@@ -162,7 +201,7 @@ namespace BTS.ExcelLib
             string query = "";
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!String.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_LastCertificateNo].ToString()))
+                if (!String.IsNullOrEmpty(dt.Rows[i][dataField].ToString()))
                 {
                     query = "Update [" + SheetName + "$] set " + dataField + " = '" + dt.Rows[i][dataField] + "' where " + keyField + " = '" + dt.Rows[i][keyField] + "'";
                     result = execNonQuery(excelConnectionString, query) && result;
@@ -246,7 +285,7 @@ namespace BTS.ExcelLib
         public bool AddNewColumns(string fullFileName, string sheetName, string colNames)
         {
             Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkBook = new Excel.Workbook();
+            Excel.Workbook xlWorkBook;
             Excel.Worksheet xlWorkSheet = new Excel.Worksheet();
             Excel.Range rng;
             object misValue = System.Reflection.Missing.Value;
@@ -303,12 +342,11 @@ namespace BTS.ExcelLib
             }
             finally
             {
-                xlWorkBook.Close(misValue, misValue, misValue);
+                //xlWorkBook.Close(misValue, misValue, misValue);
                 xlApp.Quit();
                 // release all the application object from the memory
                 Marshal.ReleaseComObject(xlApp);
                 Marshal.ReleaseComObject(xlWorkSheet);
-                Marshal.ReleaseComObject(xlWorkBook);
 
                 GC.Collect();
                 GC.WaitForPendingFinalizers();

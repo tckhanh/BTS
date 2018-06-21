@@ -28,43 +28,45 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control"})
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Name)
                         </div>
                     </div>
                 }
-                    
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-3" })
-                        <div class="col-md-9">
-                            @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Description)
-                        </div>
-                    </div>
 
-                    @if (!string.IsNullOrEmpty(Model.Id))
-                    {
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.UserList, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                @if (Model.UserList.Count == 0)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Id))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserList, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @if (Model.UserList.Count == 0)
+                            {
+                                <div>
+                                    @Html.Label("Không có", new { @class = "control-label", disabled = "disabled" })
+                                </div>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.UserList)
                                 {
-                                    <div>
-                                        @Html.Label("Không có", new { @class = "control-label", disabled = "disabled" })
+                                    <div class="col-md-6">
+                                        <label class="control-label">
+                                            <input disabled type="checkbox" name="selectedUserItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                            @item.Text
+                                        </label>
                                     </div>
                                 }
-                                else
-                                {
-                                    foreach (var item in Model.UserList)
-                                    {
-                                        <div class="col-md-6">
-                                            <input disabled type="checkbox" name="selectedUserItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                                            @Html.Label(item.Text, new { @class = "control-label", disabled = "disabled" })
-                                        </div>
-                                    }
-                                }
-                            </div>
+                            }
                         </div>
+                    </div>
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.GroupList, new { @class = "control-label col-md-3" })
@@ -87,19 +89,19 @@
                                 }
                             </div>
                         </div>
-                    }
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            @if (!string.IsNullOrEmpty(Model.Id))
-                            {
-                                <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole",new{id=""})',false)"><i class="fa fa-plus"></i> Thêm mới</a>
-                            }
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                }
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @if (!string.IsNullOrEmpty(Model.Id))
+                        {
+                            <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole",new{id=""})',false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                        }
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
 
-                            <input type="submit" value="Lưu" class="btn btn-primary" />
-                        </div>
+                        <input type="submit" value="Lưu" class="btn btn-primary" />
                     </div>
                 </div>
             </div>
         </div>
-                }
+    </div>
+}

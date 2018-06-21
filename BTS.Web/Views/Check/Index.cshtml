@@ -1,16 +1,51 @@
-﻿@{
+﻿@using BTS.Common
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Layouts.cshtml";
 }
 
 @section headCSS{
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="~/Assets/admin/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/Assets/admin/libs/bootstrap-daterangepicker/daterangepicker.css">
+
+    <link href="~/Assets/admin/libs/leaflet/dist/leaflet.css" rel="stylesheet" />
+    <link href="~/Assets/admin/libs/leaflet.markercluster/dist/MarkerCluster.css" rel="stylesheet" />
+    <link href="~/Assets/admin/libs/leaflet.markercluster/dist/MarkerCluster.Default.css" rel="stylesheet" />
+    <link href="~/Assets/admin/libs/pivottable/dist/pivot.min.css" rel="stylesheet" />
+
+    <link href="~/Assets/admin/libs/datatables-buttons/css/buttons.dataTables.css" rel="stylesheet" />
+
     <link href="~/Assets/client/css/custom.css" rel="stylesheet" />
+    <link href="~/Assets/client/css/custom-DataTable.css" rel="stylesheet" />
+
 }
 
 @section footerJS{
+    <script src="~/Assets/admin/libs/moment/moment.js"></script>
+    <script src="~/Assets/admin/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Assets/admin/libs/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/Assets/admin/libs/leaflet/dist/leaflet.js"></script>
+    <script src="~/Assets/admin/libs/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+    <script src="~/Assets/admin/libs/plotly.js/dist/plotly-basic.min.js"></script>
+    <script src="~/Assets/admin/libs/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/Assets/admin/libs/pivottable/dist/pivot.min.js"></script>
+    <script src="~/Assets/admin/libs/pivottable/dist/plotly_renderers.min.js"></script>
+
+    <script src="~/Assets/admin/libs/datatables-buttons/js/dataTables.buttons.js"></script>
+    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.flash.js"></script>
+    <script src="~/Assets/admin/libs/jszip/dist/jszip.min.js"></script>
+    <script src="~/Assets/admin/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/Assets/admin/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.html5.js"></script>
+    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.print.js"></script>
+    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.colVis.js"></script>
+
     @*<script src="http://malsup.github.com/jquery.form.js"></script>*@
     <script src="~/Assets/admin/libs/jquery-form/dist/jquery.form.min.js"></script>
-    <script src="~/Assets/client/js/controllers/check.js"></script>
+    <script src="~/Assets/client/js/controllers/checkController.js"></script>
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -54,7 +89,7 @@
                                         Mẫu file dữ liệu nhập<span class="required"></span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <a class="form-control" href="~/Sample File/Check BTS Sample.xls">File mẫu BTS cần kiểm tra</a>
+                                        <a href="~/Sample File/Check BTS Sample.xls">File mẫu BTS cần kiểm tra</a>
                                     </div>
                                 </div>
                             </div>
@@ -88,8 +123,8 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                        <button class="btn btn-primary" type="reset">Bỏ chọn</button>
-                                        <input class="btn btn-success" type="submit" id="btnImport" value="Nhập dữ liệu" />
+                                        <button class="btn btn-primary" type="reset" id="btnReset">Bỏ chọn</button>
+                                        <input class="btn btn-success" type="submit" id="btnCheck" value="Kiểm tra" />
                                     </div>
                                 </div>
                             </div>
@@ -103,5 +138,59 @@
             <!-- /.box -->
         </div>
         <!-- /.row -->
+
+        <ul class="nav nav-tabs nav-pills">
+            <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách GCNKĐ</a></li>
+            @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+            {
+                <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
+            }
+
+            @if (User.IsInRole(CommonConstants.Data_CanViewChart_Role))
+            {
+                <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
+            }
+        </ul>
+        <div class="tab-content">
+            <div id="homeTab" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="BTS-title">DANH SÁCH TRẠM BTS ĐƯỢC KIỂM TRA</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="MyDataTable" class="table table-bordered table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Nhà mạng</th>
+                                            <th>Mã trạm</th>
+                                            <th>Địa chỉ</th>
+                                            <th>Giấy CNKĐ đã cấp</th>
+                                            <th>Giấy CNKĐ cấp kèm</th>
+                                            <th>HS đang xử lý</th>
+                                            <th>Không cấp giấy CNKĐ</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+            <div id="mapTab" class="tab-pane fade">
+                <h3 class="BTS-title">DANH SÁCH CÁC TRẠM BTS TRA CỨU</h3>
+                <div id="mapBTS" style="width: 100%; height: 500px;"></div>
+            </div>
+            <div id="pivotTableTab" class="tab-pane fade">
+                <h3 class="BTS-title">THỐNG KÊ SỐ LƯỢNG TRẠM GỐC BTS ĐANG TRA CỨU</h3>
+                <div id="pivotTable" style="width: 100%"></div>
+            </div>
+            <!-- /.row -->
+        </div>
     </section>
 </div>

@@ -4,7 +4,7 @@
         var validExts = new Array(".xlsx", ".xls");
         var fileExt = fileName.substring(fileName.lastIndexOf('.'));
         if (validExts.indexOf(fileExt) < 0) {
-            alert("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu");
+            alert("Bạn chỉ được chọn các tập tin Excel " + validExts.toString() + " để nhập liệu");
             $("#FileDialog").val('');
             return false;
         }
@@ -17,26 +17,29 @@
     var bar = $('.progress-bar');
 
     $('#jqueryForm').ajaxForm({
-        clearForm: true,        
+        clearForm: true,
         dataType: 'json',
         forceSync: false,
-        beforeSerialize: function($form, options) { 
-            // return false to cancel submit                              
+        beforeSerialize: function ($form, options) {
+            // return false to cancel submit
         },
-        beforeSubmit: function(arr, $form, options) { 
-            // The array of form data takes the following form: 
-            // [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ]      
-            // return false to cancel submit             
+        beforeSubmit: function (arr, $form, options) {
+            // The array of form data takes the following form:
+            // [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ]
+            // return false to cancel submit
+            $('#btnImport').prop('disabled', true);
+            $('#btnReset').prop('disabled', true);
+            $('#FileDialog').prop('disabled', true);
         },
         beforeSend: function () {
             $('html').addClass('waiting');
             bar.html('Bắt đầu thực hiện!');
             bar.addClass('active');
-            $('#progressRow').show();           
-        },        
-        uploadProgress: function(event, position, total, percentComplete){
+            $('#progressRow').show();
+        },
+        uploadProgress: function (event, position, total, percentComplete) {
             if (percentComplete = 100)
-                bar.html('Đã Upload File xong đang thực hiện kiểm tra BTS ....');
+                bar.html('Đã Upload File xong đang thực hiện nhập hồ sơ Kiểm định ....');
             else
                 bar.html('Đang thực hiện Upload File được: ' + percentComplete + '%');
         },
@@ -55,9 +58,11 @@
             }
             $('html').removeClass('waiting');
             bar.removeClass('active');
+            $('#btnImport').prop('disabled', false);
+            $('#btnReset').prop('disabled', false);
+            $('#FileDialog').prop('disabled', false);
         },
         complete: function (xhr) {
-          
         },
         async: true
     });

@@ -18,7 +18,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
                     <div class="col-md-7">
-                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control"})
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Name)
                     </div>
                 </div>
@@ -38,8 +38,10 @@
                         @foreach (var item in Model.RoleList)
                         {
                             <div class="col-md-6">
-                                <input type="checkbox" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                                @Html.Label(item.Text, new { @class = "control-label" })
+                                <label class="control-label">
+                                    <input type="checkbox" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                    @item.Text
+                                </label>
                             </div>
                         }
                     </div>

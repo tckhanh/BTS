@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using BTS.Common;
 using BTS.Model.Models;
 using BTS.Service;
+using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +13,7 @@ using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
 {
+    [AuthorizeRoles(CommonConstants.Data_CanView_Role)]
     public class CertificateController : BaseController
     {
         private ICertificateService _certificateService;
@@ -39,6 +43,17 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetUserRoles()
+        {
+            return Json(new
+            {
+                IsAuthenticated = User.Identity.IsAuthenticated,
+                Roles = UserManager.GetRolesAsync(User.Identity.GetUserId())
+            });
+        }
+
+        [HttpPost]
+
         //[ValidateAntiForgeryToken]
         public JsonResult loadCertificate()
         {
@@ -48,6 +63,7 @@ namespace BTS.Web.Controllers
             var OperatorID = Request.Form.GetValues("OperatorID").FirstOrDefault();
             var ProfileID = Request.Form.GetValues("ProfileID").FirstOrDefault();
             var BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress").FirstOrDefault().ToLower();
+            var IsExpired = Request.Form.GetValues("IsExpired").FirstOrDefault().ToLower();
 
             DateTime StartDate, EndDate;
             if (!DateTime.TryParse(Request.Form.GetValues("StartDate").FirstOrDefault(), out StartDate))
@@ -60,11 +76,20 @@ namespace BTS.Web.Controllers
 
             if (StartDate != null && EndDate != null)
             {
-                Items = _certificateService.getAll(out countItem, true, StartDate, EndDate).ToList();
+                Items = _certificateService.getAll(out countItem, false, StartDate, EndDate).ToList();
             }
             else
             {
-                Items = _certificateService.getAll(out countItem, true).ToList();
+                Items = _certificateService.getAll(out countItem, false).ToList();
+            }
+
+            if (IsExpired == "yes")
+            {
+                Items = Items.Where(x => x.ExpiredDate < DateTime.Today);
+            }
+            else
+            {
+                Items = Items.Where(x => x.ExpiredDate >= DateTime.Today);
             }
 
             if (!(string.IsNullOrEmpty(CityID)))

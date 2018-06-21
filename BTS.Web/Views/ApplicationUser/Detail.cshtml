@@ -82,7 +82,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.EntryDate, new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
-                        @Html.TextBoxFor(model => model.EntryDate, new { Type ="Date", @class = "form-control", disabled = "disabled" })
+                        @Html.TextBoxFor(model => model.EntryDate, new { Type = "Date", @class = "form-control", disabled = "disabled" })
                     </div>
                 </div>
 
@@ -106,8 +106,10 @@
                         @foreach (var item in Model.GroupList)
                         {
                             <div class="col-md-6">
-                                <input disabled type="checkbox" text="@item.Text" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                                @Html.Label(item.Text, new { @class = "control-label" })
+                                <label class="control-label">
+                                    <input disabled type="checkbox" text="@item.Text" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                    @item.Text
+                                </label>
                             </div>
                         }
                     </div>
@@ -143,7 +145,7 @@
                         }
                         @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
                         {
-                            <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUser", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i class="fa fa-pencil"></i> Sửa đổi</a>                            
+                            <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUser", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
                         }
 
                         @if (User.IsInRole(CommonConstants.System_CanDelete_Role))

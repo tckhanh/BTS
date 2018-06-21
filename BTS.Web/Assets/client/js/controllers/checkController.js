@@ -2,35 +2,98 @@
     maxZoom: 18,
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }),
-    latlng = L.latLng(10.796841, 106.66252);
+latlng = L.latLng(10.796841, 106.66252);
 var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
 var myMarkerClusters = L.markerClusterGroup();
 var userRoleAdmin = "@(User.IsInRole('System_CanExport') ? 'true' : 'false')";
+var fileLocation, fileExtension;
+var bar = $('.progress-bar');
 
-var certificateController = {
+var checkController = {
     init: function () {
-        certificateController.loadData();
-        certificateController.registerEventDataTable();
-        certificateController.registerEvent();
-    },
-    registerEventDataTable: function () {
-        var table = $("#MyDataTable").DataTable();
-        table.on('draw', function () {
-            $('.btn-edit').off('click').on('click', function () {
-                $('#modalAddUpdate').modal('show');
-                var id = $(this).data('myid');
-                certificateController.loadDetail(id);
-            });
+        checkController.loadData();
+        checkController.registerEventDataTable();
+        checkController.registerEvent();
 
-            $('.btn-delete').off('click').on('click', function () {
-                var id = $(this).data('myid');
-                bootbox.confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?", function (result) {
-                    certificateController.deleteItem(id);
-                });
-            });
+        $('#jqueryForm').ajaxForm({
+            clearForm: true,
+            dataType: 'json',
+            forceSync: false,
+            beforeSerialize: function ($form, options) {
+                // return false to cancel submit
+            },
+            beforeSubmit: function (arr, $form, options) {
+                // The array of form data takes the following form:
+                // [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ]
+                // return false to cancel submit
+                $('#btnCheck').prop('disabled', true);
+                $('#btnReset').prop('disabled', true);
+                $('#FileDialog').prop('disabled', true);                
+            },
+            beforeSend: function () {
+                $('html').addClass('waiting');
+                bar.html('Bắt đầu thực hiện!');
+                bar.addClass('active');
+                $('#progressRow').show();
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                if (percentComplete = 100)
+                    bar.html('Đã Upload File xong đang thực hiện kiểm tra BTS ....');
+                else
+                    bar.html('Đang thực hiện Upload File được: ' + percentComplete + '%');
+            },
+            error: function (data) {
+                var r = jQuery.parseJSON(data.responseText);
+                alert("Message: " + r.Message);
+                alert("StackTrace: " + r.StackTrace);
+                alert("ExceptionType: " + r.ExceptionType);
+                bar.html('Lỗi trong quá trình thực hiện!');
+                $('#btnCheck').prop('disabled', false);
+                $('#btnReset').prop('disabled', false);
+                $('#FileDialog').prop('disabled', false);
+                $('html').removeClass('waiting');
+                bar.removeClass('active');
+            },
+            success: function (responseJSON, statusText, xhr, element) {
+                fileLocation = responseJSON.fileLocation;
+                fileExtension = responseJSON.fileExtension;
+                if (responseJSON.Status == "Success") {
+                    bar.html('Đã thực hiện kiểm tra BTS xong!');
+                }
+                else {
+                    bar.html('Lỗi trong quá trình thực hiện!');
+                    alert("Complete: " + xhr.responseJSON.Message);
+                }
+            },
+            complete: function (xhr) {
+                bar.html('Đang hiển thị kết quả!');
+                $('#MyDataTable').DataTable().ajax.reload();
+            },
+            async: true
         });
     },
+
+    registerEventDataTable: function () {
+    },
+
     registerEvent: function () {
+        $('#FileDialog').change(function (sender) {
+            var fileName = sender.target.files[0].name;
+            var validExts = new Array(".xlsx", ".xls");
+            var fileExt = fileName.substring(fileName.lastIndexOf('.'));
+            if (validExts.indexOf(fileExt) < 0) {
+                alert("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu");
+                $("#FileDialog").val('');
+                return false;
+            }
+            else {
+                bar.html('');
+                return true;
+            }
+        });
+    },
+
+    registerEvent1: function () {
         $('#btnSearch').off('click').on('click', function () {
             $('#MyDataTable').DataTable().ajax.reload();
         });
@@ -89,45 +152,25 @@ var certificateController = {
     },
 
     loadData: function () {
-        var startDate = new Date(new Date().getFullYear(), 0, 1);
-        var endDate = new Date();
-
-        $('input[name="DateRange"]').daterangepicker(
-                {
-                    locale: {
-                        format: 'DD/MM/YYYY'
-                    },
-                    startDate: startDate,
-                    endDate: endDate
-                },
-                function (start, end, label) {
-                    //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
-                    startDate = start;
-                    endDate = end;
-                });
-
-        //$.ajax({
-        //    url: 'Certificate/GetUserRoles',
-        //    dataType: 'json',
-        //    data: {},
-        //    type: 'post',
-        //    success: function (data) {
-        //        userRoleAdmin = data.Roles;
-        //    }
-        //});
-
         if (userRoleAdmin) {
             $("#MyDataTable")
                 .on('xhr.dt', function (e, settings, json, xhr) {
                     if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                         myMap.removeLayer(myMarkerClusters);
                         myMarkerClusters.clearLayers();
+                        bar.html('Đã hoàn tất hiển thị kết quả!');
+                        $('#btnCheck').prop('disabled', false);
+                        $('#btnReset').prop('disabled', false);
+                        $('#FileDialog').prop('disabled', false);
+                        $('html').removeClass('waiting');
+                        bar.removeClass('active');
+
                         //myMap.eachLayer(function (layer) {
                         //    myMap.removeLayer(layer);
                         //});
                     }
-                    certificateController.loadMap(json.data);
-                    certificateController.loadPivotTable(json.data);
+                    //certificateController.loadMap(json.data);
+                    //certificateController.loadPivotTable(json.data);
                 })
                 .dataTable({
                     dom: 'Bfrtip',
@@ -158,36 +201,22 @@ var certificateController = {
                     "selector": true,
                     "ajax": {
                         "async": true,
-                        "url": "/Certificate/loadCertificate",
+                        "url": "/Check/loadBTS",
                         "type": "POST",
                         "data": function (d) {
-                            d.CityID = $('#CityID').val().trim();
-                            d.OperatorID = $('#OperatorID').val().trim();
-                            d.ProfileID = $('#ProfileID').val().trim();
-                            d.StartDate = startDate.toISOString();
-                            d.EndDate = endDate.toISOString();
-                            d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-                            d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.fileLocation = fileLocation;
+                            d.fileExtension = fileExtension;
                         }
                     },
                     "columns": [
-                        { "data": "Id", "name": "Id", "width": "20%" },                  // index 0
-                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
-                        { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
-                        { "data": "Address", "name": "Address", "width": "40%" },        // index 3
-                        { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
-                        {
-                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
-                            "render": function (data, type, row) {
-                                return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
-                            }
-                        },
-                        {
-                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
-                            "render": function (data, type, row) {
-                                return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
-                            }
-                        }],
+                        { "data": "OperatorID", "name": "OperatorID", "width": "5%" },  // index 1
+                        { "data": "BtsCode", "name": "BtsCode", "width": "5%" },        // index 2
+                        { "data": "Address", "name": "Address", "width": "30%" },        // index 3
+                        { "data": "LastOwnCertificateIDs", "name": "LastOwnCertificateIDs", "width": "20%" },
+                        { "data": "LastNoOwnCertificateIDs", "name": "LastNoOwnCertificateIDs", "width": "20%" },
+                        { "data": "ProFilesInProcess", "name": "ProFilesInProcess", "width": "10%" },
+                        { "data": "ReasonsNoCertificate", "name": "ReasonsNoCertificate", "width": "10%" },
+                    ],
                     "language": {
                         url: '/localization/vi_VI.json'
                     }
@@ -198,14 +227,15 @@ var certificateController = {
                     if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                         myMap.removeLayer(myMarkerClusters);
                         myMarkerClusters.clearLayers();
+                        bar.html('Đã hoàn tất hiển thị kết quả!');
                         //myMap.eachLayer(function (layer) {
                         //    myMap.removeLayer(layer);
                         //});
                     }
                     if (json != null) {
                         var data = json.data;
-                        certificateController.loadMap(data);
-                        certificateController.loadPivotTable(data);
+                        //certificateController.loadMap(data);
+                        //certificateController.loadPivotTable(data);
                     }
                 })
                 .dataTable({
@@ -214,36 +244,22 @@ var certificateController = {
                     "selector": true,
                     "ajax": {
                         "async": true,
-                        "url": "/Certificate/loadCertificate",
+                        "url": "/Check/loadBTS",
                         "type": "POST",
                         "data": function (d) {
-                            d.CityID = $('#CityID').val().trim();
-                            d.OperatorID = $('#OperatorID').val().trim();
-                            d.ProfileID = $('#ProfileID').val().trim();
-                            d.StartDate = startDate.toISOString();
-                            d.EndDate = endDate.toISOString();
-                            d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-                            d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.fileLocation = fileLocation;
+                            d.fileExtension = fileExtension;
                         }
                     },
                     "columns": [
-                        { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
-                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
-                        { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
-                        { "data": "Address", "name": "Address", "width": "40%" },        // index 3
-                        { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
-                        {
-                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
-                            "render": function (data, type, row) {
-                                return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
-                            }
-                        },
-                        {
-                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
-                            "render": function (data, type, row) {
-                                return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
-                            }
-                        }],
+                        { "data": "OperatorID", "name": "OperatorID", "width": "5%" },  // index 1
+                        { "data": "BtsCode", "name": "BtsCode", "width": "5%" },        // index 2
+                        { "data": "Address", "name": "Address", "width": "30%" },        // index 3
+                        { "data": "LastOwnCertificateIDs", "name": "LastOwnCertificateIDs", "width": "20%" },
+                        { "data": "LastNoOwnCertificateIDs", "name": "LastNoOwnCertificateIDs", "width": "20%" },
+                        { "data": "ProFilesInProcess", "name": "ProFilesInProcess", "width": "10%" },
+                        { "data": "ReasonsNoCertificate", "name": "ReasonsNoCertificate", "width": "10%" },
+                    ],
                     "language": {
                         url: '/localization/vi_VI.json'
                     }
@@ -314,21 +330,4 @@ var certificateController = {
                 });
     }
 }
-
-certificateController.init();
-
-//$('#MyDataTable tbody').on('click', 'tr', function () {
-//    if ($(this).hasClass('selected')) {
-//        $(this).removeClass('selected');
-//    }
-//    else {
-//        table.$('tr.selected').removeClass('selected');
-//        $(this).addClass('selected');
-//    }
-//});
-
-//$('#button').click(function () {
-//    table.row('.selected').remove().draw(false);
-//});
-
-// See post: http://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps
+checkController.init();

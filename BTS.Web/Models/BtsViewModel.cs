@@ -48,8 +48,16 @@ namespace BTS.Web.Models
         public string LastOwnCertificateIDs { get; set; }
 
         [Display(Name = "Giấy CNKĐ đã cấp cùng trước đó")]
-        [StringLength(255, ErrorMessage = "Giấy CNKĐ gồm 16 ký tự")]
+        [StringLength(255, ErrorMessage = "Các Giấy CNKĐ không quá 255 ký tự")]
         public string LastNoOwnCertificateIDs { get; set; }
+
+        [Display(Name = "Giấy Hồ sơ KĐ đang xử lý")]
+        [StringLength(255, ErrorMessage = "Các Hồ sơ KĐ không quá 255 ký tự")]
+        public string ProFilesInProcess { get; set; }
+
+        [Display(Name = "Các lý do không cấp Giấy CNKĐ")]
+        [StringLength(255, ErrorMessage = "Các lý do không cấp Giấy CNKĐ không quá 255 ký tự")]
+        public string ReasonsNoCertificate { get; set; }
 
         public virtual ProfileViewModel Profile { get; set; }
 

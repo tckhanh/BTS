@@ -1,4 +1,5 @@
-﻿@{
+﻿@using BTS.Common
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Layouts.cshtml";
     IEnumerable<BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
@@ -79,9 +80,9 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="clearfix"></div>
-                    <div class="row">
-                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                            @Html.AntiForgeryToken()
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        @Html.AntiForgeryToken()
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-6 col-sm-6 col-xs-12" for="DateRange">
@@ -89,20 +90,6 @@
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-6 col-sm-6 col-xs-12" for="CityID">
-                                        Tỉnh/Thành phố<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select id="CityID" class="form-control">
-                                            <option value="" selected="selected">Tất cả</option>
-                                            @foreach (var item in cities)
-                                            {
-                                            <option value="@item.Id">@item.Name</option>
-                                            }
-                                        </select>
                                     </div>
                                 </div>
                                 <div class="ln_solid"></div>
@@ -117,11 +104,33 @@
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in operators)
                                             {
-                                            <option value="@item.Id">@item.Id _ @item.Name</option>
+                                                <option value="@item.Id">@item.Id _ @item.Name</option>
                                             }
                                         </select>
                                     </div>
                                 </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-12" for="CityID">
+                                        Tỉnh/Thành phố<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select id="CityID" class="form-control">
+                                            <option value="" selected="selected">Tất cả</option>
+                                            @foreach (var item in cities)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-6 col-sm-6 col-xs-12" for="ProfileID">
                                         Hồ sơ nộp<span class="required"></span>
@@ -131,33 +140,59 @@
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in profiles)
                                             {
-                                            <option value="@item.Id">@item.BtsQuantity BTS _ @item.ApplicantID _ @item.ProfileNum</option>
+                                                <option value="@item.Id">@item.BtsQuantity BTS _ @item.ApplicantID _ @item.ProfileNum</option>
                                             }
                                         </select>
                                     </div>
                                 </div>
                                 <div class="ln_solid"></div>
                             </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
-                                        Mã trạm/Địa chỉ trạm <span class="required"></span>
-                                    </label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <input id="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
+                                    Mã trạm/Địa chỉ trạm <span class="required"></span>
+                                </label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <input id="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" required="required" type="text">
                                 </div>
                             </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                        <button class="btn btn-primary" type="reset">Bỏ lọc</button>
-                                        <input class="btn btn-success" type="button" id="btnSearch" value="Tìm kiếm" />
-                                    </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IsNotExpired">
+                                    Loại Giấy CNKĐ<span class="required"></span>
+                                </label>
+                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                    <fieldset>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="radio" name="IsExpired" value="no" checked="checked" />
+                                            <label class="control-label">
+                                                Giấy CNKĐ còn hiệu lực
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="radio" name="IsExpired" value="yes" />
+                                            <label class="control-label">
+                                                Giấy CNKĐ hết hiệu lực
+                                            </label>
+                                        </div>
+                                    </fieldset>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="ln_solid"></div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                    <button class="btn btn-primary" type="reset">Bỏ lọc</button>
+                                    <input class="btn btn-success" type="button" id="btnSearch" value="Tìm kiếm" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
@@ -168,8 +203,15 @@
 
         <ul class="nav nav-tabs nav-pills">
             <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách GCNKĐ</a></li>
-            <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
-            <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
+            @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+            {
+                <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
+            }
+
+            @if (User.IsInRole(CommonConstants.Data_CanViewChart_Role))
+            {
+                <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
+            }
         </ul>
         <div class="tab-content">
             <div id="homeTab" class="tab-pane fade in active">
@@ -212,5 +254,6 @@
                 <div id="pivotTable" style="width: 100%"></div>
             </div>
             <!-- /.row -->
+        </div>
     </section>
 </div>

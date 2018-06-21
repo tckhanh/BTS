@@ -8985,11 +8985,13 @@
     <Content Include="Assets\client\js\controllers\certificateController_v1.js" />
     <Content Include="Assets\client\js\controllers\certificateController.js" />
     <Content Include="Assets\client\js\controllers\certificate.js" />
-    <Content Include="Assets\client\js\controllers\check.js" />
+    <Content Include="Assets\client\js\controllers\checkController.js" />
     <Content Include="Assets\client\js\controllers\contact.js" />
     <Content Include="Assets\client\js\controllers\home.js" />
-    <Content Include="Assets\client\js\controllers\import.js" />
+    <Content Include="Assets\client\js\controllers\importController - Copy.js" />
+    <Content Include="Assets\client\js\controllers\importController.js" />
     <Content Include="Assets\client\js\controllers\inCaseOfController.js" />
+    <Content Include="Assets\client\js\controllers\JavaScript.js" />
     <Content Include="Assets\client\js\controllers\operator.js" />
     <Content Include="Assets\client\js\controllers\pivotTable.js" />
     <Content Include="Assets\client\js\controllers\shoppingCart.js" />

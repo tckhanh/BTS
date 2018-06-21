@@ -1,4 +1,5 @@
-﻿var commonController = {
+﻿
+var commonController = {
     init: function () {
         $("#loaderbody").addClass('hide');
         $(document).bind('ajaxStart', function () {
@@ -200,5 +201,4 @@
         });
     }
 };
-
 commonController.init();

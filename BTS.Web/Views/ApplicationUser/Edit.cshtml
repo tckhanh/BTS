@@ -119,8 +119,10 @@
                         @foreach (var item in Model.GroupList)
                         {
                             <div class="col-md-6">
-                                <input type="checkbox" text="@item.Text" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                                @Html.Label(item.Text, new { @class = "control-label" })
+                                <label class="control-label">
+                                    <input type="checkbox" text="@item.Text" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                    @item.Text
+                                </label>
                             </div>
                         }
                     </div>

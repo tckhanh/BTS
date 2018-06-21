@@ -10,6 +10,7 @@
             </div>
             <div class="modal-body">
                 <form role="form" id="frmSaveData">
+                    @Html.AntiForgeryToken()
                     <div class="form-group">
                         <label for="txtCode">Mã loại KĐ:</label>
                         <input type="text" class="form-control" name="txtCode" id="txtCode">
@@ -18,11 +19,11 @@
                     <div class="form-group">
                         <label for="txtName">Tên loại KĐ:</label>
                         <input type="text" class="form-control" name="txtName" id="txtName">
-                    </div>                    
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" id="btnSave">Lưu</button>                
+                <button type="submit" class="btn btn-primary" id="btnSave">Lưu</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
             </div>
         </div>
