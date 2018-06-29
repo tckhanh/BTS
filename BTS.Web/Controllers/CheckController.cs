@@ -110,7 +110,16 @@ namespace BTS.Web.Controllers
 
                         //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
                         _excelIO.AddNewColumns(fileLocation, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_LastOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_ProFileInProcess + ";" + CommonConstants.Sheet_Bts_ReasonNoCertificate);
-                        _excelIO.FormatColumnDecimalToText(fileLocation);
+
+                        string[] columnNames = new string[] {
+                            CommonConstants.Sheet_Certificate_Longtitude,
+                            CommonConstants.Sheet_Certificate_Latitude,
+                            CommonConstants.Sheet_Certificate_MaxHeightIn100m,
+                            CommonConstants.Sheet_Certificate_MinAntenHeight,
+                            CommonConstants.Sheet_Certificate_OffsetHeight,
+                            CommonConstants.Sheet_Certificate_SafeLimit,
+                            CommonConstants.Sheet_Certificate_BtsCode};
+                        _excelIO.FormatColumnDecimalToText(fileLocation, columnNames);
 
                         string excelConnectionStringforUpdate = _excelIO.CreateConnectionStringForUpdate(fileLocation, fileExtension);
                         ExecuteDatabase(UpdateCheckResult, excelConnectionStringforUpdate);

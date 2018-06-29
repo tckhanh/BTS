@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTS.Model.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BTS.Data.ApplicationModels
 {
     [Table("ApplicationGroups")]
-    public class ApplicationGroup
+    public class ApplicationGroup : Auditable
     {
         [Key]
         public string Id { set; get; }

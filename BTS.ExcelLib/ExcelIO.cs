@@ -210,7 +210,7 @@ namespace BTS.ExcelLib
             return result;
         }
 
-        public bool FormatColumnDecimalToText(string fullFileName)
+        public bool FormatColumnDecimalToText(string fullFileName, string[] columnNames)
         {
             object misValue = System.Reflection.Missing.Value;
             Excel.Application xlApp = new Excel.Application();
@@ -231,13 +231,18 @@ namespace BTS.ExcelLib
                     {
                         if (xlWorkSheet.Cells[1, col].Value != null)
                         {
-                            if (xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_Longtitude || xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_Latitude ||
-                            xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_MaxHeightIn100m || xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_MinAntenHeight ||
-                            xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_OffsetHeight || xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_SafeLimit ||
-                            xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_BtsCode)
+                            if (Array.Exists(columnNames, x => x == xlWorkSheet.Cells[1, col].Value.ToString()))
                             {
                                 xlWorkSheet.Columns[col].NumberFormat = "@";
                             }
+
+                            //if (xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_Longtitude || xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_Latitude ||
+                            //xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_MaxHeightIn100m || xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_MinAntenHeight ||
+                            //xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_OffsetHeight || xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_SafeLimit ||
+                            //xlWorkSheet.Cells[1, col].Value.ToString() == Common.CommonConstants.Sheet_Certificate_BtsCode)
+                            //{
+                            //    xlWorkSheet.Columns[col].NumberFormat = "@";
+                            //}
                         }
                     }
                     Marshal.ReleaseComObject(xlWorkSheet);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BTS.Common.ViewModels
 {
-    public class StatisticCertificate
+    public class CertificateStatiticsViewModel
     {
         public string Year { get; set; }
         public string OperatorID { get; set; }

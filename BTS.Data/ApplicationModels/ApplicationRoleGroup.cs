@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTS.Model.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace BTS.Data.ApplicationModels
 {
     [Table("ApplicationRoleGroups")]
-    public class ApplicationRoleGroup
+    public class ApplicationRoleGroup : Auditable
     {
         [Key]
         [Column(Order = 1)]

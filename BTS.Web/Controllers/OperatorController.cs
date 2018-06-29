@@ -64,6 +64,9 @@ namespace BTS.Web.Controllers
             {
                 Operator newItem = new Operator();
                 newItem.UpdateOperator(itemVm);
+                newItem.CreatedBy = User.Identity.Name;
+                newItem.CreatedDate = DateTime.Now;
+
                 _operatorService.Add(newItem);
                 _operatorService.SaveChanges();
                 return Json(new { success = true, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
@@ -75,13 +78,20 @@ namespace BTS.Web.Controllers
                 {
                     Operator newItem = new Operator();
                     newItem.UpdateOperator(itemVm);
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
+
                     _operatorService.Add(newItem);
+
                     _operatorService.SaveChanges();
                     return Json(new { success = true, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
                     dbItem.UpdateOperator(itemVm);
+                    dbItem.UpdatedBy = User.Identity.Name;
+                    dbItem.UpdatedDate = DateTime.Now;
+
                     _operatorService.Update(dbItem);
                     _operatorService.SaveChanges();
                     return Json(new { success = true, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
@@ -100,6 +110,9 @@ namespace BTS.Web.Controllers
             {
                 Operator newItem = new Operator();
                 newItem.UpdateOperator(itemVm);
+                newItem.CreatedBy = User.Identity.Name;
+                newItem.CreatedDate = DateTime.Now;
+
                 _operatorService.Add(newItem);
                 _operatorService.SaveChanges();
                 return Json(new { success = true, message = "Saved Successfully" }, JsonRequestBehavior.AllowGet);
@@ -108,6 +121,8 @@ namespace BTS.Web.Controllers
             {
                 var dbItem = _operatorService.getByID(itemVm.Id);
                 dbItem.UpdateOperator(itemVm);
+                dbItem.UpdatedBy = User.Identity.Name;
+                dbItem.UpdatedDate = DateTime.Now;
 
                 _operatorService.Update(dbItem);
                 _operatorService.SaveChanges();

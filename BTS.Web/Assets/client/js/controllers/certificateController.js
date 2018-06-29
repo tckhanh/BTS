@@ -6,6 +6,7 @@
 var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
 var myMarkerClusters = L.markerClusterGroup();
 var userRoleAdmin = "@(User.IsInRole('System_CanExport') ? 'true' : 'false')";
+var data = "";
 
 var certificateController = {
     init: function () {
@@ -66,7 +67,7 @@ var certificateController = {
             dataType: 'json',
             success: function (response) {
                 if (response.status == true) {
-                    var data = response.data;
+                    data = response.data;
                     $('#hidID').val(data.ID);
                     $('#txtCode').val(data.Code);
                     $('#txtName').val(data.Name);
@@ -171,9 +172,19 @@ var certificateController = {
                         }
                     },
                     "columns": [
-                        { "data": "Id", "name": "Id", "width": "20%" },                  // index 0
+                        {
+                            "data": "Id", "name": "Id", "width": "20%",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='/Certificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
+                            }
+                        },                  // index 0
                         { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
-                        { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
+                        {
+                            "data": "BtsCode", "name": "BtsCode", "width": "10%",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
+                            }
+                        },        // index 2
                         { "data": "Address", "name": "Address", "width": "40%" },        // index 3
                         { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
                         {
@@ -289,13 +300,15 @@ var certificateController = {
             myMap.addLayer(myMarkerClusters);
         }
     },
+
     loadPivotTable: function (pivotTableData) {
         var inputFunction = function (callback) {
             for (var i = 0; i < pivotTableData.length; ++i) {
                 callback({
-                    OperatorID: pivotTableData[i].OperatorID,
-                    cityID: pivotTableData[i].CityID,
-                    year: moment(pivotTableData[i].IssuedDate).year()
+                    "OperatorID": pivotTableData[i].OperatorID,
+                    "CityID": pivotTableData[i].CityID,
+                    "LabID": pivotTableData[i].LabID,
+                    "Year": moment(pivotTableData[i].IssuedDate).year()
                 });
             }
         };
@@ -303,16 +316,17 @@ var certificateController = {
         // This example adds Plotly chart renderers.
 
         var derivers = $.pivotUtilities.derivers;
-        var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.plotly_renderers);
+        var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.plotly_renderers, $.pivotUtilities.c3_renderers);
         $("#pivotTable").pivotUI(inputFunction,
-                {
-                    renderers: renderers,
-                    rows: ["OperatorID"],
-                    cols: ["CityID"],
-                    rendererName: "Horizontal Stacked Bar Chart",
-                    rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
-                });
-    }
+                    {
+                        renderers: renderers,
+                        rows: ["OperatorID"],
+                        cols: ["CityID"],                        
+                        rendererName: "Horizontal Stacked Bar Chart",                        
+                        rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
+                        hiddenAttributes: ["select.pvtRenderer", "renderers"]
+                    }, true);
+    }    
 }
 
 certificateController.init();

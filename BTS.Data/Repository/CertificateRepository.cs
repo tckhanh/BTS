@@ -1,4 +1,5 @@
-﻿using BTS.Common.ViewModels;
+﻿using BTS.Common;
+using BTS.Common.ViewModels;
 using BTS.Data.Infrastructure;
 using BTS.Model.Models;
 using System;
@@ -16,13 +17,19 @@ namespace BTS.Data.Repository
 
         IEnumerable<Certificate> GetMultiByBtsCode(string btsCode, bool onlyOwner = false);
 
-        IEnumerable<CertificateStatisticViewModel> GetStatistic(string fromDate, string toDate);
+        IEnumerable<CertificateStatiticsViewModel> GetStatistic(string fromDate, string toDate);
 
-        IEnumerable<StatisticCertificate> GetStatisticCertificateByYear();
+        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
-        IEnumerable<StatisticCertificate> GetStatisticCertificateByYearOperator();
+        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperator(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
-        IEnumerable<StatisticCertificate> GetStatisticCertificateByOperatorCity();
+        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByCity(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
+
+        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByLab(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
+
+        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByYearOperator();
+
+        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperatorCity();
 
         IEnumerable<ShortCertificate> GetShortCertificate();
 
@@ -93,36 +100,133 @@ namespace BTS.Data.Repository
             }
         }
 
-        public IEnumerable<CertificateStatisticViewModel> GetStatistic(string fromDate, string toDate)
+        public IEnumerable<CertificateStatiticsViewModel> GetStatistic(string fromDate, string toDate)
         {
             var parameters = new SqlParameter[]{
                 new SqlParameter("@fromDate",fromDate),
                 new SqlParameter("@toDate",toDate)
             };
-            return DbContext.Database.SqlQuery<CertificateStatisticViewModel>("GetStatistic @fromDate,@toDate", parameters);
+            return DbContext.Database.SqlQuery<CertificateStatiticsViewModel>("GetStatistic @fromDate,@toDate", parameters);
         }
 
-        public IEnumerable<StatisticCertificate> GetStatisticCertificateByYear()
+        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
         {
-            var query = from certificate in DbContext.Certificates
-                        where !string.IsNullOrEmpty(certificate.OperatorID) && certificate.IssuedDate != null
-                        orderby certificate.IssuedDate ascending
-                        group certificate by new { certificate.IssuedDate.Value.Year } into OperatorGroup
-                        select new StatisticCertificate()
-                        {
-                            Year = OperatorGroup.Key.Year.ToString(),
-                            Certificates = OperatorGroup.Count()
-                        };
-
-            return query;
+            if (onlyIsValid)
+            {
+                var query = from certificate in DbContext.Certificates
+                            where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                            group certificate by new { certificate.IssuedDate.Value.Year } into ItemGroup
+                            select new CertificateStatiticsViewModel()
+                            {
+                                Year = ItemGroup.Key.Year.ToString(),
+                                Certificates = ItemGroup.Count()
+                            };
+                return query;
+            }
+            else
+            {
+                var query = from certificate in DbContext.Certificates
+                            where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                            group certificate by new { certificate.IssuedDate.Value.Year } into ItemGroup
+                            select new CertificateStatiticsViewModel()
+                            {
+                                Year = ItemGroup.Key.Year.ToString(),
+                                Certificates = ItemGroup.Count()
+                            };
+                return query;
+            }
         }
 
-        public IEnumerable<StatisticCertificate> GetStatisticCertificateByOperatorCity()
+        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByCity(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                var query = from certificate in DbContext.Certificates
+                            where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                            group certificate by new { certificate.CityID } into ItemGroup
+                            select new CertificateStatiticsViewModel()
+                            {
+                                CityID = ItemGroup.Key.ToString(),
+                                Certificates = ItemGroup.Count()
+                            };
+                return query;
+            }
+            else
+            {
+                var query = from certificate in DbContext.Certificates
+                            where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                            group certificate by new { certificate.CityID } into ItemGroup
+                            select new CertificateStatiticsViewModel()
+                            {
+                                CityID = ItemGroup.Key.ToString(),
+                                Certificates = ItemGroup.Count()
+                            };
+                return query;
+            }
+        }
+
+        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperator(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                var query = from certificate in DbContext.Certificates
+                            where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                            group certificate by certificate.OperatorID into ItemGroup
+                            select new CertificateStatiticsViewModel()
+                            {
+                                OperatorID = ItemGroup.Key.ToString(),
+                                Certificates = ItemGroup.Count()
+                            };
+                return query;
+            }
+            else
+            {
+                var query = from certificate in DbContext.Certificates
+                            where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                            group certificate by certificate.OperatorID into ItemGroup
+                            select new CertificateStatiticsViewModel()
+                            {
+                                OperatorID = ItemGroup.Key.ToString(),
+                                Certificates = ItemGroup.Count()
+                            };
+                return query;
+            }
+        }
+
+        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByLab(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                var query = from certificate in DbContext.Certificates
+                            where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                            group certificate by new { certificate.LabID } into ItemGroup
+                            select new CertificateStatiticsViewModel()
+                            {
+                                LabID = ItemGroup.Key.ToString(),
+                                Certificates = ItemGroup.Count()
+                            };
+                return query;
+            }
+            else
+            {
+                var query = from certificate in DbContext.Certificates
+                            where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                            group certificate by new { certificate.LabID } into ItemGroup
+                            select new CertificateStatiticsViewModel()
+                            {
+                                LabID = ItemGroup.Key.ToString(),
+                                Certificates = ItemGroup.Count()
+                            };
+                return query;
+            }
+        }
+
+        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperatorCity()
         {
             var query = from certificate in DbContext.Certificates
                         where !string.IsNullOrEmpty(certificate.OperatorID)
                         group certificate by new { certificate.OperatorID, certificate.CityID } into OperatorGroup
-                        select new StatisticCertificate()
+                        select new CertificateStatiticsViewModel()
                         {
                             OperatorID = OperatorGroup.Key.OperatorID,
                             CityID = OperatorGroup.Key.CityID,
@@ -132,22 +236,22 @@ namespace BTS.Data.Repository
             return query;
         }
 
-        IEnumerable<CertificateStatisticViewModel> ICertificateRepository.GetStatistic(string fromDate, string toDate)
+        IEnumerable<CertificateStatiticsViewModel> ICertificateRepository.GetStatistic(string fromDate, string toDate)
         {
             var parameters = new SqlParameter[]{
                 new SqlParameter("@fromDate",fromDate),
                 new SqlParameter("@toDate",toDate)
             };
-            return DbContext.Database.SqlQuery<CertificateStatisticViewModel>("GetCertificateStatistic @fromDate,@toDate", parameters);
+            return DbContext.Database.SqlQuery<CertificateStatiticsViewModel>("GetCertificateStatistic @fromDate,@toDate", parameters);
         }
 
-        public IEnumerable<StatisticCertificate> GetStatisticCertificateByYearOperator()
+        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByYearOperator()
         {
             var query = from certificate in DbContext.Certificates
                         where !string.IsNullOrEmpty(certificate.ID) && !string.IsNullOrEmpty(certificate.OperatorID) && certificate.IssuedDate != null
                         orderby certificate.IssuedDate ascending
                         group certificate by new { certificate.IssuedDate.Value.Year, certificate.OperatorID } into OperatorGroup
-                        select new StatisticCertificate()
+                        select new CertificateStatiticsViewModel()
                         {
                             Year = OperatorGroup.Key.Year.ToString(),
 

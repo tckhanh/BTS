@@ -143,6 +143,9 @@ namespace BTS.Web.Controllers
                     if (string.IsNullOrEmpty(Item.Id))
                     {
                         var role = new ApplicationRole(Item.Name, Item.Description);
+                        role.CreatedBy = User.Identity.Name;
+                        role.CreatedDate = DateTime.Now;
+
                         var roleresult = await RoleManager.CreateAsync(role);
                         if (!roleresult.Succeeded)
                         {
@@ -154,6 +157,9 @@ namespace BTS.Web.Controllers
                     {
                         var editItem = await RoleManager.FindByIdAsync(Item.Id);
                         editItem.UpdateApplicationRole(Item, "update");
+                        editItem.UpdatedBy = User.Identity.Name;
+                        editItem.UpdatedDate = DateTime.Now;
+
                         await RoleManager.UpdateAsync(editItem);
                         return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     }

@@ -109,7 +109,45 @@ namespace BTS.Web.Controllers
         // Thuc hien lenh ghi Log neu có loi va nem loi ra ngoai
         protected void ExecuteDatabase(Func<string, int> function, string excelConnectionString)
         {
-            int idReturn = 0;
+            int idReturn;
+            string description = "";
+            try
+            {
+                idReturn = function.Invoke(excelConnectionString);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+                LogError(ex, description);
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            finally
+            {
+            }
+        }
+
+        protected void ExecuteDatabaseAsyn(Func<string, Task<int>> function, string excelConnectionString)
+        {
+            Task<int> idReturn;
             string description = "";
             try
             {

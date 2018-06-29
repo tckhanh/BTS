@@ -140,7 +140,7 @@ namespace BTS.Service
                 _appUserGroupRepository.Add(new ApplicationUserGroup()
                 {
                     GroupId = group.Id,
-                    UserId = userId
+                    UserId = userId,
                 });
             }
             return true;

@@ -6,40 +6,68 @@ using System.Threading.Tasks;
 using BTS.Common.ViewModels;
 using BTS.Data.Repositories;
 using BTS.Data.Repository;
+using BTS.Model.Models;
 
 namespace BTS.Service
 {
     public interface IStatisticService
     {
-        IEnumerable<CertificateStatisticViewModel> GetRevenueStatistic(string fromDate, string toDate);
+        IEnumerable<CertificateStatiticsViewModel> GetRevenueStatistic(string fromDate, string toDate);
 
-        IEnumerable<StatisticCertificate> GetStatisticCertificateByYear();
+        IEnumerable<Operator> GetOperator();
 
-        IEnumerable<StatisticCertificate> GetStatisticCertificateByOperatorCity();
+        IEnumerable<City> GetCity();
+
+        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByYear();
+
+        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperator();
+
+        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperatorCity();
     }
 
     public class StatisticService : IStatisticService
     {
-        private ICertificateRepository _btsCertificateRepository;
+        private ICertificateRepository _certificateRepository;
+        private ISubBTSinCertRepository _subBTSinCertRepository;
+        private IOperatorRepository _operatorRepository;
+        private ICityRepository _cityRepository;
 
-        public StatisticService(ICertificateRepository btsCertificateRepository)
+        public StatisticService(ICertificateRepository certificateRepository, IOperatorRepository operatorRepository, ICityRepository cityRepository, ISubBTSinCertRepository subBTSinCertRepository)
         {
-            _btsCertificateRepository = btsCertificateRepository;
+            _certificateRepository = certificateRepository;
+            _subBTSinCertRepository = subBTSinCertRepository;
+            _operatorRepository = operatorRepository;
+            _cityRepository = cityRepository;
         }
 
-        public IEnumerable<CertificateStatisticViewModel> GetRevenueStatistic(string fromDate, string toDate)
+        public IEnumerable<CertificateStatiticsViewModel> GetRevenueStatistic(string fromDate, string toDate)
         {
-            return _btsCertificateRepository.GetStatistic(fromDate, toDate);
+            return _certificateRepository.GetStatistic(fromDate, toDate);
         }
 
-        public IEnumerable<StatisticCertificate> GetStatisticCertificateByYear()
+        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByYear()
         {
-            return _btsCertificateRepository.GetStatisticCertificateByYear();
+            return _certificateRepository.GetCertificateStatisticByYear();
         }
 
-        public IEnumerable<StatisticCertificate> GetStatisticCertificateByOperatorCity()
+        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperatorCity()
         {
-            return _btsCertificateRepository.GetStatisticCertificateByOperatorCity();
+            return _certificateRepository.GetCertificateStatisticByOperatorCity();
+        }
+
+        public IEnumerable<Operator> GetOperator()
+        {
+            return _operatorRepository.GetAll();
+        }
+
+        public IEnumerable<City> GetCity()
+        {
+            return _cityRepository.GetAll();
+        }
+
+        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperator()
+        {
+            return _certificateRepository.GetCertificateStatisticByOperator();
         }
     }
 }

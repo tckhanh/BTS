@@ -67,6 +67,7 @@ namespace BTS.Web.Controllers
             {
                 item.CreatedDate = DateTime.Now;
                 item.CreatedBy = User.Identity.Name;
+
                 _inCaseOfService.Add(item);
                 try
                 {
@@ -86,11 +87,13 @@ namespace BTS.Web.Controllers
                 var entity = _inCaseOfService.getByID(item.ID);
                 entity.Code = item.Code;
                 entity.Name = item.Name;
+
                 entity.UpdatedDate = DateTime.Now;
                 entity.UpdatedBy = User.Identity.Name;
 
                 try
                 {
+                    _inCaseOfService.Update(entity);
                     _inCaseOfService.Save();
                     status = true;
                 }

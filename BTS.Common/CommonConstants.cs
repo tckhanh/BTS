@@ -185,10 +185,29 @@
         public const string Sheet_NoCertificate_TestReportDate = "TestReportDate";
         public const string Sheet_NoCertificate_Reason = "Reason";
 
+        public const string Sheet_User = "User";
+        public const string Sheet_User_FullName = "FullName";
+        public const string Sheet_User_BirthDay = "BirthDay";
+        public const string Sheet_User_FatherLand = "FatherLand";
+        public const string Sheet_User_Level = "Level";
+        public const string Sheet_User_EducationalField = "EducationalField";
+        public const string Sheet_User_EntryDate = "EntryDate";
+        public const string Sheet_User_OfficialDate = "OfficialDate";
+        public const string Sheet_User_EndDate = "EndDate";
+        public const string Sheet_User_WorkingDuration = "WorkingDuration";
+        public const string Sheet_User_JobPositions = "JobPositions";
+        public const string Sheet_User_Department = "Department";
+        public const string Sheet_User_Telephone = "Telephone";
+        public const string Sheet_User_Image = "Image";
+        public const string Sheet_User_UserName = "UserName";
+        public const string Sheet_User_Password = "Password";
+        public const string Sheet_User_Email = "Email";
+
         public const string IssuePalce = "Tp. Hồ Chí Minh";
         public const string Signer = "Trần Công Khanh";
 
         public const string ImportCER = "ImportCER";
         public const string ImportBTS = "ImportBTS";
+        public const string SelectAll = "ALL";
     }
 }

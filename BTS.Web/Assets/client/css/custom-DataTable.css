@@ -7,7 +7,12 @@
 
 #MyDataTable td, #MyDataTable th {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 4px;
+    font-weight: bold;
+}
+
+#MyDataTable a{    
+    color: blue;
 }
 
 #MyDataTable tr:nth-child(even){background-color: #f5ebb8;}

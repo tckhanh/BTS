@@ -15,7 +15,7 @@ using System.Web.Mvc;
 namespace BTS.Web.Controllers
 {
     [AuthorizeRoles(CommonConstants.Data_CanImport_Role)]
-    public class ImportController : BaseController
+    public class ImportDataController : BaseController
     {
         // GET: Import
         private IImportService _importService;
@@ -23,7 +23,7 @@ namespace BTS.Web.Controllers
         private ExcelIO _excelIO;
         private NumberFormatInfo provider;
 
-        public ImportController(IImportService importService, IErrorService errorService) : base(errorService)
+        public ImportDataController(IImportService importService, IErrorService errorService) : base(errorService)
         {
             this._importService = importService;
             _excelIO = new ExcelIO(errorService);
@@ -59,7 +59,15 @@ namespace BTS.Web.Controllers
 
                         Request.Files["file"].SaveAs(fileLocation);
 
-                        _excelIO.FormatColumnDecimalToText(fileLocation);
+                        string[] columnNames = new string[] {
+                            CommonConstants.Sheet_Certificate_Longtitude,
+                            CommonConstants.Sheet_Certificate_Latitude,
+                            CommonConstants.Sheet_Certificate_MaxHeightIn100m,
+                            CommonConstants.Sheet_Certificate_MinAntenHeight,
+                            CommonConstants.Sheet_Certificate_OffsetHeight,
+                            CommonConstants.Sheet_Certificate_SafeLimit,
+                            CommonConstants.Sheet_Certificate_BtsCode};
+                        _excelIO.FormatColumnDecimalToText(fileLocation, columnNames);
 
                         //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
                         //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
@@ -104,6 +112,8 @@ namespace BTS.Web.Controllers
                     var Item = new InCaseOf();
                     Item.ID = Convert.ToInt32(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_InCaseOf_Name].ToString();
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
 
                     _importService.Add(Item);
                     _importService.Save();
@@ -127,6 +137,8 @@ namespace BTS.Web.Controllers
                     Item.Address = dt.Rows[i][CommonConstants.Sheet_Lab_Address].ToString();
                     Item.Phone = dt.Rows[i][CommonConstants.Sheet_Lab_Phone].ToString();
                     Item.Fax = dt.Rows[i][CommonConstants.Sheet_Lab_Fax].ToString();
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
 
                     _importService.Add(Item);
                     _importService.Save();
@@ -147,6 +159,8 @@ namespace BTS.Web.Controllers
                     var Item = new City();
                     Item.ID = dt.Rows[i][CommonConstants.Sheet_City_ID].ToString();
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_City_Name].ToString();
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
 
                     _importService.Add(Item);
                     _importService.Save();
@@ -167,6 +181,8 @@ namespace BTS.Web.Controllers
                     var Item = new Operator();
                     Item.ID = dt.Rows[i][CommonConstants.Sheet_Operator_ID].ToString();
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_Operator_Name].ToString();
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
 
                     _importService.Add(Item);
                     _importService.Save();
@@ -192,6 +208,8 @@ namespace BTS.Web.Controllers
                     Item.Fax = dt.Rows[i][CommonConstants.Sheet_Applicant_Fax].ToString();
                     Item.ContactName = dt.Rows[i][CommonConstants.Sheet_Applicant_ContactName].ToString();
                     Item.OperatorID = dt.Rows[i][CommonConstants.Sheet_Applicant_OperatorID].ToString();
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
 
                     _importService.Add(Item);
                     _importService.Save();
@@ -225,6 +243,8 @@ namespace BTS.Web.Controllers
                     Item.FeeAnnounceDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceDate].ToString());
                 if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeReceiptDate].ToString().Length > 0)
                     Item.FeeReceiptDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_FeeReceiptDate].ToString());
+                Item.CreatedBy = User.Identity.Name;
+                Item.CreatedDate = DateTime.Now;
 
                 Profile dbProfile = _importService.findProfile(Item.ApplicantID, Item.ProfileNum, Item.ProfileDate);
                 if (dbProfile != null)
@@ -276,6 +296,8 @@ namespace BTS.Web.Controllers
                     {
                         Item.LastNoOwnCertificateIDs = string.Join(";", certIDs);
                     }
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
 
                     Bts dbBts = _importService.findBts(Item.ProfileID, Item.BtsCode);
                     if (dbBts != null)
@@ -371,6 +393,9 @@ namespace BTS.Web.Controllers
                     Item.SubBtsPowerSums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums].ToString();
                     SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
 
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
+
                     Certificate dbCertificate = _importService.findCertificate(Item.ID);
 
                     if (dbCertificate != null)
@@ -403,6 +428,9 @@ namespace BTS.Web.Controllers
                             subBtsItem.Equipment = SubBtsEquipments[j];
                             subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
                             subBtsItem.PowerSum = SubBtsPowerSums[j];
+
+                            subBtsItem.CreatedBy = User.Identity.Name;
+                            subBtsItem.CreatedDate = DateTime.Now;
 
                             _importService.Add(subBtsItem);
                             _importService.Save();
@@ -442,6 +470,9 @@ namespace BTS.Web.Controllers
                     Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_NoCertificate_TestReportNo].ToString();
                     Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_TestReportDate].ToString());
                     Item.Reason = dt.Rows[i][CommonConstants.Sheet_NoCertificate_Reason].ToString();
+
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
 
                     _importService.Add(Item);
 

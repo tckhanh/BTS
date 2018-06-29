@@ -179,13 +179,18 @@ namespace BTS.Web.Controllers
                     {
                         newAppUser = new ApplicationUser();
                         newAppUser.UpdateUser(Item);
+                        newAppUser.CreatedBy = User.Identity.Name;
+                        newAppUser.CreatedDate = DateTime.Now;
+
                         result = await UserManager.CreateAsync(newAppUser, Item.Password);
                     }
                     else
                     {
                         newAppUser = await UserManager.FindByIdAsync(Item.Id);
-
                         newAppUser.UpdateUser(Item);
+                        newAppUser.UpdatedBy = User.Identity.Name;
+                        newAppUser.UpdatedDate = DateTime.Now;
+
                         result = await UserManager.UpdateAsync(newAppUser);
                     }
                     if (result.Succeeded)
@@ -221,7 +226,9 @@ namespace BTS.Web.Controllers
                 listAppUserGroup.Add(new ApplicationUserGroup()
                 {
                     GroupId = group,
-                    UserId = userID
+                    UserId = userID,
+                    CreatedBy = User.Identity.Name,
+                    CreatedDate = DateTime.Now
                 });
 
                 _appGroupService.AddUserToGroups(listAppUserGroup);
@@ -246,6 +253,9 @@ namespace BTS.Web.Controllers
 
                     String hashedNewPassword = UserManager.PasswordHasher.HashPassword(Item.Password);
                     ApplicationUser cUser = await store.FindByIdAsync(Item.Id);
+                    cUser.UpdatedBy = User.Identity.Name;
+                    cUser.UpdatedDate = DateTime.Now;
+
                     await store.SetPasswordHashAsync(cUser, hashedNewPassword);
                     await store.UpdateAsync(cUser);
                     return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
@@ -268,6 +278,9 @@ namespace BTS.Web.Controllers
             {
                 var appUser = await UserManager.FindByIdAsync(id);
                 appUser.Locked = !appUser.Locked;
+                appUser.UpdatedBy = User.Identity.Name;
+                appUser.UpdatedDate = DateTime.Now;
+
                 var result = await UserManager.UpdateAsync(appUser);
                 if (result.Succeeded)
                     return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Locked/UnLocked Successfully" }, JsonRequestBehavior.AllowGet);

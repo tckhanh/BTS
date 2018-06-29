@@ -59,10 +59,13 @@ var checkController = {
                 fileExtension = responseJSON.fileExtension;
                 if (responseJSON.Status == "Success") {
                     bar.html('Đã thực hiện kiểm tra BTS xong!');
+                    $.notify(xhr.responseJSON.Message, "success");
                 }
                 else {
                     bar.html('Lỗi trong quá trình thực hiện!');
-                    alert("Complete: " + xhr.responseJSON.Message);
+
+                    //alert("Complete: " + xhr.responseJSON.Message);
+                    $.notify(xhr.responseJSON.Message, "error");
                 }
             },
             complete: function (xhr) {
@@ -81,8 +84,9 @@ var checkController = {
             var fileName = sender.target.files[0].name;
             var validExts = new Array(".xlsx", ".xls");
             var fileExt = fileName.substring(fileName.lastIndexOf('.'));
-            if (validExts.indexOf(fileExt) < 0) {
-                alert("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu");
+            if (validExts.indexOf(fileExt) < 0) {                
+                //alert("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu");
+                $.notify("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu", "warn");
                 $("#FileDialog").val('');
                 return false;
             }

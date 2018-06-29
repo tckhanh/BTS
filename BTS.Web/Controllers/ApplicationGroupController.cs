@@ -121,6 +121,9 @@ namespace BTS.Web.Controllers
                     {
                         ApplicationGroup newItem = new ApplicationGroup();
                         newItem.UpdateApplicationGroup(Item);
+                        newItem.CreatedBy = User.Identity.Name;
+                        newItem.CreatedDate = DateTime.Now;
+
                         appGroup = _appGroupService.Add(newItem);
                         _appGroupService.Save();
                         //save group
@@ -130,6 +133,9 @@ namespace BTS.Web.Controllers
                         appGroup = _appGroupService.GetDetail(Item.Id);
 
                         appGroup.UpdateApplicationGroup(Item);
+                        appGroup.UpdatedBy = User.Identity.Name;
+                        appGroup.UpdatedDate = DateTime.Now;
+
                         _appGroupService.Update(appGroup);
                         _appGroupService.Save();
                     }
@@ -145,7 +151,9 @@ namespace BTS.Web.Controllers
                         listRoleGroup.Add(new ApplicationRoleGroup()
                         {
                             GroupId = appGroup.Id,
-                            RoleId = role
+                            RoleId = role,
+                            CreatedBy = User.Identity.Name,
+                            CreatedDate = DateTime.Now
                         });
                     }
                     _appGroupService.AddRolesToGroup(listRoleGroup);
@@ -165,8 +173,13 @@ namespace BTS.Web.Controllers
                 }
             }
             catch (Exception ex)
+
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                }, JsonRequestBehavior.AllowGet);
             }
         }
 

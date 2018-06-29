@@ -1,11 +1,19 @@
 ﻿using AutoMapper;
+using BTS.Common;
+using BTS.Common.ViewModels;
+using BTS.Data;
 using BTS.Model.Models;
 using BTS.Service;
+using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
@@ -19,10 +27,12 @@ namespace BTS.Web.Controllers
 
         private IStatisticService _stattisticService;
         private ICommonService _commonService;
+        private ICertificateService _certificateService;
 
-        public HomeController(ICertificateService btscertificateService, ICommonService commonService, IStatisticService stattisticService, IErrorService errorService) : base(errorService)
+        public HomeController(ICertificateService btscertificateService, ICommonService commonService, ICertificateService certificateService, IStatisticService stattisticService, IErrorService errorService) : base(errorService)
         {
             _commonService = commonService;
+            _certificateService = certificateService;
             _btsCertificateService = btscertificateService;
             _stattisticService = stattisticService;
         }
@@ -30,30 +40,44 @@ namespace BTS.Web.Controllers
         [OutputCache(Duration = 60, Location = System.Web.UI.OutputCacheLocation.Client)]
         public ActionResult Index()
         {
-            int countBTS = 0;
-            IEnumerable<Certificate> data = _btsCertificateService.getAll(out countBTS, true).ToList();
-            ViewBag.Certificates = Mapper.Map<List<CertificateViewModel>>(data);
+            IEnumerable<Operator> operatorList = _stattisticService.GetOperator();
+            IEnumerable<City> cityList = _stattisticService.GetCity();
 
-            var statisticData = _stattisticService.GetStatisticCertificateByYear();
+            ViewBag.operatorList = operatorList;
+            ViewBag.cityList = cityList;
 
-            //var slideModel = _commonService.GetSlides();
-            //var slideView = Mapper.Map<IEnumerable<Slide>, IEnumerable<SlideViewModel>>(slideModel);
-            var homeViewModel = new HomeViewModel();
-            //homeViewModel.Slides = slideView;
-
-            //var lastestProductModel = _CertificateService.GetLastest(3);
-
-            //var topSaleProductModel = _CertificateService.GetHotProduct(3);
-            //var lastestProductViewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(lastestProductModel);
-            //var topSaleProductViewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(topSaleProductModel);
-            //homeViewModel.StatisticCertificateByOperator = _stattisticService.GetStatisticCertificateByOperator();
-            //homeViewModel.StatisticCertificateByOperatorCity = _stattisticService.GetStatisticCertificateByOperatorCity();
-            return View(ViewBag.Certificates);
+            return View();
         }
 
-        public ActionResult Index_Test()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(string selectOperatorId, string selectCityId)
         {
-            return View();
+            try
+            {
+                IEnumerable<CertificateStatiticsViewModel> ByOperator = _stattisticService.GetCertificateStatisticByOperator();
+                IEnumerable<CertificateStatiticsViewModel> ByOperatorCity = _stattisticService.GetCertificateStatisticByOperatorCity();
+                int Number = 0;
+                IEnumerable<Certificate> data = _certificateService.getAll(out Number, true);
+                IEnumerable<Certificate> data1 = _certificateService.getAll(out Number, true);
+
+                var pivotArray = data.ToPivotArray(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Count() : 0);
+
+                String json = JsonConvert.SerializeObject(pivotArray, new KeyValuePairConverter());
+
+                return Json(new
+                {
+                    Status = CommonConstants.Status_Success,
+                    Message = "Import Certificate Finished !",
+                    DataByOperator = ByOperator,
+                    DataByOperatorCity = ByOperatorCity
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new { Status = CommonConstants.Status_Error, Message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [ChildActionOnly]
@@ -94,7 +118,7 @@ namespace BTS.Web.Controllers
 
         public ActionResult GetCertificateSumary()
         {
-            List<BTS.Common.ViewModels.StatisticCertificate> dataSumary = _stattisticService.GetStatisticCertificateByYear().ToList();
+            List<BTS.Common.ViewModels.CertificateStatiticsViewModel> dataSumary = _stattisticService.GetCertificateStatisticByYear().ToList();
 
             return Json(dataSumary, JsonRequestBehavior.AllowGet);
         }
@@ -229,5 +253,85 @@ namespace BTS.Web.Controllers
             }
             return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
         }
+
+        //public ActionResult CharterColumn(int nam)
+        //{
+        //    var _context = new BTSDbContext();
+        //    ArrayList xValue = new ArrayList();
+        //    ArrayList yValue = new ArrayList();
+
+        //    var Results = (from c in _context.tblMVCCharts where c.Growth_Year > nam select c);
+        //    Results.ToList().ForEach(rs => xValue.Add(rs.Growth_Year));
+        //    Results.ToList().ForEach(rs => yValue.Add(rs.Growth_Value));
+
+        //    new Chart(width: 600, height: 400, theme: ChartTheme.Blue)
+        //    .AddTitle("Chart for Growth.[Column Chart]")
+        //    .AddSeries("Default", chartType: "Column", xValue: xValue, yValues: yValue)
+        //    .Write("bmp");
+        //    return null;
+        //}
+
+        //public ActionResult ChartBar()
+        //{
+        //    var _context = new BTSDbContext();
+        //    ArrayList xValue = new ArrayList();
+        //    ArrayList yValue = new ArrayList();
+        //    var resutls = (from d in _context.Applicants select d);
+        //    resutls.ToList().ForEach(x => xValue.Add(x.Growth_Year));
+        //    resutls.ToList().ForEach(x => yValue.Add(x.Growth_Value));
+        //    new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+        //        .AddTitle("Chart for Growth.[Bar Chart]")
+        //        .AddSeries("Default", chartType: "Bar", xValue: xValue, yValues: yValue)
+        //        .Write("bmp");
+        //    return null;
+        //}
+
+        //public ActionResult ChartPie()
+        //{
+        //    var _context = new MVCChartsEntities();
+        //    ArrayList xValue = new ArrayList();
+        //    ArrayList yValue = new ArrayList();
+        //    var resutls = (from d in _context.tblMVCCharts select d);
+        //    resutls.ToList().ForEach(x => xValue.Add(x.Growth_Year));
+        //    resutls.ToList().ForEach(x => yValue.Add(x.Growth_Value));
+        //    new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+        //        .AddTitle("Chart for Growth.[Pie Chart]")
+        //        .AddLegend("Summary")
+        //        .AddSeries("Default", chartType: "Pie", xValue: xValue, yValues: yValue)
+        //        .Write("bmp");
+        //    return null;
+        //}
+
+        //public ActionResult DoughnutChart()
+        //{
+        //    var _context = new BTSDbContext();
+        //    ArrayList xValue = new ArrayList();
+        //    ArrayList yValue = new ArrayList();
+        //    var resutls = (from d in _context.Applicants select d);
+        //    resutls.ToList().ForEach(x => xValue.Add(x.Growth_Year));
+        //    resutls.ToList().ForEach(x => yValue.Add(x.Growth_Value));
+        //    new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+        //        .AddTitle("Chart for Growth.[Doughnut Chart]")
+        //        .AddLegend("Summary")
+        //        .AddSeries("Default", chartType: "Doughnut", xValue: xValue, yValues: yValue)
+        //        .Write("bmp");
+        //    return null;
+        //}
+
+        //public ActionResult PyramidChart()
+        //{
+        //    var _context = new MVCChartsEntities();
+        //    ArrayList xValue = new ArrayList();
+        //    ArrayList yValue = new ArrayList();
+        //    var resutls = (from d in _context.tblMVCCharts select d);
+        //    resutls.ToList().ForEach(x => xValue.Add(x.Growth_Year));
+        //    resutls.ToList().ForEach(x => yValue.Add(x.Growth_Value));
+        //    new Chart(width: 600, height: 400, theme: ChartTheme.Vanilla)
+        //        .AddTitle("Chart for Growth.[Pyramid Chart]")
+        //        .AddLegend("Summary")
+        //        .AddSeries("Default", chartType: "Pyramid", xValue: xValue, yValues: yValue)
+        //        .Write("bmp");
+        //    return null;
+        //}
     }
 }

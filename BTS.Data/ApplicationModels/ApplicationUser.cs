@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using BTS.Model.Abstract;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace BTS.Data.ApplicationModels
     // Must be expressed in terms of our custom Role and other types:
     public class ApplicationUser
     : IdentityUser<string, ApplicationUserLogin,
-    ApplicationUserRole, ApplicationUserClaim>
+    ApplicationUserRole, ApplicationUserClaim>, IAuditable
     {
         [Required]
         [MaxLength(255)]
@@ -36,7 +37,12 @@ namespace BTS.Data.ApplicationModels
 
         public DateTime? EntryDate { get; set; }
 
+        public DateTime? OfficialDate { get; set; }
+
         public DateTime? EndDate { get; set; }
+
+        [MaxLength(50)]
+        public string WorkingDuration { get; set; }
 
         [MaxLength(255)]
         public string JobPositions { get; set; }
@@ -48,6 +54,18 @@ namespace BTS.Data.ApplicationModels
         public bool Locked { get; set; } = true;
 
         public virtual ICollection<ApplicationUserGroup> Groups { get; set; }
+
+        public DateTime? CreatedDate
+        { get; set; }
+
+        public string CreatedBy
+        { get; set; }
+
+        public DateTime? UpdatedDate
+        { get; set; }
+
+        public string UpdatedBy
+        { get; set; }
 
         public ApplicationUser()
         {

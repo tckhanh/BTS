@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layouts.cshtml";
+}
+
+@section headCSS{
+
+    <link href="~/Assets/client/css/custom.css" rel="stylesheet" />
+    <link href="~/Assets/client/css/custom-DataTable.css" rel="stylesheet" />
+
+}
+
+@section footerJS{
+    @*<script src="http://malsup.github.com/jquery.form.js"></script>*@
+    <script src="~/Assets/admin/libs/jquery-form/dist/jquery.form.min.js"></script>
+    <script src="~/Assets/client/js/controllers/userController.js"></script>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Data Tables
+            <small>advanced tables</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Tables</a></li>
+            <li class="active">Data tables</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content">
+        <div class="row col-md-12">
+            <!-- SELECT2 EXAMPLE -->
+            <div class="box box-default col-md-8">
+                <div class="box-header with-border">
+                    <h3 class="BTS-title">NHẬP DỮ LIỆU DANH SÁCH NGƯỜI DÙNG</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        @using (Html.BeginForm("Index", "ImportUser", FormMethod.Post, new { enctype = "multipart/form-data", id = "jqueryForm", @class = "form-horizontal form-label-left" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-12" for="SampleFile">
+                                        Mẫu file dữ liệu nhập<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <a href="~/Sample File/Users Sample.xls">File mẫu danh sách người dùng</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="FileDialog">
+                                        Chọn tập tin người dùng<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input id="FileDialog" type="file" accept=".xls" name="file" class="form-control col-md-7 col-xs-12" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div id="progressRow" hidden class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="progressBarStatus">
+                                        Tiến độ thực hiện<span class="required"></span>
+                                    </label>
+
+                                    <div class="progress col-md-9 col-sm-9 col-xs-12">
+                                        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                                    </div>
+                                    <div id="status"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <button class="btn btn-primary" type="reset" id="btnReset">Bỏ chọn</button>
+                                        <input class="btn btn-success" type="submit" id="btnCheck" value="Kiểm tra" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.row -->
+    </section>
+</div>
