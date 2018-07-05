@@ -151,7 +151,7 @@ namespace BTS.Web.Controllers
                         {
                             return Json(new { success = false, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
                         }
-                        return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
@@ -161,7 +161,7 @@ namespace BTS.Web.Controllers
                         editItem.UpdatedDate = DateTime.Now;
 
                         await RoleManager.UpdateAsync(editItem);
-                        return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
@@ -193,7 +193,7 @@ namespace BTS.Web.Controllers
 
                 IdentityResult result = await RoleManager.DeleteAsync(role);
                 if (result.Succeeded)
-                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", RoleManager.Roles), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", RoleManager.Roles), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 else
                     return Json(new { success = false, message = "Xóa dữ liệu không thành công" }, JsonRequestBehavior.AllowGet);
             }

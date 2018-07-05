@@ -32,7 +32,7 @@
                 },
                 error: function (data) {
                     var r = jQuery.parseJSON(data.responseText);
-                    alert("Message: " + r.Message);
+                    alert("Message: " + r.message);
                     alert("StackTrace: " + r.StackTrace);
                     alert("ExceptionType: " + r.ExceptionType);
                     $('html').removeClass('waiting');
@@ -43,11 +43,14 @@
                     $('#ImportAction').prop('disabled', false);
                 },
                 success: function (responseJSON, statusText, xhr, element) {
-                    if (responseJSON.Status == "Success")
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (responseJSON.status == "Success")
                         bar.html('Đã thực hiện xong!');
                     else {
                         bar.html('Lỗi trong quá trình thực hiện!');
-                        alert("Complete: " + xhr.responseJSON.Message);
+                        alert("Complete: " + xhr.responseJSON.message);
                     }
                     $('html').removeClass('waiting');
                     bar.removeClass('active');
@@ -57,7 +60,7 @@
                     $('#ImportAction').prop('disabled', false);
                     //$("#ImportAction").val("ImportBTS");
                 },
-                complete: function (xhr) {                    
+                complete: function (xhr) {
                 },
                 async: true
             });

@@ -40,7 +40,6 @@
             var productid = parseInt($(this).data('id'));
             var price = parseFloat($(this).data('price'));
             if (isNaN(quantity) == false) {
-
                 var amount = quantity * price;
 
                 $('#amount_' + productid).text(numeral(amount).format('0,0'));
@@ -51,9 +50,7 @@
 
             $('#lblTotalOrder').text(numeral(cart.getTotalOrder()).format('0,0'));
 
-
             cart.updateAll();
-
         });
         $('#btnContinue').off('click').on('click', function (e) {
             e.preventDefault();
@@ -83,7 +80,6 @@
             if (isValid) {
                 cart.createOrder();
             }
-
         });
 
         $('input[name="paymentMethod"]').off('click').on('click', function () {
@@ -106,7 +102,10 @@
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                if (response.status) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status) {
                     var user = response.data;
                     $('#txtName').val(user.FullName);
                     $('#txtAddress').val(user.Address);
@@ -136,9 +135,11 @@
                 orderViewModel: JSON.stringify(order)
             },
             success: function (response) {
-                if (response.status) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status) {
                     if (response.urlCheckout != undefined && response.urlCheckout != '') {
-                        
                         window.location.href = response.urlCheckout;
                     }
                     else {
@@ -149,7 +150,6 @@
                             $('#cartContent').html('Cảm ơn bạn đã đặt hàng thành công. Chúng tôi sẽ liên hệ sớm nhất.');
                         }, 2000);
                     }
-
                 }
                 else {
                     $('#divMessage').show();
@@ -172,9 +172,11 @@
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                if (response.status) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status) {
                     cart.loadData();
-
                 }
             }
         });
@@ -195,7 +197,10 @@
             },
             dataType: 'json',
             success: function (response) {
-                if (response.status) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status) {
                     cart.loadData();
                     console.log('Update ok');
                 }
@@ -211,7 +216,10 @@
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                if (response.status) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status) {
                     cart.loadData();
                 }
             }
@@ -222,11 +230,14 @@
             url: '/ShoppingCart/GetAll',
             type: 'GET',
             dataType: 'json',
-            success: function (res) {
-                if (res.status) {
+            success: function (response) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status) {
                     var template = $('#tplCart').html();
                     var html = '';
-                    var data = res.data;
+                    var data = response.data;
                     $.each(data, function (i, item) {
                         html += Mustache.render(template, {
                             ProductId: item.ProductId,

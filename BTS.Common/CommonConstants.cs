@@ -78,6 +78,7 @@
         public static string CurrentCulture { set; get; }
 
         public const string Status_Error = "Error";
+        public const string Status_TimeOut = "TimeOut";
         public const string Status_Success = "Success";
 
         public const string ProductTag = "product";

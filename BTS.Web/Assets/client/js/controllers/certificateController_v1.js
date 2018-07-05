@@ -1,5 +1,4 @@
-﻿
-var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+﻿var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }),
@@ -76,7 +75,10 @@ var certificateController = {
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                if (response.status == true) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status == "Success") {
                     var data = response.data;
                     $('#hidID').val(data.ID);
                     $('#txtCode').val(data.Code);
@@ -91,7 +93,7 @@ var certificateController = {
             },
             error: function (err) {
                 console.log(err);
-                $.notify(err.Message, {
+                $.notify(err.message, {
                     className: "error",
                     clickToHide: true
                 });

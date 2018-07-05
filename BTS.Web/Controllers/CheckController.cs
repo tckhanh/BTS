@@ -101,7 +101,7 @@ namespace BTS.Web.Controllers
                     if (fileExtension == ".xls" || fileExtension == ".xlsx")
                     {
                         string tmpFileName = Path.GetTempFileName();
-                        fileLocation = Server.MapPath("~/ImportData/") + Request.Files["file"].FileName;
+                        fileLocation = Server.MapPath("~/AppFiles/Tmp/") + Request.Files["file"].FileName;
 
                         if (System.IO.File.Exists(fileLocation))
                             System.IO.File.Delete(fileLocation);
@@ -128,10 +128,10 @@ namespace BTS.Web.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { Status = CommonConstants.Status_Error, Message = ex.Message, fileLocation = fileLocation, fileExtension = fileExtension }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message, fileLocation = fileLocation, fileExtension = fileExtension }, JsonRequestBehavior.AllowGet);
             }
 
-            return Json(new { Status = CommonConstants.Status_Success, Message = "Check BTS Finished !", fileLocation = fileLocation, fileExtension = fileExtension }, JsonRequestBehavior.AllowGet);
+            return Json(new { status = CommonConstants.Status_Success, message = "Check BTS Finished !", fileLocation = fileLocation, fileExtension = fileExtension }, JsonRequestBehavior.AllowGet);
         }
 
         private int UpdateCheckResult(string excelConnectionString)

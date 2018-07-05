@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BTS.Common;
 using BTS.Model.Models;
 using BTS.Service;
 using BTS.Web.Infrastructure.Extensions;
@@ -36,7 +37,7 @@ namespace BTS.Web.Controllers
             {
                 data = data,
                 total = totalRow,
-                status = true
+                status = CommonConstants.Status_Success
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -47,7 +48,7 @@ namespace BTS.Web.Controllers
             return Json(new
             {
                 data = item,
-                status = true
+                status = CommonConstants.Status_Success
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -60,7 +61,7 @@ namespace BTS.Web.Controllers
             InCaseOf item = new InCaseOf();
             item.UpdateInCaseOf(itemVm);
 
-            bool status = false;
+            string status = CommonConstants.Status_Error;
             string message = string.Empty;
             //add new employee if id = 0
             if (item.ID == 0)
@@ -72,11 +73,11 @@ namespace BTS.Web.Controllers
                 try
                 {
                     _inCaseOfService.Save();
-                    status = true;
+                    status = CommonConstants.Status_Success;
                 }
                 catch (Exception ex)
                 {
-                    status = false;
+                    status = CommonConstants.Status_Error;
                     message = ex.Message;
                 }
             }
@@ -85,7 +86,6 @@ namespace BTS.Web.Controllers
                 //update existing DB
                 //save db
                 var entity = _inCaseOfService.getByID(item.ID);
-                entity.Code = item.Code;
                 entity.Name = item.Name;
 
                 entity.UpdatedDate = DateTime.Now;
@@ -95,11 +95,11 @@ namespace BTS.Web.Controllers
                 {
                     _inCaseOfService.Update(entity);
                     _inCaseOfService.Save();
-                    status = true;
+                    status = CommonConstants.Status_Success;
                 }
                 catch (Exception ex)
                 {
-                    status = false;
+                    status = CommonConstants.Status_Error;
                     message = ex.Message;
                 }
             }
@@ -121,14 +121,14 @@ namespace BTS.Web.Controllers
                 _inCaseOfService.Save();
                 return Json(new
                 {
-                    status = true
+                    status = CommonConstants.Status_Success
                 });
             }
             catch (Exception ex)
             {
                 return Json(new
                 {
-                    status = false,
+                    status = CommonConstants.Status_Error,
                     message = ex.Message
                 });
             }

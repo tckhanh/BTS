@@ -12,17 +12,17 @@ namespace BTS.Service
 {
     public interface IStatisticService
     {
-        IEnumerable<CertificateStatiticsViewModel> GetRevenueStatistic(string fromDate, string toDate);
+        IEnumerable<CertStatViewModel> GetRevenueStatistic(string fromDate, string toDate);
 
         IEnumerable<Operator> GetOperator();
 
         IEnumerable<City> GetCity();
 
-        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByYear();
+        IEnumerable<CertStatViewModel> GetCertificateStatisticByYearOperator();
 
-        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperator();
+        IEnumerable<CertStatByOperatorViewModel> GetCertificateStatisticByOperator();
 
-        IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperatorCity();
+        IEnumerable<CertStatViewModel> GetCertificateStatisticByOperatorCity();
     }
 
     public class StatisticService : IStatisticService
@@ -40,17 +40,17 @@ namespace BTS.Service
             _cityRepository = cityRepository;
         }
 
-        public IEnumerable<CertificateStatiticsViewModel> GetRevenueStatistic(string fromDate, string toDate)
+        public IEnumerable<CertStatViewModel> GetRevenueStatistic(string fromDate, string toDate)
         {
             return _certificateRepository.GetStatistic(fromDate, toDate);
         }
 
-        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByYear()
+        public IEnumerable<CertStatViewModel> GetCertificateStatisticByYearOperator()
         {
-            return _certificateRepository.GetCertificateStatisticByYear();
+            return _certificateRepository.GetCertificateStatisticByYearOperator();
         }
 
-        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperatorCity()
+        public IEnumerable<CertStatViewModel> GetCertificateStatisticByOperatorCity()
         {
             return _certificateRepository.GetCertificateStatisticByOperatorCity();
         }
@@ -65,7 +65,7 @@ namespace BTS.Service
             return _cityRepository.GetAll();
         }
 
-        public IEnumerable<CertificateStatiticsViewModel> GetCertificateStatisticByOperator()
+        public IEnumerable<CertStatByOperatorViewModel> GetCertificateStatisticByOperator()
         {
             return _certificateRepository.GetCertificateStatisticByOperator();
         }

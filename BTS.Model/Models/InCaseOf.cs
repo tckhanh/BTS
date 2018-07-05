@@ -13,11 +13,8 @@ namespace BTS.Model.Models
     public class InCaseOf : Auditable
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
-
-        [Required]
-        public int Code { get; set; }
 
         [Required]
         [StringLength(50)]

@@ -1,5 +1,4 @@
-﻿
-var commonController = {
+﻿var commonController = {
     init: function () {
         $("#loaderbody").addClass('hide');
         $(document).bind('ajaxStart', function () {
@@ -20,7 +19,10 @@ var commonController = {
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                if (response.status == true) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status == "Success") {
                     return response.data;
                 }
                 else {
@@ -33,7 +35,7 @@ var commonController = {
             },
             error: function (err) {
                 console.log(err);
-                $.notify(err.Message, {
+                $.notify(err.message, {
                     className: "error",
                     clickToHide: true
                 });
@@ -71,12 +73,15 @@ var commonController = {
                 url: form.action,
                 data: new FormData(form),
                 success: function (response) {
-                    if (response.success) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status = "Success") {
                         $("#firstTab").html(response.html);
                         commonController.refreshAddNewTab($(form).attr('data-restUrl'), true);
                         $.notify(response.message, "success");
-                        if (typeof activatejQueryTable !== 'undefined' && $.isFunction(activatejQueryTable))
-                            activatejQueryTable();
+                        if (typeof commonController.activatejQueryTable !== 'undefined' && $.isFunction(commonController.activatejQueryTable))
+                            commonController.activatejQueryTable();
                     }
                     else {
                         $.notify(response.message, "error");
@@ -98,10 +103,15 @@ var commonController = {
             type: 'GET',
             url: resetUrl,
             success: function (response) {
-                $("#secondTab").html(response);
-                $('ul.nav.nav-tabs a:eq(1)').html(' Thêm mới');
-                if (showViewTab)
-                    $('ul.nav.nav-tabs a:eq(0)').tab('show');
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else {
+                    $("#secondTab").html(response);
+                    $('ul.nav.nav-tabs a:eq(1)').html(' Thêm mới');
+                    if (showViewTab)
+                        $('ul.nav.nav-tabs a:eq(0)').tab('show');
+                }
             }
         });
     },
@@ -111,9 +121,14 @@ var commonController = {
             type: 'GET',
             url: resetUrl,
             success: function (response) {
-                $('ul.nav.nav-tabs a:eq(1)').html(' Thêm mới');
-                if (showViewTab)
-                    $('ul.nav.nav-tabs a:eq(0)').tab('show');
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else {
+                    $('ul.nav.nav-tabs a:eq(1)').html(' Thêm mới');
+                    if (showViewTab)
+                        $('ul.nav.nav-tabs a:eq(0)').tab('show');
+                }
             }
         });
     },
@@ -123,9 +138,14 @@ var commonController = {
             type: 'GET',
             url: url,
             success: function (response) {
-                $("#secondTab").html(response);
-                $('ul.nav.nav-tabs a:eq(1)').html('Sửa đổi');
-                $('ul.nav.nav-tabs a:eq(1)').tab('show');
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else {
+                    $("#secondTab").html(response);
+                    $('ul.nav.nav-tabs a:eq(1)').html('Sửa đổi');
+                    $('ul.nav.nav-tabs a:eq(1)').tab('show');
+                }
             }
         });
     },
@@ -135,9 +155,14 @@ var commonController = {
             type: 'GET',
             url: url,
             success: function (response) {
-                $("#secondTab").html(response);
-                $('ul.nav.nav-tabs a:eq(1)').html('Đặt lại mật khẩu');
-                $('ul.nav.nav-tabs a:eq(1)').tab('show');
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else {
+                    $("#secondTab").html(response);
+                    $('ul.nav.nav-tabs a:eq(1)').html('Đặt lại mật khẩu');
+                    $('ul.nav.nav-tabs a:eq(1)').tab('show');
+                }
             }
         });
     },
@@ -147,9 +172,14 @@ var commonController = {
             type: 'GET',
             url: url,
             success: function (response) {
-                $("#secondTab").html(response);
-                $('ul.nav.nav-tabs a:eq(1)').html('Chi tiết');
-                $('ul.nav.nav-tabs a:eq(1)').tab('show');
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else {
+                    $("#secondTab").html(response);
+                    $('ul.nav.nav-tabs a:eq(1)').html('Chi tiết');
+                    $('ul.nav.nav-tabs a:eq(1)').tab('show');
+                }
             }
         });
     },
@@ -159,11 +189,14 @@ var commonController = {
                 type: 'POST',
                 url: url,
                 success: function (response) {
-                    if (response.success) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status = "Success") {
                         $("#firstTab").html(response.html);
                         $.notify(response.message, "warn");
-                        if (typeof activatejQueryTable !== 'undefined' && $.isFunction(activatejQueryTable))
-                            activatejQueryTable();
+                        if (typeof commonController.activatejQueryTable !== 'undefined' && $.isFunction(commonController.activatejQueryTable))
+                            commonController.activatejQueryTable();
                     }
                     else {
                         $.notify(response.message, "error");
@@ -179,11 +212,14 @@ var commonController = {
                 type: 'POST',
                 url: url,
                 success: function (response) {
-                    if (response.success) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status = "Success") {
                         $("#firstTab").html(response.html);
                         $.notify(response.message, "warn");
-                        if (typeof activatejQueryTable !== 'undefined' && $.isFunction(activatejQueryTable))
-                            activatejQueryTable();
+                        if (typeof commonController.activatejQueryTable !== 'undefined' && $.isFunction(commonController.activatejQueryTable))
+                            commonController.activatejQueryTable();
                     }
                     else {
                         $.notify(response.message, "error");

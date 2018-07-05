@@ -5,9 +5,7 @@
  *      This is a demo file used only for the main dashboard (index.html)
  **/
 
-
 $(function () {
-
     'use strict';
 
     // Make the dashboard widgets sortable Using jquery UI
@@ -158,7 +156,12 @@ $(function () {
             dataType: 'json',
             async: false,
             success: function (response) {
-                data = response;
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else {
+                    data = response;
+                }
             }
         });
         return data;
@@ -184,7 +187,6 @@ $(function () {
         gridTextFamily: 'Open Sans',
         gridTextSize: 10
     });
-
 
     // Donut Chart
     var donut = new Morris.Donut({
@@ -216,5 +218,4 @@ $(function () {
             window.console.log($(this), 'The element has been unchecked');
         }
     });
-
 });

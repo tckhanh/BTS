@@ -3,7 +3,7 @@ namespace BTS.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitDatabase : DbMigration
+    public partial class Initdatabase : DbMigration
     {
         public override void Up()
         {
@@ -47,6 +47,10 @@ namespace BTS.Data.Migrations
                         Id = c.String(nullable: false, maxLength: 128),
                         Name = c.String(maxLength: 250),
                         Description = c.String(maxLength: 250),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -56,6 +60,10 @@ namespace BTS.Data.Migrations
                     {
                         GroupId = c.String(nullable: false, maxLength: 128),
                         RoleId = c.String(nullable: false, maxLength: 128),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => new { t.GroupId, t.RoleId })
                 .ForeignKey("dbo.ApplicationGroups", t => t.GroupId, cascadeDelete: true)
@@ -69,6 +77,10 @@ namespace BTS.Data.Migrations
                     {
                         Id = c.String(nullable: false, maxLength: 128),
                         Description = c.String(maxLength: 250),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(),
                         Name = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
@@ -95,6 +107,10 @@ namespace BTS.Data.Migrations
                     {
                         UserId = c.String(nullable: false, maxLength: 128),
                         GroupId = c.String(nullable: false, maxLength: 128),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(maxLength: 256),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(maxLength: 256),
                     })
                 .PrimaryKey(t => new { t.UserId, t.GroupId })
                 .ForeignKey("dbo.ApplicationGroups", t => t.GroupId, cascadeDelete: true)
@@ -114,10 +130,16 @@ namespace BTS.Data.Migrations
                         Level = c.String(maxLength: 50),
                         EducationalField = c.String(maxLength: 150),
                         EntryDate = c.DateTime(),
+                        OfficialDate = c.DateTime(),
                         EndDate = c.DateTime(),
+                        WorkingDuration = c.String(maxLength: 50),
                         JobPositions = c.String(maxLength: 255),
                         ImagePath = c.String(maxLength: 555),
                         Locked = c.Boolean(nullable: false),
+                        CreatedDate = c.DateTime(),
+                        CreatedBy = c.String(),
+                        UpdatedDate = c.DateTime(),
+                        UpdatedBy = c.String(),
                         Email = c.String(),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -174,11 +196,10 @@ namespace BTS.Data.Migrations
                         Longtitude = c.Double(),
                         Latitude = c.Double(),
                         InCaseOfID = c.Int(nullable: false),
-                        IssuedCertificateID = c.String(maxLength: 16),
-                        LastOwnCertificateID = c.String(maxLength: 16),
-                        LastOwnOperatorID = c.String(maxLength: 10),
-                        LastNoOwnCertificateID = c.String(maxLength: 16),
-                        LastNoOwnOperatorID = c.String(maxLength: 10),
+                        LastOwnCertificateIDs = c.String(maxLength: 255),
+                        LastNoOwnCertificateIDs = c.String(maxLength: 255),
+                        ProFilesInProcess = c.String(maxLength: 255),
+                        ReasonsNoCertificate = c.String(maxLength: 255),
                         CreatedDate = c.DateTime(),
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
@@ -211,8 +232,7 @@ namespace BTS.Data.Migrations
                 "dbo.InCaseOfs",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
-                        Code = c.Int(nullable: false),
+                        ID = c.Int(nullable: false),
                         Name = c.String(nullable: false, maxLength: 50),
                         CreatedDate = c.DateTime(),
                         CreatedBy = c.String(maxLength: 256),

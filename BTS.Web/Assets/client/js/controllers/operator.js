@@ -56,16 +56,21 @@ function SubmitForm(form) {
             data: $(form).serialize(),
             dataType: 'json',
             success: function (data) {
-                if (data.success) {
-                    Popup.dialog('close');
-                    dataTable.ajax.reload();
+                if (data.status = "Success") {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else {
+                        Popup.dialog('close');
+                        dataTable.ajax.reload();
 
-                    displayMessage(data.message, 'success');
+                        displayMessage(data.message, 'success');
 
-                    $.notify(data.message, {
-                        globalPosition: "top center",
-                        className: "success"
-                    });
+                        $.notify(data.message, {
+                            globalPosition: "top center",
+                            className: "success"
+                        });
+                    }
                 }
             },
             failure: function (resp) {
@@ -96,16 +101,21 @@ function SubmitForm_Tedu(form) {
             },
             dataType: 'json',
             success: function (data) {
-                if (data.success) {
-                    Popup.dialog('close');
-                    dataTable.ajax.reload();
+                if (data.status = "Success") {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else {
+                        Popup.dialog('close');
+                        dataTable.ajax.reload();
 
-                    displayMessage(data.message, 'success');
+                        displayMessage(data.message, 'success');
 
-                    $.notify(data.message, {
-                        globalPosition: "top center",
-                        className: "success"
-                    });
+                        $.notify(data.message, {
+                            globalPosition: "top center",
+                            className: "success"
+                        });
+                    }
                 }
             },
             failure: function (resp) {
@@ -125,13 +135,18 @@ function Delete(id) {
             type: "POST",
             url: '@Url.Action("Delete","Operator")/' + id,
             success: function (data) {
-                if (data.success) {
-                    dataTable.ajax.reload();
+                if (data.status = "Success") {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else {
+                        dataTable.ajax.reload();
 
-                    $.notify(data.message, {
-                        globalPosition: "top center",
-                        className: "success"
-                    })
+                        $.notify(data.message, {
+                            globalPosition: "top center",
+                            className: "success"
+                        })
+                    }
                 }
             }
         });

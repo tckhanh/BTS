@@ -197,7 +197,7 @@ namespace BTS.Web.Controllers
                     {
                         await UpdateUserGroups(newAppUser.Id, selectedItems);
 
-                        return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
                     else
                         return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
@@ -230,10 +230,10 @@ namespace BTS.Web.Controllers
                     CreatedBy = User.Identity.Name,
                     CreatedDate = DateTime.Now
                 });
-
-                _appGroupService.AddUserToGroups(listAppUserGroup);
-                _appGroupService.Save();
             }
+            _appGroupService.AddUserToGroups(listAppUserGroup);
+            _appGroupService.Save();
+
             var newUserRoles = _appGroupService.GetLogicRolesByUserId(userID);
             await updateRoles(userID, newUserRoles);
         }
@@ -258,7 +258,7 @@ namespace BTS.Web.Controllers
 
                     await store.SetPasswordHashAsync(cUser, hashedNewPassword);
                     await store.UpdateAsync(cUser);
-                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -283,7 +283,7 @@ namespace BTS.Web.Controllers
 
                 var result = await UserManager.UpdateAsync(appUser);
                 if (result.Succeeded)
-                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Locked/UnLocked Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Locked/UnLocked Successfully" }, JsonRequestBehavior.AllowGet);
                 else
                     return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
             }
@@ -311,7 +311,7 @@ namespace BTS.Web.Controllers
 
                 var result = await UserManager.DeleteAsync(appUser);
                 if (result.Succeeded)
-                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
                 else
                     return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
             }

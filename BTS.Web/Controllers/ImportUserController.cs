@@ -54,7 +54,7 @@ namespace BTS.Web.Controllers
 
                 if (fileExtension == ".xls" || fileExtension == ".xlsx")
                 {
-                    string fileLocation = Server.MapPath("~/ImportData/") + Request.Files["file"].FileName;
+                    string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + Request.Files["file"].FileName;
                     try
                     {
                         if (System.IO.File.Exists(fileLocation))
@@ -74,11 +74,11 @@ namespace BTS.Web.Controllers
                     catch (Exception e)
                     {
                         // Base Controller đã ghi Log Error rồi
-                        return Json(new { Status = CommonConstants.Status_Error, Message = e.Message }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = CommonConstants.Status_Error, message = e.Message }, JsonRequestBehavior.AllowGet);
                     }
                 }
             }
-            return Json(new { Status = CommonConstants.Status_Success, Message = "Nhập khẩu người dùng thành công !" }, JsonRequestBehavior.AllowGet);
+            return Json(new { status = CommonConstants.Status_Success, message = "Nhập khẩu người dùng thành công !" }, JsonRequestBehavior.AllowGet);
         }
 
         private int ImportUser(string excelConnectionString)

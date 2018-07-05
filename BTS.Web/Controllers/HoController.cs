@@ -20,8 +20,8 @@ using System.Web.Script.Serialization;
 
 namespace BTS.Web.Controllers
 {
-    [AuthorizeRoles]
-    public class HomeController : BaseController
+    //[Authorize]
+    public class HoController : BaseController
     {
         //IProductCategoryService _productCategoryService;
         private ICertificateService _btsCertificateService;
@@ -30,7 +30,7 @@ namespace BTS.Web.Controllers
         private ICommonService _commonService;
         private ICertificateService _certificateService;
 
-        public HomeController(ICertificateService btscertificateService, ICommonService commonService, ICertificateService certificateService, IStatisticService stattisticService, IErrorService errorService) : base(errorService)
+        public HoController(ICertificateService btscertificateService, ICommonService commonService, ICertificateService certificateService, IStatisticService stattisticService, IErrorService errorService) : base(errorService)
         {
             _commonService = commonService;
             _certificateService = certificateService;
@@ -41,31 +41,28 @@ namespace BTS.Web.Controllers
         [OutputCache(Duration = 60, Location = System.Web.UI.OutputCacheLocation.Client)]
         public ActionResult Index()
         {
+            IEnumerable<Operator> operatorList = _stattisticService.GetOperator();
+            IEnumerable<City> cityList = _stattisticService.GetCity();
+
+            ViewBag.operatorList = operatorList;
+            ViewBag.cityList = cityList;
+
             return View();
         }
 
         [HttpPost]
-        public ActionResult StatisticByOperator()
+        [ValidateAntiForgeryToken]
+        public ActionResult StatisticByOperator(string selectOperatorId, string selectCityId)
         {
             List<object> chartData = new List<object>();
             try
             {
                 IEnumerable<CertStatByOperatorViewModel> ByOperator = _stattisticService.GetCertificateStatisticByOperator();
-
-                System.Reflection.PropertyInfo[] oProperty = typeof(CertStatByOperatorViewModel).GetProperties();
-
-                List<String> ColumnNames = oProperty.Select(x => x.Name).ToList<string>();
+                List<String> ColumnNames = new List<string>() {
+                    "Operator", "ValidCertificates","ExpiredInYearCertificates"};
                 chartData.Add(ColumnNames);
-
-                for (int i = 0; i < oProperty.Length; i++)
-                {
-                    List<String> labels = ByOperator.Select();
-                    chartData.Add(labels);
-                }
-
                 List<String> labels = ByOperator.Select(x => x.OperatorID).ToList();
                 chartData.Add(labels);
-
                 List<int> seriesNo = ByOperator.Select(x => x.ValidCertificates).ToList();
                 chartData.Add(seriesNo);
                 seriesNo = ByOperator.Select(x => x.ExpiredInYearCertificates).ToList();
@@ -153,6 +150,22 @@ namespace BTS.Web.Controllers
         public ActionResult RightSideBar()
         {
             return PartialView();
+        }
+
+        //[ChildActionOnly]
+        //[OutputCache(Duration = 3600)]
+        //public ActionResult Category()
+        //{
+        //    var model = _productCategoryService.GetAll();
+        //    var listProductCategoryViewModel = Mapper.Map<IEnumerable<ProductCategory>, IEnumerable<ProductCategoryViewModel>>(model);
+        //    return PartialView(listProductCategoryViewModel);
+        //}
+
+        public ActionResult GetCertificateSumary()
+        {
+            List<BTS.Common.ViewModels.CertStatViewModel> dataSumary = _stattisticService.GetCertificateStatisticByYearOperator().ToList();
+
+            return Json(dataSumary, JsonRequestBehavior.AllowGet);
         }
 
         //public ActionResult CharterColumn(int nam)

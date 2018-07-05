@@ -1,5 +1,4 @@
 ﻿$(function () {
-
     function getData() {
         var data = [];
         $.ajax({
@@ -8,7 +7,12 @@
             dataType: 'json',
             async: false,
             success: function (response) {
-                data = response;
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else {
+                    data = response;
+                }
             }
         });
         return data;

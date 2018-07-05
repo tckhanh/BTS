@@ -66,7 +66,10 @@ var certificateController = {
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                if (response.status == true) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status == "Success") {
                     data = response.data;
                     $('#hidID').val(data.ID);
                     $('#txtCode').val(data.Code);
@@ -81,7 +84,7 @@ var certificateController = {
             },
             error: function (err) {
                 console.log(err);
-                $.notify(err.Message, {
+                $.notify(err.message, {
                     className: "error",
                     clickToHide: true
                 });
@@ -321,12 +324,12 @@ var certificateController = {
                     {
                         renderers: renderers,
                         rows: ["OperatorID"],
-                        cols: ["CityID"],                        
-                        rendererName: "Horizontal Stacked Bar Chart",                        
+                        cols: ["CityID"],
+                        rendererName: "Horizontal Stacked Bar Chart",
                         rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
                         hiddenAttributes: ["select.pvtRenderer", "renderers"]
                     }, true);
-    }    
+    }
 }
 
 certificateController.init();

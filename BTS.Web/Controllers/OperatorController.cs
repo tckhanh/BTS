@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using BTS.Web.Infrastructure.Extensions;
 using System.Web.Script.Serialization;
+using BTS.Common;
 
 namespace BTS.Web.Controllers
 {
@@ -69,7 +70,7 @@ namespace BTS.Web.Controllers
 
                 _operatorService.Add(newItem);
                 _operatorService.SaveChanges();
-                return Json(new { success = true, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Success, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -84,7 +85,7 @@ namespace BTS.Web.Controllers
                     _operatorService.Add(newItem);
 
                     _operatorService.SaveChanges();
-                    return Json(new { success = true, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -94,7 +95,7 @@ namespace BTS.Web.Controllers
 
                     _operatorService.Update(dbItem);
                     _operatorService.SaveChanges();
-                    return Json(new { success = true, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
                 }
             }
         }
@@ -115,7 +116,7 @@ namespace BTS.Web.Controllers
 
                 _operatorService.Add(newItem);
                 _operatorService.SaveChanges();
-                return Json(new { success = true, message = "Saved Successfully" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Success, message = "Saved Successfully" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -127,7 +128,7 @@ namespace BTS.Web.Controllers
                 _operatorService.Update(dbItem);
                 _operatorService.SaveChanges();
 
-                return Json(new { success = true, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Success, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -137,7 +138,7 @@ namespace BTS.Web.Controllers
         {
             _operatorService.Delete(id);
             _operatorService.SaveChanges();
-            return Json(new { success = true, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+            return Json(new { status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

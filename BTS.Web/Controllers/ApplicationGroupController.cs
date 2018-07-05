@@ -165,7 +165,7 @@ namespace BTS.Web.Controllers
                         var newUserRoles = _appGroupService.GetLogicRolesByUserId(userItem.Id);
                         await updateRoles(userItem.Id, newUserRoles);
                     }
-                    return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -205,7 +205,7 @@ namespace BTS.Web.Controllers
                 _appGroupService.Delete(id);
                 _appGroupService.Save();
 
-                return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

@@ -13,6 +13,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using BTS.Data;
 using BTS.Model.Models;
+using BTS.Common;
 
 namespace Asp.NETMVCCRUD.Controllers
 {
@@ -58,13 +59,13 @@ namespace Asp.NETMVCCRUD.Controllers
                 {
                     db.Operators.Add(emp);
                     db.SaveChanges();
-                    return Json(new { success = true, message = "Saved Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, message = "Saved Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
                     db.Entry(emp).State = EntityState.Modified;
                     db.SaveChanges();
-                    return Json(new { success = true, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
                 }
             }
         }
@@ -78,7 +79,7 @@ namespace Asp.NETMVCCRUD.Controllers
                 Operator emp = db.Operators.Where(x => x.ID == id).FirstOrDefault<Operator>();
                 db.Operators.Remove(emp);
                 db.SaveChanges();
-                return Json(new { success = true, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -135,7 +135,10 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
-                    if (response.status == true) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Success") {
                         var data = response.data;
                         $('#hidID').val(data.ID);
                         $('#txtCode').val(data.Code);
@@ -150,7 +153,7 @@
                 },
                 error: function (err) {
                     console.log(err);
-                    $.notify(err.Message, {
+                    $.notify(err.message, {
                         className: "error",
                         clickToHide: true
                     });
@@ -174,7 +177,10 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (response) {
-                    if (response.status == true) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Success") {
                         //bootbox.alert("Save Success", function () {
                         //    $('#modalAddUpdate').modal('hide');
                         //    $('#MyDataTable').DataTable().ajax.reload();
@@ -193,7 +199,7 @@
                 },
                 error: function (err) {
                     console.log(err);
-                    $.notify(err.Message, {
+                    $.notify(err.message, {
                         className: "error",
                         clickToHide: true
                     });
@@ -215,7 +221,10 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (response) {
-                    if (response.status == true) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Success") {
                         //bootbox.alert("Delete Success", function () {
                         //    $('#MyDataTable').DataTable().ajax.reload();
                         //});
@@ -231,7 +240,7 @@
                 },
                 error: function (err) {
                     console.log(err);
-                    $.notify(err.Message, {
+                    $.notify(err.message, {
                         className: "error",
                         clickToHide: true
                     });
@@ -251,7 +260,10 @@
                 dataType: 'json',
 
                 success: function (response) {
-                    if (response.status) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status) {
                         $.notify("Cập nhật dữ liệu thành công", "success");
                     }
                     else {
@@ -262,7 +274,7 @@
                 },
                 error: function (err) {
                     console.log(err);
-                    $.notify(err.Message, {
+                    $.notify(err.message, {
                         className: "error",
                         clickToHide: true
                     });

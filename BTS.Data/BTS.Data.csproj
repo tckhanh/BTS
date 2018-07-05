@@ -115,17 +115,9 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201806140343528_InitDatabase.cs" />
-    <Compile Include="Migrations\201806140343528_InitDatabase.Designer.cs">
-      <DependentUpon>201806140343528_InitDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201806190809355_ModiBtsTable.cs" />
-    <Compile Include="Migrations\201806190809355_ModiBtsTable.Designer.cs">
-      <DependentUpon>201806190809355_ModiBtsTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201806250351172_AddAuditable.cs" />
-    <Compile Include="Migrations\201806250351172_AddAuditable.Designer.cs">
-      <DependentUpon>201806250351172_AddAuditable.cs</DependentUpon>
+    <Compile Include="Migrations\201807031006570_Initdatabase.cs" />
+    <Compile Include="Migrations\201807031006570_Initdatabase.Designer.cs">
+      <DependentUpon>201807031006570_Initdatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -170,14 +162,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201806140343528_InitDatabase.resx">
-      <DependentUpon>201806140343528_InitDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806190809355_ModiBtsTable.resx">
-      <DependentUpon>201806190809355_ModiBtsTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806250351172_AddAuditable.resx">
-      <DependentUpon>201806250351172_AddAuditable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201807031006570_Initdatabase.resx">
+      <DependentUpon>201807031006570_Initdatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

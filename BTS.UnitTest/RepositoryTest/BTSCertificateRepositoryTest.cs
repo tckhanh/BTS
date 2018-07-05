@@ -13,9 +13,9 @@ namespace BTS.UnitTest.RepositoryTest
     [TestClass]
     public class BTSCertificateRepositoryTest
     {
-        IDbFactory dbFactory;
-        ICertificateRepository objRepository;
-        IUnitOfWork unitOfwork;
+        private IDbFactory dbFactory;
+        private ICertificateRepository objRepository;
+        private IUnitOfWork unitOfwork;
 
         [TestInitialize]
         public void Initialize()
@@ -30,7 +30,7 @@ namespace BTS.UnitTest.RepositoryTest
         {
             Certificate certificate = new Certificate();
             certificate.ProfileID = 1;
-            certificate.CityID = "HCM";            
+            certificate.CityID = "HCM";
             certificate.OperatorID = "MOBIFONE";
             certificate.Address = "60 Tân Canh, Phường 1, Quận Tân Bình, Thành phố Hồ Chí Minh";
 
@@ -39,19 +39,16 @@ namespace BTS.UnitTest.RepositoryTest
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.ID);
-
         }
 
         [TestMethod]
         public void BTSCertificate_Repository_Stat()
         {
-
-            var result1 = objRepository.GetCertificateStatisticByYear();
+            var result1 = objRepository.GetCertificateStatisticByYearOperator();
 
             var result2 = objRepository.GetCertificateStatisticByOperatorCity();
 
             Assert.IsNotNull(result2);
-
         }
     }
 }

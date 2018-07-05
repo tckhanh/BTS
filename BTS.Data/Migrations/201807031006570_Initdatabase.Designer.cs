@@ -7,13 +7,13 @@ namespace BTS.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddAuditable : IMigrationMetadata
+    public sealed partial class Initdatabase : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddAuditable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initdatabase));
         
         string IMigrationMetadata.Id
         {
-            get { return "201806250351172_AddAuditable"; }
+            get { return "201807031006570_Initdatabase"; }
         }
         
         string IMigrationMetadata.Source

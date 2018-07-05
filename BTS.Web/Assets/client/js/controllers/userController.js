@@ -32,7 +32,7 @@ var userController = {
             },
             error: function (data) {
                 var r = jQuery.parseJSON(data.responseText);
-                alert("Message: " + r.Message);
+                alert("Message: " + r.message);
                 alert("StackTrace: " + r.StackTrace);
                 alert("ExceptionType: " + r.ExceptionType);
                 bar.html('Lỗi trong quá trình thực hiện!');
@@ -43,15 +43,19 @@ var userController = {
                 bar.removeClass('active');
             },
             success: function (responseJSON, statusText, xhr, element) {
-                if (responseJSON.Status == "Success") {
+                if (responseJSON.status == "Success") {
                     bar.html('Đã thực hiện nhập khẩu người dùng xong!');
-                    $.notify(xhr.responseJSON.Message, "success");
-                    //alert(xhr.responseJSON.Message);
+                    $.notify(xhr.responseJSON.message, "success");
+                    //alert(xhr.responseJSON.message);
+                }
+                else if (responseJSON.status == "TimeOut") {
+                    $.notify(responseJSON.message, "warn");
+                    window.location.href = "/Account/Login"
                 }
                 else {
                     bar.html('Lỗi trong quá trình thực hiện!');
-                    $.notify(xhr.responseJSON.Message, "error");
-                    //alert(xhr.responseJSON.Message);
+                    $.notify(xhr.responseJSON.message, "error");
+                    //alert(xhr.responseJSON.message);
                 }
                 $('html').removeClass('waiting');
                 bar.removeClass('active');
@@ -71,7 +75,6 @@ var userController = {
             var validExts = new Array(".xlsx", ".xls");
             var fileExt = fileName.substring(fileName.lastIndexOf('.'));
             if (validExts.indexOf(fileExt) < 0) {
-                
                 //alert("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu");
                 $.notify("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu", "warn");
                 $("#FileDialog").val('');

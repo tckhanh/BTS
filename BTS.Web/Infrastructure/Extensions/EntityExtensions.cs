@@ -44,7 +44,6 @@ namespace BTS.Web.Infrastructure.Extensions
 
         public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)
         {
-            myInCaseOf.Code = inCaseOfVm.Code;
             myInCaseOf.Name = inCaseOfVm.Name;
             myInCaseOf.UpdatedBy = inCaseOfVm.UpdatedBy;
             myInCaseOf.UpdatedDate = inCaseOfVm.UpdatedDate;

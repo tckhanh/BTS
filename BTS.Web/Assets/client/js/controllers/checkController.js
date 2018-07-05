@@ -28,7 +28,7 @@ var checkController = {
                 // return false to cancel submit
                 $('#btnCheck').prop('disabled', true);
                 $('#btnReset').prop('disabled', true);
-                $('#FileDialog').prop('disabled', true);                
+                $('#FileDialog').prop('disabled', true);
             },
             beforeSend: function () {
                 $('html').addClass('waiting');
@@ -44,7 +44,7 @@ var checkController = {
             },
             error: function (data) {
                 var r = jQuery.parseJSON(data.responseText);
-                alert("Message: " + r.Message);
+                alert("Message: " + r.message);
                 alert("StackTrace: " + r.StackTrace);
                 alert("ExceptionType: " + r.ExceptionType);
                 bar.html('Lỗi trong quá trình thực hiện!');
@@ -55,17 +55,22 @@ var checkController = {
                 bar.removeClass('active');
             },
             success: function (responseJSON, statusText, xhr, element) {
-                fileLocation = responseJSON.fileLocation;
-                fileExtension = responseJSON.fileExtension;
-                if (responseJSON.Status == "Success") {
-                    bar.html('Đã thực hiện kiểm tra BTS xong!');
-                    $.notify(xhr.responseJSON.Message, "success");
-                }
-                else {
-                    bar.html('Lỗi trong quá trình thực hiện!');
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else {
+                    fileLocation = responseJSON.fileLocation;
+                    fileExtension = responseJSON.fileExtension;
+                    if (responseJSON.status == "Success") {
+                        bar.html('Đã thực hiện kiểm tra BTS xong!');
+                        $.notify(xhr.responseJSON.message, "success");
+                    }
+                    else {
+                        bar.html('Lỗi trong quá trình thực hiện!');
 
-                    //alert("Complete: " + xhr.responseJSON.Message);
-                    $.notify(xhr.responseJSON.Message, "error");
+                        //alert("Complete: " + xhr.responseJSON.message);
+                        $.notify(xhr.responseJSON.message, "error");
+                    }
                 }
             },
             complete: function (xhr) {
@@ -84,7 +89,7 @@ var checkController = {
             var fileName = sender.target.files[0].name;
             var validExts = new Array(".xlsx", ".xls");
             var fileExt = fileName.substring(fileName.lastIndexOf('.'));
-            if (validExts.indexOf(fileExt) < 0) {                
+            if (validExts.indexOf(fileExt) < 0) {
                 //alert("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu");
                 $.notify("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu", "warn");
                 $("#FileDialog").val('');
@@ -132,7 +137,10 @@ var checkController = {
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                if (response.status == true) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status == "Success") {
                     var data = response.data;
                     $('#hidID').val(data.ID);
                     $('#txtCode').val(data.Code);
@@ -147,7 +155,7 @@ var checkController = {
             },
             error: function (err) {
                 console.log(err);
-                $.notify(err.Message, {
+                $.notify(err.message, {
                     className: "error",
                     clickToHide: true
                 });
