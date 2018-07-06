@@ -5,7 +5,7 @@
     Layout = null;
 }
 
-@using (Html.BeginForm("AddOrEdit", "ApplicationRole", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationRole", new { id = "" }) }))//data-resetUrl
+@using (Html.BeginForm("AddOrEdit", "ApplicationRole", new { act = CommonConstants.Action_Edit }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationRole", new { id = "" }) }))//data-resetUrl
 {
     @Html.AntiForgeryToken()
     <div class="row">

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BTS.Web.Models.InCaseOfViewModel>
+@using BTS.Common
+@{
+    ViewBag.Title = "ViewAll";
+    Layout = null;
+}
+
+<table class="table table-striped table-condensed" id="MyDataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+                    {
+                        <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("AddOrEdit", "InCaseOf", new { id = @item.Id, act = CommonConstants.Action_Detail })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
+                    }
+
+                    @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                    {
+                        <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "InCaseOf", new { id = @item.Id, act = CommonConstants.Action_Edit})')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
+                    }
+
+                    @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                    {
+                        <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "InCaseOf", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -6,7 +6,7 @@
     var action = ViewBag.action;
 }
 
-@using (Html.BeginForm("AddOrEdit", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationGroup", new { id = "", act = "Add" }) }))//data-resetUrl
+@using (Html.BeginForm("AddOrEdit", "ApplicationGroup", new { act = CommonConstants.Action_Add }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationGroup", new { id = "", act = "Add" }) }))//data-resetUrl
 {
     @Html.AntiForgeryToken()
     <div class="row">
@@ -39,7 +39,7 @@
                         @foreach (var item in Model.RoleList)
                         {
                             <div class="col-md-6">
-                                <label class = "control-label">
+                                <label class="control-label">
                                     <input type="checkbox" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
                                     @item.Text
                                 </label>
@@ -47,7 +47,6 @@
                         }
                     </div>
                 </div>
-               
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">

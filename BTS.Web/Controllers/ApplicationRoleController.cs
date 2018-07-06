@@ -134,13 +134,13 @@ namespace BTS.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(ApplicationRoleViewModel Item)
+        public async Task<ActionResult> AddOrEdit(string act, ApplicationRoleViewModel Item)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (string.IsNullOrEmpty(Item.Id))
+                    if (act == CommonConstants.Action_Add)
                     {
                         var role = new ApplicationRole(Item.Name, Item.Description);
                         role.CreatedBy = User.Identity.Name;
@@ -149,7 +149,7 @@ namespace BTS.Web.Controllers
                         var roleresult = await RoleManager.CreateAsync(role);
                         if (!roleresult.Succeeded)
                         {
-                            return Json(new { success = false, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
+                            return Json(new { status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
                         }
                         return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     }
@@ -166,12 +166,12 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -188,18 +188,18 @@ namespace BTS.Web.Controllers
 
                 if (_appGroupService.GetGroupsByRoleId(id) != null)
                 {
-                    return Json(new { success = false, message = "Không thể xóa Quyền đã cấp cho Nhóm người dùng" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Quyền đã cấp cho Nhóm người dùng" }, JsonRequestBehavior.AllowGet);
                 }
 
                 IdentityResult result = await RoleManager.DeleteAsync(role);
                 if (result.Succeeded)
                     return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", RoleManager.Roles), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 else
-                    return Json(new { success = false, message = "Xóa dữ liệu không thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = "Xóa dữ liệu không thành công" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

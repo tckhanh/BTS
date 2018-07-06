@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BTS.Common.ViewModels
 {
-    public class CertStatViewModel
+    public class CertStatVM
     {
         public string Year { get; set; }
         public string OperatorID { get; set; }
@@ -17,10 +17,24 @@ namespace BTS.Common.ViewModels
         public int ExpiredInYearCertificates { get; set; }
     }
 
-    public class CertStatByOperatorViewModel
+    public class CertStatByOperatorVM
     {
         public string OperatorID { get; set; }
         public int ValidCertificates { get; set; }
+        public int ExpiredInYearCertificates { get; set; }
+    }
+
+    public class IssuedCertStatByOperatorYearVM
+    {
+        public string OperatorID { get; set; }
+        public string Year { get; set; }
+        public int IssuedCertificates { get; set; }
+    }
+
+    public class ExpiredCertStatByOperatorYearVM
+    {
+        public string OperatorID { get; set; }
+        public string Year { get; set; }
         public int ExpiredInYearCertificates { get; set; }
     }
 }

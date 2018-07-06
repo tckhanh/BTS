@@ -157,7 +157,7 @@ namespace BTS.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(ApplicationUserViewModel Item, params string[] selectedItems)
+        public async Task<ActionResult> AddOrEdit(string act, ApplicationUserViewModel Item, params string[] selectedItems)
         {
             try
             {
@@ -175,7 +175,7 @@ namespace BTS.Web.Controllers
                         Item.ImageUpload.SaveAs(Path.Combine(Server.MapPath("~/AppFiles/Images/"), fileName));
                     }
 
-                    if (string.IsNullOrEmpty(Item.Id))
+                    if (act == CommonConstants.Action_Add)
                     {
                         newAppUser = new ApplicationUser();
                         newAppUser.UpdateUser(Item);
@@ -200,16 +200,16 @@ namespace BTS.Web.Controllers
                         return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
                     else
-                        return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = CommonConstants.Status_Error, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -262,12 +262,12 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -285,11 +285,11 @@ namespace BTS.Web.Controllers
                 if (result.Succeeded)
                     return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Locked/UnLocked Successfully" }, JsonRequestBehavior.AllowGet);
                 else
-                    return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -306,18 +306,18 @@ namespace BTS.Web.Controllers
 
                 if (_appGroupService.GetGroupsByUserId(id) != null)
                 {
-                    return Json(new { success = false, message = "Không thể xóa Người dùng còn thuộc nhóm" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Người dùng còn thuộc nhóm" }, JsonRequestBehavior.AllowGet);
                 }
 
                 var result = await UserManager.DeleteAsync(appUser);
                 if (result.Succeeded)
                     return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
                 else
-                    return Json(new { success = false, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

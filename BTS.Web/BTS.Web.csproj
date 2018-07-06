@@ -257,6 +257,7 @@
     <Compile Include="Controllers\ImportDataController.cs" />
     <Compile Include="Controllers\ImportUserController.cs" />
     <Compile Include="Controllers\InCaseOfController.cs" />
+    <Compile Include="Controllers\InCaseOfController_v1.cs" />
     <Compile Include="Controllers\OperatorController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PivotTableController.cs" />
@@ -281,6 +282,7 @@
     <Compile Include="Models\ApplicationUserGroupViewModel.cs" />
     <Compile Include="Models\ApplicationUserViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
+    <Compile Include="Models\LabViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NoCertificateViewModel.cs" />
     <Compile Include="Models\CertificateViewModel.cs" />
@@ -9160,6 +9162,16 @@
     <Content Include="Views\ImportUser\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <None Include="Properties\PublishProfiles\BTS_V1.pubxml" />
+    <Content Include="Views\InCaseOf\Add.cshtml" />
+    <Content Include="Views\InCaseOf\Detail.cshtml" />
+    <Content Include="Views\InCaseOf\Edit.cshtml" />
+    <Content Include="Views\InCaseOf\Index.cshtml" />
+    <Content Include="Views\InCaseOf\ViewAll.cshtml" />
+    <Content Include="Views\Lab\Add.cshtml" />
+    <Content Include="Views\Lab\Detail.cshtml" />
+    <Content Include="Views\Lab\Edit.cshtml" />
+    <Content Include="Views\Lab\Index.cshtml" />
+    <Content Include="Views\Lab\ViewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />
@@ -10321,8 +10333,8 @@
     <Content Include="Views\Operator\AddOrEdit.cshtml" />
     <Content Include="Views\Operator\Add.cshtml" />
     <Content Include="Views\Operator\Edit.cshtml" />
-    <Content Include="Views\InCaseOf\Index.cshtml" />
-    <Content Include="Views\InCaseOf\_AddUpdateModal.cshtml" />
+    <Content Include="Views\InCaseOf_v1\Index.cshtml" />
+    <Content Include="Views\InCaseOf_v1\_AddUpdateModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Common\BTS.Common.csproj">

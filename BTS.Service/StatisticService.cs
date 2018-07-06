@@ -12,17 +12,19 @@ namespace BTS.Service
 {
     public interface IStatisticService
     {
-        IEnumerable<CertStatViewModel> GetRevenueStatistic(string fromDate, string toDate);
+        IEnumerable<CertStatVM> GetRevenueStatistic(string fromDate, string toDate);
 
         IEnumerable<Operator> GetOperator();
 
         IEnumerable<City> GetCity();
 
-        IEnumerable<CertStatViewModel> GetCertificateStatisticByYearOperator();
+        IEnumerable<IssuedCertStatByOperatorYearVM> GetIssuedCertStatByOperatorYear();
 
-        IEnumerable<CertStatByOperatorViewModel> GetCertificateStatisticByOperator();
+        IEnumerable<ExpiredCertStatByOperatorYearVM> GetExpiredCertStatByOperatorYear();
 
-        IEnumerable<CertStatViewModel> GetCertificateStatisticByOperatorCity();
+        IEnumerable<CertStatByOperatorVM> GetCertStatByOperator();
+
+        IEnumerable<CertStatVM> GetCertificateStatisticByOperatorCity();
     }
 
     public class StatisticService : IStatisticService
@@ -40,19 +42,24 @@ namespace BTS.Service
             _cityRepository = cityRepository;
         }
 
-        public IEnumerable<CertStatViewModel> GetRevenueStatistic(string fromDate, string toDate)
+        public IEnumerable<CertStatVM> GetRevenueStatistic(string fromDate, string toDate)
         {
             return _certificateRepository.GetStatistic(fromDate, toDate);
         }
 
-        public IEnumerable<CertStatViewModel> GetCertificateStatisticByYearOperator()
+        public IEnumerable<ExpiredCertStatByOperatorYearVM> GetExpiredCertStatByOperatorYear()
         {
-            return _certificateRepository.GetCertificateStatisticByYearOperator();
+            return _certificateRepository.GetExpiredCertStatByOperatorYear();
         }
 
-        public IEnumerable<CertStatViewModel> GetCertificateStatisticByOperatorCity()
+        public IEnumerable<IssuedCertStatByOperatorYearVM> GetIssuedCertStatByOperatorYear()
         {
-            return _certificateRepository.GetCertificateStatisticByOperatorCity();
+            return _certificateRepository.GetIssuedCertStatByOperatorYear();
+        }
+
+        public IEnumerable<CertStatVM> GetCertificateStatisticByOperatorCity()
+        {
+            return _certificateRepository.GetCertStatByOperatorCity();
         }
 
         public IEnumerable<Operator> GetOperator()
@@ -65,9 +72,9 @@ namespace BTS.Service
             return _cityRepository.GetAll();
         }
 
-        public IEnumerable<CertStatByOperatorViewModel> GetCertificateStatisticByOperator()
+        public IEnumerable<CertStatByOperatorVM> GetCertStatByOperator()
         {
-            return _certificateRepository.GetCertificateStatisticByOperator();
+            return _certificateRepository.GetCertStatByOperator();
         }
     }
 }

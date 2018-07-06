@@ -155,20 +155,20 @@
                 dataType: 'json',
                 data: {},
                 type: 'post',
-                success: function (responseJSON) {
+                success: function (response) {
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
                         window.location.href = "/Account/Login"
-                    } else if (responseJSON.status == "Success") {
-                        var pieChartColumNames = responseJSON.chartData[0];
-                        var pieChartLabels = responseJSON.chartData[1];
+                    } else if (response.status == "Success") {
+                        var pieChartColumNames = response.chartData[0];
+                        var pieChartLabels = response.chartData[1];
 
                         var pieChartOptions = {
                             responsive: true,
                             maintainAspectRatio: true
                         }
 
-                        var pieChartValues = responseJSON.chartData[2];
+                        var pieChartValues = response.chartData[2];
                         var pieChartData = {
                             // These labels appear in the legend and in the tooltips when hovering different arcs
                             labels: pieChartLabels,
@@ -188,7 +188,7 @@
                             options: pieChartOptions
                         });
 
-                        var pieChartValues = responseJSON.chartData[3];
+                        var pieChartValues = response.chartData[3];
                         var pieChartData = {
                             // These labels appear in the legend and in the tooltips when hovering different arcs
                             labels: pieChartLabels,
@@ -210,17 +210,17 @@
 
                         //var colorNames = Object.keys(window.chartColors);
 
-                        //for (var i in responseJSON.chartData) {
+                        //for (var i in response.chartData) {
                         //    if (i > 2) {
                         //        var colorName = colorNames[i % colorNames.length];
                         //        var newColor = window.chartColors[colorName];
-                        //        var pieChartValues = responseJSON.chartData[i];
+                        //        var pieChartValues = response.chartData[i];
                         //        homeController.addData(pieChart, pieChartColumNames[i - 1], newColor, pieChartValues);
                         //    }
                         //}
                     }
                     else {
-                        alert(xhr.responseJSON.message);
+                        alert(xhr.response.message);
                     }
                     $('html').removeClass('waiting');
                 },
@@ -233,6 +233,88 @@
         registerEventDataTable: function () {
         },
         registerEvent: function () {
+        },
+
+        loadChartStatisticByOperator: function () {
+            $.ajax({
+                url: '/Home/StatisticByOperator',
+                dataType: 'json',
+                data: {},
+                type: 'post',
+                success: function (response) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Success") {
+                        var pieChartColumNames = response.chartData[0];
+                        var pieChartLabels = response.chartData[1];
+
+                        var pieChartOptions = {
+                            responsive: true,
+                            maintainAspectRatio: true
+                        }
+
+                        var pieChartValues = response.chartData[2];
+                        var pieChartData = {
+                            // These labels appear in the legend and in the tooltips when hovering different arcs
+                            labels: pieChartLabels,
+                            datasets: [{
+                                label: 'ValidCertificates',
+                                backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],
+                                borderColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"],
+                                hoverBackgroundColor: "rgba(153, 102, 255, 1)",
+                                hoverBorderColor: "rgba(153, 102, 255, 1)",
+                                data: pieChartValues
+                            }],
+                        };
+                        var pieChartCanvas = $("#pieChartValidCertificates");
+                        var pieChart = new Chart(pieChartCanvas, {
+                            type: 'pie',
+                            data: pieChartData,
+                            options: pieChartOptions
+                        });
+
+                        var pieChartValues = response.chartData[3];
+                        var pieChartData = {
+                            // These labels appear in the legend and in the tooltips when hovering different arcs
+                            labels: pieChartLabels,
+                            datasets: [{
+                                label: 'ExpiredInYearCertificates',
+                                backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],
+                                borderColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"],
+                                hoverBackgroundColor: "rgba(153, 102, 255, 1)",
+                                hoverBorderColor: "rgba(153, 102, 255, 1)",
+                                data: pieChartValues
+                            }],
+                        };
+                        var pieChartCanvas = $("#pieChartExpiredInYearCertificates");
+                        var pieChart = new Chart(pieChartCanvas, {
+                            type: 'pie',
+                            data: pieChartData,
+                            options: pieChartOptions
+                        });
+
+                        //var colorNames = Object.keys(window.chartColors);
+
+                        //for (var i in response.chartData) {
+                        //    if (i > 2) {
+                        //        var colorName = colorNames[i % colorNames.length];
+                        //        var newColor = window.chartColors[colorName];
+                        //        var pieChartValues = response.chartData[i];
+                        //        homeController.addData(pieChart, pieChartColumNames[i - 1], newColor, pieChartValues);
+                        //    }
+                        //}
+                    }
+                    else {
+                        alert(xhr.response.message);
+                    }
+                    $('html').removeClass('waiting');
+                },
+                error: function (data) {
+                    alert("Message: " + data.message);
+                    $('html').removeClass('waiting');
+                }
+            });
         },
         addData: function (chart, label, color, data) {
             chart.data.datasets.push({

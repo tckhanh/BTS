@@ -42,15 +42,15 @@
                     $('#FileDialog').prop('disabled', false);
                     $('#ImportAction').prop('disabled', false);
                 },
-                success: function (responseJSON, statusText, xhr, element) {
+                success: function (response, statusText, xhr, element) {
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
                         window.location.href = "/Account/Login"
-                    } else if (responseJSON.status == "Success")
+                    } else if (response.status == "Success")
                         bar.html('Đã thực hiện xong!');
                     else {
                         bar.html('Lỗi trong quá trình thực hiện!');
-                        alert("Complete: " + xhr.responseJSON.message);
+                        alert("Complete: " + xhr.response.message);
                     }
                     $('html').removeClass('waiting');
                     bar.removeClass('active');

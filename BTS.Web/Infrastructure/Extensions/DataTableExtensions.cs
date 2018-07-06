@@ -10,6 +10,16 @@ namespace BTS.Web.Infrastructure.Extensions
 {
     public static class DataTableExtensions
     {
+        public static IEnumerable<object> GetValues<T>(this IEnumerable<T> items, string propertyName)
+        {
+            List<Object> result = new List<object>();
+            Type type = typeof(T);
+            var prop = type.GetProperty(propertyName);
+            foreach (var item in items)
+                result.Add(prop.GetValue(item, null));
+            return result;
+        }
+
         public static DataTable ToPivotTable<T, TColumn, TRow, TData>(
     this IEnumerable<T> source,
     Func<T, TColumn> columnSelector,

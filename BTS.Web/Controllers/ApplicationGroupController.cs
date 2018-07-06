@@ -109,7 +109,7 @@ namespace BTS.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(ApplicationGroupViewModel Item, params string[] selectedItems)
+        public async Task<ActionResult> AddOrEdit(string act, ApplicationGroupViewModel Item, params string[] selectedItems)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace BTS.Web.Controllers
                 {
                     ApplicationGroup appGroup;
                     // Create new Group
-                    if (string.IsNullOrEmpty(Item.Id))
+                    if (act == CommonConstants.Action_Add)
                     {
                         ApplicationGroup newItem = new ApplicationGroup();
                         newItem.UpdateApplicationGroup(Item);
@@ -169,7 +169,7 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -177,7 +177,7 @@ namespace BTS.Web.Controllers
             {
                 return Json(new
                 {
-                    success = false,
+                    status = CommonConstants.Status_Error,
                     message = ex.Message
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -196,7 +196,7 @@ namespace BTS.Web.Controllers
 
                 if (_appGroupService.GetUsersByGroupId(id) != null)
                 {
-                    return Json(new { success = false, message = "Không thể xóa Nhóm còn người dùng" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Nhóm còn người dùng" }, JsonRequestBehavior.AllowGet);
                 }
 
                 _appGroupService.DeleteRolesFromGroup(id);
@@ -209,7 +209,7 @@ namespace BTS.Web.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

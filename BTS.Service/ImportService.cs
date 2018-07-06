@@ -112,7 +112,7 @@ namespace BTS.Service
 
         public bool Add(InCaseOf item)
         {
-            if (_inCaseOfRepository.GetSingleById(item.ID) == null)
+            if (_inCaseOfRepository.GetSingleById(item.Id) == null)
             {
                 item.CreatedDate = DateTime.Now;
                 _inCaseOfRepository.Add(item);

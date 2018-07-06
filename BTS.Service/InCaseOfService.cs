@@ -15,8 +15,6 @@ namespace BTS.Service
 
         void Update(InCaseOf newInCaseOf);
 
-        InCaseOf Delete(string ID);
-
         InCaseOf Delete(int ID);
 
         IEnumerable<InCaseOf> getAll();
@@ -27,56 +25,63 @@ namespace BTS.Service
 
         InCaseOf getByID(int ID);
 
+        bool IsUsed(int ID);
+
         void Save();
     }
 
     public class InCaseOfService : IInCaseOfService
     {
-        private IInCaseOfRepository _operatorRepository;
+        private IInCaseOfRepository _inCaseOfRepository;
         private IUnitOfWork _unitOfWork;
 
-        public InCaseOfService(IInCaseOfRepository operatorRepository, IUnitOfWork unitOfWork)
+        public InCaseOfService(IInCaseOfRepository inCaseOfRepository, IUnitOfWork unitOfWork)
         {
-            this._operatorRepository = operatorRepository;
-            this._unitOfWork = unitOfWork;
+            _inCaseOfRepository = inCaseOfRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public InCaseOf Add(InCaseOf newInCaseOf)
         {
-            return _operatorRepository.Add(newInCaseOf);
+            return _inCaseOfRepository.Add(newInCaseOf);
         }
 
         public InCaseOf Delete(string ID)
         {
-            return _operatorRepository.Delete(ID);
+            return _inCaseOfRepository.Delete(ID);
         }
 
         public InCaseOf Delete(int ID)
         {
-            return _operatorRepository.Delete(ID);
+            return _inCaseOfRepository.Delete(ID);
         }
 
         public IEnumerable<InCaseOf> getAll()
         {
-            return _operatorRepository.GetAll();
+            return _inCaseOfRepository.GetAll();
         }
 
         public IEnumerable<InCaseOf> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _operatorRepository.GetMulti(x => x.ID.ToString().Contains(keyword) || x.Name.Contains(keyword));
+                return _inCaseOfRepository.GetMulti(x => x.Id.ToString().Contains(keyword) || x.Name.Contains(keyword));
             else
-                return _operatorRepository.GetAll();
+                return _inCaseOfRepository.GetAll();
         }
 
         public InCaseOf getByID(string ID)
         {
-            return _operatorRepository.GetSingleById(ID);
+            return _inCaseOfRepository.GetSingleById(ID);
         }
 
         public InCaseOf getByID(int ID)
         {
-            return _operatorRepository.GetSingleById(ID);
+            return _inCaseOfRepository.GetSingleById(ID);
+        }
+
+        public bool IsUsed(int ID)
+        {
+            return _inCaseOfRepository.IsUsed(ID);
         }
 
         public void Save()
@@ -86,7 +91,7 @@ namespace BTS.Service
 
         public void Update(InCaseOf newInCaseOf)
         {
-            _operatorRepository.Update(newInCaseOf);
+            _inCaseOfRepository.Update(newInCaseOf);
         }
     }
 }

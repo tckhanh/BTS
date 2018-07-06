@@ -110,7 +110,7 @@ namespace BTS.Web.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID].ToString()))
                 {
                     var Item = new InCaseOf();
-                    Item.ID = Convert.ToInt32(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
+                    Item.Id = Convert.ToInt32(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_InCaseOf_Name].ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;

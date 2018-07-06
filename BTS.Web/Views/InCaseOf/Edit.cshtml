@@ -1,0 +1,33 @@
+﻿@model BTS.Web.Models.InCaseOfViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "AddOrEdit";
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "InCaseOf", new { act = CommonConstants.Action_Edit }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "InCaseOf", new { id = "" }) }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","InCaseOf", new{id = ""})', true)"><i cla><i class="fa fa-close"></i> Hủy bỏ</a>
+                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

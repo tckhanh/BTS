@@ -54,22 +54,22 @@ var checkController = {
                 $('html').removeClass('waiting');
                 bar.removeClass('active');
             },
-            success: function (responseJSON, statusText, xhr, element) {
+            success: function (response, statusText, xhr, element) {
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
                     window.location.href = "/Account/Login"
                 } else {
-                    fileLocation = responseJSON.fileLocation;
-                    fileExtension = responseJSON.fileExtension;
-                    if (responseJSON.status == "Success") {
+                    fileLocation = response.fileLocation;
+                    fileExtension = response.fileExtension;
+                    if (response.status == "Success") {
                         bar.html('Đã thực hiện kiểm tra BTS xong!');
-                        $.notify(xhr.responseJSON.message, "success");
+                        $.notify(xhr.response.message, "success");
                     }
                     else {
                         bar.html('Lỗi trong quá trình thực hiện!');
 
-                        //alert("Complete: " + xhr.responseJSON.message);
-                        $.notify(xhr.responseJSON.message, "error");
+                        //alert("Complete: " + xhr.response.message);
+                        $.notify(xhr.response.message, "error");
                     }
                 }
             },

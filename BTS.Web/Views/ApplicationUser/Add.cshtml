@@ -1,7 +1,7 @@
 ﻿@model BTS.Web.Models.ApplicationUserViewModel
 @using BTS.Common
 
-@using (Html.BeginForm("AddOrEdit", "ApplicationUser", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add }) }))//data-resetUrl
+@using (Html.BeginForm("AddOrEdit", "ApplicationUser", new { act = CommonConstants.Action_Add }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add }) }))//data-resetUrl
 {
     @Html.AntiForgeryToken()
     <div class="row">

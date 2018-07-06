@@ -94,6 +94,7 @@ namespace BTS.Web.Infrastructure.Extensions
             appUser.EducationalField = appUserViewModel.EducationalField;
             appUser.EntryDate = appUserViewModel.EntryDate;
             appUser.EndDate = appUserViewModel.EndDate;
+            appUser.Locked = appUserViewModel.Locked;
             appUser.JobPositions = appUserViewModel.JobPositions;
             appUser.ImagePath = appUserViewModel.ImagePath;
         }

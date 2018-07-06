@@ -191,22 +191,22 @@
                     $('#selectOperatorId').prop('disabled', false);
                     $('#selectCityId').prop('disabled', false);
                 },
-                success: function (responseJSON, statusText, xhr, element) {
+                success: function (response, statusText, xhr, element) {
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
                         window.location.href = "/Account/Login"
-                    } else if (responseJSON.status == "Success") {
+                    } else if (response.status == "Success") {
                         bar.html('Đã thực hiện xong!');
-                        var pieChartColumNames = responseJSON.chartData[0];
+                        var pieChartColumNames = response.chartData[0];
 
-                        var pieChartLabels = responseJSON.chartData[1];
+                        var pieChartLabels = response.chartData[1];
 
                         var pieChartOptions = {
                             responsive: true,
                             maintainAspectRatio: true
                         }
 
-                        var pieChartValues = responseJSON.chartData[2];
+                        var pieChartValues = response.chartData[2];
                         var pieChartData = {
                             // These labels appear in the legend and in the tooltips when hovering different arcs
                             labels: pieChartLabels,
@@ -226,7 +226,7 @@
                             options: pieChartOptions
                         });
 
-                        var pieChartValues = responseJSON.chartData[3];
+                        var pieChartValues = response.chartData[3];
                         var pieChartData = {
                             // These labels appear in the legend and in the tooltips when hovering different arcs
                             labels: pieChartLabels,
@@ -248,18 +248,18 @@
 
                         //var colorNames = Object.keys(window.chartColors);
 
-                        //for (var i in responseJSON.chartData) {
+                        //for (var i in response.chartData) {
                         //    if (i > 2) {
                         //        var colorName = colorNames[i % colorNames.length];
                         //        var newColor = window.chartColors[colorName];
-                        //        var pieChartValues = responseJSON.chartData[i];
+                        //        var pieChartValues = response.chartData[i];
                         //        homeController.addData(pieChart, pieChartColumNames[i - 1], newColor, pieChartValues);
                         //    }
                         //}
                     }
                     else {
                         bar.html('Lỗi trong quá trình thực hiện!');
-                        alert(xhr.responseJSON.message);
+                        alert(xhr.response.message);
                     }
                     $('html').removeClass('waiting');
                     bar.removeClass('active');
