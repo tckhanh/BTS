@@ -244,11 +244,14 @@
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BtsController.cs" />
     <Compile Include="Controllers\ApplicationRoleController.cs" />
     <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\BtsController.cs" />
     <Compile Include="Controllers\CertificateController.cs" />
+    <Compile Include="Controllers\ApplicantController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\OperatorController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -256,13 +259,14 @@
     <Compile Include="Controllers\CheckController.cs" />
     <Compile Include="Controllers\ImportDataController.cs" />
     <Compile Include="Controllers\ImportUserController.cs" />
+    <Compile Include="Controllers\CityController.cs" />
+    <Compile Include="Controllers\LabController.cs" />
     <Compile Include="Controllers\InCaseOfController.cs" />
     <Compile Include="Controllers\InCaseOfController_v1.cs" />
-    <Compile Include="Controllers\OperatorController.cs" />
+    <Compile Include="Controllers\OperatorController_v1.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PivotTableController.cs" />
     <Compile Include="Controllers\ApplicationUserController.cs" />
-    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -281,6 +285,7 @@
     <Compile Include="Models\ApplicationRoleViewModel.cs" />
     <Compile Include="Models\ApplicationUserGroupViewModel.cs" />
     <Compile Include="Models\ApplicationUserViewModel.cs" />
+    <Compile Include="Models\AuditableViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
     <Compile Include="Models\LabViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -9010,10 +9015,11 @@
     <Content Include="Assets\client\js\common.js" />
     <Content Include="Assets\client\js\common\message.js" />
     <Content Include="Assets\client\js\common\notify.min.js" />
+    <Content Include="Assets\client\js\controllers\commonController - Copy.js" />
     <Content Include="Assets\client\js\controllers\hoController.js" />
     <Content Include="Assets\client\js\controllers\homeController.js" />
     <Content Include="Assets\client\js\controllers\userController.js" />
-    <Content Include="Assets\client\js\controllers\commonController - Copy.js" />
+    <Content Include="Assets\client\js\controllers\btsController.js" />
     <Content Include="Assets\client\js\controllers\commonController.js" />
     <Content Include="Assets\client\js\controllers\certificateController_v1.js" />
     <Content Include="Assets\client\js\controllers\certificateController.js" />
@@ -9107,7 +9113,6 @@
     <Content Include="Assets\admin\libs\checklist-model\readme.md" />
     <Content Include=".bowerrc" />
     <Content Include="bower.json" />
-    <None Include=".bin\bower.cmd" />
     <Content Include="Assets\admin\libs\datatables-buttons\.bower.json" />
     <Content Include="Assets\admin\libs\datatables-buttons\as3\lib\AlivePDF.swc" />
     <Content Include="Assets\admin\libs\datatables-buttons\as3\lib\fzip.swc" />
@@ -9172,6 +9177,31 @@
     <Content Include="Views\Lab\Edit.cshtml" />
     <Content Include="Views\Lab\Index.cshtml" />
     <Content Include="Views\Lab\ViewAll.cshtml" />
+    <Content Include="Views\City\Add.cshtml" />
+    <Content Include="Views\City\Detail.cshtml" />
+    <Content Include="Views\City\Edit.cshtml" />
+    <Content Include="Views\City\Index.cshtml" />
+    <Content Include="Views\City\ViewAll.cshtml" />
+    <Content Include="Views\Operator\Add.cshtml" />
+    <Content Include="Views\Operator\Detail.cshtml" />
+    <Content Include="Views\Operator\Edit.cshtml" />
+    <Content Include="Views\Operator\Index.cshtml" />
+    <Content Include="Views\Operator\ViewAll.cshtml" />
+    <Content Include="Views\Applicant\Add.cshtml" />
+    <Content Include="Views\Applicant\Detail.cshtml" />
+    <Content Include="Views\Applicant\Edit.cshtml" />
+    <Content Include="Views\Applicant\Index.cshtml" />
+    <Content Include="Views\Applicant\ViewAll.cshtml" />
+    <Content Include="Views\Profile\Add.cshtml" />
+    <Content Include="Views\Profile\Detail.cshtml" />
+    <Content Include="Views\Profile\Edit.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\ViewAll.cshtml" />
+    <Content Include="Views\Bts\Add.cshtml" />
+    <Content Include="Views\Bts\Detail.cshtml" />
+    <Content Include="Views\Bts\Edit.cshtml" />
+    <Content Include="Views\Bts\Index.cshtml" />
+    <Content Include="Views\Bts\ViewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />
@@ -9192,10 +9222,7 @@
     <Folder Include="Assets\client\font-awesome-4.6.3\" />
     <Folder Include="Assets\client\images\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\BTSCertiticate\" />
-    <Folder Include="Views\Bts\" />
     <Folder Include="Views\Employee\" />
-    <Folder Include="Views\Profile\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
@@ -10325,14 +10352,14 @@
     <Content Include="Views\Shared - Copy\LeftSideBar.cshtml" />
     <Content Include="Views\Shared - Copy\RightSideBar.cshtml" />
     <Content Include="Views\Account\Logout.cshtml" />
-    <Content Include="Views\Operator\Index.cshtml" />
+    <Content Include="Views\Operator_v1\Index.cshtml" />
     <Content Include="Views\Certificate\Index - Copy.cshtml" />
     <Content Include="Views\Certificate\Index - Copy %282%29.cshtml" />
     <Content Include="Views\ImportData\Index.cshtml" />
     <Content Include="Views\Check\Index.cshtml" />
-    <Content Include="Views\Operator\AddOrEdit.cshtml" />
-    <Content Include="Views\Operator\Add.cshtml" />
-    <Content Include="Views\Operator\Edit.cshtml" />
+    <Content Include="Views\Operator_v1\AddOrEdit.cshtml" />
+    <Content Include="Views\Operator_v1\Add.cshtml" />
+    <Content Include="Views\Operator_v1\Edit.cshtml" />
     <Content Include="Views\InCaseOf_v1\Index.cshtml" />
     <Content Include="Views\InCaseOf_v1\_AddUpdateModal.cshtml" />
   </ItemGroup>
@@ -10382,17 +10409,17 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>8118</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8118/</IISUrl>
+          <IISUrl>http://localhost:8188/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-          <servers defaultServer="SelfHostServer">
+          <servers defaultServer="">
             <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:8118/" workingDir="" />
           </servers>
         </WebProjectProperties>

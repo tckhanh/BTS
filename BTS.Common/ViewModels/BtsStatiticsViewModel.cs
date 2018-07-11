@@ -8,7 +8,7 @@ namespace BTS.Common.ViewModels
 {
     public class BtsStatiticsViewModel
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string BTSCode { get; set; }
         public string OperatorID { get; set; }
         public string CityID { get; set; }

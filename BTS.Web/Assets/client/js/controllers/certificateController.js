@@ -175,35 +175,49 @@ var certificateController = {
                         }
                     },
                     "columns": [
+                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },
+                        { "data": "CityID", "name": "CityID", "width": "4%" },
                         {
                             "data": "Id", "name": "Id", "width": "20%",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Certificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
                             }
-                        },                  // index 0
-                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
+                        },
                         {
                             "data": "BtsCode", "name": "BtsCode", "width": "10%",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
                             }
                         },        // index 2
-                        { "data": "Address", "name": "Address", "width": "40%" },        // index 3
-                        { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
+                        { "data": "Address", "name": "Address", "width": "40%" },
                         {
-                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
+                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",
                             "render": function (data, type, row) {
                                 return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
                             }
                         },
                         {
-                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
+                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%",
                             "render": function (data, type, row) {
                                 return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
                             }
                         }],
                     "language": {
                         url: '/localization/vi_VI.json'
+                    },
+                    initComplete: function () {
+                        this.api().columns().every(function () {
+                            var column = this;
+                            var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column.search(val ? '^' + val + '$' : '', true, false).draw();
+                            });
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>')
+                            });
+                        });
                     }
                 });
         } else {
@@ -241,25 +255,49 @@ var certificateController = {
                         }
                     },
                     "columns": [
-                        { "data": "ID", "name": "ID", "width": "20%" },                  // index 0
-                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },  // index 1
-                        { "data": "BtsCode", "name": "BtsCode", "width": "10%" },        // index 2
-                        { "data": "Address", "name": "Address", "width": "40%" },        // index 3
-                        { "data": "CityID", "name": "CityID", "width": "4%" },        // index 3
+                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },
+                        { "data": "CityID", "name": "CityID", "width": "4%" },
                         {
-                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",  // index 4
+                            "data": "Id", "name": "Id", "width": "20%",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='/Certificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
+                            }
+                        },
+                        {
+                            "data": "BtsCode", "name": "BtsCode", "width": "10%",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
+                            }
+                        },
+                        { "data": "Address", "name": "Address", "width": "40%" },
+                        {
+                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",
                             "render": function (data, type, row) {
                                 return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
                             }
                         },
                         {
-                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%", // index 5
+                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%",
                             "render": function (data, type, row) {
                                 return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
                             }
                         }],
                     "language": {
                         url: '/localization/vi_VI.json'
+                    },
+                    initComplete: function () {
+                        this.api().columns().every(function () {
+                            var column = this;
+                            var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column.search(val ? '^' + val + '$' : '', true, false).draw();
+                            });
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>')
+                            });
+                        });
                     }
                 });
         }

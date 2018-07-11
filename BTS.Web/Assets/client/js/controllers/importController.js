@@ -50,7 +50,7 @@
                         bar.html('Đã thực hiện xong!');
                     else {
                         bar.html('Lỗi trong quá trình thực hiện!');
-                        alert("Complete: " + xhr.response.message);
+                        alert("Complete: " + response.message);
                     }
                     $('html').removeClass('waiting');
                     bar.removeClass('active');

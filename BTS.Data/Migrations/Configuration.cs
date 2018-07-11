@@ -87,7 +87,7 @@
                 var newGroup = new ApplicationGroup();
                 var newRole = new ApplicationRole();
                 List<string> roleList = new List<string>();
-                List<string[]> roleList2, groupList2;
+                List<string[]> roleList2;
                 var listRoleGroup = new List<ApplicationRoleGroup>();
                 ApplicationGroup groupItem;
 

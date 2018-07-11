@@ -54,6 +54,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Ngày KQ đo kiểm")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime TestReportDate { get; set; }
 
         [Display(Name = "Lý do không cấp G.CNKĐ")]

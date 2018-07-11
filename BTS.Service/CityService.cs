@@ -22,6 +22,8 @@ namespace BTS.Service
 
         City getByID(string ID);
 
+        bool IsUsed(string ID);
+
         void Save();
     }
 
@@ -72,6 +74,11 @@ namespace BTS.Service
         public void Update(City newCity)
         {
             _cityRepository.Update(newCity);
+        }
+
+        public bool IsUsed(string ID)
+        {
+            return _cityRepository.IsUsed(ID);
         }
     }
 }

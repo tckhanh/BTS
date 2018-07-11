@@ -14,7 +14,7 @@ namespace BTS.Model.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
+        public int ID { get; set; }
 
         [Required]
         [StringLength(50)]

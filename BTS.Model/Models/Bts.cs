@@ -47,7 +47,7 @@ namespace BTS.Model.Models
         public string LastNoOwnCertificateIDs { get; set; }
 
         [StringLength(255)]
-        public string ProFilesInProcess { get; set; }
+        public string ProfilesInProcess { get; set; }
 
         [StringLength(255)]
         public string ReasonsNoCertificate { get; set; }

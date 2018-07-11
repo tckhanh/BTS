@@ -1,0 +1,182 @@
+﻿@model BTS.Web.Models.BtsViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "AddOrEdit";
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "Bts", new { act = CommonConstants.Action_Edit }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Bts", new { id = "" }) }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+
+            <br />
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProfileID, new { @class = "control-label col-md-3" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.ProfileID, Model.ProfileList, " Chọn lựa HS nộp", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ProfileID)
+                        </div>
+                        <div class="col-md-1">
+                            <a href="/Profile/" class="btn btn-primary">...</a>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.OperatorID, new { @class = "control-label col-md-3" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.OperatorID, Model.OperatorList, " Chọn lựa Nhà mạng", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.OperatorID)
+                        </div>
+                        <div class="col-md-1">
+                            <a href="/Operator/" class="btn btn-primary">...</a>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BtsCode, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.BtsCode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.BtsCode)
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CityID, new { @class = "control-label col-md-3" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.CityID, Model.CityList, " Chọn lựa Tỉnh/Thành phố", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CityID)
+                        </div>
+                        <div class="col-md-1">
+                            <a href="/City/" class="btn btn-primary">...</a>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextAreaFor(model => model.Address, new { @class = "form-control", rows = 3 })
+                            @Html.ValidationMessageFor(model => model.Address)
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.InCaseOfID, new { @class = "control-label col-md-3" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.InCaseOfID, Model.InCaseOfList, " Chọn lựa Trường hợp KĐ", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.InCaseOfID)
+                        </div>
+                        <div class="col-md-1">
+                            <a href="/InCaseOf/" class="btn btn-primary">...</a>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Longtitude, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Longtitude, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Longtitude)
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Latitude, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Latitude, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Latitude)
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LastOwnCertificateIDs, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextAreaFor(model => model.LastOwnCertificateIDs, new { @class = "form-control", rows = 3 })
+                            @Html.ValidationMessageFor(model => model.LastOwnCertificateIDs)
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LastNoOwnCertificateIDs, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.LastNoOwnCertificateIDs, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.LastNoOwnCertificateIDs)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProfilesInProcess, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextAreaFor(model => model.ProfilesInProcess, new { @class = "form-control", rows = 3 })
+                            @Html.ValidationMessageFor(model => model.ProfilesInProcess)
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ReasonsNoCertificate, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.ReasonsNoCertificate, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.ReasonsNoCertificate)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Bts", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+
+                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

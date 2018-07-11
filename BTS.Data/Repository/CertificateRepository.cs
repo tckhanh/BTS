@@ -285,7 +285,7 @@ namespace BTS.Data.Repository
                         where certificate.IssuedDate.Value.Year == year
                         select new ShortCertificate()
                         {
-                            ID = certificate.ID,
+                            Id = certificate.ID,
                             Year = year,
                             OperatorID = certificate.OperatorID,
                             CityID = certificate.CityID,
@@ -301,7 +301,7 @@ namespace BTS.Data.Repository
                         where certificate.ExpiredDate <= DateTime.Now
                         select new ShortCertificate()
                         {
-                            ID = certificate.ID,
+                            Id = certificate.ID,
                             Year = certificate.IssuedDate.Value.Year,
                             OperatorID = certificate.OperatorID,
                             CityID = certificate.CityID,

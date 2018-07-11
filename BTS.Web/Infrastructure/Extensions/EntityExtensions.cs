@@ -10,6 +10,21 @@ namespace BTS.Web.Infrastructure.Extensions
 {
     public static class EntityExtensions
     {
+        public static void UpdateBts(this Bts bts, BtsViewModel btsVm)
+        {
+            bts.ProfileID = btsVm.ProfileID;
+            bts.OperatorID = btsVm.OperatorID;
+            bts.BtsCode = btsVm.BtsCode;
+            bts.Address = btsVm.Address;
+            bts.CityID = btsVm.CityID;
+            bts.Longtitude = btsVm.Longtitude;
+            bts.Latitude = btsVm.Latitude;
+            bts.InCaseOfID = btsVm.InCaseOfID;
+            bts.LastOwnCertificateIDs = btsVm.LastOwnCertificateIDs;
+            bts.LastNoOwnCertificateIDs = btsVm.LastNoOwnCertificateIDs;
+            bts.ProfilesInProcess = btsVm.ProfilesInProcess;
+            bts.ReasonsNoCertificate = btsVm.ReasonsNoCertificate;
+        }
         public static void UpdateCertificate(this Certificate certificate, CertificateViewModel btsCertificateVm)
         {
             certificate.ProfileID = btsCertificateVm.ProfileID;
@@ -45,8 +60,14 @@ namespace BTS.Web.Infrastructure.Extensions
         public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)
         {
             myInCaseOf.Name = inCaseOfVm.Name;
-            myInCaseOf.UpdatedBy = inCaseOfVm.UpdatedBy;
-            myInCaseOf.UpdatedDate = inCaseOfVm.UpdatedDate;
+        }
+
+        public static void UpdateLab(this Lab myLab, LabViewModel labCaseOfVm)
+        {
+            myLab.Name = labCaseOfVm.Name;
+            myLab.Address = labCaseOfVm.Address;
+            myLab.Phone = labCaseOfVm.Phone;
+            myLab.Fax = labCaseOfVm.Fax;
         }
 
         public static void UpdateCity(this City myCity, CityViewModel cityVm)
@@ -59,6 +80,15 @@ namespace BTS.Web.Infrastructure.Extensions
             myoperator.Name = operatorVm.Name;
         }
 
+        public static void UpdateApplicant(this Applicant myApplicant, ApplicantViewModel applicantVm)
+        {
+            myApplicant.Name = applicantVm.Name;
+            myApplicant.OperatorID = applicantVm.OperatorID;
+            myApplicant.Address = applicantVm.Address;
+            myApplicant.Phone = applicantVm.Phone;
+            myApplicant.Fax = applicantVm.Fax;
+            myApplicant.ContactName = applicantVm.ContactName;
+        }
         public static void UpdateFeedback(this Feedback feedback, FeedbackViewModel feedbackVm)
         {
             feedback.Name = feedbackVm.Name;
@@ -123,6 +153,19 @@ namespace BTS.Web.Infrastructure.Extensions
             Item.Latitude = newItem.Latitude;
             Item.InCaseOfID = newItem.InCaseOfID;
             Item.UpdatedDate = DateTime.Now;
+        }
+
+        public static void UpdateProfile(this Profile Item, ProfileViewModel ItemVm)
+        {
+            Item.ApplicantID = ItemVm.ApplicantID;
+            Item.ProfileNum = ItemVm.ProfileNum;
+            Item.ProfileDate = ItemVm.ProfileDate;
+            Item.BtsQuantity = ItemVm.BtsQuantity;
+            Item.ApplyDate = ItemVm.ApplyDate;
+            Item.Fee = ItemVm.Fee;
+            Item.FeeAnnounceNum = ItemVm.FeeAnnounceNum;
+            Item.FeeAnnounceDate = ItemVm.FeeAnnounceDate;
+            Item.FeeReceiptDate = ItemVm.FeeReceiptDate;
         }
     }
 }

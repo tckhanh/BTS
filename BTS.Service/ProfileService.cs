@@ -21,7 +21,11 @@ namespace BTS.Service
 
         IEnumerable<Profile> getAll(string keyword);
 
-        Profile getByID(string ID);
+        IEnumerable<Applicant> getAllApplicant();
+
+        Profile getByID(int ID);
+
+        bool IsUsed(int ID);
 
         void Save();
     }
@@ -29,12 +33,14 @@ namespace BTS.Service
     public class ProfileService : IProfileService
     {
         private IProfileRepository _profileRepository;
+        private IApplicantRepository _applicantRepository;
         private IUnitOfWork _unitOfWork;
 
-        public ProfileService(IProfileRepository profileRepository, IUnitOfWork unitOfWork)
+        public ProfileService(IProfileRepository profileRepository, IApplicantRepository applicantRepository, IUnitOfWork unitOfWork)
         {
-            this._profileRepository = profileRepository;
-            this._unitOfWork = unitOfWork;
+            _profileRepository = profileRepository;
+            _applicantRepository = applicantRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public Profile Add(Profile newProfile)
@@ -49,7 +55,7 @@ namespace BTS.Service
 
         public IEnumerable<Profile> getAll()
         {
-            return _profileRepository.GetAll();
+            return _profileRepository.GetAll(includes: new string[] { "Applicant" } );
         }
 
         public IEnumerable<Profile> getAll(string keyword)
@@ -60,9 +66,14 @@ namespace BTS.Service
                 return _profileRepository.GetAll();
         }
 
-        public Profile getByID(string ID)
+        public Profile getByID(int ID)
         {
             return _profileRepository.GetSingleById(ID);
+        }
+
+        public bool IsUsed(int ID)
+        {
+            return _profileRepository.IsUsed(ID);
         }
 
         public void Save()
@@ -73,6 +84,11 @@ namespace BTS.Service
         public void Update(Profile newProfile)
         {
             _profileRepository.Update(newProfile);
+        }
+
+        public IEnumerable<Applicant> getAllApplicant()
+        {
+            return _applicantRepository.GetAll();
         }
     }
 }

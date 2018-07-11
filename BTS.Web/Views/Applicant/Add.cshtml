@@ -1,0 +1,82 @@
+﻿@model BTS.Web.Models.ApplicantViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "AddOrEdit";
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "Applicant", new { act = CommonConstants.Action_Add }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Applicant", new { id = "" }) }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            <div class="col-md-10">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Id, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Id)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OperatorID, new { @class = "control-label col-md-3" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.OperatorID, Model.OperatorList," Chọn lựa nhà mạng ", new { @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.OperatorID)
+                    </div>
+                    <div class="col-md-1">
+                        <a href="/Operator/" class="btn btn-primary">...</a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Address)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Fax, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Fax, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Fax)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactName, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(model => model.ContactName, new { @class = "form-control", rows = "5", cols = "40" })
+                        @Html.ValidationMessageFor(model => model.ContactName)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Applicant", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+
+                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

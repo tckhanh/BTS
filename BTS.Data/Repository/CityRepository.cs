@@ -10,12 +10,32 @@ namespace BTS.Data.Repository
 {
     public interface ICityRepository: IRepository<City>
     {
-
+        bool IsUsed(string ID);
     }
     public class CityRepository : RepositoryBase<City>, ICityRepository
     {
         public CityRepository(IDbFactory dbFactory) : base(dbFactory)
         {
+        }
+
+        public bool IsUsed(string ID)
+        {
+            var query1 = from item in DbContext.Btss
+                         where item.CityID == ID
+                         select item.ID;
+            if (query1.Count() > 0) return true;
+
+            var query2 = from item in DbContext.Certificates
+                         where item.CityID == ID
+                         select item.ID;
+            if (query2.Count() > 0) return true;
+
+            var query3 = from item in DbContext.NoCertificates
+                         where item.CityID == ID
+                         select item.ID;
+            if (query3.Count() > 0) return true;
+
+            return false;
         }
     }
 }

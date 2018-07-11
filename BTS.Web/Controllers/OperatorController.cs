@@ -1,23 +1,24 @@
 ﻿using AutoMapper;
+using BTS.Common;
 using BTS.Model.Models;
 using BTS.Service;
+using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using BTS.Web.Infrastructure.Extensions;
-using System.Web.Script.Serialization;
-using BTS.Common;
 
 namespace BTS.Web.Controllers
 {
+    [AuthorizeRoles(CommonConstants.Data_CanView_Role)]
     public class OperatorController : BaseController
     {
         private IOperatorService _operatorService;
 
-        public OperatorController(IOperatorService operatorService, IErrorService errorService) : base(errorService)
+        public OperatorController(IErrorService errorService, IOperatorService operatorService) : base(errorService)
         {
             _operatorService = operatorService;
         }
@@ -27,118 +28,110 @@ namespace BTS.Web.Controllers
             return View();
         }
 
-        public ActionResult GetData()
+        public ActionResult ViewAll()
         {
-            var model = _operatorService.getAll().ToList();
-            var data = Mapper.Map<List<OperatorViewModel>>(model);
-            return Json(new { data = data }, JsonRequestBehavior.AllowGet);
+            return View(GetAll());
         }
 
-        [HttpGet]
-        public ActionResult Add()
+        private IEnumerable<OperatorViewModel> GetAll()
         {
-            return View(new OperatorViewModel());
+            var model = _operatorService.getAll();
+            return Mapper.Map<IEnumerable<OperatorViewModel>>(model);
         }
 
-        [HttpGet]
-        public ActionResult Edit(string id)
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
+        public async Task<ActionResult> AddOrEdit(string act, string id = "0")
         {
-            return View(Mapper.Map<OperatorViewModel>(_operatorService.getByID(id)));
-        }
+            OperatorViewModel ItemVm = new OperatorViewModel();
+            if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
+            {
+                var DbItem = _operatorService.getByID(id);
 
-        [HttpGet]
-        public ActionResult AddOrEdit(string id = "")
-        {
-            if (string.IsNullOrEmpty(id))
-                return View(new OperatorViewModel());
+                if (DbItem != null)
+                {
+                    ItemVm = Mapper.Map<OperatorViewModel>(DbItem);
+                }
+                if (act == CommonConstants.Action_Edit)
+                    return View("Edit", ItemVm);
+                else
+                    return View("Detail", ItemVm);
+            }
             else
             {
-                return View(Mapper.Map<OperatorViewModel>(_operatorService.getByID(id)));
+                return View("Add", ItemVm);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveData(OperatorViewModel itemVm)
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
+        public async Task<ActionResult> AddOrEdit(string act, OperatorViewModel Item)
         {
-            if (string.IsNullOrEmpty(itemVm.Id))
+            try
             {
-                Operator newItem = new Operator();
-                newItem.UpdateOperator(itemVm);
-                newItem.CreatedBy = User.Identity.Name;
-                newItem.CreatedDate = DateTime.Now;
-
-                _operatorService.Add(newItem);
-                _operatorService.SaveChanges();
-                return Json(new { status = CommonConstants.Status_Success, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                var dbItem = _operatorService.getByID(itemVm.Id);
-                if (dbItem == null)
+                if (ModelState.IsValid)
                 {
-                    Operator newItem = new Operator();
-                    newItem.UpdateOperator(itemVm);
-                    newItem.CreatedBy = User.Identity.Name;
-                    newItem.CreatedDate = DateTime.Now;
+                    if (act == CommonConstants.Action_Add)
+                    {
+                        var newItem = new Operator();
+                        newItem.UpdateOperator(Item);
+                        newItem.ID = Item.Id;
+                        
+                        newItem.CreatedBy = User.Identity.Name;
+                        newItem.CreatedDate = DateTime.Now;
 
-                    _operatorService.Add(newItem);
+                        _operatorService.Add(newItem);
+                        _operatorService.SaveChanges();
+                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<OperatorViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        var editItem = _operatorService.getByID(Item.Id);
+                        editItem.UpdateOperator(Item);
+                        editItem.UpdatedBy = User.Identity.Name;
+                        editItem.UpdatedDate = DateTime.Now;
 
-                    _operatorService.SaveChanges();
-                    return Json(new { status = CommonConstants.Status_Success, message = "Added Successfully" }, JsonRequestBehavior.AllowGet);
+                        _operatorService.Update(editItem);
+                        _operatorService.SaveChanges();
+                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<OperatorViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
-                    dbItem.UpdateOperator(itemVm);
-                    dbItem.UpdatedBy = User.Identity.Name;
-                    dbItem.UpdatedDate = DateTime.Now;
-
-                    _operatorService.Update(dbItem);
-                    _operatorService.SaveChanges();
-                    return Json(new { status = CommonConstants.Status_Success, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
                 }
             }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveData_Tedu(string strOperator)
-        {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            OperatorViewModel itemVm = serializer.Deserialize<OperatorViewModel>(strOperator);
-
-            if (string.IsNullOrEmpty(itemVm.Id))
+            catch (Exception ex)
             {
-                Operator newItem = new Operator();
-                newItem.UpdateOperator(itemVm);
-                newItem.CreatedBy = User.Identity.Name;
-                newItem.CreatedDate = DateTime.Now;
-
-                _operatorService.Add(newItem);
-                _operatorService.SaveChanges();
-                return Json(new { status = CommonConstants.Status_Success, message = "Saved Successfully" }, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                var dbItem = _operatorService.getByID(itemVm.Id);
-                dbItem.UpdateOperator(itemVm);
-                dbItem.UpdatedBy = User.Identity.Name;
-                dbItem.UpdatedDate = DateTime.Now;
-
-                _operatorService.Update(dbItem);
-                _operatorService.SaveChanges();
-
-                return Json(new { status = CommonConstants.Status_Success, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(string id)
+        [AuthorizeRoles(CommonConstants.Data_CanDelete_Role)]
+        public async Task<ActionResult> Delete(string id = "0")
         {
-            _operatorService.Delete(id);
-            _operatorService.SaveChanges();
-            return Json(new { status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                var dbItem = _operatorService.getByID(id);
+                if (dbItem == null)
+                {
+                    return HttpNotFound();
+                }
+
+                if (_operatorService.IsUsed(id))
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
+                }
+
+                _operatorService.Delete(id);
+                _operatorService.SaveChanges();
+
+                return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

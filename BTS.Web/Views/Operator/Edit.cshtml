@@ -1,27 +1,33 @@
 ﻿@model BTS.Web.Models.OperatorViewModel
+@using BTS.Common
 @{
+    ViewBag.Title = "AddOrEdit";
     Layout = null;
-    ViewBag.Title = "Sửa đổi";
 }
 
-@using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+@using (Html.BeginForm("AddOrEdit", "Operator", new { act = CommonConstants.Action_Edit }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Operator", new { id = "" }) }))//data-resetUrl
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.ID)
-    <div class="form-group">
-        @Html.LabelFor(model => model.ID, new { @class = "control-label" })
-        @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control", id = "txtID", readOnly = "true" } })
-        @Html.ValidationMessageFor(model => model.ID)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, new { @class = "control-label" })
-        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", id = "txtName" } })
-        @Html.ValidationMessageFor(model => model.Name)
-    </div>
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
 
-    <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-primary" />
-        <input type="" value="Reset" class="btn" />
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Operator", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 }

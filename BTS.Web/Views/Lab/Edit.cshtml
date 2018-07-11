@@ -22,8 +22,31 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(model => model.Address, new { @class = "form-control", rows = "5", cols = "40" })
+                        @Html.ValidationMessageFor(model => model.Address)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Fax, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Fax, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Fax)
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Lab", new{id = ""})', true)"><i c><i cla><i class="fa fa-close"></i> Hủy bỏ</a>
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Lab", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
                         <input type="submit" value="Lưu" class="btn btn-primary" />
                     </div>
                 </div>

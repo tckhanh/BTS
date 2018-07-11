@@ -6,14 +6,16 @@ using System.Web;
 
 namespace BTS.Web.Models
 {
-    public class OperatorViewModel
+    public class OperatorViewModel: AuditableViewModel
     {
-        [Required(ErrorMessage = "Yêu cầu nhập Mã Doanh nghiệp")]
-        [MaxLength(10, ErrorMessage = "Mã Doanh nghiệp tối đa 10 ký tự")]
+        [Display(Name = "Mã Nhà mạng")]
+        [Required(ErrorMessage = "Yêu cầu nhập Mã Nhà mạng")]
+        [MaxLength(10, ErrorMessage = "Mã Nhà mạng tối đa 10 ký tự")]
         public string Id { get; set; }
 
-        [Required(ErrorMessage = "Yêu cầu nhập Tên Doanh nghiệp")]
-        [MaxLength(255, ErrorMessage = "Tên Doanh nghiệp tối đa 255 ký tự")]
+        [Display(Name = "Tên Nhà mạng")]
+        [Required(ErrorMessage = "Yêu cầu nhập Tên Nhà mạng")]
+        [MaxLength(255, ErrorMessage = "Tên Nhà mạng tối đa 255 ký tự")]
         public string Name { get; set; }
 
         public virtual IEnumerable<ApplicantViewModel> Applicants { get; set; }

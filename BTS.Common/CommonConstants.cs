@@ -142,7 +142,7 @@
         public const string Sheet_Bts_IsCertificated = "IsCertificated";
         public const string Sheet_Bts_LastOwnCertificateIDs = "LastOwnCertificateIDs";
         public const string Sheet_Bts_LastNoOwnCertificateIDs = "LastNoOwnCertificateIDs";
-        public const string Sheet_Bts_ProFileInProcess = "ProFileInProcess";
+        public const string Sheet_Bts_ProfileInProcess = "ProFileInProcess";
         public const string Sheet_Bts_ReasonNoCertificate = "ReasonNoCertificate";
 
         public const string Sheet_Certificate = "Certificate";

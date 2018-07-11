@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layouts.cshtml";
+    IEnumerable<BTS.Web.Models.CityViewModel> cities = ViewBag.cities;
+}
+
+@section headCSS{
+    <link href="~/Assets/client/css/custom.css" rel="stylesheet" />
+}
+
+@section footerJS{
+    <script src="~/Assets/client/js/controllers/operator.js"></script>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Data Tables
+            <small>advanced tables</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Tables</a></li>
+            <li class="active">Data tables</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box with-border ">
+                    <div class="box-header">
+                        <h3 class="BTS-title">DANH SÁCH NHÀ MẠNG</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
+                        </div>
+
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <a class="btn btn-success" style="margin-bottom:10px" onclick="PopupForm('@Url.Action("Add","Operator")')"><i cl><i class="fa fa-plus"></i> Thêm mới</a>
+                        <table id="OperatorDataTable" class="table table-bordered table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Mã Doanh nghiệp</th>
+                                    <th>Tên Doanh nghiệp</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+</div>

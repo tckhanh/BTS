@@ -1,0 +1,90 @@
+﻿@model BTS.Web.Models.ApplicantViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "Detail";
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Applicant", new { id = "" }) }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Id, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Id)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OperatorID, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.DropDownListFor(model => model.OperatorID, Model.OperatorList, " Chọn lựa nhà mạng ", new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.OperatorID)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Address)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Fax, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Fax, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Fax)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactName, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(model => model.ContactName, new { @class = "form-control", rows = "5", cols = "40", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.ContactName)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+                        {
+                            <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit", "Applicant", new { id = "", act = CommonConstants.Action_Add })',false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                        }
+                        @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                        {
+                            <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "Applicant", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
+                        }
+
+                        @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                        {
+                            <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "Applicant", new { id=@Model.Id})')"><i class="fa fa-trash"></i> Xóa bỏ</a>
+                        }
+
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Applicant", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

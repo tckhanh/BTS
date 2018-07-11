@@ -94,7 +94,7 @@ namespace BTS.Web.Controllers
                     catch (Exception e)
                     {
                         // Base Controller đã ghi Log Error rồi
-                        return Json(new { status = CommonConstants.Status_Error, message = e.Message }, JsonRequestBehavior.AllowGet + "\n" + e.StackTrace);
+                        return Json(new { status = CommonConstants.Status_Error, message = e.Message + "\n" + e.StackTrace }, JsonRequestBehavior.AllowGet);
                     }
                 }
             }
@@ -110,7 +110,7 @@ namespace BTS.Web.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID].ToString()))
                 {
                     var Item = new InCaseOf();
-                    Item.Id = Convert.ToInt32(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
+                    Item.ID = Convert.ToInt32(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_InCaseOf_Name].ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;

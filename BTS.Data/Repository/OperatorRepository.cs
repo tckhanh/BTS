@@ -10,13 +10,38 @@ namespace BTS.Data.Repository
 {
     public interface IOperatorRepository : IRepository<Operator>
     {
-
+        bool IsUsed(string ID);
     }
 
     public class OperatorRepository : RepositoryBase<Operator>, IOperatorRepository
     {
         public OperatorRepository(IDbFactory dbFactory) : base(dbFactory)
         {
+        }
+
+        public bool IsUsed(string ID)
+        {
+            var query0 = from item in DbContext.Applicants
+                         where item.OperatorID == ID
+                         select item.ID;
+            if (query0.Count() > 0) return true;
+
+            var query1 = from item in DbContext.Btss
+                         where item.OperatorID == ID
+                         select item.ID;
+            if (query1.Count() > 0) return true;
+
+            var query2 = from item in DbContext.Certificates
+                         where item.OperatorID == ID
+                         select item.ID;
+            if (query2.Count() > 0) return true;
+
+            var query3 = from item in DbContext.NoCertificates
+                         where item.OperatorID == ID
+                         select item.ID;
+            if (query3.Count() > 0) return true;
+
+            return false;
         }
     }
 }

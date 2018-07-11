@@ -70,7 +70,7 @@ namespace BTS.Web.Controllers
                     BtsCode = dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(),
                     Address = dt.Rows[i][CommonConstants.Sheet_Bts_Address].ToString(),
                     LastOwnCertificateIDs = dt.Rows[i][CommonConstants.Sheet_Bts_LastOwnCertificateIDs].ToString(),
-                    ProFilesInProcess = dt.Rows[i][CommonConstants.Sheet_Bts_ProFileInProcess].ToString(),
+                    ProfilesInProcess = dt.Rows[i][CommonConstants.Sheet_Bts_ProfileInProcess].ToString(),
                     ReasonsNoCertificate = dt.Rows[i][CommonConstants.Sheet_Bts_ReasonNoCertificate].ToString(),
                 });
             }
@@ -109,7 +109,7 @@ namespace BTS.Web.Controllers
                         Request.Files["file"].SaveAs(fileLocation);
 
                         //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
-                        _excelIO.AddNewColumns(fileLocation, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_LastOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_ProFileInProcess + ";" + CommonConstants.Sheet_Bts_ReasonNoCertificate);
+                        _excelIO.AddNewColumns(fileLocation, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_LastOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_ProfileInProcess + ";" + CommonConstants.Sheet_Bts_ReasonNoCertificate);
 
                         string[] columnNames = new string[] {
                             CommonConstants.Sheet_Certificate_Longtitude,
@@ -160,7 +160,7 @@ namespace BTS.Web.Controllers
                     {
                         dataString += "Số " + item.ProfileNum + " ngày " + item.ProfileDate.ToString("dd/MM/yyyy") + " của " + item.ApplicantID + "\n";
                     }
-                    dt.Rows[i][CommonConstants.Sheet_Bts_ProFileInProcess] = dataString;
+                    dt.Rows[i][CommonConstants.Sheet_Bts_ProfileInProcess] = dataString;
 
                     dataString = "";
                     IEnumerable<NoCertificate> btsNoCertificate = _importService.findBtsNoCertificate(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
@@ -174,7 +174,7 @@ namespace BTS.Web.Controllers
 
             if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_LastOwnCertificateIDs, dt))
                 if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs, dt))
-                    if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_ProFileInProcess, dt))
+                    if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_ProfileInProcess, dt))
                         if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_ReasonNoCertificate, dt))
                             return 1;
 

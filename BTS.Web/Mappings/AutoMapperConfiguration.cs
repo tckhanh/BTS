@@ -29,7 +29,9 @@ namespace BTS.Web.Mappings
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<InCaseOf, InCaseOfViewModel>();
+                cfg.CreateMap<Lab, LabViewModel>();
                 cfg.CreateMap<Applicant, ApplicantViewModel>();
+                cfg.CreateMap<Bts, BtsViewModel>();
                 cfg.CreateMap<Certificate, CertificateViewModel>();
                 cfg.CreateMap<City, CityViewModel>();
                 cfg.CreateMap<Operator, OperatorViewModel>();

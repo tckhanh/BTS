@@ -6,12 +6,12 @@ using System.Web;
 
 namespace BTS.Web.Models
 {
-    public class LabViewModel
+    public class LabViewModel: AuditableViewModel
     {
         [Display(Name = "Mã Phòng Đo kiểm")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Mã Phòng Đo kiểm")]
         [StringLength(20, ErrorMessage = "Mã Phòng Đo kiểm không quá 20 ký tự")]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         [Display(Name = "Tên Phòng Đo kiểm")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tên Phòng Đo kiểm")]

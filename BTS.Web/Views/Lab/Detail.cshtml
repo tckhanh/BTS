@@ -29,22 +29,46 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(model => model.Address, new { @class = "form-control", rows = "5", cols = "40", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Address)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Fax, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Fax, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Fax)
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
                         {
-                            <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit", "Lab", new { id = "", act = CommonConstants.Action_Add })',false)"><i c><i cla><i class="fa fa-plus"></i> Thêm mới</a>
+                            <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit", "Lab", new { id = "", act = CommonConstants.Action_Add })',false)"><i class="fa fa-plus"></i> Thêm mới</a>
                         }
                         @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                         {
-                            <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "Lab", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i c><i cla><i class="fa fa-pencil"></i> Sửa đổi</a>
+                            <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "Lab", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
                         }
 
                         @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
                         {
-                            <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "Lab", new { id=@Model.Id})')"><i c><i cla><i class="fa fa-trash"></i> Xóa bỏ</a>
+                            <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "Lab", new { id=@Model.Id})')"><i class="fa fa-trash"></i> Xóa bỏ</a>
                         }
 
-                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Lab", new{id = ""})', true)"><i c><i cla><i class="fa fa-close"></i> Hủy bỏ</a>
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Lab", new{id = ""})', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
                     </div>
                 </div>
             </div>

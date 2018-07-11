@@ -10,6 +10,8 @@ namespace BTS.Data.Repository
 {
     public interface IProfileRepository : IRepository<Profile>
     {
+        bool IsUsed(int ID);
+
         Profile findProfile(string applicationID, string profileNum, DateTime profileDate);
 
         IEnumerable<Profile> findProfilesBtsInProcess(string btsCode, string operatorID);
@@ -50,6 +52,26 @@ namespace BTS.Data.Repository
                         orderby pf.FeeReceiptDate descending
                         select pf;
             return query;
+        }
+
+        public bool IsUsed(int ID)
+        {
+            var query1 = from item in DbContext.Btss
+                         where item.ProfileID == ID
+                         select item.ID;
+            if (query1.Count() > 0) return true;
+
+            var query2 = from item in DbContext.Certificates
+                         where item.ProfileID == ID
+                         select item.ID;
+            if (query2.Count() > 0) return true;
+
+            var query3 = from item in DbContext.NoCertificates
+                         where item.ProfileID == ID
+                         select item.ID;
+            if (query3.Count() > 0) return true;
+
+            return false;
         }
     }
 }

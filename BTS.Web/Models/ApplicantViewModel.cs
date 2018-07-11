@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace BTS.Web.Models
 {
     public class ApplicantViewModel
     {
-        [Display(Name = "Mã Đơn vị nộp hồ sơ")]
+        [Display(Name = "Mã đơn vị nộp hồ sơ")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Mã đơn vị nộp hồ sơ")]
         [StringLength(50, ErrorMessage = "Mã đơn vị nộp hồ sơ không quá 50 ký tự")]
         public string Id { get; set; }
 
@@ -39,8 +41,16 @@ namespace BTS.Web.Models
         [StringLength(10, ErrorMessage = "Mã nhà mạng không quá 10 ký tự")]
         public string OperatorID { get; set; }
 
+        [Display(Name = "Thuộc nhà mạng")]
+        public ICollection<SelectListItem> OperatorList { get; set; }
+
         public virtual OperatorViewModel Operator { get; set; }
 
         public virtual ICollection<ProfileViewModel> Profiles { get; set; }
+
+        public ApplicantViewModel()
+        {
+            OperatorList = new List<SelectListItem>();
+        }
     }
 }

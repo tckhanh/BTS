@@ -20,6 +20,7 @@ namespace BTS.Web.Models
         [MaxLength(500, ErrorMessage = "Tin nhắn không được quá 500 ký tự")]
         public string Message { set; get; }
 
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CreatedDate { set; get; }
 
         [Required(ErrorMessage = "Phải nhập trạng thái")]

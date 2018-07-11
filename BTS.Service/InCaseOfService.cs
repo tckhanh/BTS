@@ -46,11 +46,6 @@ namespace BTS.Service
             return _inCaseOfRepository.Add(newInCaseOf);
         }
 
-        public InCaseOf Delete(string ID)
-        {
-            return _inCaseOfRepository.Delete(ID);
-        }
-
         public InCaseOf Delete(int ID)
         {
             return _inCaseOfRepository.Delete(ID);
@@ -64,7 +59,7 @@ namespace BTS.Service
         public IEnumerable<InCaseOf> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _inCaseOfRepository.GetMulti(x => x.Id.ToString().Contains(keyword) || x.Name.Contains(keyword));
+                return _inCaseOfRepository.GetMulti(x => x.ID.ToString().Contains(keyword) || x.Name.Contains(keyword));
             else
                 return _inCaseOfRepository.GetAll();
         }

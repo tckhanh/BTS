@@ -1,16 +1,19 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@using BTS.Common
+@{
+    ViewBag.Title = "Operator";
     Layout = "~/Views/Shared/Layouts.cshtml";
-    IEnumerable<BTS.Web.Models.CityViewModel> cities = ViewBag.cities;
 }
 
 @section headCSS{
     <link href="~/Assets/client/css/custom.css" rel="stylesheet" />
+    <link href="~/Assets/client/css/custom-DataTable.css" rel="stylesheet" />
 }
 
 @section footerJS{
-    <script src="~/Assets/client/js/controllers/operator.js"></script>
+    <script src="~/Assets/admin/libs/moment/moment.js"></script>
+    <script src="~/Assets/client/js/controllers/commonController.js"></script>
 }
+<br />
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -32,27 +35,27 @@
     <section class="content">
         <div class="row">
             <div class="col-xs-12">
-                <div class="box with-border ">
-                    <div class="box-header">
-                        <h3 class="BTS-title">DANH SÁCH NHÀ MẠNG</h3>
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="BTS-title">DANH SÁCH CÁC NHÀ MẠNG</h3>
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                             @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
                         </div>
-
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <a class="btn btn-success" style="margin-bottom:10px" onclick="PopupForm('@Url.Action("Add","Operator")')"><i cl><i class="fa fa-plus"></i> Thêm mới</a>
-                        <table id="OperatorDataTable" class="table table-bordered table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Mã Doanh nghiệp</th>
-                                    <th>Tên Doanh nghiệp</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                        </table>
+                        <ul class="nav nav-tabs nav-pills">
+                            <li class="active"><a data-toggle="tab" href="#firstTab"> Xem</a></li>
+                            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+                            {
+                                <li><a data-toggle="tab" href="#secondTab"> Thêm mới</a></li>
+                            }
+                        </ul>
+                        <div class="tab-content">
+                            <div id="firstTab" class="tab-pane fade in active">@Html.Action("ViewAll")</div>
+                            <div id="secondTab" class="tab-pane fade in">@Html.Action("AddOrEdit")</div>
+                        </div>
                     </div>
                     <!-- /.box-body -->
                 </div>

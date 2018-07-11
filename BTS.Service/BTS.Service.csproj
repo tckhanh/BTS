@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BtsService.cs" />
     <Compile Include="ApplicationGroupService.cs" />
     <Compile Include="CertificateService.cs" />
     <Compile Include="CityService.cs" />
@@ -65,7 +66,9 @@
     <Compile Include="ErrorService.cs" />
     <Compile Include="FeedbackService.cs" />
     <Compile Include="ImportService.cs" />
+    <Compile Include="LabService.cs" />
     <Compile Include="InCaseOfService.cs" />
+    <Compile Include="ApplicantService.cs" />
     <Compile Include="OperatorService.cs" />
     <Compile Include="PageService.cs" />
     <Compile Include="ProfileService.cs" />

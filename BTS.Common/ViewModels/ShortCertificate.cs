@@ -8,7 +8,7 @@ namespace BTS.Common.ViewModels
 {
     public class ShortCertificate
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
         public int Year { get; set; }
         public string OperatorID { get; set; }
         public string CityID { get; set; }

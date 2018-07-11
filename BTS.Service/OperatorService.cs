@@ -23,6 +23,8 @@ namespace BTS.Service
 
         Operator getByID(string ID);
 
+        bool IsUsed(string ID);
+
         void SaveChanges();
     }
 
@@ -73,6 +75,11 @@ namespace BTS.Service
         public void Update(Operator newOperator)
         {
             _operatorRepository.Update(newOperator);
+        }
+
+        public bool IsUsed(string ID)
+        {
+            return _operatorRepository.IsUsed(ID);
         }
     }
 }

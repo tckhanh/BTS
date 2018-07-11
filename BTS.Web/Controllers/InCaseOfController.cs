@@ -66,7 +66,7 @@ namespace BTS.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, InCaseOfViewModel Item)
+        public async Task<ActionResult> AddOrEdit(string act, InCaseOfViewModel ItemVm)
         {
             try
             {
@@ -75,8 +75,9 @@ namespace BTS.Web.Controllers
                     if (act == CommonConstants.Action_Add)
                     {
                         var newItem = new InCaseOf();
-                        newItem.Id = Item.Id;
-                        newItem.Name = Item.Name;
+                        newItem.UpdateInCaseOf(ItemVm);
+                        newItem.ID = ItemVm.Id;
+                        
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;
 
@@ -86,10 +87,11 @@ namespace BTS.Web.Controllers
                     }
                     else
                     {
-                        var editItem = _inCaseOfService.getByID(Item.Id);
-                        editItem.UpdateInCaseOf(Item);
+                        var editItem = _inCaseOfService.getByID(ItemVm.Id);
+                        editItem.UpdateInCaseOf(ItemVm);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
+
                         _inCaseOfService.Update(editItem);
                         _inCaseOfService.Save();
                         return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<InCaseOfViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
