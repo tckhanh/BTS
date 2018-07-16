@@ -15,15 +15,15 @@ namespace BTS.Service
 
         void Update(Operator newOperator);
 
-        Operator Delete(string ID);
+        Operator Delete(string Id);
 
         IEnumerable<Operator> getAll();
 
         IEnumerable<Operator> getAll(string keyword);
 
-        Operator getByID(string ID);
+        Operator getByID(string Id);
 
-        bool IsUsed(string ID);
+        bool IsUsed(string Id);
 
         void SaveChanges();
     }
@@ -44,9 +44,9 @@ namespace BTS.Service
             return _operatorRepository.Add(newOperator);
         }
 
-        public Operator Delete(string ID)
+        public Operator Delete(string Id)
         {
-            return _operatorRepository.Delete(ID);
+            return _operatorRepository.Delete(Id);
         }
 
         public IEnumerable<Operator> getAll()
@@ -57,14 +57,14 @@ namespace BTS.Service
         public IEnumerable<Operator> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _operatorRepository.GetMulti(x => x.ID.Contains(keyword) || x.Name.Contains(keyword));
+                return _operatorRepository.GetMulti(x => x.Id.Contains(keyword) || x.Name.Contains(keyword));
             else
                 return _operatorRepository.GetAll();
         }
 
-        public Operator getByID(string ID)
+        public Operator getByID(string Id)
         {
-            return _operatorRepository.GetSingleById(ID);
+            return _operatorRepository.GetSingleById(Id);
         }
 
         public void SaveChanges()
@@ -77,9 +77,9 @@ namespace BTS.Service
             _operatorRepository.Update(newOperator);
         }
 
-        public bool IsUsed(string ID)
+        public bool IsUsed(string Id)
         {
-            return _operatorRepository.IsUsed(ID);
+            return _operatorRepository.IsUsed(Id);
         }
     }
 }

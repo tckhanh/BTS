@@ -21,15 +21,17 @@ namespace BTS.Data.Repository
 
         IEnumerable<IssuedCertStatByOperatorYearVM> GetIssuedCertStatByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
+        IEnumerable<IssuedCertStatByOperatorCityVM> GetIssuedCertStatByOperatorCity(bool onlyIsValid = false);
+
         IEnumerable<ExpiredCertStatByOperatorYearVM> GetExpiredCertStatByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
         IEnumerable<CertStatByOperatorVM> GetCertStatByOperator(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
+        IEnumerable<StatBtsInProcessVm> GetStatBtsInProcess();
+
         IEnumerable<CertStatVM> GetCertStatByCity(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
         IEnumerable<CertStatVM> GetCerStatByLab(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
-
-        IEnumerable<CertStatVM> GetCertStatByOperatorCity();
 
         IEnumerable<ShortCertificate> GetShortCertificate();
 
@@ -55,9 +57,9 @@ namespace BTS.Data.Repository
             {
                 var query = from certificate in DbContext.Certificates
                             join subBts in DbContext.SubBtsInCerts
-                            on certificate.ID equals subBts.CertificateID
+                            on certificate.Id equals subBts.CertificateID
                             where subBts.BtsCode.Trim().ToUpper() == btsCode && subBts.OperatorID == certificate.OperatorID
-                            orderby certificate.IssuedDate, certificate.ID descending
+                            orderby certificate.IssuedDate, certificate.Id descending
                             select certificate;
                 return query;
             }
@@ -65,9 +67,9 @@ namespace BTS.Data.Repository
             {
                 var query = from certificate in DbContext.Certificates
                             join subBts in DbContext.SubBtsInCerts
-                            on certificate.ID equals subBts.CertificateID
+                            on certificate.Id equals subBts.CertificateID
                             where subBts.BtsCode.Trim().ToUpper() == btsCode
-                            orderby certificate.IssuedDate, certificate.ID descending
+                            orderby certificate.IssuedDate, certificate.Id descending
                             select certificate;
                 return query;
             }
@@ -80,9 +82,9 @@ namespace BTS.Data.Repository
             {
                 var query = from certificate in DbContext.Certificates
                             join subBts in DbContext.SubBtsInCerts
-                            on certificate.ID equals subBts.CertificateID
+                            on certificate.Id equals subBts.CertificateID
                             where subBts.BtsCode.Trim().ToUpper() == btsCode && subBts.OperatorID == certificate.OperatorID
-                            orderby certificate.IssuedDate, certificate.ID descending
+                            orderby certificate.IssuedDate, certificate.Id descending
                             select certificate;
                 totalRow = query.Count();
                 return query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
@@ -91,9 +93,9 @@ namespace BTS.Data.Repository
             {
                 var query = from certificate in DbContext.Certificates
                             join subBts in DbContext.SubBtsInCerts
-                            on certificate.ID equals subBts.CertificateID
+                            on certificate.Id equals subBts.CertificateID
                             where subBts.BtsCode.Trim().ToUpper() == btsCode
-                            orderby certificate.IssuedDate, certificate.ID descending
+                            orderby certificate.IssuedDate, certificate.Id descending
                             select certificate;
                 totalRow = query.Count();
                 return query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
@@ -255,21 +257,6 @@ namespace BTS.Data.Repository
             }
         }
 
-        public IEnumerable<CertStatVM> GetCertStatByOperatorCity()
-        {
-            var query = from certificate in DbContext.Certificates
-                        where !string.IsNullOrEmpty(certificate.OperatorID)
-                        group certificate by new { certificate.OperatorID, certificate.CityID } into OperatorGroup
-                        select new CertStatVM()
-                        {
-                            OperatorID = OperatorGroup.Key.OperatorID,
-                            CityID = OperatorGroup.Key.CityID,
-                            ValidCertificates = OperatorGroup.Count()
-                        };
-
-            return query;
-        }
-
         IEnumerable<CertStatVM> ICertificateRepository.GetStatistic(string fromDate, string toDate)
         {
             var parameters = new SqlParameter[]{
@@ -285,7 +272,7 @@ namespace BTS.Data.Repository
                         where certificate.IssuedDate.Value.Year == year
                         select new ShortCertificate()
                         {
-                            Id = certificate.ID,
+                            Id = certificate.Id,
                             Year = year,
                             OperatorID = certificate.OperatorID,
                             CityID = certificate.CityID,
@@ -301,7 +288,7 @@ namespace BTS.Data.Repository
                         where certificate.ExpiredDate <= DateTime.Now
                         select new ShortCertificate()
                         {
-                            Id = certificate.ID,
+                            Id = certificate.Id,
                             Year = certificate.IssuedDate.Value.Year,
                             OperatorID = certificate.OperatorID,
                             CityID = certificate.CityID,
@@ -320,7 +307,7 @@ namespace BTS.Data.Repository
 
             var query2 = from item1 in query1
                          join certificate in DbContext.Certificates
-                         on item1 equals certificate.ID
+                         on item1 equals certificate.Id
                          where certificate.OperatorID == operatorID
                          orderby certificate.IssuedDate descending
                          select certificate;
@@ -336,7 +323,7 @@ namespace BTS.Data.Repository
 
             var query2 = from item1 in query1
                          join certificate in DbContext.Certificates
-                         on item1 equals certificate.ID
+                         on item1 equals certificate.Id
                          where certificate.OperatorID != operatorID
                          orderby certificate.IssuedDate descending
                          select certificate;
@@ -348,7 +335,7 @@ namespace BTS.Data.Repository
 
             //var query2 = from certificate in DbContext.Certificates
             //             join item1 in query1
-            //             on certificate.ID equals item1.CertificateID
+            //             on certificate.Id equals item1.CertificateID
             //             where certificate.OperatorID != operatorID
             //             orderby certificate.IssuedDate descending
             //             select certificate;
@@ -361,6 +348,47 @@ namespace BTS.Data.Repository
                                          group certificate by certificate.IssuedDate.Value.Year into OperatorGroup
                                          select OperatorGroup.Key.ToString();
             return query1;
+        }
+
+        public IEnumerable<IssuedCertStatByOperatorCityVM> GetIssuedCertStatByOperatorCity(bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                var query = from certificate in DbContext.Certificates
+                            where (certificate.ExpiredDate >= DateTime.Now)
+                            group certificate by new { certificate.CityID, certificate.OperatorID } into ItemGroup
+                            select new IssuedCertStatByOperatorCityVM()
+                            {
+                                CityID = ItemGroup.Key.CityID,
+                                OperatorID = ItemGroup.Key.OperatorID,
+                                IssuedCertificates = ItemGroup.Count()
+                            };
+                return query;
+            }
+            else
+            {
+                var query = from certificate in DbContext.Certificates
+                            group certificate by new { certificate.CityID, certificate.OperatorID } into ItemGroup
+                            select new IssuedCertStatByOperatorCityVM()
+                            {
+                                CityID = ItemGroup.Key.CityID,
+                                OperatorID = ItemGroup.Key.OperatorID,
+                                IssuedCertificates = ItemGroup.Count()
+                            };
+                return query;
+            }
+        }
+
+        public IEnumerable<StatBtsInProcessVm> GetStatBtsInProcess()
+        {
+            var query = from bts in DbContext.Btss
+                        group bts by new { bts.OperatorID } into ItemGroup
+                        select new StatBtsInProcessVm()
+                        {
+                            OperatorID = ItemGroup.Key.OperatorID,
+                            Btss = ItemGroup.Count()
+                        };
+            return query;
         }
     }
 }

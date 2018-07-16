@@ -50,15 +50,15 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="clearfix"></div>                    
+                    <div class="clearfix"></div>
                     <!-- Main content -->
                     <section class="content">
                         <div class="row">
                             <div class="col-md-6">
-                                <!-- AREA CHART -->
+                                <!-- PIE CHART -->
                                 <div class="box box-primary">
                                     <div class="box-header with-border">
-                                        <h3 class="box-title">Giấy CNKĐ Còn hiệu lực</h3>
+                                        <h3 class="box-title">Giấy CNKĐ Còn hiệu lực/ gần hết hạn trong năm</h3>
                                         <div class="box-tools pull-right">
                                             <button type="button" class="btn btn-box-tool" data-widget="collapse">
                                                 <i class="fa fa-minus"></i>
@@ -74,15 +74,13 @@
                                     <!-- /.box-body -->
                                 </div>
                                 <!-- /.box -->
-                                <!-- DONUT CHART -->
-                                <!-- /.box -->
                             </div>
                             <!-- /.col (LEFT) -->
                             <div class="col-md-6">
-                                <!-- LINE CHART -->
+                                <!-- PIE CHART -->
                                 <div class="box box-info">
                                     <div class="box-header with-border">
-                                        <h3 class="box-title">Giấy CNKĐ Gần hết hạn trong năm</h3>
+                                        <h3 class="box-title">Số trạm BTS tồn đang xử lý</h3>
                                         <div class="box-tools pull-right">
                                             <button type="button" class="btn btn-box-tool" data-widget="collapse">
                                                 <i class="fa fa-minus"></i>
@@ -92,17 +90,63 @@
                                     </div>
                                     <div class="box-body">
                                         <div class="chart">
-                                            <canvas id="pieChartExpiredInYearCertificates" style="height:250px"></canvas>
+                                            <canvas id="pieChartBtsInProcess" style="height:250px"></canvas>
                                         </div>
                                     </div>
                                     <!-- /.box-body -->
                                 </div>
                                 <!-- /.box -->
-                                <!-- BAR CHART -->
+                            </div>
+                            <!-- /.col (RIGHT) -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- LINE CHART -->
+                                <div class="box box-info">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Giấy CNKĐ còn hiệu lực</h3>
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="chart">
+                                            <canvas id="lineChartvalidCertificatesByCity" style="height:250px"></canvas>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <!-- /.box -->
+                            </div>                            
+                            <!-- /.col (LEFT) -->
+                            <div class="col-md-6">
+                                <!-- LINE CHART -->
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Giấy CNKĐ đã cấp</h3>
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="chart">
+                                            <canvas id="lineChartIssuedCertificatesByYear" style="height:250px"></canvas>
+                                        </div>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
                                 <!-- /.box -->
                             </div>
                             <!-- /.col (RIGHT) -->
                         </div>
+
                         <!-- /.row -->
                     </section>
                     <!-- /.content -->

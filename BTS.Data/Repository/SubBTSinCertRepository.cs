@@ -33,18 +33,18 @@ namespace BTS.Data.Repository
         {
             var query1 = from subBts in DbContext.SubBtsInCerts
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
+                         on subBts.CertificateID equals cert.Id
                          where ((operatorID == CommonConstants.SelectAll || subBts.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || cert.CityID == cityID))
                          group subBts by new { subBts.OperatorID, subBts.BtsCode } into ItemGroup
                          select new
                          {
-                             ID = ItemGroup.Max(x => x.ID)
+                             Id = ItemGroup.Max(x => x.Id)
                          };
 
             var query2 = from subBts in DbContext.SubBtsInCerts
-                         join q1 in query1 on subBts.ID equals q1.ID
+                         join q1 in query1 on subBts.Id equals q1.Id
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
+                         on subBts.CertificateID equals cert.Id
                          group subBts by new { subBts.OperatorID } into ItemGroup
                          select new BtsStatiticsViewModel()
                          {
@@ -58,22 +58,22 @@ namespace BTS.Data.Repository
         {
             var query1 = from subBts in DbContext.SubBtsInCerts
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
+                         on subBts.CertificateID equals cert.Id
                          where ((operatorID == CommonConstants.SelectAll || subBts.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || cert.CityID == cityID))
                          group subBts by new { subBts.OperatorID, subBts.BtsCode } into ItemGroup
                          select new
                          {
-                             ID = ItemGroup.Max(x => x.ID)
+                             Id = ItemGroup.Max(x => x.Id)
                          };
 
             var query2 = from subBts in DbContext.SubBtsInCerts
-                         join q1 in query1 on subBts.ID equals q1.ID
+                         join q1 in query1 on subBts.Id equals q1.Id
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
-                         group subBts by new { cert.ID } into ItemGroup
+                         on subBts.CertificateID equals cert.Id
+                         group subBts by new { cert.Id } into ItemGroup
                          select new BtsStatiticsViewModel()
                          {
-                             CityID = ItemGroup.Key.ID.ToString(),
+                             CityID = ItemGroup.Key.Id.ToString(),
                              Btss = ItemGroup.Count()
                          };
             return query2;
@@ -83,18 +83,18 @@ namespace BTS.Data.Repository
         {
             var query1 = from subBts in DbContext.SubBtsInCerts
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
+                         on subBts.CertificateID equals cert.Id
                          where ((operatorID == CommonConstants.SelectAll || subBts.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || cert.CityID == cityID))
                          group subBts by new { subBts.OperatorID, subBts.BtsCode } into ItemGroup
                          select new
                          {
-                             ID = ItemGroup.Max(x => x.ID)
+                             Id = ItemGroup.Max(x => x.Id)
                          };
 
             var query2 = from subBts in DbContext.SubBtsInCerts
-                         join q1 in query1 on subBts.ID equals q1.ID
+                         join q1 in query1 on subBts.Id equals q1.Id
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
+                         on subBts.CertificateID equals cert.Id
                          group subBts by new { subBts.Band } into ItemGroup
                          select new BtsStatiticsViewModel()
                          {
@@ -108,18 +108,18 @@ namespace BTS.Data.Repository
         {
             var query1 = from subBts in DbContext.SubBtsInCerts
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
+                         on subBts.CertificateID equals cert.Id
                          where ((operatorID == CommonConstants.SelectAll || subBts.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || cert.CityID == cityID))
                          group subBts by new { subBts.OperatorID, subBts.BtsCode } into ItemGroup
                          select new
                          {
-                             ID = ItemGroup.Max(x => x.ID)
+                             Id = ItemGroup.Max(x => x.Id)
                          };
 
             var query2 = from subBts in DbContext.SubBtsInCerts
-                         join q1 in query1 on subBts.ID equals q1.ID
+                         join q1 in query1 on subBts.Id equals q1.Id
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
+                         on subBts.CertificateID equals cert.Id
                          group subBts by new { subBts.Manufactory } into ItemGroup
                          select new BtsStatiticsViewModel()
                          {
@@ -133,18 +133,18 @@ namespace BTS.Data.Repository
         {
             var query1 = from subBts in DbContext.SubBtsInCerts
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
+                         on subBts.CertificateID equals cert.Id
                          where ((operatorID == CommonConstants.SelectAll || subBts.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || cert.CityID == cityID))
                          group subBts by new { subBts.OperatorID, subBts.BtsCode } into ItemGroup
                          select new
                          {
-                             ID = ItemGroup.Max(x => x.ID)
+                             Id = ItemGroup.Max(x => x.Id)
                          };
 
             var query2 = from subBts in DbContext.SubBtsInCerts
-                         join q1 in query1 on subBts.ID equals q1.ID
+                         join q1 in query1 on subBts.Id equals q1.Id
                          join cert in DbContext.Certificates
-                         on subBts.CertificateID equals cert.ID
+                         on subBts.CertificateID equals cert.Id
                          group subBts by new { subBts.Equipment } into ItemGroup
                          select new BtsStatiticsViewModel()
                          {

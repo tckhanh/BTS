@@ -232,13 +232,13 @@
     activatejQueryTable: function () {
         $("#MyDataTable").DataTable({
             "language": {
-                url: '/localization/vi_VI.json'
+                url: '/AppFiles/localization/vi_VI.json'
             },
             initComplete: function () {
                 this.api().columns().every(function () {
                     var column = this;
                     var select = $('<select><option value=""></option></select>')
-                    .appendTo( $(column.footer()).empty())
+                    .appendTo($(column.footer()).empty())
                     .on('change', function () {
                         var val = $.fn.dataTable.util.escapeRegex($(this).val());
                         column.search(val ? '^' + val + '$' : '', true, false).draw();

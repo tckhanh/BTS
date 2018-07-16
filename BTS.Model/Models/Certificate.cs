@@ -11,7 +11,7 @@ namespace BTS.Model.Models
     {
         [Key]
         [StringLength(16)]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         public int ProfileID { get; set; }
 

@@ -75,8 +75,8 @@ namespace BTS.Web.Controllers
                     {
                         var newItem = new Operator();
                         newItem.UpdateOperator(Item);
-                        newItem.ID = Item.Id;
-                        
+                        newItem.Id = Item.Id;
+
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;
 

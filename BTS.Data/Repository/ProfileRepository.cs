@@ -10,7 +10,7 @@ namespace BTS.Data.Repository
 {
     public interface IProfileRepository : IRepository<Profile>
     {
-        bool IsUsed(int ID);
+        bool IsUsed(int Id);
 
         Profile findProfile(string applicationID, string profileNum, DateTime profileDate);
 
@@ -35,7 +35,7 @@ namespace BTS.Data.Repository
             btsCode = btsCode.Trim().ToUpper();
             var query = from pf in DbContext.Profiles
                         join bts in DbContext.Btss
-                        on pf.ID equals bts.ProfileID
+                        on pf.Id equals bts.ProfileID
                         where bts.BtsCode.Trim().ToUpper() == btsCode && bts.OperatorID == operatorID
                         orderby pf.FeeReceiptDate descending
                         select pf;
@@ -47,28 +47,28 @@ namespace BTS.Data.Repository
             btsCode = btsCode.Trim().ToUpper();
             var query = from pf in DbContext.Profiles
                         join cer in DbContext.NoCertificates
-                        on pf.ID equals cer.ProfileID
+                        on pf.Id equals cer.ProfileID
                         where cer.BtsCode.Trim().ToUpper() == btsCode && cer.OperatorID == operatorID
                         orderby pf.FeeReceiptDate descending
                         select pf;
             return query;
         }
 
-        public bool IsUsed(int ID)
+        public bool IsUsed(int Id)
         {
             var query1 = from item in DbContext.Btss
-                         where item.ProfileID == ID
-                         select item.ID;
+                         where item.ProfileID == Id
+                         select item.Id;
             if (query1.Count() > 0) return true;
 
             var query2 = from item in DbContext.Certificates
-                         where item.ProfileID == ID
-                         select item.ID;
+                         where item.ProfileID == Id
+                         select item.Id;
             if (query2.Count() > 0) return true;
 
             var query3 = from item in DbContext.NoCertificates
-                         where item.ProfileID == ID
-                         select item.ID;
+                         where item.ProfileID == Id
+                         select item.Id;
             if (query3.Count() > 0) return true;
 
             return false;

@@ -42,7 +42,6 @@ namespace BTS.Web.Controllers
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
         public async Task<ActionResult> AddOrEdit(string act, string id = "0")
         {
-            
             LabViewModel ItemVm = new LabViewModel();
             if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
@@ -76,7 +75,7 @@ namespace BTS.Web.Controllers
                     {
                         var newItem = new Lab();
                         newItem.UpdateLab(Item);
-                        newItem.ID = Item.Id;
+                        newItem.Id = Item.Id;
 
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;

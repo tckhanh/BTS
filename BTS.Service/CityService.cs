@@ -14,15 +14,15 @@ namespace BTS.Service
 
         void Update(City newCity);
 
-        City Delete(string ID);
+        City Delete(string Id);
 
         IEnumerable<City> getAll();
 
         IEnumerable<City> getAll(string keyword);
 
-        City getByID(string ID);
+        City getByID(string Id);
 
-        bool IsUsed(string ID);
+        bool IsUsed(string Id);
 
         void Save();
     }
@@ -43,9 +43,9 @@ namespace BTS.Service
             return _cityRepository.Add(newCity);
         }
 
-        public City Delete(string ID)
+        public City Delete(string Id)
         {
-            return _cityRepository.Delete(ID);
+            return _cityRepository.Delete(Id);
         }
 
         public IEnumerable<City> getAll()
@@ -56,14 +56,14 @@ namespace BTS.Service
         public IEnumerable<City> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _cityRepository.GetMulti(x => x.ID.Contains(keyword) || x.Name.Contains(keyword));
+                return _cityRepository.GetMulti(x => x.Id.Contains(keyword) || x.Name.Contains(keyword));
             else
                 return _cityRepository.GetAll();
         }
 
-        public City getByID(string ID)
+        public City getByID(string Id)
         {
-            return _cityRepository.GetSingleById(ID);
+            return _cityRepository.GetSingleById(Id);
         }
 
         public void Save()
@@ -76,9 +76,9 @@ namespace BTS.Service
             _cityRepository.Update(newCity);
         }
 
-        public bool IsUsed(string ID)
+        public bool IsUsed(string Id)
         {
-            return _cityRepository.IsUsed(ID);
+            return _cityRepository.IsUsed(Id);
         }
     }
 }

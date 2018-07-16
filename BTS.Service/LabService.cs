@@ -15,22 +15,22 @@ namespace BTS.Service
 
         void Update(Lab newLab);
 
-        Lab Delete(string ID);
+        Lab Delete(string Id);
 
         IEnumerable<Lab> getAll();
 
         IEnumerable<Lab> getAll(string keyword);
 
-        Lab getByID(string ID);
+        Lab getByID(string Id);
 
-        Lab getByID(int ID);
+        Lab getByID(int Id);
 
-        bool IsUsed(string ID);
+        bool IsUsed(string Id);
 
         void Save();
     }
 
-    public class LabService: ILabService
+    public class LabService : ILabService
     {
         private ILabRepository _labRepository;
         private IUnitOfWork _unitOfWork;
@@ -46,9 +46,9 @@ namespace BTS.Service
             return _labRepository.Add(newLab);
         }
 
-        public Lab Delete(string ID)
+        public Lab Delete(string Id)
         {
-            return _labRepository.Delete(ID);
+            return _labRepository.Delete(Id);
         }
 
         public IEnumerable<Lab> getAll()
@@ -59,24 +59,24 @@ namespace BTS.Service
         public IEnumerable<Lab> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _labRepository.GetMulti(x => x.ID.ToString().Contains(keyword) || x.Name.Contains(keyword));
+                return _labRepository.GetMulti(x => x.Id.ToString().Contains(keyword) || x.Name.Contains(keyword));
             else
                 return _labRepository.GetAll();
         }
 
-        public Lab getByID(string ID)
+        public Lab getByID(string Id)
         {
-            return _labRepository.GetSingleById(ID);
+            return _labRepository.GetSingleById(Id);
         }
 
-        public Lab getByID(int ID)
+        public Lab getByID(int Id)
         {
-            return _labRepository.GetSingleById(ID);
+            return _labRepository.GetSingleById(Id);
         }
 
-        public bool IsUsed(string ID)
+        public bool IsUsed(string Id)
         {
-            return _labRepository.IsUsed(ID);
+            return _labRepository.IsUsed(Id);
         }
 
         public void Save()

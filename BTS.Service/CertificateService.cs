@@ -15,7 +15,7 @@ namespace BTS.Service
 
         void Update(Certificate btsCertificate);
 
-        void Delete(int ID);
+        void Delete(int Id);
 
         IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate, DateTime startDate, DateTime endDate);
 
@@ -43,7 +43,7 @@ namespace BTS.Service
 
         IEnumerable<Certificate> getCertificateProfile(int profileID);
 
-        Certificate getByID(string ID);
+        Certificate getByID(string Id);
 
         IEnumerable<string> getIssueYears();
 
@@ -66,9 +66,9 @@ namespace BTS.Service
             return _CertificateRepository.Add(btsCertificate);
         }
 
-        public void Delete(int ID)
+        public void Delete(int Id)
         {
-            _CertificateRepository.Delete(ID);
+            _CertificateRepository.Delete(Id);
         }
 
         public IEnumerable<Certificate> getAll(out int totalRows, bool onlyValidCertificate, DateTime startDate, DateTime endDate)
@@ -113,9 +113,9 @@ namespace BTS.Service
             return _CertificateRepository.GetMultiPaging(x => x.CityID == cityID, out totalRow, pageIndex, pageSize);
         }
 
-        public Certificate getByID(string ID)
+        public Certificate getByID(string Id)
         {
-            return _CertificateRepository.GetSingleById(ID);
+            return _CertificateRepository.GetSingleById(Id);
         }
 
         public IEnumerable<Certificate> getByOperator(string operatorID, out int totalRow, int pageIndex = 1, int pageSize = 10)

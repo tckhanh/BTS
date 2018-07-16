@@ -53,12 +53,17 @@ namespace BTS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = UserManager.Find(model.UserName, model.Password);
+                var user = UserManager.Find<ApplicationUser,string>(model.UserName, model.Password);
                 if (user != null)
                 {
                     IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
                     authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
                     ClaimsIdentity identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+                    identity.AddClaim(new Claim("FullName", user.FullName));
+                    identity.AddClaim(new Claim("Email", user.Email));
+                    identity.AddClaim(new Claim("ImagePath", user.ImagePath));
+
                     AuthenticationProperties props = new AuthenticationProperties();
                     props.IsPersistent = model.RememberMe;
                     authenticationManager.SignIn(props, identity);

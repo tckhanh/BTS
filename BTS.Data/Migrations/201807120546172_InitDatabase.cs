@@ -3,7 +3,7 @@ namespace BTS.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initdatabase : DbMigration
+    public partial class InitDatabase : DbMigration
     {
         public override void Up()
         {
@@ -11,7 +11,7 @@ namespace BTS.Data.Migrations
                 "dbo.Applicants",
                 c => new
                     {
-                        ID = c.String(nullable: false, maxLength: 50),
+                        Id = c.String(nullable: false, maxLength: 50),
                         Name = c.String(nullable: false, maxLength: 255),
                         Address = c.String(nullable: false, maxLength: 255),
                         Phone = c.String(maxLength: 30),
@@ -23,7 +23,7 @@ namespace BTS.Data.Migrations
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID)
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
                 .Index(t => t.OperatorID);
             
@@ -31,14 +31,14 @@ namespace BTS.Data.Migrations
                 "dbo.Operators",
                 c => new
                     {
-                        ID = c.String(nullable: false, maxLength: 10),
+                        Id = c.String(nullable: false, maxLength: 10),
                         Name = c.String(maxLength: 255),
                         CreatedDate = c.DateTime(),
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.ApplicationGroups",
@@ -187,7 +187,7 @@ namespace BTS.Data.Migrations
                 "dbo.Btss",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         ProfileID = c.Int(nullable: false),
                         OperatorID = c.String(nullable: false, maxLength: 10),
                         BtsCode = c.String(nullable: false, maxLength: 100),
@@ -198,14 +198,14 @@ namespace BTS.Data.Migrations
                         InCaseOfID = c.Int(nullable: false),
                         LastOwnCertificateIDs = c.String(maxLength: 255),
                         LastNoOwnCertificateIDs = c.String(maxLength: 255),
-                        ProFilesInProcess = c.String(maxLength: 255),
+                        ProfilesInProcess = c.String(maxLength: 255),
                         ReasonsNoCertificate = c.String(maxLength: 255),
                         CreatedDate = c.DateTime(),
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID)
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
                 .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
@@ -219,33 +219,33 @@ namespace BTS.Data.Migrations
                 "dbo.Cities",
                 c => new
                     {
-                        ID = c.String(nullable: false, maxLength: 3),
+                        Id = c.String(nullable: false, maxLength: 3),
                         Name = c.String(nullable: false, maxLength: 50),
                         CreatedDate = c.DateTime(),
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.InCaseOfs",
                 c => new
                     {
-                        ID = c.Int(nullable: false),
+                        Id = c.Int(nullable: false),
                         Name = c.String(nullable: false, maxLength: 50),
                         CreatedDate = c.DateTime(),
                         CreatedBy = c.String(maxLength: 256),
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Profiles",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         ApplicantID = c.String(maxLength: 50),
                         ProfileNum = c.String(maxLength: 30),
                         ProfileDate = c.DateTime(nullable: false, storeType: "date"),
@@ -260,7 +260,7 @@ namespace BTS.Data.Migrations
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID)
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Applicants", t => t.ApplicantID)
                 .Index(t => t.ApplicantID);
             
@@ -268,7 +268,7 @@ namespace BTS.Data.Migrations
                 "dbo.Certificates",
                 c => new
                     {
-                        ID = c.String(nullable: false, maxLength: 16),
+                        Id = c.String(nullable: false, maxLength: 16),
                         ProfileID = c.Int(nullable: false),
                         OperatorID = c.String(nullable: false, maxLength: 10),
                         BtsCode = c.String(nullable: false, maxLength: 100),
@@ -304,7 +304,7 @@ namespace BTS.Data.Migrations
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID)
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
                 .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
                 .ForeignKey("dbo.Labs", t => t.LabID)
@@ -320,7 +320,7 @@ namespace BTS.Data.Migrations
                 "dbo.Labs",
                 c => new
                     {
-                        ID = c.String(nullable: false, maxLength: 20),
+                        Id = c.String(nullable: false, maxLength: 20),
                         Name = c.String(nullable: false, maxLength: 255),
                         Address = c.String(maxLength: 255),
                         Phone = c.String(maxLength: 30),
@@ -330,13 +330,13 @@ namespace BTS.Data.Migrations
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.ContactDetails",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 250),
                         Phone = c.String(maxLength: 50),
                         Email = c.String(maxLength: 250),
@@ -347,57 +347,57 @@ namespace BTS.Data.Migrations
                         Lng = c.Double(),
                         Status = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Errors",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Message = c.String(),
                         Description = c.String(),
                         Controller = c.String(maxLength: 255),
                         StackTrace = c.String(),
                         CreatedDate = c.DateTime(nullable: false),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Feedbacks",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 250),
                         Email = c.String(maxLength: 250),
                         Message = c.String(maxLength: 500),
                         CreatedDate = c.DateTime(nullable: false),
                         Status = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Footers",
                 c => new
                     {
-                        ID = c.String(nullable: false, maxLength: 50),
+                        Id = c.String(nullable: false, maxLength: 50),
                         Content = c.String(nullable: false),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.MenuGroups",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Menus",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
                         URL = c.String(nullable: false, maxLength: 256),
                         DisplayOrder = c.Int(),
@@ -405,7 +405,7 @@ namespace BTS.Data.Migrations
                         Target = c.String(maxLength: 10),
                         Status = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.ID)
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.MenuGroups", t => t.GroupID, cascadeDelete: true)
                 .Index(t => t.GroupID);
             
@@ -413,7 +413,7 @@ namespace BTS.Data.Migrations
                 "dbo.NoCertificates",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         ProfileID = c.Int(nullable: false),
                         OperatorID = c.String(nullable: false, maxLength: 10),
                         BtsCode = c.String(nullable: false, maxLength: 100),
@@ -431,7 +431,7 @@ namespace BTS.Data.Migrations
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID)
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
                 .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
                 .ForeignKey("dbo.Labs", t => t.LabID)
@@ -447,7 +447,7 @@ namespace BTS.Data.Migrations
                 "dbo.Pages",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 256),
                         Alias = c.String(nullable: false, maxLength: 256, unicode: false),
                         Content = c.String(),
@@ -459,13 +459,13 @@ namespace BTS.Data.Migrations
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Slides",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 256),
                         Description = c.String(maxLength: 256),
                         Image = c.String(maxLength: 256),
@@ -474,13 +474,13 @@ namespace BTS.Data.Migrations
                         Status = c.Boolean(nullable: false),
                         Content = c.String(),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.SubBtsInCerts",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         CertificateID = c.String(maxLength: 16),
                         BtsCode = c.String(maxLength: 50),
                         OperatorID = c.String(maxLength: 10),
@@ -496,7 +496,7 @@ namespace BTS.Data.Migrations
                         UpdatedDate = c.DateTime(),
                         UpdatedBy = c.String(maxLength: 256),
                     })
-                .PrimaryKey(t => t.ID)
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Certificates", t => t.CertificateID)
                 .ForeignKey("dbo.Operators", t => t.OperatorID)
                 .Index(t => t.CertificateID)
@@ -506,7 +506,7 @@ namespace BTS.Data.Migrations
                 "dbo.SupportOnlines",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
                         Department = c.String(maxLength: 50),
                         Skype = c.String(maxLength: 50),
@@ -517,28 +517,28 @@ namespace BTS.Data.Migrations
                         Status = c.Boolean(nullable: false),
                         DisplayOrder = c.Int(),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.SystemConfigs",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Code = c.String(nullable: false, maxLength: 50, unicode: false),
                         ValueString = c.String(maxLength: 50),
                         ValueInt = c.Int(),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.VisitorStatistics",
                 c => new
                     {
-                        ID = c.Guid(nullable: false),
+                        Id = c.Guid(nullable: false),
                         VisitedDate = c.DateTime(nullable: false),
                         IPAddress = c.String(maxLength: 50),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.Id);
             
         }
         

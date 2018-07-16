@@ -150,85 +150,10 @@
 
     var homeController = {
         init: function () {
-            $.ajax({
-                url: '/Home/StatisticByOperator',
-                dataType: 'json',
-                data: {},
-                type: 'post',
-                success: function (response) {
-                    if (response.status == "TimeOut") {
-                        $.notify(response.message, "warn");
-                        window.location.href = "/Account/Login"
-                    } else if (response.status == "Success") {
-                        var pieChartColumNames = response.chartData[0];
-                        var pieChartLabels = response.chartData[1];
-
-                        var pieChartOptions = {
-                            responsive: true,
-                            maintainAspectRatio: true
-                        }
-
-                        var pieChartValues = response.chartData[2];
-                        var pieChartData = {
-                            // These labels appear in the legend and in the tooltips when hovering different arcs
-                            labels: pieChartLabels,
-                            datasets: [{
-                                label: 'ValidCertificates',
-                                backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],
-                                borderColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"],
-                                hoverBackgroundColor: "rgba(153, 102, 255, 1)",
-                                hoverBorderColor: "rgba(153, 102, 255, 1)",
-                                data: pieChartValues
-                            }],
-                        };
-                        var pieChartCanvas = $("#pieChartValidCertificates");
-                        var pieChart = new Chart(pieChartCanvas, {
-                            type: 'pie',
-                            data: pieChartData,
-                            options: pieChartOptions
-                        });
-
-                        var pieChartValues = response.chartData[3];
-                        var pieChartData = {
-                            // These labels appear in the legend and in the tooltips when hovering different arcs
-                            labels: pieChartLabels,
-                            datasets: [{
-                                label: 'ExpiredInYearCertificates',
-                                backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],
-                                borderColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"],
-                                hoverBackgroundColor: "rgba(153, 102, 255, 1)",
-                                hoverBorderColor: "rgba(153, 102, 255, 1)",
-                                data: pieChartValues
-                            }],
-                        };
-                        var pieChartCanvas = $("#pieChartExpiredInYearCertificates");
-                        var pieChart = new Chart(pieChartCanvas, {
-                            type: 'pie',
-                            data: pieChartData,
-                            options: pieChartOptions
-                        });
-
-                        //var colorNames = Object.keys(window.chartColors);
-
-                        //for (var i in response.chartData) {
-                        //    if (i > 2) {
-                        //        var colorName = colorNames[i % colorNames.length];
-                        //        var newColor = window.chartColors[colorName];
-                        //        var pieChartValues = response.chartData[i];
-                        //        homeController.addData(pieChart, pieChartColumNames[i - 1], newColor, pieChartValues);
-                        //    }
-                        //}
-                    }
-                    else {
-                        alert(xhr.response.message);
-                    }
-                    $('html').removeClass('waiting');
-                },
-                error: function (data) {
-                    alert("Message: " + data.message);
-                    $('html').removeClass('waiting');
-                }
-            });
+            homeController.loadChartStatisticByOperator();
+            homeController.loadChartStatisticBtsInProcess();
+            homeController.loadChartStatisticByOperatorYear();
+            homeController.loadChartStatisticByOperatorCity();
         },
         registerEventDataTable: function () {
         },
@@ -248,62 +173,26 @@
                     } else if (response.status == "Success") {
                         var pieChartColumNames = response.chartData[0];
                         var pieChartLabels = response.chartData[1];
-
-                        var pieChartOptions = {
-                            responsive: true,
-                            maintainAspectRatio: true
-                        }
-
-                        var pieChartValues = response.chartData[2];
-                        var pieChartData = {
-                            // These labels appear in the legend and in the tooltips when hovering different arcs
-                            labels: pieChartLabels,
-                            datasets: [{
-                                label: 'ValidCertificates',
-                                backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],
-                                borderColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"],
-                                hoverBackgroundColor: "rgba(153, 102, 255, 1)",
-                                hoverBorderColor: "rgba(153, 102, 255, 1)",
-                                data: pieChartValues
-                            }],
-                        };
-                        var pieChartCanvas = $("#pieChartValidCertificates");
-                        var pieChart = new Chart(pieChartCanvas, {
+                        var config1 = {
                             type: 'pie',
-                            data: pieChartData,
-                            options: pieChartOptions
-                        });
-
-                        var pieChartValues = response.chartData[3];
-                        var pieChartData = {
-                            // These labels appear in the legend and in the tooltips when hovering different arcs
-                            labels: pieChartLabels,
-                            datasets: [{
-                                label: 'ExpiredInYearCertificates',
-                                backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],
-                                borderColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"],
-                                hoverBackgroundColor: "rgba(153, 102, 255, 1)",
-                                hoverBorderColor: "rgba(153, 102, 255, 1)",
-                                data: pieChartValues
-                            }],
+                            data: {
+                                labels: pieChartLabels,
+                                datasets: []
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: true
+                            }
                         };
-                        var pieChartCanvas = $("#pieChartExpiredInYearCertificates");
-                        var pieChart = new Chart(pieChartCanvas, {
-                            type: 'pie',
-                            data: pieChartData,
-                            options: pieChartOptions
-                        });
+                        var pieChartCanvas1 = $("#pieChartValidCertificates");
+                        var pieChart1 = new Chart(pieChartCanvas1, config1);
 
-                        //var colorNames = Object.keys(window.chartColors);
-
-                        //for (var i in response.chartData) {
-                        //    if (i > 2) {
-                        //        var colorName = colorNames[i % colorNames.length];
-                        //        var newColor = window.chartColors[colorName];
-                        //        var pieChartValues = response.chartData[i];
-                        //        homeController.addData(pieChart, pieChartColumNames[i - 1], newColor, pieChartValues);
-                        //    }
-                        //}
+                        for (var i in response.chartData) {
+                            if (i > 1) {                                
+                                var pieChartValues1 = response.chartData[i];
+                                homeController.addDataSetPie(pieChart1, pieChartColumNames[2 - 1], pieChartValues1);
+                            }
+                        }                                               
                     }
                     else {
                         alert(xhr.response.message);
@@ -316,7 +205,238 @@
                 }
             });
         },
-        addData: function (chart, label, color, data) {
+
+        loadChartStatisticBtsInProcess: function () {
+            $.ajax({
+                url: '/Home/StatisticBtsInProcess',
+                dataType: 'json',
+                data: {},
+                type: 'post',
+                success: function (response) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Success") {
+                        var pieChartColumNames = response.chartData[0];
+                        var pieChartLabels = response.chartData[1];
+                        var config1 = {
+                            type: 'pie',
+                            data: {
+                                labels: pieChartLabels,
+                                datasets: []
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: true
+                            }
+                        };
+                        var pieChartCanvas1 = $("#pieChartBtsInProcess");
+                        var pieChart1 = new Chart(pieChartCanvas1, config1);
+
+                        for (var i in response.chartData) {
+                            if (i > 1) {
+                                var pieChartValues1 = response.chartData[i];
+                                homeController.addDataSetPie(pieChart1, pieChartColumNames[2 - 1], pieChartValues1);
+                            }
+                        }
+                    }
+                    else {
+                        alert(xhr.response.message);
+                    }
+                    $('html').removeClass('waiting');
+                },
+                error: function (data) {
+                    alert("Message: " + data.message);
+                    $('html').removeClass('waiting');
+                }
+            });
+        },
+
+        loadChartStatisticByOperatorYear: function () {
+            $.ajax({
+                url: '/Home/IssuedStatisticByOperatorYear',
+                dataType: 'json',
+                data: {},
+                type: 'post',
+                success: function (response) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Success") {
+                        var lineChartColumNames = response.chartData[0];
+
+                        var lineChartLabels = response.chartData[1];
+
+                        var lineChartOptions = {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            title: {
+                                display: true,
+                                text: 'Thống kê theo năm'
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Năm'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Giấy CNKĐ'
+                                    }
+                                }]
+                            }
+                        }
+
+                        var config = {
+                            type: 'line',
+                            data: {
+                                labels: lineChartLabels,
+                                datasets: []
+                            },
+                            options: lineChartOptions
+                        };
+
+                        var lineChartCanvas = $("#lineChartIssuedCertificatesByYear");
+                        var lineChart = new Chart(lineChartCanvas, config);
+
+                        var colorNames = Object.keys(window.chartColors);
+
+                        for (var i in response.chartData) {
+                            if (i > 1) {
+                                var colorName = colorNames[i % colorNames.length];
+                                var newColor = window.chartColors[colorName];
+                                var lineChartValues = response.chartData[i];
+
+                                homeController.addDataSetLine(lineChart, lineChartColumNames[i - 1], newColor, lineChartValues);
+                            }
+                        }
+                    }
+                    else {
+                        alert(xhr.response.message);
+                    }
+                    $('html').removeClass('waiting');
+                },
+                error: function (data) {
+                    alert("Message: " + data.message);
+                    $('html').removeClass('waiting');
+                }
+            });
+        },
+
+        loadChartStatisticByOperatorCity: function () {
+            $.ajax({
+                url: '/Home/IssuedStatisticByOperatorCity',
+                dataType: 'json',
+                data: {},
+                type: 'post',
+                success: function (response) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Success") {
+                        var lineChartColumNames = response.chartData[0];
+
+                        var lineChartLabels = response.chartData[1];
+
+                        var lineChartOptions = {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            title: {
+                                display: true,
+                                text: 'Thống kê theo Tỉnh/ Thành phố'
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Tỉnh/ Thành phố'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Giấy CNKĐ'
+                                    }
+                                }]
+                            }
+                        }
+
+                        var config = {
+                            type: 'line',
+                            data: {
+                                labels: lineChartLabels,
+                                datasets: []
+                            },
+                            options: lineChartOptions
+                        };
+
+                        var lineChartCanvas = $("#lineChartvalidCertificatesByCity");
+                        var lineChart = new Chart(lineChartCanvas, config);
+
+                        var colorNames = Object.keys(window.chartColors);
+
+                        for (var i in response.chartData) {
+                            if (i > 1) {
+                                var colorName = colorNames[i % colorNames.length];
+                                var newColor = window.chartColors[colorName];
+                                var lineChartValues = response.chartData[i];
+
+                                homeController.addDataSetLine(lineChart, lineChartColumNames[i - 1], newColor, lineChartValues);
+                            }
+                        }
+                    }
+                    else {
+                        alert(xhr.response.message);
+                    }
+                    $('html').removeClass('waiting');
+                },
+                error: function (data) {
+                    alert("Message: " + data.message);
+                    $('html').removeClass('waiting');
+                }
+            });
+        },
+        addDataSetPie: function (chart, label, data) {
+            var newDataset = {
+                backgroundColor: [],
+                data: data,
+                label: label,
+            };
+            var colorNames = Object.keys(window.chartColors);
+            for (var index = 0; index < data.length; ++index) {
+                var colorName = colorNames[index % colorNames.length];
+                var newColor = window.chartColors[colorName];
+                newDataset.backgroundColor.push(newColor);
+            }
+
+            chart.data.datasets.push(newDataset);
+            chart.update();
+        },
+
+        addDataSetLine: function (chart, label, color, data) {
             chart.data.datasets.push({
                 label: label,
                 backgroundColor: color,

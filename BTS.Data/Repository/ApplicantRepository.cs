@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace BTS.Data.Repository
 {
-    public interface IApplicantRepository: IRepository<Applicant>
+    public interface IApplicantRepository : IRepository<Applicant>
     {
-        bool IsUsed(string ID);
+        bool IsUsed(string Id);
+
         IEnumerable<Operator> GetAllOperator();
     }
+
     public class ApplicantRepository : RepositoryBase<Applicant>, IApplicantRepository
     {
         public ApplicantRepository(IDbFactory dbFactory) : base(dbFactory)
@@ -26,11 +28,11 @@ namespace BTS.Data.Repository
             return query;
         }
 
-        public bool IsUsed(string ID)
+        public bool IsUsed(string Id)
         {
             var query1 = from item in DbContext.Profiles
-                         where item.ApplicantID == ID
-                         select item.ID;
+                         where item.ApplicantID == Id
+                         select item.Id;
             if (query1.Count() > 0) return true;
 
             return false;

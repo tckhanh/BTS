@@ -110,7 +110,7 @@ namespace BTS.Web.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID].ToString()))
                 {
                     var Item = new InCaseOf();
-                    Item.ID = Convert.ToInt32(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
+                    Item.Id = Convert.ToInt32(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_InCaseOf_Name].ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
@@ -132,7 +132,7 @@ namespace BTS.Web.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Lab_ID].ToString()))
                 {
                     var Item = new Lab();
-                    Item.ID = dt.Rows[i][CommonConstants.Sheet_Lab_ID].ToString();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Lab_ID].ToString();
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_Lab_Name].ToString();
                     Item.Address = dt.Rows[i][CommonConstants.Sheet_Lab_Address].ToString();
                     Item.Phone = dt.Rows[i][CommonConstants.Sheet_Lab_Phone].ToString();
@@ -157,7 +157,7 @@ namespace BTS.Web.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_City_ID].ToString()))
                 {
                     var Item = new City();
-                    Item.ID = dt.Rows[i][CommonConstants.Sheet_City_ID].ToString();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_City_ID].ToString();
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_City_Name].ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
@@ -179,7 +179,7 @@ namespace BTS.Web.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Operator_ID].ToString()))
                 {
                     var Item = new Operator();
-                    Item.ID = dt.Rows[i][CommonConstants.Sheet_Operator_ID].ToString();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Operator_ID].ToString();
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_Operator_Name].ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
@@ -201,7 +201,7 @@ namespace BTS.Web.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Applicant_ID].ToString()))
                 {
                     var Item = new Applicant();
-                    Item.ID = dt.Rows[i][CommonConstants.Sheet_Applicant_ID].ToString();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Applicant_ID].ToString();
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_Applicant_Name].ToString();
                     Item.Address = dt.Rows[i][CommonConstants.Sheet_Applicant_Address].ToString();
                     Item.Phone = dt.Rows[i][CommonConstants.Sheet_Applicant_Phone].ToString();
@@ -249,14 +249,14 @@ namespace BTS.Web.Controllers
                 Profile dbProfile = _importService.findProfile(Item.ApplicantID, Item.ProfileNum, Item.ProfileDate);
                 if (dbProfile != null)
                 {
-                    proFileID = dbProfile.ID;
+                    proFileID = dbProfile.Id;
                     //_importService.Update(Item);
                 }
                 else
                 {
                     _importService.Add(Item);
                     _importService.Save();
-                    proFileID = Item.ID;
+                    proFileID = Item.Id;
                 }
             }
             return proFileID;
@@ -330,7 +330,7 @@ namespace BTS.Web.Controllers
 
                     Item.ProfileID = proFileID;
                     Item.OperatorID = operatorID;
-                    Item.ID = dt.Rows[i][CommonConstants.Sheet_Certificate_CertificateNum].ToString();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Certificate_CertificateNum].ToString();
                     Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_Certificate_BtsCode].ToString();
                     Item.Address = dt.Rows[i][CommonConstants.Sheet_Certificate_Address].ToString();
                     Item.CityID = dt.Rows[i][CommonConstants.Sheet_Certificate_CityID].ToString();
@@ -396,7 +396,7 @@ namespace BTS.Web.Controllers
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
 
-                    Certificate dbCertificate = _importService.findCertificate(Item.ID);
+                    Certificate dbCertificate = _importService.findCertificate(Item.Id);
 
                     if (dbCertificate != null)
                     {
@@ -418,7 +418,7 @@ namespace BTS.Web.Controllers
                         for (int j = 0; j < Item.SubBtsQuantity; j++)
                         {
                             SubBtsInCert subBtsItem = new SubBtsInCert();
-                            subBtsItem.CertificateID = Item.ID;
+                            subBtsItem.CertificateID = Item.Id;
                             subBtsItem.BtsCode = SubBtsCodes[j];
                             subBtsItem.OperatorID = SubBtsOperatorIDs[j];
                             subBtsItem.AntenHeight = SubBtsAntenHeights[j];

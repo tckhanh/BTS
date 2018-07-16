@@ -68,7 +68,7 @@ namespace BTS.Web.Controllers
                 var listItem = new SelectListItem()
                 {
                     Text = operatorItem.Name,
-                    Value = operatorItem.ID,
+                    Value = operatorItem.Id,
                     Selected = false
                 };
                 ItemVm.OperatorList.Add(listItem);
@@ -80,7 +80,7 @@ namespace BTS.Web.Controllers
                 var listItem = new SelectListItem()
                 {
                     Text = profileItem.BtsQuantity + "-" + profileItem.ApplicantID + "-" + profileItem.ProfileNum,
-                    Value = profileItem.ID.ToString(),
+                    Value = profileItem.Id.ToString(),
                     Selected = false
                 };
                 ItemVm.ProfileList.Add(listItem);
@@ -92,7 +92,7 @@ namespace BTS.Web.Controllers
                 var listItem = new SelectListItem()
                 {
                     Text = cityItem.Name,
-                    Value = cityItem.ID,
+                    Value = cityItem.Id,
                     Selected = false
                 };
                 ItemVm.CityList.Add(listItem);
@@ -104,12 +104,11 @@ namespace BTS.Web.Controllers
                 var listItem = new SelectListItem()
                 {
                     Text = inCaseOfItem.Name,
-                    Value = inCaseOfItem.ID.ToString(),
+                    Value = inCaseOfItem.Id.ToString(),
                     Selected = false
                 };
                 ItemVm.InCaseOfList.Add(listItem);
             }
-
 
             if (act == CommonConstants.Action_Edit)
                 return View("Edit", ItemVm);
@@ -136,7 +135,7 @@ namespace BTS.Web.Controllers
                     {
                         var newItem = new Bts();
                         newItem.UpdateBts(Item);
-                        newItem.ID = Item.Id;
+                        newItem.Id = Item.Id;
 
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;

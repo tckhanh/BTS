@@ -203,7 +203,7 @@ var certificateController = {
                             }
                         }],
                     "language": {
-                        url: '/localization/vi_VI.json'
+                        url: '/AppFiles/localization/vi_VI.json'
                     },
                     initComplete: function () {
                         this.api().columns().every(function () {
@@ -283,7 +283,7 @@ var certificateController = {
                             }
                         }],
                     "language": {
-                        url: '/localization/vi_VI.json'
+                        url: '/AppFiles/localization/vi_VI.json'
                     },
                     initComplete: function () {
                         this.api().columns().every(function () {

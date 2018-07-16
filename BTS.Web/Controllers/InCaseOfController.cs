@@ -76,8 +76,8 @@ namespace BTS.Web.Controllers
                     {
                         var newItem = new InCaseOf();
                         newItem.UpdateInCaseOf(ItemVm);
-                        newItem.ID = ItemVm.Id;
-                        
+                        newItem.Id = ItemVm.Id;
+
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;
 

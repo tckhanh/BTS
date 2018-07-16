@@ -62,7 +62,7 @@ namespace BTS.Web.Controllers
                 var listItem = new SelectListItem()
                 {
                     Text = applicantItem.Name,
-                    Value = applicantItem.ID,
+                    Value = applicantItem.Id,
                     Selected = false
                 };
                 ItemVm.ApplicantList.Add(listItem);
@@ -74,7 +74,6 @@ namespace BTS.Web.Controllers
             {
                 return View("Detail", ItemVm);
             }
-
             else
             {
                 return View("Add", ItemVm);
@@ -94,7 +93,7 @@ namespace BTS.Web.Controllers
                     {
                         var newItem = new Model.Models.Profile();
                         newItem.UpdateProfile(ItemVm);
-                        newItem.ID = ItemVm.Id;
+                        newItem.Id = ItemVm.Id;
 
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;

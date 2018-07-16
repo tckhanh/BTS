@@ -14,7 +14,7 @@ namespace BTS.Model.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public int ProfileID { get; set; }
 

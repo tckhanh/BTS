@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-
 using System.Data.Entity;
 using BTS.Data;
 using BTS.Model.Models;
@@ -39,7 +38,7 @@ namespace Asp.NETMVCCRUD.Controllers
             {
                 using (BTSDbContext db = new BTSDbContext())
                 {
-                    return View(db.Operators.Where(x => x.ID == id).FirstOrDefault<Operator>());
+                    return View(db.Operators.Where(x => x.Id == id).FirstOrDefault<Operator>());
                 }
             }
         }
@@ -50,7 +49,7 @@ namespace Asp.NETMVCCRUD.Controllers
         {
             using (BTSDbContext db = new BTSDbContext())
             {
-                if (emp.ID == "")
+                if (emp.Id == "")
                 {
                     db.Operators.Add(emp);
                     db.SaveChanges();
@@ -71,7 +70,7 @@ namespace Asp.NETMVCCRUD.Controllers
         {
             using (BTSDbContext db = new BTSDbContext())
             {
-                Operator emp = db.Operators.Where(x => x.ID == id).FirstOrDefault<Operator>();
+                Operator emp = db.Operators.Where(x => x.Id == id).FirstOrDefault<Operator>();
                 db.Operators.Remove(emp);
                 db.SaveChanges();
                 return Json(new { status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);

@@ -10,7 +10,7 @@ namespace BTS.Data.Repository
 {
     public interface IInCaseOfRepository : IRepository<InCaseOf>
     {
-        bool IsUsed(int ID);
+        bool IsUsed(int Id);
     }
 
     public class InCaseOfRepository : RepositoryBase<InCaseOf>, IInCaseOfRepository
@@ -19,16 +19,16 @@ namespace BTS.Data.Repository
         {
         }
 
-        public bool IsUsed(int ID)
+        public bool IsUsed(int Id)
         {
             var query1 = from item in DbContext.Btss
-                         where item.InCaseOfID == ID
-                         select item.ID;
+                         where item.InCaseOfID == Id
+                         select item.Id;
             if (query1.Count() > 0) return true;
 
             var query2 = from item in DbContext.Certificates
-                         where item.InCaseOfID == ID
-                         select item.ID;
+                         where item.InCaseOfID == Id
+                         select item.Id;
             if (query2.Count() > 0) return true;
 
             return false;

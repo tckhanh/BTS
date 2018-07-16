@@ -15,7 +15,7 @@ namespace BTS.Service
 
         void Update(Applicant newApplicant);
 
-        Applicant Delete(string ID);
+        Applicant Delete(string Id);
 
         IEnumerable<Applicant> getAll();
 
@@ -23,9 +23,9 @@ namespace BTS.Service
 
         IEnumerable<Operator> GetAllOperator();
 
-        Applicant getByID(string ID);
+        Applicant getByID(string Id);
 
-        bool IsUsed(string ID);
+        bool IsUsed(string Id);
 
         void SaveChanges();
     }
@@ -46,9 +46,9 @@ namespace BTS.Service
             return _applicantRepository.Add(newApplicant);
         }
 
-        public Applicant Delete(string ID)
+        public Applicant Delete(string Id)
         {
-            return _applicantRepository.Delete(ID);
+            return _applicantRepository.Delete(Id);
         }
 
         public IEnumerable<Applicant> getAll()
@@ -59,14 +59,14 @@ namespace BTS.Service
         public IEnumerable<Applicant> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _applicantRepository.GetMulti(x => x.ID.Contains(keyword) || x.Name.Contains(keyword));
+                return _applicantRepository.GetMulti(x => x.Id.Contains(keyword) || x.Name.Contains(keyword));
             else
                 return _applicantRepository.GetAll();
         }
 
-        public Applicant getByID(string ID)
+        public Applicant getByID(string Id)
         {
-            return _applicantRepository.GetSingleById(ID);
+            return _applicantRepository.GetSingleById(Id);
         }
 
         public void SaveChanges()
@@ -79,9 +79,9 @@ namespace BTS.Service
             _applicantRepository.Update(newApplicant);
         }
 
-        public bool IsUsed(string ID)
+        public bool IsUsed(string Id)
         {
-            return _applicantRepository.IsUsed(ID);
+            return _applicantRepository.IsUsed(Id);
         }
 
         public IEnumerable<Operator> GetAllOperator()

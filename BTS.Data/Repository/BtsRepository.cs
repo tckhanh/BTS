@@ -10,11 +10,16 @@ namespace BTS.Data.Repository
 {
     public interface IBtsRepository : IRepository<Bts>
     {
-        bool IsUsed(string ID);
+        bool IsUsed(string Id);
+
         IEnumerable<Operator> getAllOperator();
+
         IEnumerable<Profile> getAllProfile();
+
         IEnumerable<Profile> getAllProfileInProcess();
+
         IEnumerable<City> getAllCity();
+
         IEnumerable<InCaseOf> getAllInCaseOf();
     }
 
@@ -55,15 +60,16 @@ namespace BTS.Data.Repository
         public IEnumerable<Profile> getAllProfileInProcess()
         {
             var query = from item in DbContext.Profiles
-                        join bts in DbContext.Btss on item.ID equals bts.ProfileID
+                        join bts in DbContext.Btss on item.Id equals bts.ProfileID
                         select item;
             return query.Distinct();
         }
-        public bool IsUsed(string ID)
+
+        public bool IsUsed(string Id)
         {
             var query1 = from item in DbContext.Profiles
-                         where item.ApplicantID == ID
-                         select item.ID;
+                         where item.ApplicantID == Id
+                         select item.Id;
             if (query1.Count() > 0) return true;
 
             return false;

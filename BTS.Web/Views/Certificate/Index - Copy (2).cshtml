@@ -37,7 +37,7 @@
                     }
                 },
                 "columns": [
-                    { "data": "ID", "name": "ID", "autoWidth": true },
+                    { "data": "Id", "name": "Id", "autoWidth": true },
                     { "data": "OperatorID", "name": "OperatorID", "autoWidth": true },  // index 1
                     { "data": "BtsCode", "name": "BtsCode", "autoWidth": true },        // index 2
                     {
@@ -128,7 +128,7 @@
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in operators)
                                             {
-                                                <option value="@item.ID">@item.ID _ @item.Name</option>
+                                                <option value="@item.Id">@item.Id _ @item.Name</option>
                                             }
                                         </select>
                                     </div>
@@ -142,7 +142,7 @@
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in profiles)
                                             {
-                                                <option value="@item.ID">@item.BtsQuantity BTS _ @item.ApplicantID _ @item.ProfileNum</option>
+                                                <option value="@item.Id">@item.BtsQuantity BTS _ @item.ApplicantID _ @item.ProfileNum</option>
                                             }
                                         </select>
                                     </div>
@@ -184,7 +184,7 @@
                                 <table id="admin-data-table-2" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>Id</th>
                                             <th>OperatorID</th>
                                             <th>BtsCode</th>
                                             <th>IssuedDate</th>

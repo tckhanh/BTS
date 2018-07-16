@@ -15,7 +15,7 @@ namespace BTS.Service
 
         void Update(Bts newBts);
 
-        Bts Delete(int ID);
+        Bts Delete(int Id);
 
         IEnumerable<Bts> getAll();
 
@@ -31,9 +31,9 @@ namespace BTS.Service
 
         IEnumerable<InCaseOf> getAllInCaseOf();
 
-        Bts getByID(int ID);
+        Bts getByID(int Id);
 
-        bool IsUsed(string ID);
+        bool IsUsed(string Id);
 
         void SaveChanges();
     }
@@ -54,9 +54,9 @@ namespace BTS.Service
             return _btsRepository.Add(newBts);
         }
 
-        public Bts Delete(int ID)
+        public Bts Delete(int Id)
         {
-            return _btsRepository.Delete(ID);
+            return _btsRepository.Delete(Id);
         }
 
         public IEnumerable<Bts> getAll()
@@ -72,9 +72,9 @@ namespace BTS.Service
                 return _btsRepository.GetAll();
         }
 
-        public Bts getByID(int ID)
+        public Bts getByID(int Id)
         {
-            return _btsRepository.GetSingleById(ID);
+            return _btsRepository.GetSingleById(Id);
         }
 
         public void SaveChanges()
@@ -87,9 +87,9 @@ namespace BTS.Service
             _btsRepository.Update(newBts);
         }
 
-        public bool IsUsed(string ID)
+        public bool IsUsed(string Id)
         {
-            return _btsRepository.IsUsed(ID);
+            return _btsRepository.IsUsed(Id);
         }
 
         public IEnumerable<Operator> getAllOperator()
@@ -106,6 +106,7 @@ namespace BTS.Service
         {
             return _btsRepository.getAllProfileInProcess();
         }
+
         public IEnumerable<City> getAllCity()
         {
             return _btsRepository.getAllCity();

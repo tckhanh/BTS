@@ -58,7 +58,7 @@ namespace BTS.Web.Controllers
                     var listItem = new SelectListItem()
                     {
                         Text = operatorItem.Name,
-                        Value = operatorItem.ID,
+                        Value = operatorItem.Id,
                         Selected = false
                     };
                     ItemVm.OperatorList.Add(listItem);
@@ -76,7 +76,7 @@ namespace BTS.Web.Controllers
                     var listItem = new SelectListItem()
                     {
                         Text = operatorItem.Name,
-                        Value = operatorItem.ID,
+                        Value = operatorItem.Id,
                         Selected = false
                     };
                     ItemVm.OperatorList.Add(listItem);
@@ -98,8 +98,8 @@ namespace BTS.Web.Controllers
                     {
                         var newItem = new Applicant();
                         newItem.UpdateApplicant(Item);
-                        newItem.ID = Item.Id;
-                        
+                        newItem.Id = Item.Id;
+
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;
 

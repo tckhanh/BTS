@@ -45,8 +45,8 @@ var userController = {
             success: function (response, statusText, xhr, element) {
                 if (response.status == "Success") {
                     bar.html('Đã thực hiện nhập khẩu người dùng xong!');
-                    $.notify(xhr.response.message, "success");
-                    //alert(xhr.response.message);
+                    $.notify(response.message, "success");
+                    //alert(response.message);
                 }
                 else if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
@@ -54,8 +54,8 @@ var userController = {
                 }
                 else {
                     bar.html('Lỗi trong quá trình thực hiện!');
-                    $.notify(xhr.response.message, "error");
-                    //alert(xhr.response.message);
+                    $.notify(response.message, "error");
+                    //alert(response.message);
                 }
                 $('html').removeClass('waiting');
                 bar.removeClass('active');

@@ -38,7 +38,7 @@ namespace BTS.UnitTest.RepositoryTest
             unitOfwork.Commit();
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.ID);
+            Assert.AreEqual(1, result.Id);
         }
 
         [TestMethod]
@@ -46,9 +46,7 @@ namespace BTS.UnitTest.RepositoryTest
         {
             var result1 = objRepository.GetIssuedCertStatByOperatorYear();
 
-            var result2 = objRepository.GetCertStatByOperatorCity();
-
-            Assert.IsNotNull(result2);
+            Assert.IsNotNull(result1);
         }
     }
 }

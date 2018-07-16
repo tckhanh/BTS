@@ -637,9 +637,9 @@
             {
                 List<Operator> listOperator = new List<Operator>()
             {
-                new Operator() { ID ="MOBIFONE", Name="Tổng Công Ty MobiFone"} ,
-                new Operator() { ID ="VIETTEL", Name="Tập đoàn VIETTEL"} ,
-                new Operator() { ID ="VINAPHONE", Name="Tập đoàn VNPT"}
+                new Operator() { Id ="MOBIFONE", Name="Tổng Công Ty MobiFone"} ,
+                new Operator() { Id ="VIETTEL", Name="Tập đoàn VIETTEL"} ,
+                new Operator() { Id ="VINAPHONE", Name="Tập đoàn VNPT"}
             };
                 context.Operators.AddRange(listOperator);
                 context.SaveChanges();
@@ -648,7 +648,7 @@
 
         private void CreateFooter(BTSDbContext context)
         {
-            if (context.Footers.Count(x => x.ID == CommonConstants.DefaultFooterId) == 0)
+            if (context.Footers.Count(x => x.Id == CommonConstants.DefaultFooterId) == 0)
             {
                 string content = "";
             }

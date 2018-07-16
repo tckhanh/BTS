@@ -6,7 +6,7 @@ namespace BTS.Data.Repository
 {
     public interface ILabRepository : IRepository<Lab>
     {
-        bool IsUsed(string ID);
+        bool IsUsed(string Id);
     }
 
     public class LabRepository : RepositoryBase<Lab>, ILabRepository
@@ -14,16 +14,17 @@ namespace BTS.Data.Repository
         public LabRepository(IDbFactory dbFactory) : base(dbFactory)
         {
         }
-        public bool IsUsed(string ID)
+
+        public bool IsUsed(string Id)
         {
             var query1 = from item in DbContext.Certificates
-                         where item.LabID == ID
-                         select item.ID;
+                         where item.LabID == Id
+                         select item.Id;
             if (query1.Count() > 0) return true;
 
             var query2 = from item in DbContext.NoCertificates
-                         where item.LabID == ID
-                         select item.ID;
+                         where item.LabID == Id
+                         select item.Id;
             if (query2.Count() > 0) return true;
 
             return false;

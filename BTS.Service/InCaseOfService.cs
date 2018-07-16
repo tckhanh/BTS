@@ -15,17 +15,17 @@ namespace BTS.Service
 
         void Update(InCaseOf newInCaseOf);
 
-        InCaseOf Delete(int ID);
+        InCaseOf Delete(int Id);
 
         IEnumerable<InCaseOf> getAll();
 
         IEnumerable<InCaseOf> getAll(string keyword);
 
-        InCaseOf getByID(string ID);
+        InCaseOf getByID(string Id);
 
-        InCaseOf getByID(int ID);
+        InCaseOf getByID(int Id);
 
-        bool IsUsed(int ID);
+        bool IsUsed(int Id);
 
         void Save();
     }
@@ -46,9 +46,9 @@ namespace BTS.Service
             return _inCaseOfRepository.Add(newInCaseOf);
         }
 
-        public InCaseOf Delete(int ID)
+        public InCaseOf Delete(int Id)
         {
-            return _inCaseOfRepository.Delete(ID);
+            return _inCaseOfRepository.Delete(Id);
         }
 
         public IEnumerable<InCaseOf> getAll()
@@ -59,24 +59,24 @@ namespace BTS.Service
         public IEnumerable<InCaseOf> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _inCaseOfRepository.GetMulti(x => x.ID.ToString().Contains(keyword) || x.Name.Contains(keyword));
+                return _inCaseOfRepository.GetMulti(x => x.Id.ToString().Contains(keyword) || x.Name.Contains(keyword));
             else
                 return _inCaseOfRepository.GetAll();
         }
 
-        public InCaseOf getByID(string ID)
+        public InCaseOf getByID(string Id)
         {
-            return _inCaseOfRepository.GetSingleById(ID);
+            return _inCaseOfRepository.GetSingleById(Id);
         }
 
-        public InCaseOf getByID(int ID)
+        public InCaseOf getByID(int Id)
         {
-            return _inCaseOfRepository.GetSingleById(ID);
+            return _inCaseOfRepository.GetSingleById(Id);
         }
 
-        public bool IsUsed(int ID)
+        public bool IsUsed(int Id)
         {
-            return _inCaseOfRepository.IsUsed(ID);
+            return _inCaseOfRepository.IsUsed(Id);
         }
 
         public void Save()

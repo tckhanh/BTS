@@ -14,7 +14,7 @@ namespace BTS.Model.Models
     {
         [Key]
         [StringLength(20)]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(255)]

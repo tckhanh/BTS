@@ -24,10 +24,23 @@ namespace BTS.Common.ViewModels
         public int ExpiredInYearCertificates { get; set; }
     }
 
+    public class StatBtsInProcessVm
+    {
+        public string OperatorID { get; set; }
+        public int Btss { get; set; }
+    }
+
     public class IssuedCertStatByOperatorYearVM
     {
         public string OperatorID { get; set; }
         public string Year { get; set; }
+        public int IssuedCertificates { get; set; }
+    }
+
+    public class IssuedCertStatByOperatorCityVM
+    {
+        public string OperatorID { get; set; }
+        public string CityID { get; set; }
         public int IssuedCertificates { get; set; }
     }
 

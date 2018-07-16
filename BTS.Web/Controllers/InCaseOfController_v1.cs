@@ -66,7 +66,7 @@ namespace BTS.Web.Controllers
             string status = CommonConstants.Status_Error;
             string message = string.Empty;
             //add new employee if id = 0
-            if (item.ID == 0)
+            if (item.Id == 0)
             {
                 item.CreatedDate = DateTime.Now;
                 item.CreatedBy = User.Identity.Name;
@@ -87,7 +87,7 @@ namespace BTS.Web.Controllers
             {
                 //update existing DB
                 //save db
-                var entity = _inCaseOfService.getByID(item.ID);
+                var entity = _inCaseOfService.getByID(item.Id);
                 entity.Name = item.Name;
 
                 entity.UpdatedDate = DateTime.Now;

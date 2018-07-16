@@ -13,16 +13,20 @@ namespace BTS.Service
     public interface ICommonService
     {
         Footer GetFooter();
+
         IEnumerable<Slide> GetSlides();
+
         SystemConfig GetSystemConfig(string code);
     }
+
     public class CommonService : ICommonService
     {
-        IFooterRepository _footerRepository;
-        ISystemConfigRepository _systemConfigRepository;
-        IUnitOfWork _unitOfWork;
-        ISlideRepository _slideRepository;
-        public CommonService(IFooterRepository footerRepository,ISystemConfigRepository systemConfigRepository,IUnitOfWork unitOfWork,ISlideRepository slideRepository)
+        private IFooterRepository _footerRepository;
+        private ISystemConfigRepository _systemConfigRepository;
+        private IUnitOfWork _unitOfWork;
+        private ISlideRepository _slideRepository;
+
+        public CommonService(IFooterRepository footerRepository, ISystemConfigRepository systemConfigRepository, IUnitOfWork unitOfWork, ISlideRepository slideRepository)
         {
             _footerRepository = footerRepository;
             _unitOfWork = unitOfWork;
@@ -32,12 +36,12 @@ namespace BTS.Service
 
         public Footer GetFooter()
         {
-            return _footerRepository.GetSingleByCondition(x => x.ID == CommonConstants.DefaultFooterId);
+            return _footerRepository.GetSingleByCondition(x => x.Id == CommonConstants.DefaultFooterId);
         }
 
         public IEnumerable<Slide> GetSlides()
         {
-            return _slideRepository.GetMulti(x=>x.Status);
+            return _slideRepository.GetMulti(x => x.Status);
         }
 
         public SystemConfig GetSystemConfig(string code)

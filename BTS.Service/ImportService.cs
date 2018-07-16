@@ -21,7 +21,7 @@ namespace BTS.Service
 
         SubBtsInCert findSubBts(string certificateID, string btsCode, string operatorID);
 
-        Certificate findCertificate(string ID);
+        Certificate findCertificate(string Id);
 
         NoCertificate findNoCertificate(string BtsCode, int ProfileID);
 
@@ -112,7 +112,7 @@ namespace BTS.Service
 
         public bool Add(InCaseOf item)
         {
-            if (_inCaseOfRepository.GetSingleById(item.ID) == null)
+            if (_inCaseOfRepository.GetSingleById(item.Id) == null)
             {
                 item.CreatedDate = DateTime.Now;
                 _inCaseOfRepository.Add(item);
@@ -122,7 +122,7 @@ namespace BTS.Service
 
         public bool Add(Lab item)
         {
-            if (_labRepository.GetSingleById(item.ID) == null)
+            if (_labRepository.GetSingleById(item.Id) == null)
             {
                 item.CreatedDate = DateTime.Now;
                 _labRepository.Add(item);
@@ -132,7 +132,7 @@ namespace BTS.Service
 
         public bool Add(City item)
         {
-            if (_cityRepository.GetSingleById(item.ID) == null)
+            if (_cityRepository.GetSingleById(item.Id) == null)
             {
                 item.CreatedDate = DateTime.Now;
                 _cityRepository.Add(item);
@@ -142,7 +142,7 @@ namespace BTS.Service
 
         public bool Add(Operator item)
         {
-            if (_operatorRepository.GetSingleById(item.ID) == null)
+            if (_operatorRepository.GetSingleById(item.Id) == null)
             {
                 item.CreatedDate = DateTime.Now;
                 _operatorRepository.Add(item);
@@ -152,7 +152,7 @@ namespace BTS.Service
 
         public bool Add(Applicant item)
         {
-            if (_applicantRepository.GetSingleById(item.ID) == null)
+            if (_applicantRepository.GetSingleById(item.Id) == null)
             {
                 item.CreatedDate = DateTime.Now;
                 _applicantRepository.Add(item);
@@ -167,7 +167,7 @@ namespace BTS.Service
 
         public bool Add(Profile item)
         {
-            if (_profileRepository.GetSingleById(item.ID) == null)
+            if (_profileRepository.GetSingleById(item.Id) == null)
             {
                 _profileRepository.Add(item);
             }
@@ -176,7 +176,7 @@ namespace BTS.Service
 
         public bool Add(Bts item)
         {
-            if (_btsRepository.GetSingleById(item.ID) == null)
+            if (_btsRepository.GetSingleById(item.Id) == null)
             {
                 _btsRepository.Add(item);
             }
@@ -185,7 +185,7 @@ namespace BTS.Service
 
         public bool Add(Certificate item)
         {
-            if (_certificateRepository.GetSingleById(item.ID) == null)
+            if (_certificateRepository.GetSingleById(item.Id) == null)
             {
                 _certificateRepository.Add(item);
             }
@@ -194,7 +194,7 @@ namespace BTS.Service
 
         public bool Add(NoCertificate item)
         {
-            if (_noCertificateRepository.GetSingleById(item.ID) == null)
+            if (_noCertificateRepository.GetSingleById(item.Id) == null)
             {
                 _noCertificateRepository.Add(item);
             }
@@ -203,7 +203,7 @@ namespace BTS.Service
 
         public bool Add(SubBtsInCert item)
         {
-            if (_subBTSinCertRepository.GetSingleById(item.ID) == null)
+            if (_subBTSinCertRepository.GetSingleById(item.Id) == null)
             {
                 _subBTSinCertRepository.Add(item);
             }
@@ -244,9 +244,9 @@ namespace BTS.Service
             return _btsRepository.GetSingleByCondition(x => x.ProfileID == profileID && x.BtsCode == btsCode);
         }
 
-        public Certificate findCertificate(string ID)
+        public Certificate findCertificate(string Id)
         {
-            return _certificateRepository.GetSingleByCondition(x => x.ID == ID);
+            return _certificateRepository.GetSingleByCondition(x => x.Id == Id);
         }
 
         public NoCertificate findNoCertificate(string BtsCode, int ProfileID)
@@ -266,18 +266,18 @@ namespace BTS.Service
 
         public Applicant getApplicant(int proFileID)
         {
-            Profile profileItem = _profileRepository.GetSingleByCondition(x => x.ID == proFileID);
-            return _applicantRepository.GetSingleByCondition(x => x.ID == profileItem.ApplicantID);
+            Profile profileItem = _profileRepository.GetSingleByCondition(x => x.Id == proFileID);
+            return _applicantRepository.GetSingleByCondition(x => x.Id == profileItem.ApplicantID);
         }
 
         public IEnumerable<string> getLastOwnCertificateIDs(string btsCode, string operatorID)
         {
-            return _certificateRepository.getLastOwnCertificates(btsCode, operatorID).Select(x => x.ID);
+            return _certificateRepository.getLastOwnCertificates(btsCode, operatorID).Select(x => x.Id);
         }
 
         public IEnumerable<string> getLastNoOwnCertificateIDs(string btsCode, string operatorID)
         {
-            return _certificateRepository.getLastNoOwnCertificates(btsCode, operatorID).Select(x => x.ID);
+            return _certificateRepository.getLastNoOwnCertificates(btsCode, operatorID).Select(x => x.Id);
         }
 
         public IEnumerable<Certificate> getLastOwnCertificates(string btsCode, string operatorID)

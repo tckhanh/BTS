@@ -4,12 +4,46 @@ using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Web;
 
 namespace BTS.Web.Infrastructure.Extensions
 {
     public static class EntityExtensions
     {
+        public static string FullName(this IPrincipal user)
+        {
+            if (user.Identity.IsAuthenticated)
+            {
+                ClaimsIdentity claimsIdentity = user.Identity as ClaimsIdentity;
+                foreach (var claim in claimsIdentity.Claims)
+                {
+                    if (claim.Type == "FullName")
+                        return claim.Value;
+                }
+                return "";
+            }
+            else
+                return "";
+        }
+
+        public static string ImagePath(this IPrincipal user)
+        {
+            if (user.Identity.IsAuthenticated)
+            {
+                ClaimsIdentity claimsIdentity = user.Identity as ClaimsIdentity;
+                foreach (var claim in claimsIdentity.Claims)
+                {
+                    if (claim.Type == "ImagePath")
+                        return claim.Value;
+                }
+                return "";
+            }
+            else
+                return "";
+        }
+
         public static void UpdateBts(this Bts bts, BtsViewModel btsVm)
         {
             bts.ProfileID = btsVm.ProfileID;
@@ -25,6 +59,7 @@ namespace BTS.Web.Infrastructure.Extensions
             bts.ProfilesInProcess = btsVm.ProfilesInProcess;
             bts.ReasonsNoCertificate = btsVm.ReasonsNoCertificate;
         }
+
         public static void UpdateCertificate(this Certificate certificate, CertificateViewModel btsCertificateVm)
         {
             certificate.ProfileID = btsCertificateVm.ProfileID;
@@ -89,6 +124,7 @@ namespace BTS.Web.Infrastructure.Extensions
             myApplicant.Fax = applicantVm.Fax;
             myApplicant.ContactName = applicantVm.ContactName;
         }
+
         public static void UpdateFeedback(this Feedback feedback, FeedbackViewModel feedbackVm)
         {
             feedback.Name = feedbackVm.Name;

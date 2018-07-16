@@ -10,7 +10,7 @@ namespace BTS.Model.Models
     {
         [Key]
         [StringLength(3)]
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(50)]
