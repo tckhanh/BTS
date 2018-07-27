@@ -244,10 +244,12 @@
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ApplicationUserProfileController.cs" />
     <Compile Include="Controllers\BtsController.cs" />
     <Compile Include="Controllers\ApplicationRoleController.cs" />
     <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\NoCertificateController.cs" />
     <Compile Include="Controllers\CertificateController.cs" />
     <Compile Include="Controllers\ApplicantController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
@@ -275,6 +277,7 @@
     <Compile Include="Infrastructure\Core\PaginationSet.cs" />
     <Compile Include="Infrastructure\Core\WriteLog.cs" />
     <Compile Include="Infrastructure\Extensions\AuthorizeRolesAttribute.cs" />
+    <Compile Include="Infrastructure\Extensions\ClaimsToRazorParser.cs" />
     <Compile Include="Infrastructure\Extensions\DataTableExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\EntityExtensions.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
@@ -309,6 +312,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppFiles\Images\bannerVcc2.png" />
     <Content Include="AppFiles\Images\BuiPhanTruongTrongTri.jpg" />
     <Content Include="AppFiles\Images\DangThienKhoi.jpg" />
     <Content Include="AppFiles\Images\default.png" />
@@ -317,6 +321,8 @@
     <Content Include="AppFiles\Images\HoQuocHuu.jpg" />
     <Content Include="AppFiles\Images\HoXuanDat.jpg" />
     <Content Include="AppFiles\Images\HuynhQuocCuong.jpg" />
+    <Content Include="AppFiles\Images\KiemdinhBTS.jpg" />
+    <Content Include="AppFiles\Images\KiemdinhBTS.png" />
     <Content Include="AppFiles\Images\LeQuangHuy.jpg" />
     <Content Include="AppFiles\Images\LeThiThuTra.jpg" />
     <Content Include="AppFiles\Images\LeVanThuan.jpg" />
@@ -9015,7 +9021,9 @@
     <Content Include="Assets\client\js\common.js" />
     <Content Include="Assets\client\js\common\message.js" />
     <Content Include="Assets\client\js\common\notify.min.js" />
-    <Content Include="Assets\client\js\controllers\commonController - Copy.js" />
+    <Content Include="Assets\client\js\controllers\applicationUserProfileController.js" />
+    <Content Include="Assets\client\js\controllers\NocertificateController.js" />
+    <Content Include="Assets\client\js\controllers\checkController_v1.js" />
     <Content Include="Assets\client\js\controllers\hoController.js" />
     <Content Include="Assets\client\js\controllers\homeController.js" />
     <Content Include="Assets\client\js\controllers\userController.js" />
@@ -9129,9 +9137,7 @@
     <Content Include="AppFiles\Samples\User List Sample.xls" />
     <Content Include="AppFiles\Samples\Check BTS Sample.xls" />
     <Content Include="AppFiles\Samples\Import BTS Certificate Sample.xls" />
-    <Content Include="AppFiles\Tmp\03. Mau ho so kiem dnh BTS - 04.xls" />
-    <Content Include="AppFiles\Tmp\03. Mau ho so kiem dnh BTS - 01.xls" />
-    <None Include="AppFiles\localization\vi_VI.json" />
+    <None Include="AppFiles\Localization\vi_VI.json" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />
     <Content Include="Views\HtmlPage1.html" />
@@ -9203,8 +9209,16 @@
     <Content Include="Views\Bts\Edit.cshtml" />
     <Content Include="Views\Bts\Index.cshtml" />
     <Content Include="Views\Bts\ViewAll.cshtml" />
+    <Content Include="Views\ApplicationUserProfile\Add.cshtml" />
+    <Content Include="Views\ApplicationUserProfile\Detail.cshtml" />
+    <Content Include="Views\ApplicationUserProfile\Edit.cshtml" />
+    <Content Include="Views\ApplicationUserProfile\Index.cshtml" />
+    <Content Include="Views\ApplicationUserProfile\Reset.cshtml" />
+    <Content Include="Views\ApplicationUserProfile\ViewAll.cshtml" />
+    <Content Include="Views\NoCertificate\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AppFiles\Tmp\" />
     <Folder Include="app\components\roles\" />
     <Folder Include="app\components\users\" />
     <Folder Include="app\shared\footer\" />

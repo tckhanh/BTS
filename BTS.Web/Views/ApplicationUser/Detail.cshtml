@@ -5,8 +5,10 @@
     Layout = null;
 }
 
-@using (Html.BeginForm("AddOrEdit", "ApplicationUser", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add }) }))//data-resetUrl
+@if (User.IsInRole(CommonConstants.System_CanViewDetail_Role))
 {
+    using (Html.BeginForm("AddOrEdit", "ApplicationUser", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add }) }))//data-resetUrl
+    {
     @Html.AntiForgeryToken()
     <div class="row">
         <div class="form-horizontal">
@@ -169,4 +171,9 @@
             </div>
         </div>
     </div>
+    }
+}
+else
+{
+    <h3 class="text-danger">Bạn chưa được cấp quyền để thực hiện chức năng này !!!</h3>
 }

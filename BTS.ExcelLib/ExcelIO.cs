@@ -219,6 +219,8 @@ namespace BTS.ExcelLib
             try
             {
                 xlApp.Visible = false;
+                xlApp.DisplayAlerts = false;
+
                 xlWorkBook = xlApp.Workbooks.Open(fullFileName, 0, false, 5, "", "", false, Excel.XlPlatform.xlWindows, "", true, false, 0, true, 1, 0);   //@"H:\TestFile.xlsx"
 
                 //Looping through all available sheets
@@ -247,7 +249,8 @@ namespace BTS.ExcelLib
                     }
                     Marshal.ReleaseComObject(xlWorkSheet);
                 }
-
+                xlWorkBook.CheckCompatibility = false;
+                xlWorkBook.DoNotPromptForConvert = true;
                 xlWorkBook.Save();
                 return true;
             }
@@ -289,36 +292,41 @@ namespace BTS.ExcelLib
 
         public bool AddNewColumns(string fullFileName, string sheetName, string colNames)
         {
-            Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkBook;
-            Excel.Worksheet xlWorkSheet = new Excel.Worksheet();
-            Excel.Range rng;
             object misValue = System.Reflection.Missing.Value;
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkBook = null;
+
             try
             {
                 xlApp.Visible = false;
+                xlApp.DisplayAlerts = false;
                 xlWorkBook = xlApp.Workbooks.Open(fullFileName, 0, false, 5, "", "", false, Excel.XlPlatform.xlWindows, "", true, false, 0, true, 1, 0);   //@"H:\TestFile.xlsx"
-                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Sheets[sheetName];
-                //xlWorkSheet = (Excel.Worksheet)xlWorkBook.Sheets.get_Item(sheetNum);
-                //xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(sheetNum);
-                rng = xlWorkSheet.UsedRange;
 
-                int colCount = rng.Columns.Count;
-                int rowCount = rng.Rows.Count;
-                rng = (Excel.Range)xlWorkSheet.Cells[rowCount, colCount];
-                //Excel.Range newColumn = rng.EntireColumn;
-
-                string[] columns = colNames.Split(new Char[] { ';' });
-                for (int i = 0; i < columns.Length; i++)
+                //Looping through all available sheets
+                foreach (Excel.Worksheet xlWorkSheet in xlWorkBook.Sheets)
                 {
-                    xlWorkSheet.Cells[1, colCount + i + 1] = columns[i];
-                }
+                    //Selecting the worksheet where we want to perform action
+                    xlWorkSheet.Select(Type.Missing);
+                    if (xlWorkSheet.Name == sheetName)
+                    {
+                        Excel.Range rng = xlWorkSheet.UsedRange;
 
-                //save and quit
-                //xlWorkBook.SaveAs(@"H:\TestFile.xlsx", misValue, misValue, misValue, misValue, misValue,
-                //    Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                        int colCount = rng.Columns.Count;
+                        int rowCount = rng.Rows.Count;
+                        //rng = (Excel.Range)xlWorkSheet.Cells[rowCount, colCount];
+                        //Excel.Range newColumn = rng.EntireColumn;
+
+                        string[] columns = colNames.Split(new char[] { ';' });
+                        for (int i = 0; i < columns.Length; i++)
+                        {
+                            xlWorkSheet.Cells[1, colCount + i + 1] = columns[i];
+                        }
+                    }
+                    Marshal.ReleaseComObject(xlWorkSheet);
+                }
+                xlWorkBook.CheckCompatibility = false;
+                xlWorkBook.DoNotPromptForConvert = true;
                 xlWorkBook.Save();
-                Marshal.ReleaseComObject(rng);
                 return true;
             }
             catch (DbEntityValidationException ex)
@@ -347,12 +355,11 @@ namespace BTS.ExcelLib
             }
             finally
             {
-                //xlWorkBook.Close(misValue, misValue, misValue);
+                if (xlWorkBook != null) xlWorkBook.Close(misValue, misValue, misValue);
                 xlApp.Quit();
                 // release all the application object from the memory
                 Marshal.ReleaseComObject(xlApp);
-                Marshal.ReleaseComObject(xlWorkSheet);
-
+                Marshal.ReleaseComObject(xlWorkBook);
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }

@@ -15,7 +15,7 @@ namespace BTS.Service
 
         void Update(Profile newProfile);
 
-        Profile Delete(string Id);
+        Profile Delete(int Id);
 
         IEnumerable<Profile> getAll();
 
@@ -48,7 +48,7 @@ namespace BTS.Service
             return _profileRepository.Add(newProfile);
         }
 
-        public Profile Delete(string Id)
+        public Profile Delete(int Id)
         {
             return _profileRepository.Delete(Id);
         }

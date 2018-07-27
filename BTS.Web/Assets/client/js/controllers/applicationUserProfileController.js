@@ -22,6 +22,8 @@
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
                     window.location.href = "/Account/Login"
+                } else if (response.status == "Error") {
+                    $.notify(response.message, "error");
                 } else if (response.status == "Success") {
                     return response.data;
                 }
@@ -76,9 +78,11 @@
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
                         window.location.href = "/Account/Login"
+                    } else if (response.status == "Error") {
+                        $.notify(response.message, "error");
                     } else if (response.status = "Success") {
                         $("#firstTab").html(response.html);
-                        commonController.refreshAddNewTab($(form).attr('data-restUrl'), true);
+                        commonController.refreshAddNewTab($(form).attr('data-restUrl'), false);
                         $.notify(response.message, "success");
                         if (typeof commonController.activatejQueryTable !== 'undefined' && $.isFunction(commonController.activatejQueryTable))
                             commonController.activatejQueryTable();
@@ -106,9 +110,11 @@
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
                     window.location.href = "/Account/Login"
+                } else if (response.status == "Error") {
+                    $.notify(response.message, "error");
                 } else {
                     $("#secondTab").html(response);
-                    $('ul.nav.nav-tabs a:eq(1)').html(' Thêm mới');
+                    $('ul.nav.nav-tabs a:eq(1)').html(' Chi tiết');
                     if (showViewTab)
                         $('ul.nav.nav-tabs a:eq(0)').tab('show');
                 }
@@ -124,8 +130,10 @@
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
                     window.location.href = "/Account/Login"
+                } else if (response.status == "Error") {
+                    $.notify(response.message, "error");
                 } else {
-                    $('ul.nav.nav-tabs a:eq(1)').html(' Thêm mới');
+                    $('ul.nav.nav-tabs a:eq(1)').html(' Chi tiết');
                     if (showViewTab)
                         $('ul.nav.nav-tabs a:eq(0)').tab('show');
                 }
@@ -141,6 +149,8 @@
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
                     window.location.href = "/Account/Login"
+                } else if (response.status == "Error") {
+                    $.notify(response.message, "error");
                 } else {
                     $("#secondTab").html(response);
                     $('ul.nav.nav-tabs a:eq(1)').html('Sửa đổi');
@@ -158,6 +168,8 @@
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
                     window.location.href = "/Account/Login"
+                } else if (response.status == "Error") {
+                    $.notify(response.message, "error");
                 } else {
                     $("#secondTab").html(response);
                     $('ul.nav.nav-tabs a:eq(1)').html('Đặt lại mật khẩu');
@@ -175,6 +187,8 @@
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
                     window.location.href = "/Account/Login"
+                } else if (response.status == "Error") {
+                    $.notify(response.message, "error");
                 } else {
                     $("#secondTab").html(response);
                     $('ul.nav.nav-tabs a:eq(1)').html('Chi tiết');
@@ -192,6 +206,8 @@
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
                         window.location.href = "/Account/Login"
+                    } else if (response.status == "Error") {
+                        $.notify(response.message, "error");
                     } else if (response.status = "Success") {
                         $("#firstTab").html(response.html);
                         $.notify(response.message, "warn");
@@ -215,6 +231,8 @@
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
                         window.location.href = "/Account/Login"
+                    } else if (response.status == "Error") {
+                        $.notify(response.message, "error");
                     } else if (response.status = "Success") {
                         $("#firstTab").html(response.html);
                         $.notify(response.message, "warn");
@@ -232,7 +250,21 @@
     activatejQueryTable: function () {
         $("#MyDataTable").DataTable({
             "language": {
-                url: '/localization/vi_VI.json'
+                url: '/AppFiles/localization/vi_VI.json'
+            },
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var select = $('<select><option value=""></option></select>')
+                    .appendTo($(column.footer()).empty())
+                    .on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                    });
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
             }
         });
     }

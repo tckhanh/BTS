@@ -25,6 +25,7 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
+            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -142,7 +143,7 @@ namespace BTS.Web.Controllers
                     return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
                 }
 
-                _profileService.Delete(id);
+                _profileService.Delete(ID);
                 _profileService.Save();
 
                 return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);

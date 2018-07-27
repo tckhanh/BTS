@@ -39,7 +39,7 @@ namespace BTS.Web.Models
         public DateTime ApplyDate { get; set; }
 
         [Display(Name = "Phí Kiểm định")]
-        public int? Fee { get; set; }
+        public int Fee { get; set; }
 
         [Display(Name = "Số CV Báo phí")]
         [StringLength(30, ErrorMessage = "Số CV Báo phí không quá 30 ký tự")]

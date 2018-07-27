@@ -122,7 +122,17 @@ var certificateController = {
 
         if (userRoleAdmin) {
             $("#MyDataTable")
+                .on('draw.dt', function (e, settings, json, xhr) {
+                    certificateController.initCompleteFunction(settings, json);
+                })
                 .on('xhr.dt', function (e, settings, json, xhr) {
+                    //new $.fn.dataTable.Api(settings).one('draw', function () {
+                    //    certificateController.initCompleteFunction(settings, json);
+                    //});
+                    new $.fn.dataTable.Api(settings).one('draw', function () {
+                        certificateController.initCompleteFunction(settings, json);
+                    });
+                    
                     if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                         myMap.removeLayer(myMarkerClusters);
                         myMarkerClusters.clearLayers();
@@ -205,24 +215,18 @@ var certificateController = {
                     "language": {
                         url: '/AppFiles/localization/vi_VI.json'
                     },
-                    initComplete: function () {
-                        this.api().columns().every(function () {
-                            var column = this;
-                            var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.footer()).empty())
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                column.search(val ? '^' + val + '$' : '', true, false).draw();
-                            });
-                            column.data().unique().sort().each(function (d, j) {
-                                select.append('<option value="' + d + '">' + d + '</option>')
-                            });
-                        });
+                    "initComplete": function () {
                     }
                 });
         } else {
             $("#MyDataTable")
+                .on('draw.dt', function ( e, settings, json, xhr ) {
+                    certificateController.initCompleteFunction(settings, json);
+                })
                 .on('xhr.dt', function (e, settings, json, xhr) {
+                    //new $.fn.dataTable.Api(settings).one('draw', function () {
+                    //    certificateController.initCompleteFunction(settings, json);
+                    //});
                     if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                         myMap.removeLayer(myMarkerClusters);
                         myMarkerClusters.clearLayers();
@@ -286,21 +290,31 @@ var certificateController = {
                         url: '/AppFiles/localization/vi_VI.json'
                     },
                     initComplete: function () {
-                        this.api().columns().every(function () {
-                            var column = this;
-                            var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.footer()).empty())
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                column.search(val ? '^' + val + '$' : '', true, false).draw();
-                            });
-                            column.data().unique().sort().each(function (d, j) {
-                                select.append('<option value="' + d + '">' + d + '</option>')
-                            });
-                        });
+                        
                     }
                 });
         }
+    },
+    initCompleteFunction: function (settings, json) {
+        var api = new $.fn.dataTable.Api(settings);
+        api.columns().every(function () {
+            var column = this;
+            var select = $('<select><option value=""></option></select>')
+                .appendTo($(column.footer()).empty())
+                .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                        $(this).val()
+                    );
+
+                    column
+                        .search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+
+            column.data().unique().sort().each(function (d, j) {
+                select.append('<option value="' + d + '">' + d + '</option>')
+            });
+        });
     },
     loadMap: function (markers) {
         var myURL = $('script[src$="leaflet.js"]').attr('src').replace('leaflet.js', '');

@@ -77,8 +77,8 @@ namespace BTS.Data.ApplicationModels
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, string> manager)
         {
-            var userIdentity = await manager
-                .CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+            userIdentity.AddClaim(new Claim("ImagePath", ImagePath));
             return userIdentity;
         }
     }

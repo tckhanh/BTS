@@ -18,7 +18,7 @@
     <!-- Ionicons -->
     <link href="~/Assets/admin/libs/Ionicons/css/ionicons.min.css" rel="stylesheet" />
     <!-- Theme style -->
-    <link href="~/Assets/admin/libs/adminLTE/dist/css/AdminLTE.min.css" rel="stylesheet" />
+    <link href="~/Assets/admin/libs/adminLTE/dist/css/AdminLTE.css" rel="stylesheet" />
     <!-- iCheck -->
     <link href="~/Assets/admin/libs/adminLTE/plugins/iCheck/square/blue.css" rel="stylesheet" />
 
@@ -33,13 +33,15 @@
 </head>
 
 <body class="hold-transition login-page">
+    <div class="header-row" id="header-row" style="padding: 0px; overflow:hidden; height:100px; background: url(/AppFiles/Images/bannerVcc2.png) center repeat">     
+    </div>
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>TRUNG TÂM KIỂM ĐỊNH VÀ CHỨNG NHẬN 2</b></a>
+            <a href="../../index2.html"><b>ĐĂNG NHẬP HỆ THỐNG</b></a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg"><b>Đăng nhập hệ thống</b></p>
+            <p class="login-box-msg"><b></b></p>
 
             @using (Html.BeginForm("Login", "Account", new { returnUrl = @ViewBag.ReturnUrl }, FormMethod.Post))
             {
@@ -64,25 +66,25 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Đăng nhập</button>
+                        <button type="submit" class="btn btn-success btn-block btn-flat">Đăng nhập</button>
                     </div>
                     <!-- /.col -->
                 </div>
             }
 
             @*<div class="social-auth-links text-center">
-                <p>- HOẶC -</p>
-                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
-                    <i class="fa fa-facebook"></i> Đăng nhập với Facebook
-                </a>
-                <a href="#" class="btn btn-block btn-social btn-google btn-flat">
-                    <i class="fa fa-google-plus"></i> Đăng nhập với Google+
-                </a>
-            </div>*@
+                    <p>- HOẶC -</p>
+                    <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                        <i class="fa fa-facebook"></i> Đăng nhập với Facebook
+                    </a>
+                    <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                        <i class="fa fa-google-plus"></i> Đăng nhập với Google+
+                    </a>
+                </div>*@
             <!-- /.social-auth-links -->
 
-            <a href="#">Quên mật khẩu</a><br>
-            <a href="register.html" class="text-center">Đăng ký thành viên</a>
+            @*<a href="#">Quên mật khẩu</a><br>
+            <a href="register.html" class="text-center">Đăng ký thành viên</a>*@
         </div>
         <!-- /.login-box-body -->
     </div>

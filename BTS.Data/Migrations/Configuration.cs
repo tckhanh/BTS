@@ -117,6 +117,9 @@
                         CommonConstants.System_CanEdit_Role,
                         CommonConstants.System_CanEdit_Description },
                     new string[]{
+                        CommonConstants.System_CanReset_Role,
+                        CommonConstants.System_CanReset_Description },
+                    new string[]{
                         CommonConstants.System_CanLock_Role,
                         CommonConstants.System_CanLock_Description },
                     new string[]{
@@ -160,6 +163,9 @@
                     new string[]{
                         CommonConstants.Data_CanEdit_Role,
                         CommonConstants.Data_CanEdit_Description },
+                    new string[]{
+                        CommonConstants.Data_CanReset_Role,
+                        CommonConstants.Data_CanReset_Description },
                     new string[]{
                         CommonConstants.Data_CanLock_Role,
                         CommonConstants.Data_CanLock_Description },
@@ -333,6 +339,7 @@
                     CommonConstants.System_CanImport_Role,
                     CommonConstants.System_CanExport_Role,
                     CommonConstants.System_CanEdit_Role,
+                    CommonConstants.System_CanReset_Role,
                     CommonConstants.System_CanLock_Role,
                     CommonConstants.System_CanDelete_Role,
 
@@ -344,6 +351,7 @@
                     CommonConstants.Data_CanImport_Role,
                     CommonConstants.Data_CanExport_Role,
                     CommonConstants.Data_CanEdit_Role,
+                    CommonConstants.Data_CanReset_Role,
                     CommonConstants.Data_CanLock_Role,
                     CommonConstants.Data_CanDelete_Role
                 };
@@ -374,6 +382,7 @@
                 CommonConstants.Data_CanViewDetail_Role,
                 CommonConstants.Data_CanViewChart_Role,
                 CommonConstants.Data_CanViewStatitics_Role,
+                CommonConstants.Data_CanReset_Role,
                 CommonConstants.Data_CanExport_Role
                  };
                 foreach (var roleItem in roleList)
@@ -406,6 +415,7 @@
                 CommonConstants.Data_CanImport_Role,
                 CommonConstants.Data_CanExport_Role,
                 CommonConstants.Data_CanEdit_Role,
+                CommonConstants.Data_CanReset_Role,
                 CommonConstants.Data_CanLock_Role
             };
                 foreach (var roleItem in roleList)
@@ -437,6 +447,7 @@
                 CommonConstants.Data_CanAdd_Role,
                 CommonConstants.Data_CanImport_Role,
                 CommonConstants.Data_CanEdit_Role,
+                CommonConstants.Data_CanReset_Role,
                 CommonConstants.Data_CanLock_Role
             };
                 foreach (var roleItem in roleList)
@@ -464,7 +475,8 @@
                 roleList = new List<string>() {
                 CommonConstants.Data_CanView_Role,
                 CommonConstants.Data_CanViewDetail_Role,
-                CommonConstants.Data_CanViewChart_Role
+                CommonConstants.Data_CanViewChart_Role,
+                CommonConstants.Data_CanReset_Role,
             };
                 foreach (var roleItem in roleList)
                 {
@@ -491,7 +503,8 @@
                 roleList = new List<string>() {
                 CommonConstants.Data_CanView_Role,
                 CommonConstants.Data_CanViewDetail_Role,
-                CommonConstants.Data_CanViewChart_Role
+                CommonConstants.Data_CanViewChart_Role,
+                CommonConstants.Data_CanReset_Role,
             };
                 foreach (var roleItem in roleList)
                 {

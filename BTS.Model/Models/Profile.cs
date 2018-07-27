@@ -22,12 +22,12 @@ namespace BTS.Model.Models
         [Column(TypeName = "date")]
         public DateTime ProfileDate { get; set; }
 
-        public int? BtsQuantity { get; set; }
+        public int BtsQuantity { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime ApplyDate { get; set; }
 
-        public int? Fee { get; set; }
+        public int Fee { get; set; }
 
         [StringLength(30)]
         public string FeeAnnounceNum { get; set; }

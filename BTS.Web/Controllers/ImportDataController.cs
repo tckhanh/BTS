@@ -37,6 +37,7 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
+            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -250,14 +251,23 @@ namespace BTS.Web.Controllers
                 if (dbProfile != null)
                 {
                     proFileID = dbProfile.Id;
-                    //_importService.Update(Item);
+                    Profile dbPro = _importService.getProfile(proFileID);
+                    dbPro.BtsQuantity = Item.BtsQuantity;
+                    dbPro.ApplyDate = Item.ApplyDate;
+                    dbPro.Fee = Item.Fee;
+                    dbPro.FeeAnnounceNum = Item.FeeAnnounceNum;
+                    dbPro.FeeAnnounceDate = Item.FeeAnnounceDate;
+                    dbPro.FeeReceiptDate = Item.FeeReceiptDate;
+                    Item.UpdatedBy = User.Identity.Name;
+                    Item.UpdatedDate = DateTime.Now;
+                    _importService.Update(dbPro);
                 }
                 else
                 {
                     _importService.Add(Item);
-                    _importService.Save();
                     proFileID = Item.Id;
                 }
+                _importService.Save();
             }
             return proFileID;
         }

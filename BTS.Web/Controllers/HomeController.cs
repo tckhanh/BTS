@@ -41,6 +41,7 @@ namespace BTS.Web.Controllers
         [OutputCache(Duration = 60, Location = System.Web.UI.OutputCacheLocation.Client)]
         public ActionResult Index()
         {
+            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -93,7 +94,7 @@ namespace BTS.Web.Controllers
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<StatBtsInProcessVm> BtsInProcess = _stattisticService.GetStatBtsInProcess();
+                IEnumerable<StatBtsVm> BtsInProcess = _stattisticService.GetStatAllBtsInProcess();
 
                 DataTable pivotTable = BtsInProcess.ToDataTable();
                 List<String> ColumnNames = new List<string>();

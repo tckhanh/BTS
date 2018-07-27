@@ -24,7 +24,7 @@ namespace BTS.Service
 
         IEnumerable<CertStatByOperatorVM> GetCertStatByOperator();
 
-        IEnumerable<StatBtsInProcessVm> GetStatBtsInProcess();
+        IEnumerable<StatBtsVm> GetStatAllBtsInProcess();
     }
 
     public class StatisticService : IStatisticService
@@ -72,9 +72,9 @@ namespace BTS.Service
             return _certificateRepository.GetIssuedCertStatByOperatorCity(true);
         }
 
-        IEnumerable<StatBtsInProcessVm> IStatisticService.GetStatBtsInProcess()
+        IEnumerable<StatBtsVm> IStatisticService.GetStatAllBtsInProcess()
         {
-            return _certificateRepository.GetStatBtsInProcess();
+            return _certificateRepository.GetStatAllBtsInProcess();
         }
     }
 }

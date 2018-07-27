@@ -39,6 +39,7 @@ namespace BTS.Web.Controllers
             ViewBag.operators = operators;
             ViewBag.profiles = profiles;
             ViewBag.cities = cities;
+            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 

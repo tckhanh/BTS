@@ -53,28 +53,35 @@ namespace BTS.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = UserManager.Find<ApplicationUser,string>(model.UserName, model.Password);
+                var user = UserManager.Find<ApplicationUser, string>(model.UserName, model.Password);
                 if (user != null)
                 {
-                    IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
-                    authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                    ClaimsIdentity identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-
-                    identity.AddClaim(new Claim("FullName", user.FullName));
-                    identity.AddClaim(new Claim("Email", user.Email));
-                    identity.AddClaim(new Claim("ImagePath", user.ImagePath));
-
-                    AuthenticationProperties props = new AuthenticationProperties();
-                    props.IsPersistent = model.RememberMe;
-                    authenticationManager.SignIn(props, identity);
-
-                    if (Url.IsLocalUrl(returnUrl))
+                    if (user.Locked == false)
                     {
-                        return Redirect(returnUrl);
+                        IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
+                        authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                        ClaimsIdentity identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+                        //identity.AddClaim(new Claim("FullName", user.FullName));
+                        //identity.AddClaim(new Claim("Email", user.Email));
+                        identity.AddClaim(new Claim("ImagePath", user.ImagePath));
+
+                        AuthenticationProperties props = new AuthenticationProperties();
+                        props.IsPersistent = model.RememberMe;
+                        authenticationManager.SignIn(props, identity);
+
+                        if (Url.IsLocalUrl(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        ModelState.AddModelError("", "Tài khoản đã bị khóa, vui lòng liên hệ nhà quản trị hệ thống.");
                     }
                 }
                 else
@@ -82,6 +89,7 @@ namespace BTS.Web.Controllers
                     ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
                 }
             }
+
             return View(model);
         }
 

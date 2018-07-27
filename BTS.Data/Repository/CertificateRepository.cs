@@ -1,6 +1,7 @@
 ﻿using BTS.Common;
 using BTS.Common.ViewModels;
 using BTS.Data.Infrastructure;
+using BTS.Data.Infrastructure.Extensions;
 using BTS.Model.Models;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,9 @@ namespace BTS.Data.Repository
 
         IEnumerable<CertStatByOperatorVM> GetCertStatByOperator(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
-        IEnumerable<StatBtsInProcessVm> GetStatBtsInProcess();
+        IEnumerable<StatBtsVm> GetStatAllBtsInProcess();
 
-        IEnumerable<CertStatVM> GetCertStatByCity(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
+        IEnumerable<CertStatVM> GetStatCertByCity(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
         IEnumerable<CertStatVM> GetCerStatByLab(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
@@ -171,7 +172,7 @@ namespace BTS.Data.Repository
             }
         }
 
-        public IEnumerable<CertStatVM> GetCertStatByCity(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        public IEnumerable<CertStatVM> GetStatCertByCity(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
         {
             if (onlyIsValid)
             {
@@ -379,16 +380,54 @@ namespace BTS.Data.Repository
             }
         }
 
-        public IEnumerable<StatBtsInProcessVm> GetStatBtsInProcess()
+        //public IEnumerable<StatBtsInProcessVm> GetStatBtsInProcess()
+        //{
+        //    var query = from bts in DbContext.Btss
+        //                group bts by new { bts.OperatorID } into ItemGroup
+        //                select new StatBtsInProcessVm()
+        //                {
+        //                    OperatorID = ItemGroup.Key.OperatorID,
+        //                    Btss = ItemGroup.Count()
+        //                };
+        //    return query;
+        //}
+
+        public IEnumerable<StatBtsVm> GetStatAllBtsInProcess()
         {
-            var query = from bts in DbContext.Btss
-                        group bts by new { bts.OperatorID } into ItemGroup
-                        select new StatBtsInProcessVm()
-                        {
-                            OperatorID = ItemGroup.Key.OperatorID,
-                            Btss = ItemGroup.Count()
-                        };
-            return query;
+            IEnumerable<StatBtsInReceiptVm> query1 = from proApp in (from pro in DbContext.Profiles
+                                                                     join app in DbContext.Applicants
+                                                                     on pro.ApplicantID equals app.Id
+                                                                     select new { pro, app })
+                                                     group proApp by new { proApp.app.OperatorID } into ItemGroup
+                                                     select new StatBtsInReceiptVm()
+                                                     {
+                                                         OperatorID = ItemGroup.Key.OperatorID,
+                                                         NoAnnounceFeeBtss = ItemGroup.Where(a => a.pro.FeeAnnounceDate == null).Count() == 0 ? 0 : ItemGroup.Where(a => a.pro.FeeAnnounceDate == null).Sum(y => y.pro.BtsQuantity),
+                                                         NoReceiptFeeBtss = ItemGroup.Where(x => !string.IsNullOrEmpty(x.pro.FeeAnnounceNum) && (x.pro.FeeReceiptDate == null)).Count() == 0 ? 0 : ItemGroup.Where(x => !string.IsNullOrEmpty(x.pro.FeeAnnounceNum) && (x.pro.FeeReceiptDate == null)).Sum(y => y.pro.BtsQuantity)
+                                                     };
+
+            IEnumerable<StatBtsInProcessVm> query2 = from btspro in (from bts in DbContext.Btss
+                                                                     join pro in DbContext.Profiles
+                                                                     on bts.ProfileID equals pro.Id
+                                                                     where pro.FeeReceiptDate != null
+                                                                     select bts)
+                                                     group btspro by new { btspro.OperatorID } into ItemGroup
+                                                     select new StatBtsInProcessVm()
+                                                     {
+                                                         OperatorID = ItemGroup.Key.OperatorID,
+                                                         Btss = ItemGroup.Count()
+                                                     };
+
+            IEnumerable<StatBtsVm> query3 = query1.FullOuterJoin(
+                query2, left => left.OperatorID, right => right.OperatorID, (left, right) => new StatBtsVm
+                {
+                    OperatorID = left == null ? right.OperatorID : left.OperatorID,
+                    NoAnnounceFeeBtss = left == null ? 0 : left.NoAnnounceFeeBtss,
+                    NoReceiptFeeBtss = left == null ? 0 : left.NoReceiptFeeBtss,
+                    ReceiptFeeBtss = right == null ? 0 : right.Btss
+                });
+
+            return query3.Where(x => x.NoAnnounceFeeBtss > 0 || x.NoReceiptFeeBtss > 0 || x.ReceiptFeeBtss > 0);
         }
     }
 }

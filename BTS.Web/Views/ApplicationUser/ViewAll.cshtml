@@ -19,7 +19,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Locked)
-            </th>            
+            </th>
             <th>Thao tác</th>
         </tr>
     </thead>
@@ -59,8 +59,12 @@
                     @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
                     {
                         <a class="btn btn-success btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUser", new { id = @item.Id, act = CommonConstants.Action_Edit })')" data-toggle="tooltip" data-placement="top" title="Sửa đổi"><i class="fa fa-pencil fa-lg"></i></a>
+                    }
+                    @if (User.IsInRole(CommonConstants.System_CanReset_Role))
+                    {
+
                         <a class="btn btn-success btn-sm" onclick="commonController.Reset('@Url.Action("AddOrEdit", "ApplicationUser", new { id = @item.Id, act = CommonConstants.Action_Reset })')" data-toggle="tooltip" data-placement="top" title="Đặt lại mật khẩu"><i class="fa fa-gear fa-lg"></i></a>
-                    }                    
+                    }
 
                     @if (User.IsInRole(CommonConstants.System_CanDelete_Role))
                     {

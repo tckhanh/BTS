@@ -10,7 +10,6 @@ namespace BTS.Web.Models
     public class ApplicationRoleViewModel
     {
         [Display(Name = "Mã Quyền")]
-        [Required]
         public string Id { set; get; }
 
         [Display(Name = "Tên Quyền")]

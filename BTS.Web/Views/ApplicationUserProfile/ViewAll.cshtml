@@ -1,0 +1,64 @@
+﻿@model IEnumerable<BTS.Web.Models.ApplicationUserViewModel>
+@using BTS.Common
+@{
+    ViewBag.Title = "ViewAll";
+    Layout = null;
+}
+
+<table class="table table-striped table-condensed" id="MyDataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Locked)
+            </th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @if (User.IsInRole(CommonConstants.Data_CanLock_Role))
+                    {
+                        if (item.Locked)
+                        {
+                            <a data-toggle="tooltip" data-placement="top" title="Khóa"><i class="fa fa-lock fa-lg"></i></a>
+                        }
+                        else
+                        {
+                            <a data-toggle="tooltip" data-placement="top" title="Mở khóa"><i class="fa fa-unlock fa-lg"></i></a>
+                        }
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @item.Id, act = CommonConstants.Action_Detail })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
+                    @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                    {
+                        <a class="btn btn-success btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @item.Id, act = CommonConstants.Action_Edit })')" data-toggle="tooltip" data-placement="top" title="Sửa đổi"><i class="fa fa-pencil fa-lg"></i></a>
+                        <a class="btn btn-warning btn-sm" onclick="commonController.Reset('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @item.Id, act = CommonConstants.Action_Reset })')" data-toggle="tooltip" data-placement="top" title="Đặt lại mật khẩu"><i class="fa fa-gear fa-lg"></i></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

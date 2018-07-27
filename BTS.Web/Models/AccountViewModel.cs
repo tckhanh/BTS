@@ -29,7 +29,7 @@ namespace BTS.Web.Models
             [Display(Name = "Mật khẩu hiện tại")]
             public string OldPassword { get; set; }
 
-            [Display(Name = "Mật khẩu")]
+            [Display(Name = "Mật khẩu mới")]
             [DataType(DataType.Password)]
             [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mật khẩu mới")]
             public string Password { set; get; }

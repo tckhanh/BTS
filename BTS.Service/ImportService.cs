@@ -17,6 +17,8 @@ namespace BTS.Service
     {
         Profile findProfile(string applicantID, string profileNum, DateTime profileDate);
 
+        Profile getProfile(int Id);
+
         Bts findBts(int profileID, string btsCode);
 
         SubBtsInCert findSubBts(string certificateID, string btsCode, string operatorID);
@@ -237,6 +239,11 @@ namespace BTS.Service
         public Profile findProfile(string applicantID, string profileNum, DateTime profileDate)
         {
             return _profileRepository.findProfile(applicantID, profileNum, profileDate);
+        }
+
+        public Profile getProfile(int Id)
+        {
+            return _profileRepository.GetSingleById(Id);
         }
 
         public Bts findBts(int profileID, string btsCode)

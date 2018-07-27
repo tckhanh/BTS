@@ -14,6 +14,27 @@ var checkController = {
         checkController.loadData();
         checkController.registerEventDataTable();
         checkController.registerEvent();
+    },
+
+    registerEventDataTable: function () {
+    },
+
+    registerEvent: function () {
+        $('#FileDialog').change(function (sender) {
+            var fileName = sender.target.files[0].name;
+            var validExts = new Array(".xlsx", ".xls");
+            var fileExt = fileName.substring(fileName.lastIndexOf('.'));
+            if (validExts.indexOf(fileExt) < 0) {
+                //alert("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu");
+                $.notify("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu", "warn");
+                $("#FileDialog").val('');
+                return false;
+            }
+            else {
+                bar.html('');
+                return true;
+            }
+        });
 
         $('#jqueryForm').ajaxForm({
             clearForm: true,
@@ -58,18 +79,30 @@ var checkController = {
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
                     window.location.href = "/Account/Login"
+                } else if (response.status == "Error") {
+                    $.notify(response.message, "error");
+                    $('#btnCheck').prop('disabled', false);
+                    $('#btnReset').prop('disabled', false);
+                    $('#FileDialog').prop('disabled', false);
+                    $('html').removeClass('waiting');
+                    bar.html('Lỗi trong quá trình thực hiện!');
+                    bar.removeClass('active');
                 } else {
                     fileLocation = response.fileLocation;
                     fileExtension = response.fileExtension;
                     if (response.status == "Success") {
                         bar.html('Đã thực hiện kiểm tra BTS xong!');
-                        $.notify(xhr.response.message, "success");
+                        $.notify(response.message, "success");
                     }
                     else {
                         bar.html('Lỗi trong quá trình thực hiện!');
-
-                        //alert("Complete: " + xhr.response.message);
-                        $.notify(xhr.response.message, "error");
+                        //alert("Complete: " + response.message);
+                        $.notify(response.message, "error");
+                        $('#btnCheck').prop('disabled', false);
+                        $('#btnReset').prop('disabled', false);
+                        $('#FileDialog').prop('disabled', false);
+                        $('html').removeClass('waiting');
+                        bar.removeClass('active');
                     }
                 }
             },
@@ -79,55 +112,12 @@ var checkController = {
             },
             async: true
         });
-    },
-
-    registerEventDataTable: function () {
-    },
-
-    registerEvent: function () {
-        $('#FileDialog').change(function (sender) {
-            var fileName = sender.target.files[0].name;
-            var validExts = new Array(".xlsx", ".xls");
-            var fileExt = fileName.substring(fileName.lastIndexOf('.'));
-            if (validExts.indexOf(fileExt) < 0) {
-                //alert("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu");
-                $.notify("Bạn chỉ được các tập tin Excel " + validExts.toString() + " để nhập liệu", "warn");
-                $("#FileDialog").val('');
-                return false;
-            }
-            else {
-                bar.html('');
-                return true;
-            }
-        });
-    },
-
-    registerEvent1: function () {
-        $('#btnSearch').off('click').on('click', function () {
-            $('#MyDataTable').DataTable().ajax.reload();
-        });
 
         $("a[href='#mapTab']").on('shown.bs.tab', function (e) {
             myMap.invalidateSize();
         });
-
-        $('#btnAddNew').off('click').on('click', function () {
-            $('#modalAddUpdate').modal('show');
-            certificateController.resetForm();
-        });
-
-        $('#btnSave').off('click').on('click', function () {
-            if ($('#frmSaveData').valid()) {
-                certificateController.saveData();
-            }
-        });
-
-        $('#btnReset').off('click').on('click', function () {
-            $('#txtNameS').val('');
-            $('#ddlStatusS').val('');
-            certificateController.loadData(true);
-        });
     },
+
     loadDetail: function (id) {
         $.ajax({
             url: '/Operator/GetDetail',
@@ -170,19 +160,22 @@ var checkController = {
                     if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                         myMap.removeLayer(myMarkerClusters);
                         myMarkerClusters.clearLayers();
-                        bar.html('Đã hoàn tất hiển thị kết quả!');
-                        $('#btnCheck').prop('disabled', false);
-                        $('#btnReset').prop('disabled', false);
-                        $('#FileDialog').prop('disabled', false);
-                        $('html').removeClass('waiting');
-                        bar.removeClass('active');
-
                         //myMap.eachLayer(function (layer) {
                         //    myMap.removeLayer(layer);
                         //});
                     }
-                    //certificateController.loadMap(json.data);
-                    //certificateController.loadPivotTable(json.data);
+
+                    if (json != null) {
+                        var data = json.data;
+                        checkController.loadMap(data);
+                        checkController.loadPivotTable(data);
+                    }
+
+                    $('#btnCheck').prop('disabled', false);
+                    $('#btnReset').prop('disabled', false);
+                    $('#FileDialog').prop('disabled', false);
+                    $('html').removeClass('waiting');
+                    bar.removeClass('active');
                 })
                 .dataTable({
                     dom: 'Bfrtip',
@@ -221,16 +214,16 @@ var checkController = {
                         }
                     },
                     "columns": [
-                        { "data": "OperatorID", "name": "OperatorID", "width": "5%" },  // index 1
-                        { "data": "BtsCode", "name": "BtsCode", "width": "5%" },        // index 2
-                        { "data": "Address", "name": "Address", "width": "30%" },        // index 3
-                        { "data": "LastOwnCertificateIDs", "name": "LastOwnCertificateIDs", "width": "20%" },
-                        { "data": "LastNoOwnCertificateIDs", "name": "LastNoOwnCertificateIDs", "width": "20%" },
-                        { "data": "ProFilesInProcess", "name": "ProFilesInProcess", "width": "10%" },
-                        { "data": "ReasonsNoCertificate", "name": "ReasonsNoCertificate", "width": "10%" },
+                        { "data": "OperatorID", "name": "OperatorID", "width": "5%" },
+                        { "data": "BtsCode", "name": "BtsCode", "width": "5%" },
+                        { "data": "Address", "name": "Address", "width": "30%" },
+                        { "data": "LastOwnCertificateIDs", "name": "LastOwnCertificateIDs", "defaultContent": "", "width": "20%" },
+                        { "data": "LastNoOwnCertificateIDs", "name": "LastNoOwnCertificateIDs", "defaultContent": "", "width": "20%" },
+                        { "data": "ProfilesInProcess", "name": "ProfilesInProcess", "defaultContent": "", "width": "10%" },
+                        { "data": "ReasonsNoCertificate", "name": "ReasonsNoCertificate", "defaultContent": "", "width": "10%" },
                     ],
                     "language": {
-                        url: '/localization/vi_VI.json'
+                        url: '/AppFiles/localization/vi_VI.json'
                     }
                 });
         } else {
@@ -239,16 +232,22 @@ var checkController = {
                     if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                         myMap.removeLayer(myMarkerClusters);
                         myMarkerClusters.clearLayers();
-                        bar.html('Đã hoàn tất hiển thị kết quả!');
+
                         //myMap.eachLayer(function (layer) {
                         //    myMap.removeLayer(layer);
                         //});
                     }
                     if (json != null) {
                         var data = json.data;
-                        //certificateController.loadMap(data);
-                        //certificateController.loadPivotTable(data);
+                        checkController.loadMap(data);
+                        checkController.loadPivotTable(data);
                     }
+
+                    $('#btnCheck').prop('disabled', false);
+                    $('#btnReset').prop('disabled', false);
+                    $('#FileDialog').prop('disabled', false);
+                    $('html').removeClass('waiting');
+                    bar.removeClass('active');
                 })
                 .dataTable({
                     "processing": true,
@@ -264,16 +263,16 @@ var checkController = {
                         }
                     },
                     "columns": [
-                        { "data": "OperatorID", "name": "OperatorID", "width": "5%" },  // index 1
-                        { "data": "BtsCode", "name": "BtsCode", "width": "5%" },        // index 2
-                        { "data": "Address", "name": "Address", "width": "30%" },        // index 3
-                        { "data": "LastOwnCertificateIDs", "name": "LastOwnCertificateIDs", "width": "20%" },
-                        { "data": "LastNoOwnCertificateIDs", "name": "LastNoOwnCertificateIDs", "width": "20%" },
-                        { "data": "ProFilesInProcess", "name": "ProFilesInProcess", "width": "10%" },
-                        { "data": "ReasonsNoCertificate", "name": "ReasonsNoCertificate", "width": "10%" },
+                        { "data": "OperatorID", "name": "OperatorID", "width": "5%" },
+                        { "data": "BtsCode", "name": "BtsCode", "width": "5%" },
+                        { "data": "Address", "name": "Address", "width": "30%" },
+                        { "data": "LastOwnCertificateIDs", "name": "LastOwnCertificateIDs", "defaultContent": "", "width": "20%"},
+                        { "data": "LastNoOwnCertificateIDs", "name": "LastNoOwnCertificateIDs", "defaultContent": "", "width": "20%"},
+                        { "data": "ProfilesInProcess", "name": "ProfilesInProcess", "defaultContent": "", "width": "10%" },
+                        { "data": "ReasonsNoCertificate", "name": "ReasonsNoCertificate", "defaultContent": "", "width": "10%" },
                     ],
                     "language": {
-                        url: '/localization/vi_VI.json'
+                        url: '/AppFiles/localization/vi_VI.json'
                     }
                 });
         }
@@ -284,7 +283,9 @@ var checkController = {
             for (var i = 0; i < markers.length; ++i) {
                 var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
                             '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
-                            '<br/><b>G.CNKĐ:</b> ' + markers[i].Id +
+                            '<br/><b>G.CNKĐ đã cấp:</b> ' + markers[i].LastOwnCertificateIDs +
+                            '<br/><b>G.CNKĐ cấp kèm:</b> ' + markers[i].LastNoOwnCertificateIDs +
+                            '<br/><b>Lý do không cấp:</b> ' + markers[i].ReasonsNoCertificate +
                             '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
                 var img24 = 'images/pin24.png';
                 var img48 = 'images/pin48.png';
@@ -339,7 +340,7 @@ var checkController = {
                     cols: ["CityID"],
                     rendererName: "Horizontal Stacked Bar Chart",
                     rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
-                });
+                }, true);
     }
 }
 checkController.init();

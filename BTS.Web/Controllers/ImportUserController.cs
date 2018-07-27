@@ -40,6 +40,7 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
+            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -104,7 +105,7 @@ namespace BTS.Web.Controllers
                     newAppUser.WorkingDuration = dt.Rows[i][CommonConstants.Sheet_User_WorkingDuration].ToString();
                     newAppUser.JobPositions = dt.Rows[i][CommonConstants.Sheet_User_JobPositions].ToString();
                     newAppUser.PhoneNumber = dt.Rows[i][CommonConstants.Sheet_User_Telephone].ToString();
-                    newAppUser.ImagePath = "~/AppFiles/Images/" + dt.Rows[i][CommonConstants.Sheet_User_Image].ToString();
+                    newAppUser.ImagePath = "/AppFiles/Images/" + dt.Rows[i][CommonConstants.Sheet_User_Image].ToString();
                     newAppUser.UserName = dt.Rows[i][CommonConstants.Sheet_User_UserName].ToString();
                     newAppUser.Email = dt.Rows[i][CommonConstants.Sheet_User_Email].ToString();
                     newAppUser.CreatedBy = User.Identity.Name;

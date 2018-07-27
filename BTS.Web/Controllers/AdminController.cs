@@ -11,8 +11,8 @@ namespace BTS.Web.Controllers
     {
         public AdminController(IErrorService errorService) : base(errorService)
         {
-
         }
+
         // GET: Admin
         public ActionResult Index()
         {

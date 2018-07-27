@@ -40,6 +40,7 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
+            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -62,14 +63,22 @@ namespace BTS.Web.Controllers
             string excelConnectionString = _excelIO.CreateConnectionString(fileLocation, fileExtension);
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Bts);
             List<Bts> dataResult = new List<Bts>();
+
             for (int i = 0; i < dt.Rows.Count; i++)
             {
+                double _Latitude, _Longtitude;
+                double.TryParse(dt.Rows[i][CommonConstants.Sheet_Bts_Longtitude].ToString(), out _Longtitude);
+                double.TryParse(dt.Rows[i][CommonConstants.Sheet_Bts_Latitude].ToString(), out _Latitude);
                 dataResult.Add(new Bts()
                 {
                     OperatorID = dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString(),
                     BtsCode = dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(),
                     Address = dt.Rows[i][CommonConstants.Sheet_Bts_Address].ToString(),
+                    CityID = dt.Rows[i][CommonConstants.Sheet_Bts_CityID].ToString(),
+                    Longtitude = _Longtitude,
+                    Latitude = _Latitude,
                     LastOwnCertificateIDs = dt.Rows[i][CommonConstants.Sheet_Bts_LastOwnCertificateIDs].ToString(),
+                    LastNoOwnCertificateIDs = dt.Rows[i][CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs].ToString(),
                     ProfilesInProcess = dt.Rows[i][CommonConstants.Sheet_Bts_ProfileInProcess].ToString(),
                     ReasonsNoCertificate = dt.Rows[i][CommonConstants.Sheet_Bts_ReasonNoCertificate].ToString(),
                 });

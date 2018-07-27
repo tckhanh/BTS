@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using BTS.Common
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -18,7 +19,7 @@
     <!-- DataTables -->
     <link href="~/Assets/admin/libs/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <!-- Theme style -->
-    <link rel="stylesheet" href="~/Assets/admin/libs/adminLTE/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="~/Assets/admin/libs/adminLTE/dist/css/AdminLTE.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="~/Assets/admin/libs/adminLTE/dist/css/skins/_all-skins.min.css">
@@ -65,8 +66,11 @@
         <!--footer-->
         @{Html.RenderAction("Footer", "Home");}
         <!---->
-        <!-- Control Sidebar -->
-        @{Html.RenderAction("RightSideBar", "Home");}
+        @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
+        {
+            <!-- Control Sidebar -->
+            Html.RenderAction("RightSideBar", "Home");
+        }
         <!-- /.control-sidebar -->
         <!-- Add the sidebar's background. This div must be placed
              immediately after the control sidebar -->

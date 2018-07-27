@@ -1,0 +1,265 @@
+﻿@using BTS.Common
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layouts.cshtml";
+    IEnumerable<BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
+    IEnumerable<BTS.Web.Models.ProfileViewModel> profiles = ViewBag.profiles;
+    IEnumerable<BTS.Web.Models.CityViewModel> cities = ViewBag.cities;
+}
+
+@section headCSS{
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="~/Assets/admin/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/Assets/admin/libs/bootstrap-daterangepicker/daterangepicker.css">
+    <link href="~/Assets/admin/libs/leaflet/dist/leaflet.css" rel="stylesheet" />
+    <link href="~/Assets/admin/libs/leaflet.markercluster/dist/MarkerCluster.css" rel="stylesheet" />
+    <link href="~/Assets/admin/libs/leaflet.markercluster/dist/MarkerCluster.Default.css" rel="stylesheet" />
+    <link href="~/Assets/admin/libs/pivottable/dist/pivot.min.css" rel="stylesheet" />
+
+    <link href="~/Assets/admin/libs/datatables-buttons/css/buttons.dataTables.css" rel="stylesheet" />
+
+    <link href="~/Assets/client/css/custom.css" rel="stylesheet" />
+    <link href="~/Assets/client/css/custom-DataTable.css" rel="stylesheet" />
+}
+
+@section footerJS{
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="~/Assets/admin/libs/moment/moment.js"></script>
+    <script src="~/Assets/admin/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Assets/admin/libs/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/Assets/admin/libs/leaflet/dist/leaflet.js"></script>
+    <script src="~/Assets/admin/libs/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+    <script src="~/Assets/admin/libs/plotly.js/dist/plotly-basic.min.js"></script>
+    <script src="~/Assets/admin/libs/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/Assets/admin/libs/pivottable/dist/pivot.min.js"></script>
+    <script src="~/Assets/admin/libs/pivottable/dist/plotly_renderers.min.js"></script>
+
+    <script src="~/Assets/admin/libs/datatables-buttons/js/dataTables.buttons.js"></script>
+    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.flash.js"></script>
+    <script src="~/Assets/admin/libs/jszip/dist/jszip.min.js"></script>
+    <script src="~/Assets/admin/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/Assets/admin/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.html5.js"></script>
+    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.print.js"></script>
+    <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.colVis.js"></script>
+    <script src="~/Assets/client/js/controllers/noCertificateController.js"></script>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    @*<section class="content-header">
+            <h1>
+                Data Tables
+                <small>advanced tables</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">Data tables</li>
+            </ol>
+        </section>*@
+
+    <!-- Main content -->
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <!-- SELECT2 EXAMPLE -->
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="BTS-title">LỌC GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="clearfix"></div>
+                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                            @Html.AntiForgeryToken()
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="DateRange">
+                                        Khoảng thời gian<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="OperatorID">
+                                        Nhà mạng<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <select id="OperatorID" class="form-control selectYear">
+                                            <option value="" selected="selected">Tất cả</option>
+                                            @foreach (var item in operators)
+                                            {
+                                                <option value="@item.Id">@item.Id _ @item.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="CityID">
+                                        Tỉnh/Thành phố<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <select id="CityID" class="form-control">
+                                            <option value="" selected="selected">Tất cả</option>
+                                            @foreach (var item in cities)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ProfileID">
+                                        Hồ sơ nộp<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <select id="ProfileID" class="form-control selectYear">
+                                            <option value="" selected="selected">Tất cả</option>
+                                            @foreach (var item in profiles)
+                                            {
+                                                <option value="@item.Id">@item.BtsQuantity BTS _ @item.ApplicantID _ @item.ProfileNum</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="BtsCodeOrAddress">
+                                        Mã trạm/Địa chỉ trạm <span class="required"></span>
+                                    </label>
+                                    <div class="col-md-10 col-sm-10 col-xs-12">
+                                        <input id="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="IsNotExpired">
+                                        Loại Giấy CNKĐ<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-10 col-sm-10 col-xs-12">
+                                        <fieldset>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="radio" name="IsExpired" value="no" checked="checked" />
+                                                <label class="control-label">
+                                                    Giấy CNKĐ còn hiệu lực
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="radio" name="IsExpired" value="yes" />
+                                                <label class="control-label">
+                                                    Giấy CNKĐ hết hiệu lực
+                                                </label>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <button class="btn btn-primary" type="reset">Bỏ lọc</button>
+                                        <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs nav-pills">
+            <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách GCNKĐ</a></li>
+            @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+            {
+                <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
+            }
+
+            @if (User.IsInRole(CommonConstants.Data_CanViewChart_Role))
+            {
+                <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
+            }
+        </ul>
+        <div class="tab-content">
+            <div id="homeTab" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="BTS-title">DANH SÁCH GIẤY CHỨNG NHẬN KIỂM ĐỊNH ĐÃ BAN HÀNH</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+
+                                <table id="MyDataTable" class="table table-bordered table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Nhà mạng</th>
+                                            <th>Tỉnh</th>
+                                            <th>Số Giấy CNKĐ</th>
+                                            <th>Mã trạm</th>
+                                            <th>Địa chỉ</th>
+                                            <th>Ngày ban hành</th>
+                                            <th>Ngày hết hạn</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <td>Nhà mạng</td>
+                                            <td>Tỉnh</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+            <div id="mapTab" class="tab-pane fade">
+                <h3 class="BTS-title">DANH SÁCH CÁC TRẠM BTS ĐÃ ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                <div id="mapBTS" style="width: 100%; height: 500px;"></div>
+            </div>
+            <div id="pivotTableTab" class="tab-pane fade">
+                <h3 class="BTS-title">THỐNG KÊ SỐ LƯỢNG TRẠM GỐC BTS ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                <div id="pivotTable" style="width: 100%"></div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </section>
+</div>

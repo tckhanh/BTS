@@ -8,7 +8,132 @@
         green: 'rgb(75, 192, 192)',
         blue: 'rgb(54, 162, 235)',
         purple: 'rgb(153, 102, 255)',
-        grey: 'rgb(201, 203, 207)'
+        Red: 'rgb(255,0,0)',
+        Lime: 'rgb(0,255,0)',
+        Blue: 'rgb(0,0,255)',
+        Yellow: 'rgb(255,255,0)',
+        Cyan: 'rgb(0,255,255)',
+        Magenta: 'rgb(255,0,255)',
+        Maroon: 'rgb(128,0,0)',
+        Olive: 'rgb(128,128,0)',
+        Green: 'rgb(0,128,0)',
+        Purple: 'rgb(128,0,128)',
+        Teal: 'rgb(0,128,128)',
+        Navy: 'rgb(0,0,128)',
+        red: 'rgb(255,0,0)',
+        almon: 'rgb(255,160,122)',
+        antique_white: 'rgb(250,235,215)',
+        aqua: 'rgb(0,255,255)',
+        aqua_marine: 'rgb(127,255,212)',
+        bchocolate: 'rgb(210,105,30)',
+        beige: 'rgb(245,245,220)',
+        bisque: 'rgb(255,228,196)',
+        blanched_almond: 'rgb(255,235,205)',
+        blue: 'rgb(0,0,255)',
+        blue_steel: 'rgb(70,130,180)',
+        blue_violet: 'rgb(138,43,226)',
+        brown: 'rgb(165,42,42)',
+        cadet_blue: 'rgb(95,158,160)',
+        chid: 'rgb(218,112,214)',
+        corn_silk: 'rgb(255,248,220)',
+        crimson: 'rgb(220,20,60)',
+        cyan: 'rgb(0,255,255)',
+        Cyan_Aqua: 'rgb(0,255,255)',
+        dark_blue: 'rgb(0,0,139)',
+        dark_cyan: 'rgb(0,139,139)',
+        dark_golden_rod: 'rgb(184,134,11)',
+        dark_khaki: 'rgb(189,183,107)',
+        dark_magenta: 'rgb(139,0,139)',
+        dark_olive_green: 'rgb(85,107,47)',
+        dark_orchid: 'rgb(153,50,204)',
+        dark_red: 'rgb(139,0,0)',
+        dark_salmon: 'rgb(233,150,122)',
+        dark_sea_green: 'rgb(143,188,143)',
+        dark_slate_blue: 'rgb(72,61,139)',        
+        dark_turquoise: 'rgb(0,206,209)',
+        dark_violet: 'rgb(148,0,211)',
+        deep_pink: 'rgb(255,20,147)',
+        deep_sky_blue: 'rgb(0,191,255)',
+        dfirebrick: 'rgb(178,34,34)',
+        digo: 'rgb(75,0,130)',
+        dodger_blue: 'rgb(30,144,255)',
+        each_puff: 'rgb(255,218,185)',
+        flower_blue: 'rgb(100,149,237)',
+        gold: 'rgb(255,215,0)',
+        green: 'rgb(0,128,0)',
+        green_dark: 'rgb(0,100,0)',
+        green_light: 'rgb(32,178,170)',
+        green_yellow: 'rgb(173,255,47)',
+        hot_pink: 'rgb(255,105,180)',
+        igolden_rod: 'rgb(218,165,32)',
+        indian_red: 'rgb(205,92,92)',
+        khaki: 'rgb(240,230,140)',
+        lawn_green: 'rgb(124,252,0)',
+        lemon_chiffon: 'rgb(255,250,205)',
+        light_blue: 'rgb(173,216,230)',
+        light_coral: 'rgb(240,128,128)',
+        light_cyan: 'rgb(224,255,255)',
+        light_green: 'rgb(144,238,144)',
+        light_pink: 'rgb(255,182,193)',
+        light_yellow: 'rgb(255,255,224)',
+        lime: 'rgb(0,255,0)',
+        lime_green: 'rgb(50,205,50)',
+        lmon: 'rgb(250,128,114)',
+        lue: 'rgb(135,206,235)',
+        Magenta_Fuchsia: 'rgb(255,0,255)',
+        maroon: 'rgb(128,0,0)',
+        maroon_light: 'rgb(128,0,0)',
+        mcoral: 'rgb(255,127,80)',
+        medium_aqua_marine: 'rgb(102,205,170)',
+        medium_blue: 'rgb(0,0,205)',
+        medium_orchid: 'rgb(186,85,211)',
+        medium_purple: 'rgb(147,112,219)',
+        medium_sea_green: 'rgb(60,179,113)',
+        medium_slate_blue: 'rgb(123,104,238)',
+        misty_rose: 'rgb(255,228,225)',
+        moccasin: 'rgb(255,228,181)',
+        navajo_white: 'rgb(255,222,173)',
+        Navy: 'rgb(0,0,128)',
+        navy: 'rgb(0,0,128)',
+        night_blue: 'rgb(25,25,112)',
+        nna: 'rgb(160,82,45)',
+        Olive: 'rgb(128,128,0)',
+        olive_drab: 'rgb(107,142,35)',
+        orange_red: 'rgb(255,69,0)',
+        pale_golden_rod: 'rgb(238,232,170)',
+        pale_green: 'rgb(152,251,152)',
+        pale_turquoise: 'rgb(175,238,238)',
+        pale_violet_red: 'rgb(219,112,147)',
+        peru: 'rgb(205,133,63)',
+        pink: 'rgb(255,192,203)',
+        plum: 'rgb(221,160,221)',
+        powder_blue: 'rgb(176,224,230)',
+        pring_green: 'rgb(0,255,127)',
+        purple: 'rgb(128,0,128)',
+        quoise: 'rgb(64,224,208)',
+        red: 'rgb(255,0,0)',
+        rest_green: 'rgb(34,139,34)',
+        reuse: 'rgb(127,255,0)',
+        rod_yellow: 'rgb(250,250,210)',
+        rosy_brown: 'rgb(188,143,143)',
+        royal_blue: 'rgb(65,105,225)',
+        saddle_brown: 'rgb(139,69,19)',
+        sandy_brown: 'rgb(244,164,96)',
+        sea_green: 'rgb(46,139,87)',
+        slate_blue: 'rgb(106,90,205)',
+        spring_green: 'rgb(0,250,154)',
+        tan: 'rgb(210,180,140)',
+        teal: 'rgb(0,128,128)',
+        thistle: 'rgb(216,191,216)',
+        tLime: 'rgb(0,255,0)',
+        tomato: 'rgb(255,99,71)',
+        turquoise: 'rgb(72,209,204)',
+        violet: 'rgb(238,130,238)',
+        violet_red: 'rgb(199,21,133)',
+        wheat: 'rgb(245,222,179)',
+        wood: 'rgb(222,184,135)',
+        Yellow: 'rgb(255,255,0)',
+        yellow_green: 'rgb(154,205,50)',
     };
 
     (function (global) {
@@ -126,7 +251,7 @@
 
         // DEPRECATED
         window.randomScalingFactor = function () {
-            return Math.round(Samples.utils.rand(-100, 100));
+            return Math.round(Samples.utils.rand(Date.now()));
         };
 
         // INITIALIZATION
@@ -186,13 +311,14 @@
                         };
                         var pieChartCanvas1 = $("#pieChartValidCertificates");
                         var pieChart1 = new Chart(pieChartCanvas1, config1);
+                        var firstColor = randomScalingFactor();
 
                         for (var i in response.chartData) {
-                            if (i > 1) {                                
+                            if (i > 1) {
                                 var pieChartValues1 = response.chartData[i];
-                                homeController.addDataSetPie(pieChart1, pieChartColumNames[2 - 1], pieChartValues1);
+                                homeController.addDataSetPie(pieChart1, pieChartColumNames[2 - 1], pieChartValues1, firstColor);
                             }
-                        }                                               
+                        }
                     }
                     else {
                         alert(xhr.response.message);
@@ -232,11 +358,12 @@
                         };
                         var pieChartCanvas1 = $("#pieChartBtsInProcess");
                         var pieChart1 = new Chart(pieChartCanvas1, config1);
+                        var firstColor = randomScalingFactor();
 
                         for (var i in response.chartData) {
                             if (i > 1) {
                                 var pieChartValues1 = response.chartData[i];
-                                homeController.addDataSetPie(pieChart1, pieChartColumNames[2 - 1], pieChartValues1);
+                                homeController.addDataSetPie(pieChart1, pieChartColumNames[2 - 1], pieChartValues1, firstColor);
                             }
                         }
                     }
@@ -311,12 +438,13 @@
 
                         var lineChartCanvas = $("#lineChartIssuedCertificatesByYear");
                         var lineChart = new Chart(lineChartCanvas, config);
+                        var firstColor = randomScalingFactor();
 
                         var colorNames = Object.keys(window.chartColors);
 
                         for (var i in response.chartData) {
                             if (i > 1) {
-                                var colorName = colorNames[i % colorNames.length];
+                                var colorName = colorNames[(firstColor + i) % colorNames.length];
                                 var newColor = window.chartColors[colorName];
                                 var lineChartValues = response.chartData[i];
 
@@ -395,12 +523,13 @@
 
                         var lineChartCanvas = $("#lineChartvalidCertificatesByCity");
                         var lineChart = new Chart(lineChartCanvas, config);
+                        var firstColor = randomScalingFactor();
 
                         var colorNames = Object.keys(window.chartColors);
 
                         for (var i in response.chartData) {
                             if (i > 1) {
-                                var colorName = colorNames[i % colorNames.length];
+                                var colorName = colorNames[(firstColor + i) % colorNames.length];
                                 var newColor = window.chartColors[colorName];
                                 var lineChartValues = response.chartData[i];
 
@@ -419,7 +548,8 @@
                 }
             });
         },
-        addDataSetPie: function (chart, label, data) {
+
+        addDataSetPie: function (chart, label, data, firstColor) {
             var newDataset = {
                 backgroundColor: [],
                 data: data,
@@ -427,7 +557,7 @@
             };
             var colorNames = Object.keys(window.chartColors);
             for (var index = 0; index < data.length; ++index) {
-                var colorName = colorNames[index % colorNames.length];
+                var colorName = colorNames[(firstColor + index) % colorNames.length];
                 var newColor = window.chartColors[colorName];
                 newDataset.backgroundColor.push(newColor);
             }

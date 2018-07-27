@@ -12,36 +12,18 @@ namespace BTS.Web.Infrastructure.Extensions
 {
     public static class EntityExtensions
     {
-        public static string FullName(this IPrincipal user)
+        public static string GetImagePath(this IIdentity identity)
         {
-            if (user.Identity.IsAuthenticated)
+            if (identity == null)
             {
-                ClaimsIdentity claimsIdentity = user.Identity as ClaimsIdentity;
-                foreach (var claim in claimsIdentity.Claims)
-                {
-                    if (claim.Type == "FullName")
-                        return claim.Value;
-                }
-                return "";
+                throw new ArgumentNullException("user");
             }
-            else
-                return "";
-        }
-
-        public static string ImagePath(this IPrincipal user)
-        {
-            if (user.Identity.IsAuthenticated)
+            var claimsIdentity = identity as ClaimsIdentity;
+            if (claimsIdentity != null)
             {
-                ClaimsIdentity claimsIdentity = user.Identity as ClaimsIdentity;
-                foreach (var claim in claimsIdentity.Claims)
-                {
-                    if (claim.Type == "ImagePath")
-                        return claim.Value;
-                }
-                return "";
+                return claimsIdentity.FindFirst("ImagePath").Value;
             }
-            else
-                return "";
+            return null;
         }
 
         public static void UpdateBts(this Bts bts, BtsViewModel btsVm)

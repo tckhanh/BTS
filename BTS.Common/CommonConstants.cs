@@ -20,6 +20,7 @@
         public const string Action_Detail = "Detail";
         public const string Action_Edit = "Edit";
         public const string Action_Reset = "Reset";
+        public const string Action_ChangePassword = "ChangePassword";
         public const string Action_Delete = "Delete";
 
         public const string SuperAdmin_Name = "admin";
@@ -36,6 +37,7 @@
         public const string System_CanImport_Role = "System_CanImport";
         public const string System_CanExport_Role = "System_CanExport";
         public const string System_CanEdit_Role = "System_CanEdit";
+        public const string System_CanReset_Role = "System_CanReset";
         public const string System_CanLock_Role = "System_CanLock";
         public const string System_CanDelete_Role = "System_CanDelete";
 
@@ -47,6 +49,7 @@
         public const string Data_CanImport_Role = "Data_CanImport";
         public const string Data_CanExport_Role = "Data_CanExport";
         public const string Data_CanEdit_Role = "Data_CanEdit";
+        public const string Data_CanReset_Role = "Data_CanReset";
         public const string Data_CanLock_Role = "Data_CanLock";
         public const string Data_CanDelete_Role = "Data_CanDelete";
 
@@ -58,7 +61,8 @@
         public const string System_CanImport_Description = "Nhập hệ thống";
         public const string System_CanExport_Description = "Xuất hệ thống";
         public const string System_CanEdit_Description = "Sửa hệ thống";
-        public const string System_CanLock_Description = "Khóa hệ thống";
+        public const string System_CanReset_Description = "Tạo lại mật khẩu";
+        public const string System_CanLock_Description = "Khóa người dùng";
         public const string System_CanDelete_Description = "Xóa bỏ hệ thống";
 
         public const string Data_CanView_Description = "Xem dữ liệu";
@@ -69,6 +73,7 @@
         public const string Data_CanImport_Description = "Nhập dữ liệu";
         public const string Data_CanExport_Description = "Xuất dữ liệu";
         public const string Data_CanEdit_Description = "Sửa dữ liệu";
+        public const string Data_CanReset_Description = "Thay đổi mật khẩu";
         public const string Data_CanLock_Description = "Khóa dữ liệu";
         public const string Data_CanDelete_Description = "Xóa bỏ dữ liệu";
 
@@ -131,7 +136,7 @@
         public const string Sheet_Profile_FeeAnnounceDate = "FeeAnnounceDate";
         public const string Sheet_Profile_FeeReceiptDate = "FeeReceiptDate";
 
-        public const string Sheet_Bts = "Bts";
+        public const string Sheet_Bts = "BTS";
         public const string Sheet_Bts_OperatorID = "OperatorID";
         public const string Sheet_Bts_BtsCode = "BtsCode";
         public const string Sheet_Bts_Address = "Address";

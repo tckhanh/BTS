@@ -59,6 +59,7 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
+            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -240,7 +241,7 @@ namespace BTS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeRoles(CommonConstants.System_CanEdit_Role)]
+        [AuthorizeRoles(CommonConstants.System_CanReset_Role)]
         public async Task<ActionResult> Reset(ManageUserViewModel Item)
         {
             try
@@ -271,7 +272,7 @@ namespace BTS.Web.Controllers
             }
         }
 
-        [AuthorizeRoles(CommonConstants.System_CanEdit_Role)]
+        [AuthorizeRoles(CommonConstants.System_CanLock_Role)]
         public async Task<ActionResult> Lock(string id)
         {
             try

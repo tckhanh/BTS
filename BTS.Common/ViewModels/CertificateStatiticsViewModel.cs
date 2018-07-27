@@ -30,6 +30,21 @@ namespace BTS.Common.ViewModels
         public int Btss { get; set; }
     }
 
+    public class StatBtsInReceiptVm
+    {
+        public string OperatorID { get; set; }
+        public int NoAnnounceFeeBtss { get; set; }
+        public int NoReceiptFeeBtss { get; set; }
+    }
+
+    public class StatBtsVm
+    {
+        public string OperatorID { get; set; }
+        public int ReceiptFeeBtss { get; set; }
+        public int NoReceiptFeeBtss { get; set; }
+        public int NoAnnounceFeeBtss { get; set; }
+    }
+
     public class IssuedCertStatByOperatorYearVM
     {
         public string OperatorID { get; set; }

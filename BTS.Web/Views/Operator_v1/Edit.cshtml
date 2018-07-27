@@ -4,24 +4,31 @@
     ViewBag.Title = "Sửa đổi";
 }
 
-@using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+@if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
 {
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Id)
-    <div class="form-group">
-        @Html.LabelFor(model => model.Id, new { @class = "control-label" })
-        @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", id = "txtID", readOnly = "true" } })
-        @Html.ValidationMessageFor(model => model.Id)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, new { @class = "control-label" })
-        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", id = "txtName" } })
-        @Html.ValidationMessageFor(model => model.Name)
-    </div>
+    using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Id, new { @class = "control-label" })
+            @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", id = "txtID", readOnly = "true" } })
+            @Html.ValidationMessageFor(model => model.Id)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", id = "txtName" } })
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
 
-    <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-primary" />
-        <input type="" value="Reset" class="btn" />
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    </div>
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+            <input type="" value="Reset" class="btn" />
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    }
+}
+else
+{
+    <h3 class="text-danger">Bạn chưa được cấp quyền để thực hiện chức năng này !!!</h3>
 }

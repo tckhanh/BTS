@@ -1,7 +1,9 @@
 ﻿@model BTS.Web.Models.AccountViewModel.ManageUserViewModel
-    @using BTS.Common
+@using BTS.Common
 
-    @using (Html.BeginForm("Reset", "ApplicationUser", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add }) }))//data-resetUrl
+@if (User.IsInRole(CommonConstants.System_CanReset_Role))
+{
+    using (Html.BeginForm("Reset", "ApplicationUser", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add }) }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -54,3 +56,8 @@
             </div>
         </div>
     }
+}
+else
+{
+    <h3 class="text-danger">Bạn chưa được cấp quyền để thực hiện chức năng này !!!</h3>
+}
