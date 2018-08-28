@@ -64,7 +64,6 @@ namespace BTS.Web.Controllers
             var OperatorID = Request.Form.GetValues("OperatorID").FirstOrDefault();
             var ProfileID = Request.Form.GetValues("ProfileID").FirstOrDefault();
             var BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress").FirstOrDefault().ToLower();
-            var IsExpired = Request.Form.GetValues("IsExpired").FirstOrDefault().ToLower();
 
             DateTime StartDate, EndDate;
             if (!DateTime.TryParse(Request.Form.GetValues("StartDate").FirstOrDefault(), out StartDate))
@@ -82,15 +81,6 @@ namespace BTS.Web.Controllers
             else
             {
                 Items = _noCertificateService.getAll(out countItem, false).ToList();
-            }
-
-            if (IsExpired == "yes")
-            {
-                Items = Items.Where(x => x.ExpiredDate < DateTime.Today);
-            }
-            else
-            {
-                Items = Items.Where(x => x.ExpiredDate >= DateTime.Today);
             }
 
             if (!(string.IsNullOrEmpty(CityID)))

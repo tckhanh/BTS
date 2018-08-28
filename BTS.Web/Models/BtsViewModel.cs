@@ -23,7 +23,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Mã trạm BTS")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mã trạm BTS")]
-        [StringLength(100)]
+        [StringLength(50, ErrorMessage = "Mã trạm BTS không quá 50 ký tự")]
         public string BtsCode { get; set; }
 
         [Display(Name = "Địa chỉ")]
@@ -64,7 +64,6 @@ namespace BTS.Web.Models
         [StringLength(255, ErrorMessage = "Các lý do không cấp Giấy CNKĐ không quá 255 ký tự")]
         public string ReasonsNoCertificate { get; set; }
 
-
         [Display(Name = "Thuộc hồ sơ KĐ")]
         public ICollection<SelectListItem> ProfileList { get; set; }
 
@@ -73,7 +72,6 @@ namespace BTS.Web.Models
 
         [Display(Name = "Thuộc Tỉnh/ Thành phố")]
         public ICollection<SelectListItem> CityList { get; set; }
-
 
         [Display(Name = "Trường hợp Kiểm định")]
         public ICollection<SelectListItem> InCaseOfList { get; set; }

@@ -113,15 +113,52 @@ namespace BTS.Web.Controllers
                 Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress));
             }
 
-            var recordsFiltered = Items.Count();
-
             IEnumerable<CertificateViewModel> dataViewModel = Mapper.Map<List<CertificateViewModel>>(Items);
-            if (countItem > 0)
+
+            var recordsFiltered = Items.Count();
+            //for (int i = 0; i < recordsFiltered; i++)
+            //{
+            //    IEnumerable<SubBtsInCert> SubItems = _certificateService.getDetailByID(dataViewModel.ElementAt(i).Id);
+            //    IEnumerable<SubBtsInCertViewModel> SubItemsVM = Mapper.Map<List<SubBtsInCertViewModel>>(SubItems);
+            //    foreach (var subItemVM in SubItemsVM)
+            //    {
+            //        dataViewModel.ElementAt(i).SubBtsList.Add(subItemVM);
+            //    }
+            //}
+
+            if (recordsFiltered > 0)
             {
                 //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };
                 return Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+
+        //[ValidateAntiForgeryToken]
+        public JsonResult Details(string Id)
+        {
+            if (!string.IsNullOrEmpty(Id))
+            {
+                IEnumerable<SubBtsInCert> Items = _certificateService.getDetailByID(Id);
+
+                var countItem = Items.Count();
+
+                IEnumerable<SubBtsInCertViewModel> dataViewModel = Mapper.Map<List<SubBtsInCertViewModel>>(Items);
+                if (countItem > 0)
+                {
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "Detail", dataViewModel), message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = "Không có dữ liệu" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = "Lỗi lấy dữ liệu" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult PivotTable()

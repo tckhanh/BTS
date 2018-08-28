@@ -46,7 +46,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult StatisticByOperator()
+        public ActionResult CerStatByOperator()
         {
             List<object> chartData = new List<object>();
             try
@@ -89,7 +89,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult StatisticBtsInProcess()
+        public ActionResult BtsStatInProcess()
         {
             List<object> chartData = new List<object>();
             try
@@ -132,7 +132,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult IssuedStatisticByOperatorYear()
+        public ActionResult CertStatByOperatorYear()
         {
             List<object> chartData = new List<object>();
             try
@@ -176,7 +176,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult IssuedStatisticByOperatorCity()
+        public ActionResult CertStatByOperatorCity()
         {
             List<object> chartData = new List<object>();
             try
@@ -204,6 +204,227 @@ namespace BTS.Web.Controllers
                 {
                     status = CommonConstants.Status_Success,
                     message = "IssuedStatisticByOperatorCity Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult BtsStatByBand()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<BtsStatByOperatorBandVM> ByBand = _stattisticService.GetBtsStatByOperatorBand();
+
+                DataTable pivotTable = ByBand.ToPivotTable(item => item.OperatorID, item => item.Band, items => items.Any() ? items.Sum(item => item.Btss) : 0);
+
+                //DataTable pivotTable = ByBand.ToDataTable();
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "BtsStatByBand Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult BtsStatByManufactory()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<BtsStatByOperatorManufactoryVM> ByManufactory = _stattisticService.GetBtsStatByOperatorManufactory();
+
+                DataTable pivotTable = ByManufactory.ToPivotTable(item => item.OperatorID, item => item.Manufactory, items => items.Any() ? items.Sum(item => item.Btss) : 0);
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "BtsStatByManufactory Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult BtsStatByEquipment()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<BtsStatByEquipmentVM> ByEquipment = _stattisticService.GetBtsStatByEquipment();
+
+                DataTable pivotTable = ByEquipment.ToDataTable();
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "BtsStatByEquipment Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult BtsStatByBandCity()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<BtsStatByBandCityVM> ByBandCity = _stattisticService.GetBtsStatByBandCity();
+
+                DataTable pivotTable = ByBandCity.ToPivotTable(item => item.Band, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
+
+                //DataTable pivotTable = ByBand.ToDataTable();
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "BtsStatByBandCity Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult BtsStatByOperatorCity()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<BtsStatByOperatorCityVM> ByOperatorCity = _stattisticService.GetBtsStatByOperatorCity();
+
+                DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
+
+                //DataTable pivotTable = ByBand.ToDataTable();
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "BtsStatByOperatorCity Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }

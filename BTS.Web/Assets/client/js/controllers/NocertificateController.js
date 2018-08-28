@@ -188,29 +188,26 @@ var noCertificateController = {
                         { "data": "OperatorID", "name": "OperatorID", "width": "10%" },
                         { "data": "CityID", "name": "CityID", "width": "4%" },
                         {
-                            "data": "Id", "name": "Id", "width": "20%",
-                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/NoCertificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
-                            }
-                        },
-                        {
                             "data": "BtsCode", "name": "BtsCode", "width": "10%",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
                             }
                         },        // index 2
-                        { "data": "Address", "name": "Address", "width": "40%" },
+                        { "data": "Address", "name": "Address", "width": "30%" },
                         {
-                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",
-                            "render": function (data, type, row) {
-                                return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
+                            "data": "LabID", "name": "LabID", "width": "8%",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='/Lab/Detail/" + oData.LabID + "'>" + oData.LabID + "</a>");
                             }
                         },
                         {
-                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%",
+                            "data": "TestReportDate", "name": "TestReportDate", "width": "8%",
                             "render": function (data, type, row) {
-                                return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
+                                return (moment(row["TestReportDate"]).format("DD/MM/YYYY"));
                             }
+                        },
+                        {
+                            "data": "Reason", "name": "Reason", "width": "30%"
                         }],
                     "language": {
                         url: '/AppFiles/localization/vi_VI.json'
@@ -262,29 +259,26 @@ var noCertificateController = {
                         { "data": "OperatorID", "name": "OperatorID", "width": "10%" },
                         { "data": "CityID", "name": "CityID", "width": "4%" },
                         {
-                            "data": "Id", "name": "Id", "width": "20%",
-                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/NoCertificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
-                            }
-                        },
-                        {
                             "data": "BtsCode", "name": "BtsCode", "width": "10%",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
                             }
-                        },
-                        { "data": "Address", "name": "Address", "width": "40%" },
+                        },        // index 2
+                        { "data": "Address", "name": "Address", "width": "30%" },
                         {
-                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",
-                            "render": function (data, type, row) {
-                                return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
+                            "data": "LabID", "name": "LabID", "width": "8%",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='/Lab/Detail/" + oData.LabID + "'>" + oData.LabID + "</a>");
                             }
                         },
                         {
-                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%",
+                            "data": "TestReportDate", "name": "TestReportDate", "width": "8%",
                             "render": function (data, type, row) {
-                                return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
+                                return (moment(row["TestReportDate"]).format("DD/MM/YYYY"));
                             }
+                        },
+                        {
+                            "data": "Reason", "name": "Reason", "width": "30%"
                         }],
                     "language": {
                         url: '/AppFiles/localization/vi_VI.json'
@@ -321,8 +315,8 @@ var noCertificateController = {
             for (var i = 0; i < markers.length; ++i) {
                 var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
                             '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
-                            '<br/><b>G.CNKĐ:</b> ' + markers[i].Id +
-                            '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
+                            '<br/><b>Địa chỉ:</b> ' + markers[i].Address +
+                            '<br/><b>Lý do Không cấp:</b> ' + markers[i].Reason;
                 var img24 = 'images/pin24.png';
                 var img48 = 'images/pin48.png';
                 if (markers[i].OperatorID == "VINAPHONE") {
@@ -362,7 +356,7 @@ var noCertificateController = {
                     "OperatorID": pivotTableData[i].OperatorID,
                     "CityID": pivotTableData[i].CityID,
                     "LabID": pivotTableData[i].LabID,
-                    "Year": moment(pivotTableData[i].IssuedDate).year()
+                    "Year": moment(pivotTableData[i].TestReportDate).year()
                 });
             }
         };

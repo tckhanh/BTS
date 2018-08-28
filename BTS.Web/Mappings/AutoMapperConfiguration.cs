@@ -33,6 +33,7 @@ namespace BTS.Web.Mappings
                 cfg.CreateMap<Applicant, ApplicantViewModel>();
                 cfg.CreateMap<Bts, BtsViewModel>();
                 cfg.CreateMap<Certificate, CertificateViewModel>();
+                cfg.CreateMap<NoCertificate, NoCertificateViewModel>();
                 cfg.CreateMap<City, CityViewModel>();
                 cfg.CreateMap<Operator, OperatorViewModel>();
                 cfg.CreateMap<Model.Models.Profile, ProfileViewModel>();

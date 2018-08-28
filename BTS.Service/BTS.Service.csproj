@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="BtsService.cs" />
     <Compile Include="ApplicationGroupService.cs" />
+    <Compile Include="NoCertificateService.cs" />
     <Compile Include="CertificateService.cs" />
     <Compile Include="CityService.cs" />
     <Compile Include="CommonService.cs" />

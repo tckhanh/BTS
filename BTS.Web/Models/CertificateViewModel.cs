@@ -143,14 +143,21 @@ namespace BTS.Web.Models
         [Display(Name = "Có giới hạn an toàn")]
         public double? SafeLimit { get; set; }
 
-        public virtual Profile Profile { get; set; }
+        public virtual ProfileViewModel Profile { get; set; }
 
-        public virtual Operator Operator { get; set; }
+        public virtual OperatorViewModel Operator { get; set; }
 
-        public virtual City City { get; set; }
+        public virtual CityViewModel City { get; set; }
 
-        public virtual InCaseOf InCaseOf { get; set; }
+        public virtual InCaseOfViewModel InCaseOf { get; set; }
 
-        public virtual Lab Lab { get; set; }
+        public virtual Lab LabViewModel { get; set; }
+        public virtual IEnumerable<SubBtsInCertViewModel> SubBtsInCerts { get; set; }
+
+        public ICollection<SubBtsInCertViewModel> SubBtsList { get; set; }
+        public CertificateViewModel()
+        {
+            SubBtsList = new List<SubBtsInCertViewModel>();
+        }
     }
 }

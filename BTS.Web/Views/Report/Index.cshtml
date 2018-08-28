@@ -2,9 +2,6 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Layouts.cshtml";
-    IEnumerable<BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
-    IEnumerable<BTS.Web.Models.ProfileViewModel> profiles = ViewBag.profiles;
-    IEnumerable<BTS.Web.Models.CityViewModel> cities = ViewBag.cities;
 }
 
 @section headCSS{
@@ -12,6 +9,7 @@
     <link rel="stylesheet" href="~/Assets/admin/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="~/Assets/admin/libs/bootstrap-daterangepicker/daterangepicker.css">
+
     <link href="~/Assets/admin/libs/leaflet/dist/leaflet.css" rel="stylesheet" />
     <link href="~/Assets/admin/libs/leaflet.markercluster/dist/MarkerCluster.css" rel="stylesheet" />
     <link href="~/Assets/admin/libs/leaflet.markercluster/dist/MarkerCluster.Default.css" rel="stylesheet" />
@@ -21,11 +19,15 @@
 
     <link href="~/Assets/client/css/custom.css" rel="stylesheet" />
     <link href="~/Assets/client/css/custom-DataTable.css" rel="stylesheet" />
+    <style>
+        .ui-datepicker-calendar {
+            display: none;
+        }
+    </style>
+
 }
 
 @section footerJS{
-
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="~/Assets/admin/libs/moment/moment.js"></script>
     <script src="~/Assets/admin/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/Assets/admin/libs/bootstrap-daterangepicker/daterangepicker.js"></script>
@@ -45,8 +47,10 @@
     <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.html5.js"></script>
     <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.print.js"></script>
     <script src="~/Assets/admin/libs/datatables-buttons/js/buttons.colVis.js"></script>
-    <script src="~/Assets/client/js/controllers/noCertificateController.js"></script>
 
+    @*<script src="http://malsup.github.com/jquery.form.js"></script>*@
+    <script src="~/Assets/admin/libs/jquery-form/dist/jquery.form.min.js"></script>
+    <script src="~/Assets/client/js/controllers/reportController.js"></script>
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -72,7 +76,7 @@
                 <!-- SELECT2 EXAMPLE -->
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <h3 class="BTS-title">LỌC TRẠM GỐC BTS KHÔNG ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                        <h3 class="BTS-title">BÁO CÁO KẾT QUẢ CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH TRONG THÁNG</h3>
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -87,76 +91,13 @@
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="DateRange">
-                                        Khoảng thời gian<span class="required"></span>
+                                        Tháng báo cáo<span class="required"></span>
                                     </label>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
+                                        <input class="form-control" type="text" id="DateRange" value="" style="width:100%" />
                                     </div>
                                 </div>
                                 <div class="ln_solid"></div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="OperatorID">
-                                        Nhà mạng<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <select id="OperatorID" class="form-control selectYear">
-                                            <option value="" selected="selected">Tất cả</option>
-                                            @foreach (var item in operators)
-                                            {
-                                                <option value="@item.Id">@item.Id _ @item.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="ln_solid"></div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="CityID">
-                                        Tỉnh/Thành phố<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <select id="CityID" class="form-control">
-                                            <option value="" selected="selected">Tất cả</option>
-                                            @foreach (var item in cities)
-                                            {
-                                                <option value="@item.Id">@item.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="ln_solid"></div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ProfileID">
-                                        Hồ sơ nộp<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <select id="ProfileID" class="form-control selectYear">
-                                            <option value="" selected="selected">Tất cả</option>
-                                            @foreach (var item in profiles)
-                                            {
-                                                <option value="@item.Id">@item.BtsQuantity BTS _ @item.ApplicantID _ @item.ProfileNum</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="ln_solid"></div>
-                            </div>
-
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="BtsCodeOrAddress">
-                                        Mã trạm/Địa chỉ trạm <span class="required"></span>
-                                    </label>
-                                    <div class="col-md-10 col-sm-10 col-xs-12">
-                                        <input id="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" required="required" type="text">
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -195,7 +136,10 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="box">
                             <div class="box-header">
-                                <h3 class="BTS-title">DANH SÁCH TRẠM GỐC BTS KHÔNG ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                                <h3 class="BTS-title">
+                                    DANH SÁCH TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH TRONG THÁNG
+                                    <span id="BTS-Result" class="BTS-title"></span>
+                                </h3>                                
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
@@ -203,21 +147,25 @@
                                 <table id="MyDataTable" class="table table-bordered table-striped" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Nhà mạng</th>
-                                            <th>Tỉnh</th>                                            
-                                            <th>Mã trạm</th>
-                                            <th>Địa chỉ</th>
-                                            <th>Đơn vị đo kiểm</th>
-                                            <th>Ngày Đo kiểm</th>
-                                            <th>Lý do không cấp G.CNKĐ</th>
+                                            <th rowspan="2">Stt</th>
+                                            <th rowspan="2">Số Giấy CNKĐ</th>
+                                            <th rowspan="2">Đơn vị CCDV</th>
+                                            <th colspan="5">Đơn vị dùng chung cơ sở hạ tầng</th>
+                                            <th rowspan="2">Mã trạm</th>
+                                            <th colspan="2">Địa điểm lắp đặt</th>                                            
+                                            <th rowspan="2">Ngày cấp</th>
+                                            <th rowspan="2">Có giá trị đến</th>
                                         </tr>
-                                    </thead>
-                                    <tfoot>
                                         <tr>
-                                            <td>Nhà mạng</td>
-                                            <td>Tỉnh</td>
+                                            <th>Gtel</th>
+                                            <th>HN Tel</th>
+                                            <th>Viettel</th>
+                                            <th>VMS</th>
+                                            <th>VNP</th>
+                                            <th>Địa chỉ</th>
+                                            <th>Tỉnh/TP</th>                                            
                                         </tr>
-                                    </tfoot>
+                                    </thead>                                    
                                 </table>
                             </div>
                             <!-- /.box-body -->
@@ -228,11 +176,11 @@
                 </div>
             </div>
             <div id="mapTab" class="tab-pane fade">
-                <h3 class="BTS-title">DANH SÁCH CÁC TRẠM BTS KHÔNG ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                <h3 class="BTS-title">DANH SÁCH CÁC TRẠM BTS ĐÃ ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
                 <div id="mapBTS" style="width: 100%; height: 500px;"></div>
             </div>
             <div id="pivotTableTab" class="tab-pane fade">
-                <h3 class="BTS-title">THỐNG KÊ SỐ LƯỢNG TRẠM GỐC BTS KHÔNG ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                <h3 class="BTS-title">THỐNG KÊ SỐ LƯỢNG TRẠM GỐC BTS ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
                 <div id="pivotTable" style="width: 100%"></div>
             </div>
             <!-- /.row -->

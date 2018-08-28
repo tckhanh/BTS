@@ -24,6 +24,20 @@ namespace BTS.Service
 
         IEnumerable<CertStatByOperatorVM> GetCertStatByOperator();
 
+        IEnumerable<BtsStatByBandVM> GetBtsStatByBand();
+
+        IEnumerable<BtsStatByOperatorBandVM> GetBtsStatByOperatorBand();
+
+        IEnumerable<BtsStatByBandCityVM> GetBtsStatByBandCity();
+
+        IEnumerable<BtsStatByOperatorCityVM> GetBtsStatByOperatorCity();
+
+        IEnumerable<BtsStatByEquipmentVM> GetBtsStatByEquipment();
+
+        IEnumerable<BtsStatByManufactoryVM> GetBtsStatByManufactory();
+
+        IEnumerable<BtsStatByOperatorManufactoryVM> GetBtsStatByOperatorManufactory();
+
         IEnumerable<StatBtsVm> GetStatAllBtsInProcess();
     }
 
@@ -65,6 +79,41 @@ namespace BTS.Service
         public IEnumerable<CertStatByOperatorVM> GetCertStatByOperator()
         {
             return _certificateRepository.GetCertStatByOperator();
+        }
+
+        public IEnumerable<BtsStatByBandVM> GetBtsStatByBand()
+        {
+            return _subBTSinCertRepository.GetBtsStatByBand();
+        }
+
+        public IEnumerable<BtsStatByOperatorBandVM> GetBtsStatByOperatorBand()
+        {
+            return _subBTSinCertRepository.GetBtsStatByOperatorBand();
+        }
+
+        public IEnumerable<BtsStatByBandCityVM> GetBtsStatByBandCity()
+        {
+            return _subBTSinCertRepository.GetBtsStatByBandCity();
+        }
+
+        public IEnumerable<BtsStatByOperatorCityVM> GetBtsStatByOperatorCity()
+        {
+            return _subBTSinCertRepository.GetBtsStatByOperatorCity();
+        }
+
+        public IEnumerable<BtsStatByManufactoryVM> GetBtsStatByManufactory()
+        {
+            return _subBTSinCertRepository.GetBtsStatByManufactory();
+        }
+
+        public IEnumerable<BtsStatByOperatorManufactoryVM> GetBtsStatByOperatorManufactory()
+        {
+            return _subBTSinCertRepository.GetBtsStatByOperatorManufactory();
+        }
+
+        public IEnumerable<BtsStatByEquipmentVM> GetBtsStatByEquipment()
+        {
+            return _subBTSinCertRepository.GetBtsStatByEquipemnt();
         }
 
         public IEnumerable<IssuedCertStatByOperatorCityVM> GetIssuedCertStatByOperatorCity()

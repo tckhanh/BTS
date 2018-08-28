@@ -23,7 +23,7 @@ namespace BTS.Model.Models
         public string OperatorID { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(50)]
         public string BtsCode { get; set; }
 
         [Required]

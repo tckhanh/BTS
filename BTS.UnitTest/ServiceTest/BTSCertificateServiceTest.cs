@@ -25,7 +25,7 @@ namespace BTS.UnitTest.ServiceTest
         {
             _mockCertificateRepository = new Mock<ICertificateRepository>();
             _mockUnitOfWork = new Mock<IUnitOfWork>();
-            _CertificateService = new CertificateService(_mockCertificateRepository.Object, _mockUnitOfWork.Object);
+            //_CertificateService = new CertificateService(_mockCertificateRepository.Object, _mockUnitOfWork.Object);
             _listCertificate = new List<Certificate>()
             {
                 new Certificate() { Id="1", ProfileID=1, CityID="HCM", OperatorID="MOBIFONE", Address="Một"},

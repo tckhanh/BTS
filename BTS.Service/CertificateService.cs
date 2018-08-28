@@ -45,6 +45,8 @@ namespace BTS.Service
 
         Certificate getByID(string Id);
 
+        List<SubBtsInCert> getDetailByID(string Id);
+
         IEnumerable<string> getIssueYears();
 
         void Save();
@@ -53,12 +55,14 @@ namespace BTS.Service
     public class CertificateService : ICertificateService
     {
         private ICertificateRepository _CertificateRepository;
+        private ISubBTSinCertRepository _SubBTSinCertRepository;
         private IUnitOfWork _unitOfWork;
 
-        public CertificateService(ICertificateRepository certificateRepository, IUnitOfWork unitOfWork)
+        public CertificateService(ICertificateRepository certificateRepository, ISubBTSinCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
         {
-            this._CertificateRepository = certificateRepository;
-            this._unitOfWork = unitOfWork;
+            _CertificateRepository = certificateRepository;
+            _SubBTSinCertRepository = subBTSinCertRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public Certificate Add(Certificate btsCertificate)
@@ -178,6 +182,11 @@ namespace BTS.Service
         public IEnumerable<Certificate> getCertificateProfile(int profileID)
         {
             return _CertificateRepository.GetMulti(x => x.ProfileID == profileID);
+        }
+
+        public List<SubBtsInCert> getDetailByID(string CertId)
+        {
+            return _SubBTSinCertRepository.GetMulti(x => x.CertificateID == CertId).OrderBy(x => x.Id).ToList();
         }
     }
 }

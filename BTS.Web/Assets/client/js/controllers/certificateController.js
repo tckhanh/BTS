@@ -30,6 +30,20 @@ var certificateController = {
                 });
             });
         });
+
+        $('#MyDataTable tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                row.child(certificateController.format(row.data())).show();
+                tr.addClass('shown');
+            }
+        });
     },
     registerEvent: function () {
         $('#btnSearch').off('click').on('click', function () {
@@ -57,6 +71,29 @@ var certificateController = {
             certificateController.loadData(true);
         });
     },
+
+    format: function (rowData) {
+        var div = $('<div/>')
+            .addClass('loading')
+            .text('Loading...');
+
+        $.ajax({
+            url: '/Certificate/Details',
+            type: "POST",
+            data: {
+                Id: rowData.Id
+            },
+            dataType: 'json',
+            success: function (json) {
+                div
+                    .html(json.html)
+                    .removeClass('loading');
+            }
+        });
+
+        return div;
+    },
+
     loadDetail: function (id) {
         $.ajax({
             url: '/Operator/GetDetail',
@@ -132,7 +169,7 @@ var certificateController = {
                     new $.fn.dataTable.Api(settings).one('draw', function () {
                         certificateController.initCompleteFunction(settings, json);
                     });
-                    
+
                     if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                         myMap.removeLayer(myMarkerClusters);
                         myMarkerClusters.clearLayers();
@@ -185,29 +222,35 @@ var certificateController = {
                         }
                     },
                     "columns": [
-                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },
-                        { "data": "CityID", "name": "CityID", "width": "4%" },
                         {
-                            "data": "Id", "name": "Id", "width": "20%",
+                            className: 'details-control',
+                            orderable: false,
+                            data: null,
+                            defaultContent: ''
+                        },
+                        { "data": "OperatorID", "name": "OperatorID" },
+                        { "data": "CityID", "name": "CityID" },
+                        {
+                            "data": "Id", "name": "Id",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Certificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
                             }
                         },
                         {
-                            "data": "BtsCode", "name": "BtsCode", "width": "10%",
+                            "data": "BtsCode", "name": "BtsCode",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
                             }
                         },        // index 2
-                        { "data": "Address", "name": "Address", "width": "40%" },
+                        { "data": "Address", "name": "Address" },
                         {
-                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",
+                            "data": "IssuedDate", "name": "IssuedDate",
                             "render": function (data, type, row) {
                                 return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
                             }
                         },
                         {
-                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%",
+                            "data": "ExpiredDate", "name": "ExpiredDate",
                             "render": function (data, type, row) {
                                 return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
                             }
@@ -220,7 +263,7 @@ var certificateController = {
                 });
         } else {
             $("#MyDataTable")
-                .on('draw.dt', function ( e, settings, json, xhr ) {
+                .on('draw.dt', function (e, settings, json, xhr) {
                     certificateController.initCompleteFunction(settings, json);
                 })
                 .on('xhr.dt', function (e, settings, json, xhr) {
@@ -290,7 +333,6 @@ var certificateController = {
                         url: '/AppFiles/localization/vi_VI.json'
                     },
                     initComplete: function () {
-                        
                     }
                 });
         }

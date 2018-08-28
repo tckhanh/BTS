@@ -49,7 +49,7 @@
         dark_red: 'rgb(139,0,0)',
         dark_salmon: 'rgb(233,150,122)',
         dark_sea_green: 'rgb(143,188,143)',
-        dark_slate_blue: 'rgb(72,61,139)',        
+        dark_slate_blue: 'rgb(72,61,139)',
         dark_turquoise: 'rgb(0,206,209)',
         dark_violet: 'rgb(148,0,211)',
         deep_pink: 'rgb(255,20,147)',
@@ -275,113 +275,26 @@
 
     var homeController = {
         init: function () {
-            homeController.loadChartStatisticByOperator();
-            homeController.loadChartStatisticBtsInProcess();
-            homeController.loadChartStatisticByOperatorYear();
-            homeController.loadChartStatisticByOperatorCity();
+            homeController.loadPieChart("/Home/CerStatByOperator", "#pieChart_CerStatByOperator");
+            homeController.loadPieChart("/Home/BtsStatInProcess", "#pieChart_BtsStatInProcess");
+
+            homeController.loadLineChart("/Home/CertStatByOperatorCity", "#lineChart_CertStatByOperatorCity", "Tỉnh/ Thành phố", "Giấy CNKĐ", "Nhà mạng");
+            homeController.loadLineChart("/Home/CertStatByOperatorYear", "#lineChart_CertStatByOperatorYear", "Năm", "Giấy CNKĐ", "Nhà mạng");
+
+            homeController.loadPieChart("/Home/BtsStatByBand", "#pieChart_BtsStatByBand");
+            homeController.loadPieChart("/Home/BtsStatByManufactory", "#pieChart_BtsStatByManufactory");
+
+            homeController.loadLineChart("/Home/BtsStatByBandCity", "#lineChart_BtsStatByBandCity", "Tỉnh/ Thành phố", "Số trạm BTS", "Băng tần");
+            homeController.loadLineChart("/Home/BtsStatByOperatorCity", "#lineChart_BtsStatByOperatorCity", "Tỉnh/ Thành phố", "Số trạm BTS", "Nhà mạng");
         },
         registerEventDataTable: function () {
         },
         registerEvent: function () {
         },
 
-        loadChartStatisticByOperator: function () {
+        loadLineChart: function (strUrl, ChartId, strAx, strAy, strTitle) {
             $.ajax({
-                url: '/Home/StatisticByOperator',
-                dataType: 'json',
-                data: {},
-                type: 'post',
-                success: function (response) {
-                    if (response.status == "TimeOut") {
-                        $.notify(response.message, "warn");
-                        window.location.href = "/Account/Login"
-                    } else if (response.status == "Success") {
-                        var pieChartColumNames = response.chartData[0];
-                        var pieChartLabels = response.chartData[1];
-                        var config1 = {
-                            type: 'pie',
-                            data: {
-                                labels: pieChartLabels,
-                                datasets: []
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: true
-                            }
-                        };
-                        var pieChartCanvas1 = $("#pieChartValidCertificates");
-                        var pieChart1 = new Chart(pieChartCanvas1, config1);
-                        var firstColor = randomScalingFactor();
-
-                        for (var i in response.chartData) {
-                            if (i > 1) {
-                                var pieChartValues1 = response.chartData[i];
-                                homeController.addDataSetPie(pieChart1, pieChartColumNames[2 - 1], pieChartValues1, firstColor);
-                            }
-                        }
-                    }
-                    else {
-                        alert(xhr.response.message);
-                    }
-                    $('html').removeClass('waiting');
-                },
-                error: function (data) {
-                    alert("Message: " + data.message);
-                    $('html').removeClass('waiting');
-                }
-            });
-        },
-
-        loadChartStatisticBtsInProcess: function () {
-            $.ajax({
-                url: '/Home/StatisticBtsInProcess',
-                dataType: 'json',
-                data: {},
-                type: 'post',
-                success: function (response) {
-                    if (response.status == "TimeOut") {
-                        $.notify(response.message, "warn");
-                        window.location.href = "/Account/Login"
-                    } else if (response.status == "Success") {
-                        var pieChartColumNames = response.chartData[0];
-                        var pieChartLabels = response.chartData[1];
-                        var config1 = {
-                            type: 'pie',
-                            data: {
-                                labels: pieChartLabels,
-                                datasets: []
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: true
-                            }
-                        };
-                        var pieChartCanvas1 = $("#pieChartBtsInProcess");
-                        var pieChart1 = new Chart(pieChartCanvas1, config1);
-                        var firstColor = randomScalingFactor();
-
-                        for (var i in response.chartData) {
-                            if (i > 1) {
-                                var pieChartValues1 = response.chartData[i];
-                                homeController.addDataSetPie(pieChart1, pieChartColumNames[2 - 1], pieChartValues1, firstColor);
-                            }
-                        }
-                    }
-                    else {
-                        alert(xhr.response.message);
-                    }
-                    $('html').removeClass('waiting');
-                },
-                error: function (data) {
-                    alert("Message: " + data.message);
-                    $('html').removeClass('waiting');
-                }
-            });
-        },
-
-        loadChartStatisticByOperatorYear: function () {
-            $.ajax({
-                url: '/Home/IssuedStatisticByOperatorYear',
+                url: strUrl,
                 dataType: 'json',
                 data: {},
                 type: 'post',
@@ -399,7 +312,7 @@
                             maintainAspectRatio: true,
                             title: {
                                 display: true,
-                                text: 'Thống kê theo năm'
+                                text: strTitle
                             },
                             tooltips: {
                                 mode: 'index',
@@ -414,14 +327,14 @@
                                     display: true,
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Năm'
+                                        labelString: strAx
                                     }
                                 }],
                                 yAxes: [{
                                     display: true,
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Giấy CNKĐ'
+                                        labelString: strAy
                                     }
                                 }]
                             }
@@ -436,7 +349,7 @@
                             options: lineChartOptions
                         };
 
-                        var lineChartCanvas = $("#lineChartIssuedCertificatesByYear");
+                        var lineChartCanvas = $(ChartId);
                         var lineChart = new Chart(lineChartCanvas, config);
                         var firstColor = randomScalingFactor();
 
@@ -464,9 +377,9 @@
             });
         },
 
-        loadChartStatisticByOperatorCity: function () {
+        loadPieChart: function (strUrl, ChartId) {
             $.ajax({
-                url: '/Home/IssuedStatisticByOperatorCity',
+                url: strUrl,
                 dataType: 'json',
                 data: {},
                 type: 'post',
@@ -475,65 +388,52 @@
                         $.notify(response.message, "warn");
                         window.location.href = "/Account/Login"
                     } else if (response.status == "Success") {
-                        var lineChartColumNames = response.chartData[0];
-
-                        var lineChartLabels = response.chartData[1];
-
-                        var lineChartOptions = {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            title: {
-                                display: true,
-                                text: 'Thống kê theo Tỉnh/ Thành phố'
-                            },
-                            tooltips: {
-                                mode: 'index',
-                                intersect: false,
-                            },
-                            hover: {
-                                mode: 'nearest',
-                                intersect: true
-                            },
-                            scales: {
-                                xAxes: [{
-                                    display: true,
-                                    scaleLabel: {
-                                        display: true,
-                                        labelString: 'Tỉnh/ Thành phố'
-                                    }
-                                }],
-                                yAxes: [{
-                                    display: true,
-                                    scaleLabel: {
-                                        display: true,
-                                        labelString: 'Giấy CNKĐ'
-                                    }
-                                }]
-                            }
-                        }
-
-                        var config = {
-                            type: 'line',
+                        var pieChartColumNames = response.chartData[0];
+                        var pieChartLabels = response.chartData[1];
+                        var config1 = {
+                            type: 'pie',
                             data: {
-                                labels: lineChartLabels,
+                                labels: pieChartLabels,
                                 datasets: []
                             },
-                            options: lineChartOptions
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: true,
+                                showTooltips: true,
+                                tooltips: {
+                                    callbacks: {
+                                        label: function (item, data) {
+                                            //console.log(item)
+                                            var label = data.datasets[item.datasetIndex].label;
+                                            label += '_' + data.labels[item.index];
+                                            var value = data.datasets[item.datasetIndex].data[item.index];
+                                            return label + ': ' + value;
+                                        }
+                                    }
+                                },
+                                pieceLabel: {
+                                    render: 'percentage',
+                                    fontColor: function (args) {
+                                        var rgbStr = args.dataset.backgroundColor[args.index]
+                                        var a = rgbStr.split("(")[1].split(")")[0];
+                                        a = a.split(",");
+                                        var threshold = 140;
+                                        var luminance = 0.299 * a[0] + 0.587 * a[1] + 0.114 * a[2];
+                                        return luminance > threshold ? 'black' : 'white';
+                                    },
+                                    precision: 2
+                                }
+                                //onAnimationProgress: drawSegmentValues
+                            }
                         };
-
-                        var lineChartCanvas = $("#lineChartvalidCertificatesByCity");
-                        var lineChart = new Chart(lineChartCanvas, config);
+                        var pieChartCanvas1 = $(ChartId);
+                        var pieChart1 = new Chart(pieChartCanvas1, config1);
                         var firstColor = randomScalingFactor();
-
-                        var colorNames = Object.keys(window.chartColors);
 
                         for (var i in response.chartData) {
                             if (i > 1) {
-                                var colorName = colorNames[(firstColor + i) % colorNames.length];
-                                var newColor = window.chartColors[colorName];
-                                var lineChartValues = response.chartData[i];
-
-                                homeController.addDataSetLine(lineChart, lineChartColumNames[i - 1], newColor, lineChartValues);
+                                var pieChartValues1 = response.chartData[i];
+                                homeController.addDataSetPie(pieChart1, pieChartColumNames[i - 1], pieChartValues1, firstColor);
                             }
                         }
                     }

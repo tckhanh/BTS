@@ -45,7 +45,6 @@ namespace BTS.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(HttpPostedFileBase file, string ImportAction)
         {
-            int result = 0;
             if (Request.Files["file"].ContentLength > 0)
             {
                 string fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
@@ -461,7 +460,6 @@ namespace BTS.Web.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString()))
                 {
                     var Item = new NoCertificate();
-                    string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
 
                     Item.ProfileID = proFileID;
                     Item.OperatorID = operatorID;

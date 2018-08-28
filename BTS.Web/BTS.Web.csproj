@@ -249,6 +249,7 @@
     <Compile Include="Controllers\ApplicationRoleController.cs" />
     <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\NoCertificateController.cs" />
     <Compile Include="Controllers\CertificateController.cs" />
     <Compile Include="Controllers\ApplicantController.cs" />
@@ -365,6 +366,9 @@
     <Content Include="AppFiles\Images\VoHoang.jpg" />
     <Content Include="AppFiles\Images\VoNgocTuan.jpg" />
     <Content Include="AppFiles\Images\VuNguyenThaoLinh.jpg" />
+    <Content Include="AppFiles\Resources\details_close.png" />
+    <Content Include="AppFiles\Resources\details_open.png" />
+    <Content Include="AppFiles\Tmp\User List Sample.xls" />
     <Content Include="app\app.js" />
     <Content Include="app\components\application_groups\applicationGroupAddController.js" />
     <Content Include="app\components\application_groups\applicationGroupAddView.html" />
@@ -4174,6 +4178,7 @@
     <Content Include="Assets\admin\libs\datatables.net-bs\js\dataTables.bootstrap.js" />
     <Content Include="Assets\admin\libs\datatables.net-bs\js\dataTables.bootstrap.min.js" />
     <Content Include="Assets\admin\libs\datatables.net-bs\License.txt" />
+    <Content Include="Assets\admin\libs\datatables.net\css\jquery.dataTables.min.css" />
     <Content Include="Assets\admin\libs\datatables.net\js\jquery.dataTables.js" />
     <Content Include="Assets\admin\libs\datatables.net\js\jquery.dataTables.min.js" />
     <Content Include="Assets\admin\libs\datatables.net\License.txt" />
@@ -9022,6 +9027,7 @@
     <Content Include="Assets\client\js\common\message.js" />
     <Content Include="Assets\client\js\common\notify.min.js" />
     <Content Include="Assets\client\js\controllers\applicationUserProfileController.js" />
+    <Content Include="Assets\client\js\controllers\reportController.js" />
     <Content Include="Assets\client\js\controllers\NocertificateController.js" />
     <Content Include="Assets\client\js\controllers\checkController_v1.js" />
     <Content Include="Assets\client\js\controllers\hoController.js" />
@@ -9137,9 +9143,11 @@
     <Content Include="AppFiles\Samples\User List Sample.xls" />
     <Content Include="AppFiles\Samples\Check BTS Sample.xls" />
     <Content Include="AppFiles\Samples\Import BTS Certificate Sample.xls" />
-    <None Include="AppFiles\Localization\vi_VI.json" />
+    <Content Include="AppFiles\Localization\vi_VI.json" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\Chart.PieceLabel.js" />
+    <Content Include="Scripts\dataTables.rowsGroup.js" />
     <Content Include="Views\HtmlPage1.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -9172,6 +9180,7 @@
     <Content Include="Views\ApplicationRole\Detail.cshtml" />
     <Content Include="Views\ImportUser\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="AppFiles\Samples\Report Monthly.xlsx" />
     <None Include="Properties\PublishProfiles\BTS.pubxml" />
     <None Include="Properties\PublishProfiles\BTS_V1.pubxml" />
     <Content Include="Views\InCaseOf\Add.cshtml" />
@@ -9216,9 +9225,10 @@
     <Content Include="Views\ApplicationUserProfile\Reset.cshtml" />
     <Content Include="Views\ApplicationUserProfile\ViewAll.cshtml" />
     <Content Include="Views\NoCertificate\Index.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Certificate\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AppFiles\Tmp\" />
     <Folder Include="app\components\roles\" />
     <Folder Include="app\components\users\" />
     <Folder Include="app\shared\footer\" />
@@ -10368,8 +10378,6 @@
     <Content Include="Views\Shared - Copy\RightSideBar.cshtml" />
     <Content Include="Views\Account\Logout.cshtml" />
     <Content Include="Views\Operator_v1\Index.cshtml" />
-    <Content Include="Views\Certificate\Index - Copy.cshtml" />
-    <Content Include="Views\Certificate\Index - Copy %282%29.cshtml" />
     <Content Include="Views\ImportData\Index.cshtml" />
     <Content Include="Views\Check\Index.cshtml" />
     <Content Include="Views\Operator_v1\AddOrEdit.cshtml" />

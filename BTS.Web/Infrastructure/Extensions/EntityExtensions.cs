@@ -74,6 +74,23 @@ namespace BTS.Web.Infrastructure.Extensions
             certificate.OperatorID = btsCertificateVm.OperatorID;
         }
 
+        public static void UpdateNoCertificate(this NoCertificate noCertificate, NoCertificateViewModel btsCertificateVm)
+        {
+            noCertificate.ProfileID = btsCertificateVm.ProfileID;
+            noCertificate.OperatorID = btsCertificateVm.OperatorID;
+            noCertificate.BtsCode = btsCertificateVm.BtsCode;
+            noCertificate.Address = btsCertificateVm.Address;
+            noCertificate.CityID = btsCertificateVm.CityID;
+
+            noCertificate.Longtitude = btsCertificateVm.Longtitude;
+            noCertificate.Latitude = btsCertificateVm.Latitude;
+            noCertificate.InCaseOfID = btsCertificateVm.InCaseOfID;
+            noCertificate.LabID = btsCertificateVm.LabID;
+            noCertificate.TestReportNo = btsCertificateVm.TestReportNo;
+            noCertificate.TestReportDate = btsCertificateVm.TestReportDate;
+            noCertificate.Reason = btsCertificateVm.Reason;
+        }
+
         public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)
         {
             myInCaseOf.Name = inCaseOfVm.Name;
