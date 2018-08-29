@@ -15,18 +15,18 @@ using System.Web.Mvc;
 namespace BTS.Web.Controllers
 {
     [AuthorizeRoles(CommonConstants.Data_CanImport_Role)]
-    public class ImportDataController : BaseController
+    public class ImportDataController_28082018 : BaseController
     {
         // GET: Import
         private IImportService _importService;
 
-        private EpplusIO _excelIO;
+        private ExcelIO _excelIO;
         private NumberFormatInfo provider;
 
-        public ImportDataController(IImportService importService, IErrorService errorService) : base(errorService)
+        public ImportDataController_28082018(IImportService importService, IErrorService errorService) : base(errorService)
         {
             this._importService = importService;
-            _excelIO = new EpplusIO(errorService);
+            _excelIO = new ExcelIO(errorService);
             provider = new NumberFormatInfo();
             provider.NumberDecimalSeparator = ",";
             provider.NumberGroupSeparator = ".";
@@ -67,25 +67,26 @@ namespace BTS.Web.Controllers
                             CommonConstants.Sheet_Certificate_OffsetHeight,
                             CommonConstants.Sheet_Certificate_SafeLimit,
                             CommonConstants.Sheet_Certificate_BtsCode};
-                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+                        _excelIO.FormatColumnDecimalToText(fileLocation, columnNames);
 
                         //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
                         //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
 
+                        string excelConnectionString = _excelIO.CreateConnectionString(fileLocation, fileExtension);
                         int ProfileID = 0;
 
-                        ExecuteDatabase(ImportInCaseOf, fileLocation);
-                        ExecuteDatabase(ImportLab, fileLocation);
-                        ExecuteDatabase(ImportCity, fileLocation);
-                        ExecuteDatabase(ImportOperator, fileLocation);
-                        ExecuteDatabase(ImportApplicant, fileLocation);
-                        ExecuteDatabase(ImportProfile, fileLocation, out ProfileID);
+                        ExecuteDatabase(ImportInCaseOf, excelConnectionString);
+                        ExecuteDatabase(ImportLab, excelConnectionString);
+                        ExecuteDatabase(ImportCity, excelConnectionString);
+                        ExecuteDatabase(ImportOperator, excelConnectionString);
+                        ExecuteDatabase(ImportApplicant, excelConnectionString);
+                        ExecuteDatabase(ImportProfile, excelConnectionString, out ProfileID);
                         if (ImportAction == CommonConstants.ImportBTS)
-                            ExecuteDatabase(ImportBts, fileLocation, ProfileID);
+                            ExecuteDatabase(ImportBts, excelConnectionString, ProfileID);
                         if (ImportAction == CommonConstants.ImportCER)
                         {
-                            ExecuteDatabase(ImportCertificate, fileLocation, ProfileID);
-                            ExecuteDatabase(ImportNoCertificate, fileLocation, ProfileID);
+                            ExecuteDatabase(ImportCertificate, excelConnectionString, ProfileID);
+                            ExecuteDatabase(ImportNoCertificate, excelConnectionString, ProfileID);
                         }
 
                         //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");

@@ -18,18 +18,18 @@ using System.Web.Mvc;
 namespace BTS.Web.Controllers
 {
     [AuthorizeRoles(CommonConstants.Data_CanImport_Role)]
-    public class ImportUserController : BaseController
+    public class ImportUserController_28082018 : BaseController
     {
         // GET: Import
         private IImportService _importService;
 
-        private EpplusIO _excelIO;
+        private ExcelIO _excelIO;
         private NumberFormatInfo provider;
 
-        public ImportUserController(IImportService importService, IErrorService errorService) : base(errorService)
+        public ImportUserController_28082018(IImportService importService, IErrorService errorService) : base(errorService)
         {
             this._importService = importService;
-            _excelIO = new EpplusIO(errorService);
+            _excelIO = new ExcelIO(errorService);
             provider = new NumberFormatInfo();
             provider.NumberDecimalSeparator = ",";
             provider.NumberGroupSeparator = ".";
@@ -65,11 +65,12 @@ namespace BTS.Web.Controllers
 
                         string[] columnNames = new string[] {
                             };
-                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+                        _excelIO.FormatColumnDecimalToText(fileLocation, columnNames);
 
+                        string excelConnectionString = _excelIO.CreateConnectionString(fileLocation, fileExtension);
                         int ProfileID = 0;
 
-                        ExecuteDatabase(ImportUser, fileLocation);
+                        ExecuteDatabase(ImportUser, excelConnectionString);
                     }
                     catch (Exception e)
                     {

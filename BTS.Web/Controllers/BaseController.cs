@@ -107,13 +107,13 @@ namespace BTS.Web.Controllers
         }
 
         // Thuc hien lenh ghi Log neu có loi va nem loi ra ngoai
-        protected void ExecuteDatabase(Func<string, int> function, string excelConnectionString)
+        protected void ExecuteDatabase(Func<string, int> function, string fileLocation)
         {
             int idReturn;
             string description = "";
             try
             {
-                idReturn = function.Invoke(excelConnectionString);
+                idReturn = function.Invoke(fileLocation);
             }
             catch (DbEntityValidationException ex)
             {

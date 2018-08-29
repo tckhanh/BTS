@@ -17,18 +17,18 @@ using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
 {
-    public class CheckController : BaseController
+    public class CheckController_28082018 : BaseController
     {
         // GET: Import
         private IImportService _importService;
 
         private NumberFormatInfo provider;
-        private EpplusIO _excelIO;
+        private ExcelIO _excelIO;
 
-        public CheckController(IImportService importService, IErrorService errorService) : base(errorService)
+        public CheckController_28082018(IImportService importService, IErrorService errorService) : base(errorService)
         {
             this._importService = importService;
-            _excelIO = new EpplusIO(errorService);
+            _excelIO = new ExcelIO(errorService);
 
             provider = new NumberFormatInfo();
             provider.NumberDecimalSeparator = ",";
@@ -60,7 +60,8 @@ namespace BTS.Web.Controllers
                 return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
             }
 
-            DataTable dt = _excelIO.ReadSheet(fileLocation, CommonConstants.Sheet_Bts);
+            string excelConnectionString = _excelIO.CreateConnectionString(fileLocation, fileExtension);
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Bts);
             List<Bts> dataResult = new List<Bts>();
 
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -127,9 +128,10 @@ namespace BTS.Web.Controllers
                             CommonConstants.Sheet_Certificate_OffsetHeight,
                             CommonConstants.Sheet_Certificate_SafeLimit,
                             CommonConstants.Sheet_Certificate_BtsCode};
-                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+                        _excelIO.FormatColumnDecimalToText(fileLocation, columnNames);
 
-                        ExecuteDatabase(UpdateCheckResult, fileLocation);
+                        string excelConnectionStringforUpdate = _excelIO.CreateConnectionStringForUpdate(fileLocation, fileExtension);
+                        ExecuteDatabase(UpdateCheckResult, excelConnectionStringforUpdate);
                     }
                 }
             }
@@ -178,8 +180,6 @@ namespace BTS.Web.Controllers
                     dt.Rows[i][CommonConstants.Sheet_Bts_ReasonNoCertificate] = dataString;
                 }
             }
-
-            //dt.PrimaryKey = new DataColumn[] { dt.Columns[CommonConstants.Sheet_Bts_BtsCode] };
 
             if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_LastOwnCertificateIDs, dt))
                 if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs, dt))

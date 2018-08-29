@@ -249,6 +249,9 @@
     <Compile Include="Controllers\ApplicationRoleController.cs" />
     <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CheckController_28082018.cs" />
+    <Compile Include="Controllers\ImportDataController - 28082018.cs" />
+    <Compile Include="Controllers\ImportUserController_28082018.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\NoCertificateController.cs" />
     <Compile Include="Controllers\CertificateController.cs" />
@@ -9181,6 +9184,10 @@
     <Content Include="Views\ImportUser\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="AppFiles\Samples\Report Monthly.xlsx" />
+    <Content Include="AppFiles\Samples\Check BTS Sample.xlsx" />
+    <Content Include="AppFiles\Samples\Import BTS Certificate Sample.xlsx" />
+    <Content Include="AppFiles\Samples\User List Sample.xlsx" />
+    <Content Include="AppFiles\Tmp\User List Sample.xlsx" />
     <None Include="Properties\PublishProfiles\BTS.pubxml" />
     <None Include="Properties\PublishProfiles\BTS_V1.pubxml" />
     <Content Include="Views\InCaseOf\Add.cshtml" />
