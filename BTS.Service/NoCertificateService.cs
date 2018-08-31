@@ -21,7 +21,7 @@ namespace BTS.Service
 
         IEnumerable<NoCertificate> getAll(out int totalRow, bool onlyValidNoCertificate);
 
-        IEnumerable<NoCertificate> getNoCertificateProfile(int profileID);
+        IEnumerable<NoCertificate> getNoCertificateProfile(string profileID);
 
         IEnumerable<NoCertificate> getNoCertificateByCity(string cityID);
 
@@ -91,7 +91,7 @@ namespace BTS.Service
             _NoCertificateRepository.Update(btsNoCertificate);
         }
 
-        public IEnumerable<NoCertificate> getNoCertificateProfile(int profileID)
+        public IEnumerable<NoCertificate> getNoCertificateProfile(string profileID)
         {
             return _NoCertificateRepository.GetMulti(x => x.ProfileID == profileID);
         }

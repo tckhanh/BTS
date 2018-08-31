@@ -75,10 +75,19 @@ namespace BTS.Data.ApplicationModels
             //Groups = new List<ApplicationUserGroup>();
         }
 
+        //public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, string> manager)
+        //{
+        //    var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+        //    userIdentity.AddClaim(new Claim("ImagePath", ImagePath));
+        //    return userIdentity;
+        //}
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, string> manager)
         {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            userIdentity.AddClaim(new Claim("ImagePath", ImagePath));
+            // Add custom user claims here
+            userIdentity.AddClaim(new Claim("ImagePath", this.ImagePath));
             return userIdentity;
         }
     }

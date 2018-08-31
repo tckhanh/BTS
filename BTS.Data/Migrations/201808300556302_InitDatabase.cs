@@ -188,9 +188,9 @@ namespace BTS.Data.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        ProfileID = c.Int(nullable: false),
+                        ProfileID = c.String(maxLength: 128),
                         OperatorID = c.String(nullable: false, maxLength: 10),
-                        BtsCode = c.String(nullable: false, maxLength: 100),
+                        BtsCode = c.String(nullable: false, maxLength: 50),
                         Address = c.String(nullable: false, maxLength: 255),
                         CityID = c.String(nullable: false, maxLength: 3),
                         Longtitude = c.Double(),
@@ -209,7 +209,7 @@ namespace BTS.Data.Migrations
                 .ForeignKey("dbo.Cities", t => t.CityID, cascadeDelete: true)
                 .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
-                .ForeignKey("dbo.Profiles", t => t.ProfileID, cascadeDelete: true)
+                .ForeignKey("dbo.Profiles", t => t.ProfileID)
                 .Index(t => t.ProfileID)
                 .Index(t => t.OperatorID)
                 .Index(t => t.CityID)
@@ -245,13 +245,13 @@ namespace BTS.Data.Migrations
                 "dbo.Profiles",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.String(nullable: false, maxLength: 128),
                         ApplicantID = c.String(maxLength: 50),
                         ProfileNum = c.String(maxLength: 30),
                         ProfileDate = c.DateTime(nullable: false, storeType: "date"),
-                        BtsQuantity = c.Int(),
+                        BtsQuantity = c.Int(nullable: false),
                         ApplyDate = c.DateTime(nullable: false, storeType: "date"),
-                        Fee = c.Int(),
+                        Fee = c.Int(nullable: false),
                         FeeAnnounceNum = c.String(maxLength: 30),
                         FeeAnnounceDate = c.DateTime(storeType: "date"),
                         FeeReceiptDate = c.DateTime(storeType: "date"),
@@ -269,7 +269,7 @@ namespace BTS.Data.Migrations
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 16),
-                        ProfileID = c.Int(nullable: false),
+                        ProfileID = c.String(maxLength: 128),
                         OperatorID = c.String(nullable: false, maxLength: 10),
                         BtsCode = c.String(nullable: false, maxLength: 100),
                         Address = c.String(nullable: false, maxLength: 255),
@@ -309,7 +309,7 @@ namespace BTS.Data.Migrations
                 .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
                 .ForeignKey("dbo.Labs", t => t.LabID)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
-                .ForeignKey("dbo.Profiles", t => t.ProfileID, cascadeDelete: true)
+                .ForeignKey("dbo.Profiles", t => t.ProfileID)
                 .Index(t => t.ProfileID)
                 .Index(t => t.OperatorID)
                 .Index(t => t.CityID)
@@ -414,7 +414,7 @@ namespace BTS.Data.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        ProfileID = c.Int(nullable: false),
+                        ProfileID = c.String(maxLength: 128),
                         OperatorID = c.String(nullable: false, maxLength: 10),
                         BtsCode = c.String(nullable: false, maxLength: 100),
                         Address = c.String(nullable: false, maxLength: 255),
@@ -436,7 +436,7 @@ namespace BTS.Data.Migrations
                 .ForeignKey("dbo.InCaseOfs", t => t.InCaseOfID, cascadeDelete: true)
                 .ForeignKey("dbo.Labs", t => t.LabID)
                 .ForeignKey("dbo.Operators", t => t.OperatorID, cascadeDelete: true)
-                .ForeignKey("dbo.Profiles", t => t.ProfileID, cascadeDelete: true)
+                .ForeignKey("dbo.Profiles", t => t.ProfileID)
                 .Index(t => t.ProfileID)
                 .Index(t => t.OperatorID)
                 .Index(t => t.CityID)
@@ -480,7 +480,7 @@ namespace BTS.Data.Migrations
                 "dbo.SubBtsInCerts",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
+                        Id = c.String(nullable: false, maxLength: 128),
                         CertificateID = c.String(maxLength: 16),
                         BtsCode = c.String(maxLength: 50),
                         OperatorID = c.String(maxLength: 10),

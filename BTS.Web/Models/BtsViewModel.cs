@@ -14,7 +14,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Mã số hồ sơ")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Mã số hồ sơ")]
-        public int ProfileID { get; set; }
+        public string ProfileID { get; set; }
 
         [Display(Name = "Mã nhà mạng")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mã nhà mạng")]

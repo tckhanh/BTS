@@ -15,7 +15,7 @@ namespace BTS.Service
 
         void Update(Profile newProfile);
 
-        Profile Delete(int Id);
+        Profile Delete(string Id);
 
         IEnumerable<Profile> getAll();
 
@@ -23,9 +23,9 @@ namespace BTS.Service
 
         IEnumerable<Applicant> getAllApplicant();
 
-        Profile getByID(int Id);
+        Profile getByID(string Id);
 
-        bool IsUsed(int Id);
+        bool IsUsed(string Id);
 
         void Save();
     }
@@ -48,7 +48,7 @@ namespace BTS.Service
             return _profileRepository.Add(newProfile);
         }
 
-        public Profile Delete(int Id)
+        public Profile Delete(string Id)
         {
             return _profileRepository.Delete(Id);
         }
@@ -66,12 +66,12 @@ namespace BTS.Service
                 return _profileRepository.GetAll();
         }
 
-        public Profile getByID(int Id)
+        public Profile getByID(string Id)
         {
             return _profileRepository.GetSingleById(Id);
         }
 
-        public bool IsUsed(int Id)
+        public bool IsUsed(string Id)
         {
             return _profileRepository.IsUsed(Id);
         }

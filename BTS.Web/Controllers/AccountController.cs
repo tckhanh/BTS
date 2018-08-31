@@ -54,6 +54,7 @@ namespace BTS.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = UserManager.Find<ApplicationUser, string>(model.UserName, model.Password);
+
                 if (user != null)
                 {
                     if (user.Locked == false)

@@ -73,7 +73,7 @@ namespace BTS.Web.Controllers
                         //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
 
                         string excelConnectionString = _excelIO.CreateConnectionString(fileLocation, fileExtension);
-                        int ProfileID = 0;
+                        string ProfileID = "";
 
                         ExecuteDatabase(ImportInCaseOf, excelConnectionString);
                         ExecuteDatabase(ImportLab, excelConnectionString);
@@ -218,11 +218,11 @@ namespace BTS.Web.Controllers
             return 1;
         }
 
-        private int ImportProfile(string excelConnectionString, int proFileID)
+        private string ImportProfile(string excelConnectionString, string proFileID)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Profile);
             var Item = new Profile();
-            proFileID = 0;
+            proFileID = "";
             if (!string.IsNullOrEmpty(dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantID].ToString()))
             {
                 Item.ApplicantID = dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantID].ToString();
@@ -271,7 +271,7 @@ namespace BTS.Web.Controllers
             return proFileID;
         }
 
-        private int ImportBts(string excelConnectionString, int proFileID)
+        private int ImportBts(string excelConnectionString, string proFileID)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Bts);
             string operatorID = _importService.getApplicant(proFileID).OperatorID;
@@ -325,7 +325,7 @@ namespace BTS.Web.Controllers
             return 1;
         }
 
-        private int ImportCertificate(string excelConnectionString, int proFileID)
+        private int ImportCertificate(string excelConnectionString, string proFileID)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Certificate);
             string operatorID = _importService.getApplicant(proFileID).OperatorID;
@@ -450,7 +450,7 @@ namespace BTS.Web.Controllers
             return 1;
         }
 
-        private int ImportNoCertificate(string excelConnectionString, int proFileID)
+        private int ImportNoCertificate(string excelConnectionString, string proFileID)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_NoCertificate);
             string operatorID = _importService.getApplicant(proFileID).OperatorID;

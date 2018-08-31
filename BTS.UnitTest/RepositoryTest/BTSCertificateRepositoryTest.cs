@@ -29,7 +29,7 @@ namespace BTS.UnitTest.RepositoryTest
         public void BTSCertificate_Repository_Create()
         {
             Certificate certificate = new Certificate();
-            certificate.ProfileID = 1;
+            certificate.ProfileID = Guid.NewGuid().ToString();
             certificate.CityID = "HCM";
             certificate.OperatorID = "MOBIFONE";
             certificate.Address = "60 Tân Canh, Phường 1, Quận Tân Bình, Thành phố Hồ Chí Minh";

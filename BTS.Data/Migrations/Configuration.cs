@@ -535,6 +535,9 @@
                     FullName = CommonConstants.SuperAdmin_FullName,
                     Email = CommonConstants.SuperAdmin_Email,
                     EmailConfirmed = CommonConstants.SuperAdmin_EmailConfirmed,
+                    ImagePath = CommonConstants.SuperAdmin_ImagePath,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = "System",
                     Locked = false
                 };
 

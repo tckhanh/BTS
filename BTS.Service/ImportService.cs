@@ -17,15 +17,15 @@ namespace BTS.Service
     {
         Profile findProfile(string applicantID, string profileNum, DateTime profileDate);
 
-        Profile getProfile(int Id);
+        Profile getProfile(string Id);
 
-        Bts findBts(int profileID, string btsCode);
+        Bts findBts(string profileID, string btsCode);
 
         SubBtsInCert findSubBts(string certificateID, string btsCode, string operatorID);
 
         Certificate findCertificate(string Id);
 
-        NoCertificate findNoCertificate(string BtsCode, int ProfileID);
+        NoCertificate findNoCertificate(string BtsCode, string ProfileID);
 
         bool Add(InCaseOf item);
 
@@ -61,7 +61,7 @@ namespace BTS.Service
 
         void Save();
 
-        Applicant getApplicant(int proFileID);
+        Applicant getApplicant(string proFileID);
 
         IEnumerable<string> getLastOwnCertificateIDs(string btsCode, string operatorID);
 
@@ -241,12 +241,12 @@ namespace BTS.Service
             return _profileRepository.findProfile(applicantID, profileNum, profileDate);
         }
 
-        public Profile getProfile(int Id)
+        public Profile getProfile(string Id)
         {
             return _profileRepository.GetSingleById(Id);
         }
 
-        public Bts findBts(int profileID, string btsCode)
+        public Bts findBts(string profileID, string btsCode)
         {
             return _btsRepository.GetSingleByCondition(x => x.ProfileID == profileID && x.BtsCode == btsCode);
         }
@@ -256,7 +256,7 @@ namespace BTS.Service
             return _certificateRepository.GetSingleByCondition(x => x.Id == Id);
         }
 
-        public NoCertificate findNoCertificate(string BtsCode, int ProfileID)
+        public NoCertificate findNoCertificate(string BtsCode, string ProfileID)
         {
             return _noCertificateRepository.GetSingleByCondition(x => x.BtsCode == BtsCode && x.ProfileID == ProfileID);
         }
@@ -271,7 +271,7 @@ namespace BTS.Service
             _subBTSinCertRepository.DeleteMulti(x => x.CertificateID == CertificateID);
         }
 
-        public Applicant getApplicant(int proFileID)
+        public Applicant getApplicant(string proFileID)
         {
             Profile profileItem = _profileRepository.GetSingleByCondition(x => x.Id == proFileID);
             return _applicantRepository.GetSingleByCondition(x => x.Id == profileItem.ApplicantID);

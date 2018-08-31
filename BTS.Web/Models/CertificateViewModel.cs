@@ -9,12 +9,12 @@ namespace BTS.Web.Models
 {
     public class CertificateViewModel
     {
-        [Key]
         [Display(Name = "Số giấy CNKĐ")]
+        [StringLength(16, ErrorMessage = "Số Giấy CNKĐ không quá 16 ký tự")]
         public string Id { get; set; }
 
         [Display(Name = "Mã số hồ sơ")]
-        public int ProfileID { get; set; }
+        public string ProfileID { get; set; }
 
         [Display(Name = "Mã nhà mạng")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mã nhà mạng")]
@@ -155,6 +155,7 @@ namespace BTS.Web.Models
         public virtual IEnumerable<SubBtsInCertViewModel> SubBtsInCerts { get; set; }
 
         public ICollection<SubBtsInCertViewModel> SubBtsList { get; set; }
+
         public CertificateViewModel()
         {
             SubBtsList = new List<SubBtsInCertViewModel>();

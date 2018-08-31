@@ -183,13 +183,13 @@ namespace BTS.Web.Controllers
             }
         }
 
-        protected void ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, out int ID)
+        protected void ExecuteDatabase(Func<string, string, string> function, string excelConnectionString, out string ID)
         {
-            ID = 0;
+            ID = "";
             string description = "";
             try
             {
-                ID = function.Invoke(excelConnectionString, 0);
+                ID = function.Invoke(excelConnectionString, ID);
             }
             catch (DbEntityValidationException ex)
             {
@@ -221,7 +221,7 @@ namespace BTS.Web.Controllers
             }
         }
 
-        protected void ExecuteDatabase(Func<string, int, int> function, string excelConnectionString, int ID)
+        protected void ExecuteDatabase(Func<string, string, int> function, string excelConnectionString, string ID)
         {
             int idReturn = 0;
             string description = "";

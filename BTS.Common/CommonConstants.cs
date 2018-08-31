@@ -28,6 +28,7 @@
         public const string SuperAdmin_Email = "tckhanh.p@gmail.com";
         public const bool SuperAdmin_EmailConfirmed = true;
         public const string SuperAdmin_Password = "P@ssword";
+        public const string SuperAdmin_ImagePath = "/AppFiles/Images/default.png";
 
         public const string System_CanView_Role = "System_CanView";
         public const string System_CanViewDetail_Role = "System_CanViewDetail";

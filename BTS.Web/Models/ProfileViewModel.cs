@@ -10,7 +10,8 @@ namespace BTS.Web.Models
 {
     public class ProfileViewModel : AuditableViewModel
     {
-        public int Id { get; set; }
+        [Display(Name = "Mã hồ sơ")]
+        public string Id { get; set; }
 
         [Display(Name = "Mã đơn vị")]
         [StringLength(50, ErrorMessage = "Mã đơn vị không quá 50 ký tự")]

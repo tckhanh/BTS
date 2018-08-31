@@ -13,7 +13,7 @@ namespace BTS.Model.Models
         [StringLength(16)]
         public string Id { get; set; }
 
-        public int ProfileID { get; set; }
+        public string ProfileID { get; set; }
 
         [Required]
         [StringLength(10)]

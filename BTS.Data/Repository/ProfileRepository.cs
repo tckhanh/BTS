@@ -10,7 +10,7 @@ namespace BTS.Data.Repository
 {
     public interface IProfileRepository : IRepository<Profile>
     {
-        bool IsUsed(int Id);
+        bool IsUsed(string Id);
 
         Profile findProfile(string applicationID, string profileNum, DateTime profileDate);
 
@@ -54,7 +54,7 @@ namespace BTS.Data.Repository
             return query;
         }
 
-        public bool IsUsed(int Id)
+        public bool IsUsed(string Id)
         {
             var query1 = from item in DbContext.Btss
                          where item.ProfileID == Id

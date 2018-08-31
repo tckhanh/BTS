@@ -10,8 +10,7 @@ namespace BTS.Model.Models
     public class Profile : Auditable
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [StringLength(50)]
         public string ApplicantID { get; set; }
@@ -44,5 +43,10 @@ namespace BTS.Model.Models
         public virtual IEnumerable<Bts> Btss { get; set; }
 
         public virtual IEnumerable<Certificate> Certificates { get; set; }
+
+        public Profile()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

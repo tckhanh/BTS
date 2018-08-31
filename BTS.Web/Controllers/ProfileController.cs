@@ -41,15 +41,13 @@ namespace BTS.Web.Controllers
         }
 
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, string id = "0")
+        public async Task<ActionResult> AddOrEdit(string act, string id = "")
         {
-            int ID;
             ProfileViewModel ItemVm = new ProfileViewModel();
 
             if (!string.IsNullOrEmpty(id))
             {
-                ID = Convert.ToInt32(id);
-                var DbItem = _profileService.getByID(ID);
+                var DbItem = _profileService.getByID(id);
 
                 if (DbItem != null)
                 {
@@ -127,23 +125,22 @@ namespace BTS.Web.Controllers
         }
 
         [AuthorizeRoles(CommonConstants.Data_CanDelete_Role)]
-        public async Task<ActionResult> Delete(string id = "0")
+        public async Task<ActionResult> Delete(string id = "")
         {
-            int ID = Convert.ToInt32(id);
             try
             {
-                var dbItem = _profileService.getByID(ID);
+                var dbItem = _profileService.getByID(id);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
                 }
 
-                if (_profileService.IsUsed(ID))
+                if (_profileService.IsUsed(id))
                 {
                     return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
                 }
 
-                _profileService.Delete(ID);
+                _profileService.Delete(id);
                 _profileService.Save();
 
                 return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);

@@ -9,8 +9,7 @@ namespace BTS.Model.Models
     public class SubBtsInCert : Auditable
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [StringLength(16)]
         public string CertificateID { get; set; }
@@ -46,5 +45,10 @@ namespace BTS.Model.Models
 
         [ForeignKey("OperatorID")]
         public virtual Operator Operator { get; set; }
+
+        public SubBtsInCert()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

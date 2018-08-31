@@ -116,9 +116,9 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201807120546172_InitDatabase.cs" />
-    <Compile Include="Migrations\201807120546172_InitDatabase.Designer.cs">
-      <DependentUpon>201807120546172_InitDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201808300556302_InitDatabase.cs" />
+    <Compile Include="Migrations\201808300556302_InitDatabase.Designer.cs">
+      <DependentUpon>201808300556302_InitDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,6 +126,7 @@
     <Compile Include="Repository\ApplicationGroupRepository.cs" />
     <Compile Include="Repository\ApplicationRoleGroupRepository.cs" />
     <Compile Include="Repository\ApplicationRoleRepository.cs" />
+    <Compile Include="Repository\ApplicationUserRepository.cs" />
     <Compile Include="Repository\ApplicationUserGroupRepository.cs" />
     <Compile Include="Repository\BtsRepository.cs" />
     <Compile Include="Repository\NoCertificateRepository.cs" />
@@ -163,8 +164,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201807120546172_InitDatabase.resx">
-      <DependentUpon>201807120546172_InitDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808300556302_InitDatabase.resx">
+      <DependentUpon>201808300556302_InitDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
