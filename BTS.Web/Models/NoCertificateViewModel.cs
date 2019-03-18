@@ -60,7 +60,7 @@ namespace BTS.Web.Models
         [Display(Name = "Lý do không cấp G.CNKĐ")]
         [StringLength(255, ErrorMessage = "Lý do không cấp không quá 255 ký tự")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu lý do không cấp G. CNKĐ")]
-        public string Reason { get; set; }
+        public string ReasonNoCertificate { get; set; }
 
         public virtual Profile Profile { get; set; }
 

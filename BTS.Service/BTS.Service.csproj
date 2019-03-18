@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationRoleService.cs" />
     <Compile Include="BtsService.cs" />
     <Compile Include="ApplicationGroupService.cs" />
     <Compile Include="NoCertificateService.cs" />

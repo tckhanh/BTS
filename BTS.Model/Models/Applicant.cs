@@ -1,4 +1,5 @@
 ﻿using BTS.Model.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -37,5 +38,10 @@ namespace BTS.Model.Models
         public virtual Operator Operator { get; set; }
 
         public virtual IEnumerable<Profile> Profiles { get; set; }
+
+        public Applicant()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

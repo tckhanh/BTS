@@ -29,9 +29,13 @@ namespace BTS.Web.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Ngày Đơn KĐ")]
         public DateTime ProfileDate { get; set; }
 
-        [Display(Name = "Số Trạm BTS KĐ")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số Trạm BTS KĐ")]
+        [Display(Name = "Số BTS nộp")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số Trạm BTS nộp")]
         public int BtsQuantity { get; set; }
+
+        [Display(Name = "Số BTS tiếp nhận")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số Trạm BTS tiếp nhận")]
+        public int AcceptedBtsQuantity { get; set; }
 
         [Display(Name = "Ngày nộp Đơn KĐ")]
         [DataType(DataType.Date)]

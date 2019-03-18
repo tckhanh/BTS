@@ -207,7 +207,7 @@ var noCertificateController = {
                             }
                         },
                         {
-                            "data": "Reason", "name": "Reason", "width": "30%"
+                            "data": "ReasonNoCertificate", "name": "ReasonNoCertificate", "width": "30%"
                         }],
                     "language": {
                         url: '/AppFiles/localization/vi_VI.json'
@@ -278,7 +278,7 @@ var noCertificateController = {
                             }
                         },
                         {
-                            "data": "Reason", "name": "Reason", "width": "30%"
+                            "data": "ReasonNoCertificate", "name": "ReasonNoCertificate", "width": "30%"
                         }],
                     "language": {
                         url: '/AppFiles/localization/vi_VI.json'
@@ -316,7 +316,7 @@ var noCertificateController = {
                 var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
                             '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
                             '<br/><b>Địa chỉ:</b> ' + markers[i].Address +
-                            '<br/><b>Lý do Không cấp:</b> ' + markers[i].Reason;
+                            '<br/><b>Lý do Không cấp:</b> ' + markers[i].ReasonNoCertificate;
                 var img24 = 'images/pin24.png';
                 var img48 = 'images/pin48.png';
                 if (markers[i].OperatorID == "VINAPHONE") {

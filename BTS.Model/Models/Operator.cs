@@ -1,4 +1,5 @@
 ﻿using BTS.Model.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,5 +20,10 @@ namespace BTS.Model.Models
         public virtual IEnumerable<Bts> Btss { get; set; }
         public virtual IEnumerable<Certificate> Certificates { get; set; }
         public virtual IEnumerable<SubBtsInCert> SubBtsInCerts { get; set; }
+
+        public Operator()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

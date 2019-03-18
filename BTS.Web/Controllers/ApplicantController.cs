@@ -99,7 +99,6 @@ namespace BTS.Web.Controllers
                     {
                         var newItem = new Applicant();
                         newItem.UpdateApplicant(Item);
-                        newItem.Id = Item.Id;
 
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;

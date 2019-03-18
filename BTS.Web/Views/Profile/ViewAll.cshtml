@@ -27,6 +27,9 @@
                 @Html.DisplayNameFor(model => model.BtsQuantity)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.AcceptedBtsQuantity)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Fee)
             </th>
             <th>Thao tác</th>
@@ -36,46 +39,49 @@
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Applicant.OperatorID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApplicantID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProfileNum)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProfileDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApplyDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BtsQuantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fee)
-                </td>
-                <td>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Applicant.OperatorID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicantID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfileNum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfileDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplyDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BtsQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcceptedBtsQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fee)
+            </td>
+            <td>
 
-                    @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+                @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
                 {
-                        <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("AddOrEdit", "Profile", new { id = @item.Id, act = CommonConstants.Action_Detail })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
-                    }
+                    <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("AddOrEdit", "Profile", new { id = @item.Id, act = CommonConstants.Action_Detail })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
+                }
 
-                    @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                 {
-                        <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "Profile", new { id = @item.Id, act = CommonConstants.Action_Edit})')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
-                    }
+                    <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "Profile", new { id = @item.Id, act = CommonConstants.Action_Edit})')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
+                }
 
-                    @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
                 {
-                        <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "Profile", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
-                    }
-                </td>
-            </tr>
+                    <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "Profile", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
+                }
+            </td>
+        </tr>
         }
     </tbody>
     <tfoot>

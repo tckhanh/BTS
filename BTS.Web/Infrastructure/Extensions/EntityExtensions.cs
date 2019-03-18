@@ -65,8 +65,16 @@ namespace BTS.Web.Infrastructure.Extensions
             certificate.TestReportNo = btsCertificateVm.TestReportNo;
             certificate.TestReportDate = btsCertificateVm.TestReportDate;
 
-            certificate.MeasuringExposure = btsCertificateVm.MeasuringExposure;
-            certificate.SafeLimit = btsCertificateVm.SafeLimit;
+            certificate.IsPoleOnGround = btsCertificateVm.PoleOnGround;
+            certificate.IsSafeLimit = btsCertificateVm.IsSafeLimit;
+            certificate.SafeLimitHeight = btsCertificateVm.SafeLimitHeight;
+            certificate.IsHouseIn100m = btsCertificateVm.IsHouseIn100m;
+            certificate.MaxHeightIn100m = btsCertificateVm.MaxHeightIn100m;
+            certificate.MaxPowerSum = btsCertificateVm.MaxPowerSum;
+            certificate.IsMeasuringExposure = btsCertificateVm.IsMeasuringExposure;
+            certificate.MinAntenHeight = btsCertificateVm.MinAntenHeight;
+            certificate.OffsetHeight = btsCertificateVm.OffsetHeight;
+            
             certificate.IssuedPlace = btsCertificateVm.IssuedPlace;
             certificate.IssuedDate = btsCertificateVm.IssuedDate;
             certificate.ExpiredDate = btsCertificateVm.ExpiredDate;
@@ -88,7 +96,7 @@ namespace BTS.Web.Infrastructure.Extensions
             noCertificate.LabID = btsCertificateVm.LabID;
             noCertificate.TestReportNo = btsCertificateVm.TestReportNo;
             noCertificate.TestReportDate = btsCertificateVm.TestReportDate;
-            noCertificate.Reason = btsCertificateVm.Reason;
+            noCertificate.ReasonNoCertificate = btsCertificateVm.ReasonNoCertificate;
         }
 
         public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)
@@ -196,6 +204,7 @@ namespace BTS.Web.Infrastructure.Extensions
             Item.ProfileNum = ItemVm.ProfileNum;
             Item.ProfileDate = ItemVm.ProfileDate;
             Item.BtsQuantity = ItemVm.BtsQuantity;
+            Item.AcceptedBtsQuantity = ItemVm.AcceptedBtsQuantity;
             Item.ApplyDate = ItemVm.ApplyDate;
             Item.Fee = ItemVm.Fee;
             Item.FeeAnnounceNum = ItemVm.FeeAnnounceNum;

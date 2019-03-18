@@ -88,6 +88,15 @@ namespace BTS.Data.Infrastructure
             return dbSet.Count(where);
         }
 
+        public virtual bool Exists(Expression<Func<T, bool>> where)
+        {
+            if (dbSet.Count(where) > 0)
+                return true;
+            else
+                return false;
+        }
+
+
         public IEnumerable<T> GetAll(string[] includes = null)
         {
             //HANDLE INCLUDES FOR ASSOCIATED OBJECTS IF APPLICABLE

@@ -41,7 +41,7 @@ namespace BTS.Web.Api
 
                 totalRow = listCity.Count();
 
-                var query = listCity.OrderBy(x => x.ID).Skip(page * pageSize).Take(pageSize);
+                var query = listCity.OrderBy(x => x.Id).Skip(page * pageSize).Take(pageSize);
 
                 var listCityVm = Mapper.Map<List<CityViewModel>>(query);
 

@@ -23,6 +23,8 @@ namespace BTS.Model.Models
 
         public int BtsQuantity { get; set; }
 
+        public int AcceptedBtsQuantity { get; set; }
+
         [Column(TypeName = "date")]
         public DateTime ApplyDate { get; set; }
 

@@ -27,6 +27,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.4</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -229,6 +230,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\AccountController.cs" />
+    <Compile Include="Api\ApplicationGroupApiController.cs" />
+    <Compile Include="Api\ApplicationRoleController.cs" />
+    <Compile Include="Api\ApplicationUserController.cs" />
+    <Compile Include="Api\HomeController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\GroupStore.cs" />
     <Compile Include="App_Start\Startup.Autofac.cs" />
@@ -249,9 +255,6 @@
     <Compile Include="Controllers\ApplicationRoleController.cs" />
     <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\CheckController_28082018.cs" />
-    <Compile Include="Controllers\ImportDataController - 28082018.cs" />
-    <Compile Include="Controllers\ImportUserController_28082018.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\NoCertificateController.cs" />
     <Compile Include="Controllers\CertificateController.cs" />
@@ -277,9 +280,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="GlobalClass.cs" />
-    <Compile Include="Infrastructure\Core\ApiControllerBase.cs" />
+    <Compile Include="Api\BaseController.cs" />
     <Compile Include="Infrastructure\Core\PaginationSet.cs" />
     <Compile Include="Infrastructure\Core\WriteLog.cs" />
+    <Compile Include="Infrastructure\Extensions\AttributeExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\AuthorizeRolesAttribute.cs" />
     <Compile Include="Infrastructure\Extensions\ClaimsToRazorParser.cs" />
     <Compile Include="Infrastructure\Extensions\DataTableExtensions.cs" />
@@ -9143,9 +9147,6 @@
     <Content Include="Assets\admin\libs\datatables-buttons\Readme.md" />
     <Content Include="Assets\admin\libs\datatables-buttons\css\common.scss" />
     <Content Include="Assets\admin\libs\datatables-buttons\css\mixins.scss" />
-    <Content Include="AppFiles\Samples\User List Sample.xls" />
-    <Content Include="AppFiles\Samples\Check BTS Sample.xls" />
-    <Content Include="AppFiles\Samples\Import BTS Certificate Sample.xls" />
     <Content Include="AppFiles\Localization\vi_VI.json" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />
@@ -9188,6 +9189,8 @@
     <Content Include="AppFiles\Samples\Import BTS Certificate Sample.xlsx" />
     <Content Include="AppFiles\Samples\User List Sample.xlsx" />
     <Content Include="AppFiles\Tmp\User List Sample.xlsx" />
+    <Content Include="AppFiles\Samples\Khanh - File Mau GCN - XYZ.xlsm" />
+    <Content Include="AppFiles\Samples\Khanh - GKQDK.docm" />
     <None Include="Properties\PublishProfiles\BTS.pubxml" />
     <None Include="Properties\PublishProfiles\BTS_V1.pubxml" />
     <Content Include="Views\InCaseOf\Add.cshtml" />

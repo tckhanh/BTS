@@ -66,20 +66,20 @@ namespace BTS.Web.Controllers
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 double _Latitude, _Longtitude;
-                double.TryParse(dt.Rows[i][CommonConstants.Sheet_Bts_Longtitude].ToString(), out _Longtitude);
-                double.TryParse(dt.Rows[i][CommonConstants.Sheet_Bts_Latitude].ToString(), out _Latitude);
+                double.TryParse(dt.Rows[i][CommonConstants.Sheet_Bts_Longtitude]?.ToString(), out _Longtitude);
+                double.TryParse(dt.Rows[i][CommonConstants.Sheet_Bts_Latitude]?.ToString(), out _Latitude);
                 dataResult.Add(new Bts()
                 {
-                    OperatorID = dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString(),
-                    BtsCode = dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(),
-                    Address = dt.Rows[i][CommonConstants.Sheet_Bts_Address].ToString(),
-                    CityID = dt.Rows[i][CommonConstants.Sheet_Bts_CityID].ToString(),
+                    OperatorID = dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString(),
+                    BtsCode = dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString(),
+                    Address = dt.Rows[i][CommonConstants.Sheet_Bts_Address]?.ToString(),
+                    CityID = dt.Rows[i][CommonConstants.Sheet_Bts_CityID]?.ToString(),
                     Longtitude = _Longtitude,
                     Latitude = _Latitude,
-                    LastOwnCertificateIDs = dt.Rows[i][CommonConstants.Sheet_Bts_LastOwnCertificateIDs].ToString(),
-                    LastNoOwnCertificateIDs = dt.Rows[i][CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs].ToString(),
-                    ProfilesInProcess = dt.Rows[i][CommonConstants.Sheet_Bts_ProfileInProcess].ToString(),
-                    ReasonsNoCertificate = dt.Rows[i][CommonConstants.Sheet_Bts_ReasonNoCertificate].ToString(),
+                    LastOwnCertificateIDs = dt.Rows[i][CommonConstants.Sheet_Bts_LastOwnCertificateIDs]?.ToString(),
+                    LastNoOwnCertificateIDs = dt.Rows[i][CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs]?.ToString(),
+                    ProfilesInProcess = dt.Rows[i][CommonConstants.Sheet_Bts_ProfileInProcess]?.ToString(),
+                    ReasonsNoCertificate = dt.Rows[i][CommonConstants.Sheet_Bts_ReasonNoCertificate]?.ToString(),
                 });
             }
 
@@ -106,7 +106,7 @@ namespace BTS.Web.Controllers
                 {
                     fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
 
-                    if (fileExtension == ".xls" || fileExtension == ".xlsx")
+                    if (fileExtension == ".xls" || fileExtension == ".xlsx" || fileExtension == ".xlsm")
                     {
                         string tmpFileName = Path.GetTempFileName();
                         fileLocation = Server.MapPath("~/AppFiles/Tmp/") + Request.Files["file"].FileName;
@@ -125,7 +125,7 @@ namespace BTS.Web.Controllers
                             CommonConstants.Sheet_Certificate_MaxHeightIn100m,
                             CommonConstants.Sheet_Certificate_MinAntenHeight,
                             CommonConstants.Sheet_Certificate_OffsetHeight,
-                            CommonConstants.Sheet_Certificate_SafeLimit,
+                            CommonConstants.Sheet_Certificate_SafeLimitHeight,
                             CommonConstants.Sheet_Certificate_BtsCode};
                         _excelIO.FormatColumns(fileLocation, columnNames, "@");
 
@@ -141,28 +141,28 @@ namespace BTS.Web.Controllers
             return Json(new { status = CommonConstants.Status_Success, message = "Check BTS Finished !", fileLocation = fileLocation, fileExtension = fileExtension }, JsonRequestBehavior.AllowGet);
         }
 
-        private int UpdateCheckResult(string excelConnectionString)
+        private string UpdateCheckResult(string excelConnectionString)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Bts);
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString()) && !string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString()) && !string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString()))
                 {
-                    IEnumerable<string> ownCertIDs = _importService.getLastOwnCertificateIDs(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
+                    IEnumerable<string> ownCertIDs = _importService.getLastOwnCertificateIDs(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString());
                     if (ownCertIDs != null)
                     {
                         dt.Rows[i][CommonConstants.Sheet_Bts_LastOwnCertificateIDs] = string.Join("; ", ownCertIDs);
                     }
 
-                    IEnumerable<string> noOwncertIDs = _importService.getLastNoOwnCertificateIDs(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
+                    IEnumerable<string> noOwncertIDs = _importService.getLastNoOwnCertificateIDs(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString());
                     if (noOwncertIDs != null)
                     {
                         dt.Rows[i][CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs] = string.Join("; ", noOwncertIDs);
                     }
 
                     string dataString = "";
-                    IEnumerable<Profile> ProfilesBtsInProcess = _importService.findProfilesBtsInProcess(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
+                    IEnumerable<Profile> ProfilesBtsInProcess = _importService.findProfilesBtsInProcess(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString());
                     foreach (var item in ProfilesBtsInProcess)
                     {
                         dataString += "Số " + item.ProfileNum + " ngày " + item.ProfileDate.ToString("dd/MM/yyyy") + " của " + item.ApplicantID + "\n";
@@ -170,10 +170,10 @@ namespace BTS.Web.Controllers
                     dt.Rows[i][CommonConstants.Sheet_Bts_ProfileInProcess] = dataString;
 
                     dataString = "";
-                    IEnumerable<NoCertificate> btsNoCertificate = _importService.findBtsNoCertificate(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID].ToString());
+                    IEnumerable<NoCertificate> btsNoCertificate = _importService.findBtsNoCertificate(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString());
                     foreach (var item in btsNoCertificate)
                     {
-                        dataString += item.Reason + "\n";
+                        dataString += item.ReasonNoCertificate + "\n";
                     }
                     dt.Rows[i][CommonConstants.Sheet_Bts_ReasonNoCertificate] = dataString;
                 }
@@ -185,9 +185,9 @@ namespace BTS.Web.Controllers
                 if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs, dt))
                     if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_ProfileInProcess, dt))
                         if (_excelIO.UpdateDataInSheet(excelConnectionString, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_BtsCode, CommonConstants.Sheet_Bts_ReasonNoCertificate, dt))
-                            return 1;
+                            return "OK";
 
-            return 0;
+            return "No OK";
         }
     }
 }

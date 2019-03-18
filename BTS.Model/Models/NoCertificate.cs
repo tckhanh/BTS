@@ -51,7 +51,7 @@ namespace BTS.Model.Models
 
         [StringLength(255)]
         [Required]
-        public string Reason { get; set; }
+        public string ReasonNoCertificate { get; set; }
 
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }

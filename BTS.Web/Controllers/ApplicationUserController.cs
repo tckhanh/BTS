@@ -214,31 +214,6 @@ namespace BTS.Web.Controllers
             }
         }
 
-        private async Task UpdateUserGroups(string userID, string[] selectedItems)
-        {
-            _appGroupService.DeleteUserFromGroups(userID);
-            _appGroupService.Save();
-
-            var listAppUserGroup = new List<ApplicationUserGroup>();
-            selectedItems = selectedItems ?? new string[] { };
-
-            foreach (var group in selectedItems)
-            {
-                listAppUserGroup.Add(new ApplicationUserGroup()
-                {
-                    GroupId = group,
-                    UserId = userID,
-                    CreatedBy = User.Identity.Name,
-                    CreatedDate = DateTime.Now
-                });
-            }
-            _appGroupService.AddUserToGroups(listAppUserGroup);
-            _appGroupService.Save();
-
-            var newUserRoles = _appGroupService.GetLogicRolesByUserId(userID);
-            await updateRoles(userID, newUserRoles);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.System_CanReset_Role)]
@@ -320,6 +295,31 @@ namespace BTS.Web.Controllers
             {
                 return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        private async Task UpdateUserGroups(string userID, string[] selectedItems)
+        {
+            _appGroupService.DeleteUserFromGroups(userID);
+            _appGroupService.Save();
+
+            var listAppUserGroup = new List<ApplicationUserGroup>();
+            selectedItems = selectedItems ?? new string[] { };
+
+            foreach (var group in selectedItems)
+            {
+                listAppUserGroup.Add(new ApplicationUserGroup()
+                {
+                    GroupId = group,
+                    UserId = userID,
+                    CreatedBy = User.Identity.Name,
+                    CreatedDate = DateTime.Now
+                });
+            }
+            _appGroupService.AddUserToGroups(listAppUserGroup);
+            _appGroupService.Save();
+
+            var newUserRoles = _appGroupService.GetLogicRolesByUserId(userID);
+            await updateRoles(userID, newUserRoles);
         }
     }
 }

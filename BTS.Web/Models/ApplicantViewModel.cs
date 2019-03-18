@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BTS.Model.Models;
+using BTS.Web.Infrastructure.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,7 +18,8 @@ namespace BTS.Web.Models
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tên đơn vị nộp hồ sơ")]
         [StringLength(255, ErrorMessage = "Tên đơn vị nộp hồ sơ không quá 255 ký tự")]
-        [Display(Name = "Tên đơn vị nộp hồ sơ ")]
+        [Display(Name = "Tên đơn vị nộp hồ sơ")]
+        [Unique(ErrorMessage = "Tên đơn vị nộp hồ sơ đã tồn tại rồi !!", TargetModelType = typeof(Applicant), TargetPropertyName = "Name")]
         public string Name { get; set; }
 
         [Display(Name = "Địa chỉ")]

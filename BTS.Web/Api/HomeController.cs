@@ -11,7 +11,7 @@ namespace BTS.Web.Api
 {
     [RoutePrefix("api/home")]
     [Authorize]
-    public class HomeController : ApiControllerBase
+    public class HomeController : BaseController
     {
         private IErrorService _errorService;
 

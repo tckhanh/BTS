@@ -39,6 +39,8 @@ namespace BTS.Data.Infrastructure
 
         int Count(Expression<Func<T, bool>> where);
 
+        bool Exists(Expression<Func<T, bool>> where);
+
         bool CheckContains(Expression<Func<T, bool>> predicate);
     }
 }

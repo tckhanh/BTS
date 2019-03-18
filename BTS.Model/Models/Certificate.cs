@@ -97,15 +97,33 @@ namespace BTS.Model.Models
         [Required]
         public string SubBtsAntenHeights { get; set; }
 
-        public double? MinAntenHeight { get; set; }
+        public bool IsPoleOnGround { get; set; }
+
+        public bool IsSafeLimit { get; set; }        
+        
+        public double? SafeLimitHeight { get; set; }
+
+        public bool IsHouseIn100m { get; set; }
 
         public double? MaxHeightIn100m { get; set; }
 
+        public double? MaxPowerSum { get; set; }
+
+        public bool IsMeasuringExposure = false;
+
+        public bool GetIsMeasuringExposure()
+        {
+            return IsMeasuringExposure;
+        }
+
+        public void SetIsMeasuringExposure(bool value)
+        {
+            IsMeasuringExposure = value;
+        }
+
+        public double? MinAntenHeight { get; set; }
+
         public double? OffsetHeight { get; set; }
-
-        public bool MeasuringExposure { get; set; } = false;
-
-        public double? SafeLimit { get; set; }
 
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }

@@ -95,7 +95,7 @@ namespace BTS.Web.Controllers
 
             if (!(string.IsNullOrEmpty(ProfileID)))
             {
-                Items = Items.Where(x => x.ProfileID.ToString() == ProfileID);
+                Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID);
             }
 
             if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))

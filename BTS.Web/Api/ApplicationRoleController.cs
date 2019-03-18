@@ -18,7 +18,7 @@ namespace BTS.Web.Api
 {
     [RoutePrefix("api/applicationRole")]
     [Authorize]
-    public class ApplicationRoleController : ApiControllerBase
+    public class ApplicationRoleController : BaseController
     {
         private IApplicationRoleService _appRoleService;
 

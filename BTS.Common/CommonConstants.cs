@@ -23,6 +23,11 @@
         public const string Action_ChangePassword = "ChangePassword";
         public const string Action_Delete = "Delete";
 
+        public const string InputType_AddNew = "AddNew";
+        public const string InputType_AddMore = "AddMore";
+        public const string InputType_DelAdd = "DelAdd";
+
+
         public const string SuperAdmin_Name = "admin";
         public const string SuperAdmin_FullName = "Trần Công Khanh";
         public const string SuperAdmin_Email = "tckhanh.p@gmail.com";
@@ -124,12 +129,15 @@
         public const string Sheet_Applicant_Fax = "Fax";
         public const string Sheet_Applicant_ContactName = "ContactName";
         public const string Sheet_Applicant_OperatorID = "OperatorID";
+        public const string Sheet_Applicant_OperatorName = "OperatorName";
 
         public const string Sheet_Profile = "Profile";
         public const string Sheet_Profile_ApplicantID = "ApplicantID";
+        public const string Sheet_Profile_ApplicantName = "ApplicantName";
         public const string Sheet_Profile_ProfileNum = "ProfileNum";
         public const string Sheet_Profile_ProfileDate = "ProfileDate";
         public const string Sheet_Profile_BtsQuantity = "BtsQuantity";
+        public const string Sheet_Profile_AcceptedBtsQuantity = "AcceptedBtsQuantity";
         public const string Sheet_Profile_ApplyDate = "ApplyDate";
         public const string Sheet_Profile_ValidDate = "ValidDate";
         public const string Sheet_Profile_Fee = "Fee";
@@ -174,11 +182,17 @@
         public const string Sheet_Certificate_SubBtsPowerSums = "SubBtsPowerSums";
         public const string Sheet_Certificate_SubBtsBands = "SubBtsBands";
         public const string Sheet_Certificate_SubBtsAntenHeights = "SubBtsAntenHeights";
-        public const string Sheet_Certificate_MinAntenHeight = "MinAntenHeight";
+        public const string Sheet_Certificate_IsPoleOnGround = "IsPoleOnGround";
+        public const string Sheet_Certificate_IsSafeLimit = "IsSafeLimit";
+        public const string Sheet_Certificate_SafeLimitHeight = "SafeLimitHeight";
+        public const string Sheet_Certificate_IsHouseIn100m = "IsHouseIn100m";
         public const string Sheet_Certificate_MaxHeightIn100m = "MaxHeightIn100m";
+        public const string Sheet_Certificate_MaxPowerSum = "MaxPowerSum";
+        public const string Sheet_Certificate_IsMeasuringExposure = "IsMeasuringExposure";
+        public const string Sheet_Certificate_MinAntenHeight = "MinAntenHeight";
         public const string Sheet_Certificate_OffsetHeight = "OffsetHeight";
-        public const string Sheet_Certificate_MeasuringExposure = "MeasuringExposure";
-        public const string Sheet_Certificate_SafeLimit = "SafeLimit";
+
+        
 
         public const string Sheet_NoCertificate = "NoCertificate";
         public const string Sheet_NoCertificate_BtsCode = "BtsCode";
@@ -190,7 +204,7 @@
         public const string Sheet_NoCertificate_LabID = "LabID";
         public const string Sheet_NoCertificate_TestReportNo = "TestReportNo";
         public const string Sheet_NoCertificate_TestReportDate = "TestReportDate";
-        public const string Sheet_NoCertificate_Reason = "Reason";
+        public const string Sheet_NoCertificate_ReasonNoCertificate = "ReasonNoCertificate";
 
         public const string Sheet_User = "User";
         public const string Sheet_User_FullName = "FullName";

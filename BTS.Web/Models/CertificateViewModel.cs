@@ -128,20 +128,42 @@ namespace BTS.Web.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách độ cao Anten")]
         public string SubBtsAntenHeights { get; set; }
 
-        [Display(Name = "Độ cao Anten thấp nhất")]
-        public double? MinAntenHeight { get; set; }
+        [Display(Name = "Cột Anten trên mặt đất")]
+        public bool PoleOnGround { get; set; } = false;
+
+        [Display(Name = "Có giới hạn an toàn")]
+        public bool IsSafeLimit { get; set; } = false;
+
+        [Display(Name = "Độ cao giới hạn an toàn")]
+        public double? SafeLimitHeight { get; set; }
+
+        [Display(Name = "Có công trình trong phạm vi 100m")]
+        public bool IsHouseIn100m { get; set; } = true;
 
         [Display(Name = "Độ cao công trình cao nhất trong phạm vi 100m")]
         public double? MaxHeightIn100m { get; set; }
 
+        [Display(Name = "Công suất phát lớn nhất của trạm")]
+        public double? MaxPowerSum { get; set; }
+
+        public bool IsMeasuringExposure = false;
+
+        public bool GetIsMeasuringExposure()
+        {
+            return IsMeasuringExposure;
+        }
+
+        public void SetIsMeasuringExposure(bool value)
+        {
+            IsMeasuringExposure = value;
+        }
+
+        [Display(Name = "Độ cao Anten thấp nhất")]
+        public double? MinAntenHeight { get; set; }
+
         [Display(Name = "Chênh lệch độ cao")]
         public double? OffsetHeight { get; set; }
 
-        [Display(Name = "Có đo phơi nhiễm")]
-        public bool MeasuringExposure { get; set; } = false;
-
-        [Display(Name = "Có giới hạn an toàn")]
-        public double? SafeLimit { get; set; }
 
         public virtual ProfileViewModel Profile { get; set; }
 

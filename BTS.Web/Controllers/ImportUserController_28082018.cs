@@ -88,33 +88,33 @@ namespace BTS.Web.Controllers
             IdentityResult result = new IdentityResult();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_User_FullName].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_User_FullName]?.ToString()))
                 {
                     ApplicationUser newAppUser = new ApplicationUser();
-                    newAppUser.FullName = dt.Rows[i][CommonConstants.Sheet_User_FullName].ToString();
-                    newAppUser.BirthDay = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_User_BirthDay].ToString());
-                    newAppUser.FatherLand = dt.Rows[i][CommonConstants.Sheet_User_FatherLand].ToString();
-                    newAppUser.Level = dt.Rows[i][CommonConstants.Sheet_User_Level].ToString();
-                    newAppUser.EducationalField = dt.Rows[i][CommonConstants.Sheet_User_EducationalField].ToString();
-                    if (dt.Rows[i][CommonConstants.Sheet_User_EntryDate].ToString().Length > 0)
-                        newAppUser.EntryDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_User_EntryDate].ToString());
-                    if (dt.Rows[i][CommonConstants.Sheet_User_OfficialDate].ToString().Length > 0)
-                        newAppUser.OfficialDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_User_OfficialDate].ToString());
-                    if (dt.Rows[i][CommonConstants.Sheet_User_EndDate].ToString().Length > 0)
-                        newAppUser.EndDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_User_EndDate].ToString());
-                    newAppUser.WorkingDuration = dt.Rows[i][CommonConstants.Sheet_User_WorkingDuration].ToString();
-                    newAppUser.JobPositions = dt.Rows[i][CommonConstants.Sheet_User_JobPositions].ToString();
-                    newAppUser.PhoneNumber = dt.Rows[i][CommonConstants.Sheet_User_Telephone].ToString();
-                    newAppUser.ImagePath = "/AppFiles/Images/" + dt.Rows[i][CommonConstants.Sheet_User_Image].ToString();
-                    newAppUser.UserName = dt.Rows[i][CommonConstants.Sheet_User_UserName].ToString();
-                    newAppUser.Email = dt.Rows[i][CommonConstants.Sheet_User_Email].ToString();
+                    newAppUser.FullName = dt.Rows[i][CommonConstants.Sheet_User_FullName]?.ToString();
+                    newAppUser.BirthDay = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_User_BirthDay]?.ToString());
+                    newAppUser.FatherLand = dt.Rows[i][CommonConstants.Sheet_User_FatherLand]?.ToString();
+                    newAppUser.Level = dt.Rows[i][CommonConstants.Sheet_User_Level]?.ToString();
+                    newAppUser.EducationalField = dt.Rows[i][CommonConstants.Sheet_User_EducationalField]?.ToString();
+                    if (dt.Rows[i][CommonConstants.Sheet_User_EntryDate]?.ToString().Length > 0)
+                        newAppUser.EntryDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_User_EntryDate]?.ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_User_OfficialDate]?.ToString().Length > 0)
+                        newAppUser.OfficialDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_User_OfficialDate]?.ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_User_EndDate]?.ToString().Length > 0)
+                        newAppUser.EndDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_User_EndDate]?.ToString());
+                    newAppUser.WorkingDuration = dt.Rows[i][CommonConstants.Sheet_User_WorkingDuration]?.ToString();
+                    newAppUser.JobPositions = dt.Rows[i][CommonConstants.Sheet_User_JobPositions]?.ToString();
+                    newAppUser.PhoneNumber = dt.Rows[i][CommonConstants.Sheet_User_Telephone]?.ToString();
+                    newAppUser.ImagePath = "/AppFiles/Images/" + dt.Rows[i][CommonConstants.Sheet_User_Image]?.ToString();
+                    newAppUser.UserName = dt.Rows[i][CommonConstants.Sheet_User_UserName]?.ToString();
+                    newAppUser.Email = dt.Rows[i][CommonConstants.Sheet_User_Email]?.ToString();
                     newAppUser.CreatedBy = User.Identity.Name;
                     newAppUser.CreatedDate = DateTime.Now;
                     ApplicationUser user = UserManager.FindByName(newAppUser.UserName);
 
                     if (user == null)
                     {
-                        result = UserManager.Create(newAppUser, dt.Rows[i][CommonConstants.Sheet_User_Password].ToString());
+                        result = UserManager.Create(newAppUser, dt.Rows[i][CommonConstants.Sheet_User_Password]?.ToString());
                         if (!result.Succeeded)
                         {
                             throw new Exception("Lỗi khi nhập khẩu người dùng [" + newAppUser.UserName + "]:" + string.Join("\n", result.Errors));

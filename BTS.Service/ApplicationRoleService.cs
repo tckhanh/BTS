@@ -104,7 +104,7 @@ namespace BTS.Service
 
         public IEnumerable<ApplicationRole> GetListRoleByGroupId(string groupId)
         {
-            return _appRoleRepository.GetListRoleByGroupId(groupId);
+            return _appRoleRepository.GetRolesByGroupId(groupId);
         }
     }
 }

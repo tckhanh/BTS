@@ -107,11 +107,11 @@ namespace BTS.Web.Controllers
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID]?.ToString()))
                 {
                     var Item = new InCaseOf();
                     Item.Id = Convert.ToInt32(dt.Rows[i][CommonConstants.Sheet_InCaseOf_ID]);
-                    Item.Name = dt.Rows[i][CommonConstants.Sheet_InCaseOf_Name].ToString();
+                    Item.Name = dt.Rows[i][CommonConstants.Sheet_InCaseOf_Name]?.ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
 
@@ -129,14 +129,14 @@ namespace BTS.Web.Controllers
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Lab_ID].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Lab_ID]?.ToString()))
                 {
                     var Item = new Lab();
-                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Lab_ID].ToString();
-                    Item.Name = dt.Rows[i][CommonConstants.Sheet_Lab_Name].ToString();
-                    Item.Address = dt.Rows[i][CommonConstants.Sheet_Lab_Address].ToString();
-                    Item.Phone = dt.Rows[i][CommonConstants.Sheet_Lab_Phone].ToString();
-                    Item.Fax = dt.Rows[i][CommonConstants.Sheet_Lab_Fax].ToString();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Lab_ID]?.ToString();
+                    Item.Name = dt.Rows[i][CommonConstants.Sheet_Lab_Name]?.ToString();
+                    Item.Address = dt.Rows[i][CommonConstants.Sheet_Lab_Address]?.ToString();
+                    Item.Phone = dt.Rows[i][CommonConstants.Sheet_Lab_Phone]?.ToString();
+                    Item.Fax = dt.Rows[i][CommonConstants.Sheet_Lab_Fax]?.ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
 
@@ -154,11 +154,11 @@ namespace BTS.Web.Controllers
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_City_ID].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_City_ID]?.ToString()))
                 {
                     var Item = new City();
-                    Item.Id = dt.Rows[i][CommonConstants.Sheet_City_ID].ToString();
-                    Item.Name = dt.Rows[i][CommonConstants.Sheet_City_Name].ToString();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_City_ID]?.ToString();
+                    Item.Name = dt.Rows[i][CommonConstants.Sheet_City_Name]?.ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
 
@@ -176,11 +176,11 @@ namespace BTS.Web.Controllers
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Operator_ID].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Operator_ID]?.ToString()))
                 {
                     var Item = new Operator();
-                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Operator_ID].ToString();
-                    Item.Name = dt.Rows[i][CommonConstants.Sheet_Operator_Name].ToString();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Operator_ID]?.ToString();
+                    Item.Name = dt.Rows[i][CommonConstants.Sheet_Operator_Name]?.ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
 
@@ -198,16 +198,16 @@ namespace BTS.Web.Controllers
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Applicant_ID].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Applicant_ID]?.ToString()))
                 {
                     var Item = new Applicant();
-                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Applicant_ID].ToString();
-                    Item.Name = dt.Rows[i][CommonConstants.Sheet_Applicant_Name].ToString();
-                    Item.Address = dt.Rows[i][CommonConstants.Sheet_Applicant_Address].ToString();
-                    Item.Phone = dt.Rows[i][CommonConstants.Sheet_Applicant_Phone].ToString();
-                    Item.Fax = dt.Rows[i][CommonConstants.Sheet_Applicant_Fax].ToString();
-                    Item.ContactName = dt.Rows[i][CommonConstants.Sheet_Applicant_ContactName].ToString();
-                    Item.OperatorID = dt.Rows[i][CommonConstants.Sheet_Applicant_OperatorID].ToString();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Applicant_ID]?.ToString();
+                    Item.Name = dt.Rows[i][CommonConstants.Sheet_Applicant_Name]?.ToString();
+                    Item.Address = dt.Rows[i][CommonConstants.Sheet_Applicant_Address]?.ToString();
+                    Item.Phone = dt.Rows[i][CommonConstants.Sheet_Applicant_Phone]?.ToString();
+                    Item.Fax = dt.Rows[i][CommonConstants.Sheet_Applicant_Fax]?.ToString();
+                    Item.ContactName = dt.Rows[i][CommonConstants.Sheet_Applicant_ContactName]?.ToString();
+                    Item.OperatorID = dt.Rows[i][CommonConstants.Sheet_Applicant_OperatorID]?.ToString();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
 
@@ -223,26 +223,26 @@ namespace BTS.Web.Controllers
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Profile);
             var Item = new Profile();
             proFileID = "";
-            if (!string.IsNullOrEmpty(dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantID].ToString()))
+            if (!string.IsNullOrEmpty(dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantID]?.ToString()))
             {
-                Item.ApplicantID = dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantID].ToString();
-                Item.ProfileNum = dt.Rows[0][CommonConstants.Sheet_Profile_ProfileNum].ToString();
-                Item.ProfileDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ProfileDate].ToString());
-                Item.BtsQuantity = int.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_BtsQuantity].ToString());
-                Item.ApplyDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ApplyDate].ToString());
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_Fee].ToString().Length > 0)
+                Item.ApplicantID = dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantID]?.ToString();
+                Item.ProfileNum = dt.Rows[0][CommonConstants.Sheet_Profile_ProfileNum]?.ToString();
+                Item.ProfileDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ProfileDate]?.ToString());
+                Item.BtsQuantity = int.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_BtsQuantity]?.ToString());
+                Item.ApplyDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ApplyDate]?.ToString());
+                if (dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString().Length > 0)
                 {
                     //int fee;
-                    //int.TryParse(dt.Rows[0][CommonConstants.Sheet_Profile_Fee].ToString(), NumberStyles.Number, provider, out fee);
-                    Item.Fee = int.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_Fee].ToString(), NumberStyles.Number);
+                    //int.TryParse(dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number, provider, out fee);
+                    Item.Fee = int.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number);
                 }
 
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceNum].ToString().Length > 0)
-                    Item.FeeAnnounceNum = dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceNum].ToString();
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceDate].ToString().Length > 0)
-                    Item.FeeAnnounceDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceDate].ToString());
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeReceiptDate].ToString().Length > 0)
-                    Item.FeeReceiptDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_FeeReceiptDate].ToString());
+                if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString().Length > 0)
+                    Item.FeeAnnounceNum = dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString();
+                if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString().Length > 0)
+                    Item.FeeAnnounceDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString());
+                if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString().Length > 0)
+                    Item.FeeReceiptDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString());
                 Item.CreatedBy = User.Identity.Name;
                 Item.CreatedDate = DateTime.Now;
 
@@ -278,20 +278,20 @@ namespace BTS.Web.Controllers
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString()))
                 {
                     var Item = new Bts();
                     Item.OperatorID = operatorID;
                     Item.ProfileID = proFileID;
-                    Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString();
-                    Item.Address = dt.Rows[i][CommonConstants.Sheet_Bts_Address].ToString();
-                    Item.CityID = dt.Rows[i][CommonConstants.Sheet_Bts_CityID].ToString();
-                    if (dt.Rows[i][CommonConstants.Sheet_Bts_Longtitude].ToString().Length > 0)
-                        Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_Longtitude].ToString());
-                    if (dt.Rows[i][CommonConstants.Sheet_Bts_Latitude].ToString().Length > 0)
-                        Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_Latitude].ToString());
-                    if (dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID].ToString().Length > 0)
-                        Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID].ToString());
+                    Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString();
+                    Item.Address = dt.Rows[i][CommonConstants.Sheet_Bts_Address]?.ToString();
+                    Item.CityID = dt.Rows[i][CommonConstants.Sheet_Bts_CityID]?.ToString();
+                    if (dt.Rows[i][CommonConstants.Sheet_Bts_Longtitude]?.ToString().Length > 0)
+                        Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_Longtitude]?.ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_Bts_Latitude]?.ToString().Length > 0)
+                        Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_Latitude]?.ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID]?.ToString().Length > 0)
+                        Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID]?.ToString());
 
                     IEnumerable<string> certIDs = _importService.getLastOwnCertificateIDs(Item.BtsCode, operatorID);
 
@@ -332,74 +332,74 @@ namespace BTS.Web.Controllers
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString()))
                 {
                     var Item = new Certificate();
                     string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
 
                     Item.ProfileID = proFileID;
                     Item.OperatorID = operatorID;
-                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Certificate_CertificateNum].ToString();
-                    Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_Certificate_BtsCode].ToString();
-                    Item.Address = dt.Rows[i][CommonConstants.Sheet_Certificate_Address].ToString();
-                    Item.CityID = dt.Rows[i][CommonConstants.Sheet_Certificate_CityID].ToString();
-                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude].ToString().Length > 0)
-                        Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude].ToString());
-                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude].ToString().Length > 0)
-                        Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude].ToString());
-                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID].ToString().Length > 0)
-                        Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID].ToString());
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Certificate_CertificateNum]?.ToString();
+                    Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_Certificate_BtsCode]?.ToString();
+                    Item.Address = dt.Rows[i][CommonConstants.Sheet_Certificate_Address]?.ToString();
+                    Item.CityID = dt.Rows[i][CommonConstants.Sheet_Certificate_CityID]?.ToString();
+                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString().Length > 0)
+                        Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString().Length > 0)
+                        Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString().Length > 0)
+                        Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString());
 
-                    Item.LabID = dt.Rows[i][CommonConstants.Sheet_Certificate_LabID].ToString();
+                    Item.LabID = dt.Rows[i][CommonConstants.Sheet_Certificate_LabID]?.ToString();
 
-                    Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportNo].ToString();
-                    Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportDate].ToString());
-                    Item.IssuedDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedDate].ToString());
-                    Item.ExpiredDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate].ToString());
+                    Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportNo]?.ToString();
+                    Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportDate]?.ToString());
+                    Item.IssuedDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedDate]?.ToString());
+                    Item.ExpiredDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate]?.ToString());
                     Item.IssuedPlace = CommonConstants.IssuePalce;
                     Item.Signer = CommonConstants.Signer;
-                    Item.SubBtsQuantity = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity].ToString());
+                    Item.SubBtsQuantity = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity]?.ToString());
 
-                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight].ToString().Length > 0)
-                        Item.MinAntenHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight].ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString().Length > 0)
+                        Item.MinAntenHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString());
 
-                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m].ToString().Length > 0)
-                        Item.MaxHeightIn100m = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m].ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString().Length > 0)
+                        Item.MaxHeightIn100m = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString());
 
                     Item.OffsetHeight = Item.MinAntenHeight - Item.MaxHeightIn100m;
 
-                    //if (dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight].ToString().Length > 0)
-                    //    Item.OffsetHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight].ToString());
+                    //if (dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString().Length > 0)
+                    //    Item.OffsetHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString());
 
-                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimit].ToString().Length > 0)
-                        Item.SafeLimit = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimit].ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimit]?.ToString().Length > 0)
+                        Item.SafeLimit = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimit]?.ToString());
 
-                    Item.SubBtsAntenHeights = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenHeights].ToString();
+                    Item.SubBtsAntenHeights = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenHeights]?.ToString();
                     SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
 
-                    Item.SubBtsAntenNums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenNums].ToString();
+                    Item.SubBtsAntenNums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenNums]?.ToString();
                     SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
 
-                    Item.SharedAntens = dt.Rows[i][CommonConstants.Sheet_Certificate_SharedAntens].ToString();
+                    Item.SharedAntens = dt.Rows[i][CommonConstants.Sheet_Certificate_SharedAntens]?.ToString();
 
-                    Item.MeasuringExposure = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MeasuringExposure].ToString());
+                    Item.MeasuringExposure = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MeasuringExposure]?.ToString());
 
-                    Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands].ToString();
+                    Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
                     SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
 
-                    Item.SubBtsCodes = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsCodes].ToString();
+                    Item.SubBtsCodes = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsCodes]?.ToString();
                     SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
 
-                    Item.SubBtsConfigurations = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsConfigurations].ToString();
+                    Item.SubBtsConfigurations = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsConfigurations]?.ToString();
                     SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
 
-                    Item.SubBtsEquipments = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsEquipments].ToString();
+                    Item.SubBtsEquipments = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsEquipments]?.ToString();
                     SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
 
-                    Item.SubBtsOperatorIDs = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsOperatorIDs].ToString();
+                    Item.SubBtsOperatorIDs = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsOperatorIDs]?.ToString();
                     SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
 
-                    Item.SubBtsPowerSums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums].ToString();
+                    Item.SubBtsPowerSums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums]?.ToString();
                     SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
 
                     Item.CreatedBy = User.Identity.Name;
@@ -457,27 +457,27 @@ namespace BTS.Web.Controllers
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode].ToString()))
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString()))
                 {
                     var Item = new NoCertificate();
 
                     Item.ProfileID = proFileID;
                     Item.OperatorID = operatorID;
-                    Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_NoCertificate_BtsCode].ToString();
-                    Item.Address = dt.Rows[i][CommonConstants.Sheet_NoCertificate_Address].ToString();
-                    Item.CityID = dt.Rows[i][CommonConstants.Sheet_NoCertificate_CityID].ToString();
-                    if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_Longtitude].ToString().Length > 0)
-                        Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_Longtitude].ToString());
-                    if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_Latitude].ToString().Length > 0)
-                        Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_Latitude].ToString());
-                    if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_InCaseOfID].ToString().Length > 0)
-                        Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_InCaseOfID].ToString());
+                    Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_NoCertificate_BtsCode]?.ToString();
+                    Item.Address = dt.Rows[i][CommonConstants.Sheet_NoCertificate_Address]?.ToString();
+                    Item.CityID = dt.Rows[i][CommonConstants.Sheet_NoCertificate_CityID]?.ToString();
+                    if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_Longtitude]?.ToString().Length > 0)
+                        Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_Longtitude]?.ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_Latitude]?.ToString().Length > 0)
+                        Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_Latitude]?.ToString());
+                    if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_InCaseOfID]?.ToString().Length > 0)
+                        Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_InCaseOfID]?.ToString());
 
-                    Item.LabID = dt.Rows[i][CommonConstants.Sheet_NoCertificate_LabID].ToString();
+                    Item.LabID = dt.Rows[i][CommonConstants.Sheet_NoCertificate_LabID]?.ToString();
 
-                    Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_NoCertificate_TestReportNo].ToString();
-                    Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_TestReportDate].ToString());
-                    Item.Reason = dt.Rows[i][CommonConstants.Sheet_NoCertificate_Reason].ToString();
+                    Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_NoCertificate_TestReportNo]?.ToString();
+                    Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_TestReportDate]?.ToString());
+                    Item.Reason = dt.Rows[i][CommonConstants.Sheet_NoCertificate_Reason]?.ToString();
 
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;

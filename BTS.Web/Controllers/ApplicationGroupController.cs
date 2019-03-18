@@ -122,7 +122,7 @@ namespace BTS.Web.Controllers
                     {
                         ApplicationGroup newItem = new ApplicationGroup();
                         newItem.UpdateApplicationGroup(Item);
-                        newItem.Id = Item.Id;
+
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;
 

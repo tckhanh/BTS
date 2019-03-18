@@ -46,8 +46,10 @@
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
                         window.location.href = "/Account/Login"
-                    } else if (response.status == "Success")
+                    } else if (response.status == "Success") {
                         bar.html('Đã thực hiện xong!');
+                        //$('#ImportAction option').eq(2).prop('selected', true)
+                    }
                     else {
                         bar.html('Lỗi trong quá trình thực hiện!');
                         alert("Complete: " + response.message);
@@ -62,7 +64,18 @@
                 },
                 complete: function (xhr) {
                 },
-                async: true
+                async: true,
+
+                // other available options: 
+                //url:       url         // override for form's 'action' attribute 
+                //type:      type        // 'get' or 'post', override for form's 'method' attribute 
+                //dataType:  null        // 'xml', 'script', or 'json' (expected server response type) 
+
+                clearForm: false,        // clear all form fields after successful submit 
+                resetForm: true       // reset the form after successful submit 
+
+                // $.ajax options can be used here too, for example: 
+                //timeout:   3000
             });
         },
         registerEventDataTable: function () {

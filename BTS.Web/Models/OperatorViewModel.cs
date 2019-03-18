@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BTS.Model.Models;
+using BTS.Web.Infrastructure.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace BTS.Web.Models
         [Display(Name = "Tên Nhà mạng")]
         [Required(ErrorMessage = "Yêu cầu nhập Tên Nhà mạng")]
         [MaxLength(255, ErrorMessage = "Tên Nhà mạng tối đa 255 ký tự")]
+        [Unique(ErrorMessage = "Tên Nhà mạng đã tồn tại rồi !!", TargetModelType = typeof(Operator), TargetPropertyName = "Name")]
         public string Name { get; set; }
 
         public virtual IEnumerable<ApplicantViewModel> Applicants { get; set; }

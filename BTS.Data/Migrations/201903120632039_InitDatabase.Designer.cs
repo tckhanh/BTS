@@ -13,7 +13,7 @@ namespace BTS.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201808300556302_InitDatabase"; }
+            get { return "201903120632039_InitDatabase"; }
         }
         
         string IMigrationMetadata.Source

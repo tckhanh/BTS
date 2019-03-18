@@ -106,14 +106,109 @@ namespace BTS.Web.Controllers
             }
         }
 
+
+        protected void ExecuteDatabase(Func<string, string> function, string fileLocation)
+        {
+            string strReturn;
+            string description = "";
+            try
+            {
+                strReturn = function.Invoke(fileLocation);
+                if (strReturn != CommonConstants.Status_Success)
+                {
+                    LogError(strReturn);
+                    throw new Exception(strReturn);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+                LogError(ex, description);
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            finally
+            {
+
+            }
+        }
+
+
         // Thuc hien lenh ghi Log neu có loi va nem loi ra ngoai
-        protected void ExecuteDatabase(Func<string, int> function, string fileLocation)
+        protected void ExecuteDatabase(Func<string, string, string> function, string fileLocation, string InputType)
         {
-            int idReturn;
+            string strReturn;
             string description = "";
             try
             {
-                idReturn = function.Invoke(fileLocation);
+                strReturn = function.Invoke(fileLocation, InputType);
+                if (strReturn != CommonConstants.Status_Success)
+                {
+                    LogError(strReturn);
+                    throw new Exception(strReturn);
+                }                    
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+                LogError(ex, description);
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            finally
+            {
+                
+            }
+        }
+
+        protected void ExecuteDatabaseAsyn(Func<string, Task<string>> function, string excelConnectionString)
+        {
+            Task<string> strReturn;
+            string description = "";
+            try
+            {
+                strReturn = function.Invoke(excelConnectionString);
+                if (strReturn?.ToString() != CommonConstants.Status_Success)
+                {
+                    LogError(strReturn?.ToString());
+                    throw new Exception(strReturn?.ToString());
+                }
             }
             catch (DbEntityValidationException ex)
             {
@@ -145,13 +240,13 @@ namespace BTS.Web.Controllers
             }
         }
 
-        protected void ExecuteDatabaseAsyn(Func<string, Task<int>> function, string excelConnectionString)
+        protected void ExecuteDatabase(Func<string, string, string> function, string excelConnectionString, out string strReturn)
         {
-            Task<int> idReturn;
+            strReturn = "";
             string description = "";
             try
             {
-                idReturn = function.Invoke(excelConnectionString);
+                strReturn = function.Invoke(excelConnectionString, strReturn);                
             }
             catch (DbEntityValidationException ex)
             {
@@ -183,13 +278,17 @@ namespace BTS.Web.Controllers
             }
         }
 
-        protected void ExecuteDatabase(Func<string, string, string> function, string excelConnectionString, out string ID)
-        {
-            ID = "";
+        protected void ExecuteDatabase(Func<string, string, string, string> function, string excelConnectionString, string InputType, string strReturn)
+        {            
             string description = "";
             try
             {
-                ID = function.Invoke(excelConnectionString, ID);
+                strReturn = function.Invoke(excelConnectionString, InputType, strReturn);
+                if (strReturn != CommonConstants.Status_Success)
+                {
+                    LogError(strReturn);
+                    throw new Exception(strReturn);
+                }
             }
             catch (DbEntityValidationException ex)
             {
@@ -203,6 +302,7 @@ namespace BTS.Web.Controllers
                         description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
                     }
                 }
+
                 LogError(ex, description);
                 throw;
             }
@@ -221,42 +321,36 @@ namespace BTS.Web.Controllers
             }
         }
 
-        protected void ExecuteDatabase(Func<string, string, int> function, string excelConnectionString, string ID)
+        public void LogError(string description)
         {
-            int idReturn = 0;
-            string description = "";
+            TempData["error"] = description;
             try
             {
-                idReturn = function.Invoke(excelConnectionString, ID);
+                Error error = new Error();
+                error.CreatedDate = DateTime.Now;
+                error.Message = description;
+                error.Description = description;                
+                _errorService.Create(error);
+                _errorService.Save();
             }
             catch (DbEntityValidationException ex)
             {
                 foreach (var eve in ex.EntityValidationErrors)
                 {
                     Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
-                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
                     foreach (var ve in eve.ValidationErrors)
                     {
                         Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
-                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
                     }
                 }
-
-                LogError(ex, description);
-                throw;
             }
             catch (DbUpdateException ex)
             {
-                LogError(ex);
-                throw;
+                Trace.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
-                LogError(ex);
-                throw;
-            }
-            finally
-            {
+                Trace.WriteLine(ex.Message);
             }
         }
 
@@ -301,8 +395,8 @@ namespace BTS.Web.Controllers
             base.Initialize(requestContext);
             if (Session[CommonConstants.CurrentCulture] != null)
             {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(Session[CommonConstants.CurrentCulture].ToString());
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Session[CommonConstants.CurrentCulture].ToString());
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(Session[CommonConstants.CurrentCulture]?.ToString());
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Session[CommonConstants.CurrentCulture]?.ToString());
             }
             else
             {

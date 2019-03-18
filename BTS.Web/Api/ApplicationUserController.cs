@@ -14,12 +14,15 @@ using BTS.Web.Infrastructure.Core;
 using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
 using BTS.Data.ApplicationModels;
+using Microsoft.AspNet.Identity;
+using System.IO;
+using BTS.Common;
 
 namespace BTS.Web.Api
 {
     [Authorize]
     [RoutePrefix("api/applicationUser")]
-    public class ApplicationUserController : ApiControllerBase
+    public class ApplicationUserController : BaseController
     {
         private ApplicationUserManager _userManager;
         private IApplicationGroupService _appGroupService;
@@ -80,7 +83,7 @@ namespace BTS.Web.Api
             else
             {
                 var applicationUserViewModel = Mapper.Map<ApplicationUser, ApplicationUserViewModel>(user.Result);
-                var listGroup = _appGroupService.GetListGroupByUserId(applicationUserViewModel.Id);
+                var listGroup = _appGroupService.GetGroupsByUserId(applicationUserViewModel.Id);
                 applicationUserViewModel.Groups = Mapper.Map<IEnumerable<ApplicationGroup>, IEnumerable<ApplicationGroupViewModel>>(listGroup);
                 return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
             }
@@ -89,54 +92,54 @@ namespace BTS.Web.Api
         [HttpPost]
         [Route("add")]
         //[Authorize(Roles = "AddUser")]
-        public async Task<HttpResponseMessage> Create(HttpRequestMessage request, ApplicationUserViewModel applicationUserViewModel)
+        public async Task<HttpResponseMessage> Create(HttpRequestMessage request, ApplicationUserViewModel Item, params string[] selectedItems)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var newAppUser = new ApplicationUser();
-                newAppUser.UpdateUser(applicationUserViewModel);
-                try
+                if (ModelState.IsValid)
                 {
-                    newAppUser.Id = Guid.NewGuid().ToString();
-                    var result = await _userManager.CreateAsync(newAppUser, applicationUserViewModel.Password);
+                    IdentityResult result;
+                    ApplicationUser newAppUser;
+
+                    if (Item.ImageUpload != null)
+                    {
+                        string fileName = Path.GetFileNameWithoutExtension(Item.ImageUpload.FileName);
+                        string extension = Path.GetExtension(Item.ImageUpload.FileName);
+                        fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                        Item.ImagePath = "~/AppFiles/Images/" + fileName;
+                        Item.ImageUpload.SaveAs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "/AppFiles/Images/", fileName));
+                    }
+
+                    newAppUser = new ApplicationUser();
+                    newAppUser.UpdateUser(Item);
+                    newAppUser.CreatedBy = User.Identity.Name;
+                    newAppUser.CreatedDate = DateTime.Now;
+
+                    result = await UserManager.CreateAsync(newAppUser, Item.Password);
+
                     if (result.Succeeded)
                     {
-                        var listAppUserGroup = new List<ApplicationUserGroup>();
-                        foreach (var group in applicationUserViewModel.Groups)
-                        {
-                            listAppUserGroup.Add(new ApplicationUserGroup()
-                            {
-                                GroupId = group.Id,
-                                UserId = newAppUser.Id
-                            });
-                            //add role to user
-                            var listRole = _appRoleService.GetListRoleByGroupId(group.Id);
-                            foreach (var role in listRole)
-                            {
-                                await _userManager.RemoveFromRoleAsync(newAppUser.Id, role.Name);
-                                await _userManager.AddToRoleAsync(newAppUser.Id, role.Name);
-                            }
-                        }
-                        _appGroupService.AddUserToGroups(listAppUserGroup, newAppUser.Id);
-                        _appGroupService.Save();
+                        await UpdateUserGroups(newAppUser.Id, selectedItems);
 
-                        return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
+                        return request.CreateResponse(HttpStatusCode.OK, Item);
                     }
                     else
+                    {
                         return request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join(",", result.Errors));
+                    }
                 }
-                catch (NameDuplicatedException dex)
+                else
                 {
-                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, dex.Message);
-                }
-                catch (Exception ex)
-                {
-                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
                 }
             }
-            else
+            catch (NameDuplicatedException dex)
             {
-                return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, dex.Message);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 
@@ -170,7 +173,7 @@ namespace BTS.Web.Api
                                 await _userManager.AddToRoleAsync(appUser.Id, role.Name);
                             }
                         }
-                        _appGroupService.AddUserToGroups(listAppUserGroup, applicationUserViewModel.Id);
+                        //_appGroupService.AddUserToGroups(listAppUserGroup, applicationUserViewModel.Id);
                         _appGroupService.Save();
                         return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
                     }
@@ -199,6 +202,31 @@ namespace BTS.Web.Api
                 return request.CreateResponse(HttpStatusCode.OK, id);
             else
                 return request.CreateErrorResponse(HttpStatusCode.OK, string.Join(",", result.Errors));
+        }
+
+        private async Task UpdateUserGroups(string userID, string[] selectedItems)
+        {
+            _appGroupService.DeleteUserFromGroups(userID);
+            _appGroupService.Save();
+
+            var listAppUserGroup = new List<ApplicationUserGroup>();
+            selectedItems = selectedItems ?? new string[] { };
+
+            foreach (var group in selectedItems)
+            {
+                listAppUserGroup.Add(new ApplicationUserGroup()
+                {
+                    GroupId = group,
+                    UserId = userID,
+                    CreatedBy = User.Identity.Name,
+                    CreatedDate = DateTime.Now
+                });
+            }
+            _appGroupService.AddUserToGroups(listAppUserGroup);
+            _appGroupService.Save();
+
+            var newUserRoles = _appGroupService.GetLogicRolesByUserId(userID);
+            await updateRoles(userID, newUserRoles);
         }
     }
 }

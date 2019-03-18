@@ -1,4 +1,5 @@
-﻿@{
+﻿@using BTS.Common
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Layouts.cshtml";
 }
@@ -67,7 +68,7 @@
                                         Mẫu file dữ liệu nhập<span class="required"></span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <a class="form-control" href="~/AppFiles/Samples/Import BTS Certificate Sample.xls">File mẫu Hồ sơ kiểm định</a>
+                                        <a class="form-control" href="~/AppFiles/Samples/Khanh - File Mau GCN - XYZ.xlsm">File mẫu Hồ sơ kiểm định</a>                                        
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +81,31 @@
                                         @*<input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="file" class="form-control col-md-7 col-xs-12" required="required">*@
                                         @*<input id="FileDialog" type="file" accept=".xlsx, .xls" name="file" class="form-control col-md-7 col-xs-12" required="required" onchange="checkfile(this);">*@
                                         @*<input id="FileDialog" type="file" accept=".xls" name="file" class="form-control col-md-7 col-xs-12" required="required" onchange="checkfile(this);">*@
-                                        <input id="FileDialog" type="file" accept=".xlsx" name="file" class="form-control col-md-7 col-xs-12" required="required" onchange="checkfile(this);">
+                                        <input id="FileDialog" type="file" accept=".xlsx, .xlsm" name="file" class="form-control col-md-7 col-xs-12" required="required" onchange="checkfile(this);">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="InputType">
+                                        Loại nhập dữ liệu<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <input type="radio" id = @CommonConstants.InputType_AddNew  name="InputType" value=@CommonConstants.InputType_AddNew checked>
+                                            <label for=@CommonConstants.InputType_AddNew>Thêm mới</label>
+                                        </div>
+
+                                        <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <input type="radio" id=@CommonConstants.InputType_AddMore name="InputType" value=@CommonConstants.InputType_AddMore>
+                                            <label for=@CommonConstants.InputType_AddMore>Thêm tiếp</label>
+                                        </div>
+
+                                        <div class="col-md-3 col-sm-3 col-xs-12">
+                                            <input type="radio" id=@CommonConstants.InputType_DelAdd name="InputType" value=@CommonConstants.InputType_DelAdd>
+                                            <label for=@CommonConstants.InputType_DelAdd>Xóa Thêm lại</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

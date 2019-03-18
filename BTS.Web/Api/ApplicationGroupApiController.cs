@@ -14,12 +14,12 @@ using BTS.Data.ApplicationModels;
 
 namespace BTS.Web.Controllers
 {
-    public class ApplicationGroupController : BaseController
+    public class ApplicationGroupApiController : BaseController
     {
         private IApplicationGroupService _appGroupService;
         private ApplicationUserManager _userManager;
 
-        public ApplicationGroupController(IErrorService errorService,
+        public ApplicationGroupApiController(IErrorService errorService,
             IApplicationGroupService appGroupService) : base(errorService)
         {
             _appGroupService = appGroupService;

@@ -16,7 +16,7 @@ namespace BTS.Data.Repository
     {
         IEnumerable<Certificate> GetMultiPagingByBtsCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10, bool onlyOwner = false);
 
-        IEnumerable<Certificate> GetMultiByBtsCode(string btsCode, bool onlyOwner = false);
+        IEnumerable<Certificate> GetMultiByBtsCode(string btsCode, bool onlyOwner = false);        
 
         IEnumerable<CertStatVM> GetStatistic(string fromDate, string toDate);
 

@@ -76,7 +76,6 @@ namespace BTS.Web.Controllers
                     {
                         var newItem = new City();
                         newItem.UpdateCity(Item);
-                        newItem.Id = Item.Id;
 
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;

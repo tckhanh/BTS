@@ -81,7 +81,7 @@ namespace BTS.Web.Controllers
                 var listItem = new SelectListItem()
                 {
                     Text = profileItem.BtsQuantity + "-" + profileItem.ApplicantID + "-" + profileItem.ProfileNum,
-                    Value = profileItem.Id.ToString(),
+                    Value = profileItem.Id?.ToString(),
                     Selected = false
                 };
                 ItemVm.ProfileList.Add(listItem);
@@ -136,7 +136,6 @@ namespace BTS.Web.Controllers
                     {
                         var newItem = new Bts();
                         newItem.UpdateBts(Item);
-                        newItem.Id = Item.Id;
 
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;

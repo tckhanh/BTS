@@ -30,5 +30,10 @@ namespace BTS.Model.Models
         public string Fax { get; set; }
 
         public virtual IEnumerable<Certificate> Certificates { get; set; }
+
+        public Lab()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

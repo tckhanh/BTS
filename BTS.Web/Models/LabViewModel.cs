@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BTS.Model.Models;
+using BTS.Web.Infrastructure.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace BTS.Web.Models
         [Display(Name = "Tên Phòng Đo kiểm")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tên Phòng Đo kiểm")]
         [StringLength(255, ErrorMessage = "Tên Phòng Đo kiểm không quá 255 ký tự")]
+        [Unique(ErrorMessage = "Tên Phòng Đo kiểm đã tồn tại rồi !!", TargetModelType = typeof(Lab), TargetPropertyName = "Name")]
         public string Name { get; set; }
 
         [Display(Name = "Địa chỉ")]
