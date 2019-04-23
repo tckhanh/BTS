@@ -50,8 +50,8 @@ namespace BTS.Web.Controllers
                 {
                     ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
 
-                    var allGroup = _appGroupService.GetAll();
-                    var listGroup = _appGroupService.GetGroupsByRoleId(id);
+                    var allGroup = _appGroupService.GetAll().ToList();
+                    var listGroup = _appGroupService.GetGroupsByRoleId(id).ToList();
                     foreach (var groupItem in allGroup)
                     {
                         var listItem = new SelectListItem()
@@ -63,7 +63,7 @@ namespace BTS.Web.Controllers
                         ItemVm.GroupList.Add(listItem);
                     }
 
-                    var allUser = UserManager.Users;
+                    var allUser = UserManager.Users.ToList();
                     foreach (var userItem in allUser)
                     {
                         if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))
@@ -100,8 +100,8 @@ namespace BTS.Web.Controllers
         //        {
         //            ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
 
-        //            var allGroup = _appGroupService.GetAll();
-        //            var listGroup = _appGroupService.GetGroupsByRoleId(id);
+        //            var allGroup = _appGroupService.GetAll().ToList();
+        //            var listGroup = _appGroupService.GetGroupsByRoleId(id).ToList();
         //            foreach (var groupItem in allGroup)
         //            {
         //                var listItem = new SelectListItem()

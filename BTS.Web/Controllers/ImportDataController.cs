@@ -285,8 +285,8 @@ namespace BTS.Web.Controllers
 
                 Item.ProfileNum = dt.Rows[0][CommonConstants.Sheet_Profile_ProfileNum]?.ToString();
                 Item.ProfileDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ProfileDate]?.ToString());
-                Item.BtsQuantity = int.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_BtsQuantity]?.ToString());
-                Item.AcceptedBtsQuantity = int.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_AcceptedBtsQuantity]?.ToString());
+                Item.BtsQuantity = Int32.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_BtsQuantity]?.ToString());
+                Item.AcceptedBtsQuantity = Int32.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_AcceptedBtsQuantity]?.ToString());
                 Item.ApplyDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ApplyDate]?.ToString());
                 if (dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString().Length > 0)
                 {
@@ -354,7 +354,7 @@ namespace BTS.Web.Controllers
                         if (dt.Rows[i][CommonConstants.Sheet_Bts_Latitude]?.ToString().Length > 0)
                             Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_Latitude]?.ToString());
                         if (dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID]?.ToString().Length > 0)
-                            Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID]?.ToString());
+                            Item.InCaseOfID = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID]?.ToString());
 
                         IEnumerable<string> certIDs = _importService.getLastOwnCertificateIDs(Item.BtsCode, operatorID);
 
@@ -415,7 +415,7 @@ namespace BTS.Web.Controllers
                         if (dt.Rows[i][CommonConstants.Sheet_Bts_Latitude]?.ToString().Length > 0)
                             Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_Latitude]?.ToString());
                         if (dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID]?.ToString().Length > 0)
-                            Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID]?.ToString());
+                            Item.InCaseOfID = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Bts_InCaseOfID]?.ToString());
 
                         IEnumerable<string> certIDs = _importService.getLastOwnCertificateIDs(Item.BtsCode, operatorID);
 
@@ -448,6 +448,13 @@ namespace BTS.Web.Controllers
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Certificate);
             string operatorID = _importService.getApplicant(profileID).OperatorID;
 
+            if (dt.Rows.Count > 0)
+            {
+                if (Int32.Parse(dt.Rows[0][CommonConstants.Sheet_Certificate_CerBtsNum]?.ToString()) <= 0)
+                {
+                    return CommonConstants.Status_Success;
+                }
+            }
 
 
             if (InputType == CommonConstants.InputType_AddMore)
@@ -472,7 +479,7 @@ namespace BTS.Web.Controllers
                         if (dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString().Length > 0)
                             Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString());
                         if (dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString().Length > 0)
-                            Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString());
+                            Item.InCaseOfID = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString());
 
                         Item.LabID = dt.Rows[i][CommonConstants.Sheet_Certificate_LabID]?.ToString();
 
@@ -619,7 +626,7 @@ namespace BTS.Web.Controllers
                         if (dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString().Length > 0)
                             Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString());
                         if (dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString().Length > 0)
-                            Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString());
+                            Item.InCaseOfID = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString());
 
                         Item.LabID = dt.Rows[i][CommonConstants.Sheet_Certificate_LabID]?.ToString();
 
@@ -741,6 +748,15 @@ namespace BTS.Web.Controllers
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_NoCertificate);
             string operatorID = _importService.getApplicant(proFileID).OperatorID;
 
+            if (dt.Rows.Count > 0)
+            {
+                if (Int32.Parse(dt.Rows[0][CommonConstants.Sheet_NoCertificate_TotalBtsNum]?.ToString()) <= int.Parse(dt.Rows[0][CommonConstants.Sheet_NoCertificate_CerBtsNum]?.ToString()))
+                {
+                    return CommonConstants.Status_Success;
+                }
+            }
+                
+
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString()))
@@ -757,7 +773,7 @@ namespace BTS.Web.Controllers
                     if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_Latitude]?.ToString().Length > 0)
                         Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_Latitude]?.ToString());
                     if (dt.Rows[i][CommonConstants.Sheet_NoCertificate_InCaseOfID]?.ToString().Length > 0)
-                        Item.InCaseOfID = int.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_InCaseOfID]?.ToString());
+                        Item.InCaseOfID = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_NoCertificate_InCaseOfID]?.ToString());
 
                     Item.LabID = dt.Rows[i][CommonConstants.Sheet_NoCertificate_LabID]?.ToString();
 

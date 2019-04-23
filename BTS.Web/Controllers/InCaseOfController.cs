@@ -36,7 +36,7 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<InCaseOfViewModel> GetAll()
         {
-            var model = _inCaseOfService.getAll();
+            var model = _inCaseOfService.getAll().ToList();
             return Mapper.Map<IEnumerable<InCaseOfViewModel>>(model);
         }
 

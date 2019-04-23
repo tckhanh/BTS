@@ -36,7 +36,7 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<ProfileViewModel> GetAll()
         {
-            var model = _profileService.getAll();
+            var model = _profileService.getAll().ToList();
             return Mapper.Map<IEnumerable<ProfileViewModel>>(model);
         }
 

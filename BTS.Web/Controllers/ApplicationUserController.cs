@@ -96,11 +96,11 @@ namespace BTS.Web.Controllers
                 {
                     Item = Mapper.Map<ApplicationUserViewModel>(DbItem);
 
-                    var allGroup = _appGroupService.GetAll();
-                    var listGroup = _appGroupService.GetGroupsByUserId(id);
+                    var allGroup = _appGroupService.GetAll().ToList();
+                    var listGroup = _appGroupService.GetGroupsByUserId(id).ToList();
                     foreach (var groupItem in allGroup)
                     {
-                        var listItem = new SelectListItem()
+                        SelectListItem listItem = new SelectListItem()
                         {
                             Text = groupItem.Description,
                             Value = groupItem.Id,
@@ -113,7 +113,7 @@ namespace BTS.Web.Controllers
                     var listRole = await UserManager.GetRolesAsync(id);
                     foreach (var roleItem in allRole)
                     {
-                        var listItem = new SelectListItem()
+                        SelectListItem listItem = new SelectListItem()
                         {
                             Text = roleItem.Description,
                             Value = roleItem.Id,
@@ -138,12 +138,12 @@ namespace BTS.Web.Controllers
             }
             else
             {
-                var allGroup = _appGroupService.GetAll();
+                var allGroup = _appGroupService.GetAll().ToList();
 
                 // load the roles/Roles for selection in the form:
                 foreach (var groupItem in allGroup)
                 {
-                    var listItem = new SelectListItem()
+                    SelectListItem listItem = new SelectListItem()
                     {
                         Text = groupItem.Description,
                         Value = groupItem.Id,

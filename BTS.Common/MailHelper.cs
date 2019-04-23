@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using System;
+using System.Net.Mail;
 
 namespace BTS.Common
 {
@@ -9,7 +10,7 @@ namespace BTS.Common
             try
             {
                 var host = ConfigHelper.GetByKey("SMTPHost");
-                var port = int.Parse(ConfigHelper.GetByKey("SMTPPort"));
+                var port = Int32.Parse(ConfigHelper.GetByKey("SMTPPort"));
                 var fromEmail = ConfigHelper.GetByKey("FromEmailAddress");
                 var password = ConfigHelper.GetByKey("FromEmailPassword");
                 var fromName = ConfigHelper.GetByKey("FromName");

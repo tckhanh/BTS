@@ -44,6 +44,23 @@ var certificateController = {
                 tr.addClass('shown');
             }
         });
+
+        $("#MyDataTable").contextmenu({
+            delegate: "tbody > tr",
+            menu: [
+                { title: "Copy", cmd: "copy", uiIcon: "ui-icon-copy" },
+                { title: "----" },
+                {
+                    title: "More", children: [
+                        { title: "Sub 1", cmd: "sub1" },
+                        { title: "Sub 2", cmd: "sub1" }
+                    ]
+                }
+            ],
+            select: function (event, ui) {
+                alert("select " + ui.cmd + " on " + ui.target.text());
+            }
+        });
     },
     registerEvent: function () {
         $('#btnSearch').off('click').on('click', function () {
@@ -181,6 +198,15 @@ var certificateController = {
                     certificateController.loadPivotTable(json.data);
                 })
                 .dataTable({
+                    columnDefs: [{
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    }],
+                    select: {
+                        style: 'multi',
+                        selector: 'td:first-child'
+                            },
                     dom: 'Bfrtip',
                     buttons: [
                         {
@@ -284,6 +310,15 @@ var certificateController = {
                     }
                 })
                 .dataTable({
+                    columnDefs: [{
+                        orderable: false,
+                        className: 'select-checkbox',
+                        targets: 0
+                    }],
+                    select: {
+                        style: 'os',
+                        selector: 'td:first-child'
+                    },
                     "processing": true,
                     "info": true,
                     "selector": true,

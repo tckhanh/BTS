@@ -56,7 +56,7 @@ namespace BTS.Web.App_Start
                     regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 },
                 AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
-                ExpireTimeSpan = TimeSpan.FromMinutes(15),
+                ExpireTimeSpan = TimeSpan.FromMinutes(30),
                 SlidingExpiration = true
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);

@@ -43,7 +43,7 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<BtsViewModel> GetAll()
         {
-            var model = _btsService.getAll();
+            var model = _btsService.getAll().ToList();
             return Mapper.Map<IEnumerable<BtsViewModel>>(model);
         }
 

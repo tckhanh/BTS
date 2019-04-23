@@ -7,7 +7,7 @@
     IEnumerable<BTS.Web.Models.ApplicationRoleViewModel> Roles = ViewBag.Roles;
 }
 
-@using (Html.BeginForm("AddOrEdit", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationGroup", new { id = "", act = "Add" }) }))//data-resetUrl
+@using (Html.BeginForm("AddOrEdit", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Encode(Url.Action("AddOrEdit", "ApplicationGroup", new { id = "", act = "Add" })) }))//data-resetUrl
 {
     @Html.AntiForgeryToken()
     <div class="row">
@@ -88,10 +88,10 @@
                     <div class="col-md-offset-2 col-md-10">
                         @if (!string.IsNullOrEmpty(Model.Id) && User.IsInRole(CommonConstants.System_CanAdd_Role))
                         {
-                            <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationGroup", new {id = "", act = "Add"})')"><i class="fa fa-plus"></i> Thêm mới</a>
+                            <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Encode(Url.Action("AddOrEdit","ApplicationGroup", new {id = "", act = "Add"}))')"><i class="fa fa-plus"></i> Thêm mới</a>
                         }
 
-                        <a class=" btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationGroup",new {id = "", act = "View"})')"><><i class="fa fa-close"></i> Hủy bỏ</a>
+                        <a class=" btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Encode(Url.Action("AddOrEdit","ApplicationGroup",new {id = "", act = "View"}))')"><><i class="fa fa-close"></i> Hủy bỏ</a>
 
                         <input type="submit" value=" Lưu" class="btn btn-primary" />
                     </div>

@@ -28,11 +28,11 @@
         public const string InputType_DelAdd = "DelAdd";
 
 
-        public const string SuperAdmin_Name = "admin";
+        public const string SuperAdmin_Name = "Admin";
         public const string SuperAdmin_FullName = "Trần Công Khanh";
         public const string SuperAdmin_Email = "tckhanh.p@gmail.com";
         public const bool SuperAdmin_EmailConfirmed = true;
-        public const string SuperAdmin_Password = "P@ssword";
+        public const string SuperAdmin_Password = "TckP@ssword";
         public const string SuperAdmin_ImagePath = "/AppFiles/Images/default.png";
 
         public const string System_CanView_Role = "System_CanView";
@@ -191,8 +191,10 @@
         public const string Sheet_Certificate_IsMeasuringExposure = "IsMeasuringExposure";
         public const string Sheet_Certificate_MinAntenHeight = "MinAntenHeight";
         public const string Sheet_Certificate_OffsetHeight = "OffsetHeight";
+        public const string Sheet_Certificate_TotalBtsNum = "TotalBtsNum";
+        public const string Sheet_Certificate_CerBtsNum = "CerBtsNum";
 
-        
+
 
         public const string Sheet_NoCertificate = "NoCertificate";
         public const string Sheet_NoCertificate_BtsCode = "BtsCode";
@@ -205,6 +207,8 @@
         public const string Sheet_NoCertificate_TestReportNo = "TestReportNo";
         public const string Sheet_NoCertificate_TestReportDate = "TestReportDate";
         public const string Sheet_NoCertificate_ReasonNoCertificate = "ReasonNoCertificate";
+        public const string Sheet_NoCertificate_TotalBtsNum = "TotalBtsNum";
+        public const string Sheet_NoCertificate_CerBtsNum = "CerBtsNum";
 
         public const string Sheet_User = "User";
         public const string Sheet_User_FullName = "FullName";

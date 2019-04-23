@@ -36,7 +36,7 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<OperatorViewModel> GetAll()
         {
-            var model = _operatorService.getAll();
+            var model = _operatorService.getAll().ToList();
             return Mapper.Map<IEnumerable<OperatorViewModel>>(model);
         }
 

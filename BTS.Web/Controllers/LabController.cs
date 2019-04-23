@@ -36,7 +36,7 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<LabViewModel> GetAll()
         {
-            var model = _labService.getAll();
+            var model = _labService.getAll().ToList();
             return Mapper.Map<IEnumerable<LabViewModel>>(model);
         }
 

@@ -40,7 +40,7 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<ApplicationGroupViewModel> GetAll()
         {
-            var model = _appGroupService.GetAll();
+            var model = _appGroupService.GetAll().ToList();
             return Mapper.Map<IEnumerable<ApplicationGroupViewModel>>(model);
         }
 

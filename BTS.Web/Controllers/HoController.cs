@@ -157,7 +157,7 @@ namespace BTS.Web.Controllers
         //[OutputCache(Duration = 3600)]
         //public ActionResult Category()
         //{
-        //    var model = _productCategoryService.GetAll();
+        //    var model = _productCategoryService.GetAll().ToList();
         //    var listProductCategoryViewModel = Mapper.Map<IEnumerable<ProductCategory>, IEnumerable<ProductCategoryViewModel>>(model);
         //    return PartialView(listProductCategoryViewModel);
         //}

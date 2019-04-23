@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ using System.Web;
 
 namespace BTS.Data
 {
-    // Must be expressed in terms of our custom types:
+    // Must be expressed in terms of our custom types:    
     public class BTSDbContext
         : IdentityDbContext<ApplicationUser, ApplicationRole,
         string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
@@ -51,7 +52,10 @@ namespace BTS.Data
 
         static BTSDbContext()
         {
-            Database.SetInitializer<BTSDbContext>(new IdentityDbInit());
+            //For No Init Database SQL Server
+            //Database.SetInitializer<BTSDbContext>(new IdentityDbInit());
+            //For InitDatabase SQL Server
+            Database.SetInitializer<BTSDbContext>(new MyDbInitializer());            
         }
 
         public static BTSDbContext Create()
@@ -71,4 +75,54 @@ namespace BTS.Data
     public class IdentityDbInit : NullDatabaseInitializer<BTSDbContext>
     {
     }
+
+    public class MyDbInitializer: CreateDatabaseIfNotExists<BTSDbContext>, IDatabaseInitializer<BTSDbContext>
+    {
+        protected override void Seed(BTSDbContext context)
+        {
+            // create 3 students to seed the database
+            //context.Students.Add(new Student { ID = 1, FirstName = "Mark", LastName = "Richards", EnrollmentDate = DateTime.Now });
+            //context.Students.Add(new Student { ID = 2, FirstName = "Paula", LastName = "Allen", EnrollmentDate = DateTime.Now });
+            //context.Students.Add(new Student { ID = 3, FirstName = "Tom", LastName = "Hoover", EnrollmentDate = DateTime.Now });
+
+            base.Seed(context);
+        }
+
+        public void InitializeDatabase(BTSDbContext context)
+        {
+            if (!context.Database.Exists())
+            {
+                // if database did not exist before - create it
+                context.Database.Create();
+                InitDatabase.CreateRolesandUsers(context);
+                InitDatabase.CreateOperator(context);
+                InitDatabase.CreateSlide(context);
+                InitDatabase.CreatePage(context);
+                InitDatabase.CreateContactDetail(context);
+                InitDatabase.CreateConfigTitle(context);
+            }
+            else
+            {
+                // query to check if MigrationHistory table is present in the database 
+                var migrationHistoryTableExists = ((IObjectContextAdapter)context).ObjectContext.ExecuteStoreQuery<int>(
+                string.Format(
+                  "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{0}' AND table_name = '__MigrationHistory'",
+                  "bts"));
+
+                // if MigrationHistory table is not there (which is the case first time we run) - create it
+                if (migrationHistoryTableExists.FirstOrDefault() == 0)
+                {
+                    context.Database.Delete();
+                    context.Database.Create();
+                    InitDatabase.CreateRolesandUsers(context);
+                    InitDatabase.CreateOperator(context);
+                    InitDatabase.CreateSlide(context);
+                    InitDatabase.CreatePage(context);
+                    InitDatabase.CreateContactDetail(context);
+                    InitDatabase.CreateConfigTitle(context);
+                }
+            }
+        }
+    }
+
 }

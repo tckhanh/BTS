@@ -36,7 +36,7 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<CityViewModel> GetAll()
         {
-            var model = _cityService.getAll();
+            var model = _cityService.getAll().ToList();
             return Mapper.Map<IEnumerable<CityViewModel>>(model);
         }
 

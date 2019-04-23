@@ -7,7 +7,7 @@
 
 @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
 {
-    using (Html.BeginForm("AddOrEdit", "ApplicationUser", new { act = CommonConstants.Action_Edit }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add }) }))//data-resetUrl
+    using (Html.BeginForm("AddOrEdit", "ApplicationUser", new { act = CommonConstants.Action_Edit }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Encode(Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add })) }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -132,7 +132,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Encode(Url.Action("AddOrEdit", "ApplicationUser", new { id = "", act = CommonConstants.Action_Add }))', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
                             <input type="submit" value="Cập nhật" class="btn btn-primary" />
                         </div>
                     </div>

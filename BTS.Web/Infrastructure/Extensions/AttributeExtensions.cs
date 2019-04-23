@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using BTS.Data;
 using System.Linq.Dynamic;
+using System.Web.Mvc;
 
 namespace BTS.Web.Infrastructure.Extensions
 {    
@@ -119,6 +120,17 @@ namespace BTS.Web.Infrastructure.Extensions
                     return new ValidationResult(ErrorMessageString);
             }
 
+        }
+    }
+
+    public class UserNameFilter : ActionFilterAttribute
+    {
+        const string parameterName = "userName";
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (filterContext.ActionParameters.ContainsKey(parameterName))
+                if (filterContext.HttpContext.User.Identity.IsAuthenticated)
+                    filterContext.ActionParameters[parameterName] = filterContext.HttpContext.User.Identity.Name;
         }
     }
 }
