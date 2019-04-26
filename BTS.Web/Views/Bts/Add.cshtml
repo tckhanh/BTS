@@ -5,9 +5,9 @@
     Layout = null;
 }
 
-@if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+  @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
 {
-    using (Html.BeginForm("AddOrEdit", "Bts", new { act = CommonConstants.Action_Add }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Encode(Url.Action("AddOrEdit", "Bts", new { id = "" })) }))//data-resetUrl
+    using (Html.BeginForm("AddOrEdit", "Bts", new { act = CommonConstants.Action_Add }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Bts", new { id = "" }) }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -121,8 +121,8 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Encode(Url.Action("AddOrEdit","Bts", new{id = ""}))', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
-                            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Bts", new{id = "", act = CommonConstants.Action_View })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                              @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
                             {
                                 <input type="submit" value="Lưu" class="btn btn-primary" />
                             }

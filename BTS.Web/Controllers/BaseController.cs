@@ -21,7 +21,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace BTS.Web.Controllers
-{
+{    
     public class BaseController : Controller
     {
         private IErrorService _errorService;
@@ -426,5 +426,17 @@ namespace BTS.Web.Controllers
             //}
             base.OnActionExecuting(filterContext);
         }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            // Log the error somehow then continue
+            LogError(filterContext.Exception);
+            // Mark the error as handled and switch execution to the error view
+            // If you forget to mark the exception as handled, your users will see the normal ASP.NET error page.
+
+            //filterContext.ExceptionHandled = true;
+            //this.View("Error").ExecuteResult(filterContext.Controller.ControllerContext);
+        }
+
     }
 }

@@ -19,6 +19,7 @@ using BTS.Data.ApplicationModels;
 using BTS.Common;
 using BTS.Data;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Security.Claims;
 
 namespace BTS.Web.Controllers
 {
@@ -38,7 +39,7 @@ namespace BTS.Web.Controllers
         public ICollection<SelectListItem> ListRolesOfUser(string id = "")
         {
             ICollection<SelectListItem> allRolesOfUser = new List<SelectListItem>();
-            IEnumerable<ApplicationRole> listRoles = RoleManager.Roles;
+            IEnumerable<ApplicationRole> listRoles = RoleManager.Roles.ToList();
             foreach (var roleItem in listRoles)
             {
                 allRolesOfUser.Add(new SelectListItem()
@@ -49,7 +50,7 @@ namespace BTS.Web.Controllers
                 });
             }
 
-            IEnumerable<ApplicationGroup> listGroupOfUser = _appGroupService.GetGroupsByUserId(id);
+            IEnumerable<ApplicationGroup> listGroupOfUser = _appGroupService.GetGroupsByUserId(id).ToList();
             foreach (var groupItem in listGroupOfUser)
             {
                 IEnumerable<ApplicationRole> listRoleOfGroup = _appGroupService.GetRolesByGroupId(groupItem.Id);
@@ -109,7 +110,7 @@ namespace BTS.Web.Controllers
                         Item.GroupList.Add(listItem);
                     }
 
-                    var allRole = RoleManager.Roles.OrderByDescending(x => x.Name);
+                    var allRole = RoleManager.Roles.OrderByDescending(x => x.Name).ToList();
                     var listRole = await UserManager.GetRolesAsync(id);
                     foreach (var roleItem in allRole)
                     {
@@ -171,8 +172,9 @@ namespace BTS.Web.Controllers
                     {
                         string fileName = Path.GetFileNameWithoutExtension(Item.ImageUpload.FileName);
                         string extension = Path.GetExtension(Item.ImageUpload.FileName);
-                        fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                        Item.ImagePath = "~/AppFiles/Images/" + fileName;
+                        //fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                        fileName = "UserImage" + DateTime.Now.ToString("yyyymmssfff") + extension;
+                        Item.ImagePath = "/AppFiles/Images/" + fileName;
                         Item.ImageUpload.SaveAs(Path.Combine(Server.MapPath("~/AppFiles/Images/"), fileName));
                     }
 

@@ -133,4 +133,17 @@ namespace BTS.Web.Infrastructure.Extensions
                     filterContext.ActionParameters[parameterName] = filterContext.HttpContext.User.Identity.Name;
         }
     }
+
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    public class NoSundayAccessAttribute : FilterAttribute, IAuthorizationFilter
+    {
+        public void OnAuthorization(AuthorizationContext filterContext)
+        {
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
+            {
+                filterContext.Result = new ContentResult
+                { Content = "It's Sunday, get some rest" };
+            }
+        }
+    }
 }

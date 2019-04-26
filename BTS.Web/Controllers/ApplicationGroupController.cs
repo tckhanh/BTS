@@ -57,7 +57,7 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    var allRole = RoleManager.Roles.OrderByDescending(x => x.Name); ;
+                    var allRole = RoleManager.Roles.OrderByDescending(x => x.Name).ToList();
                     var listRole = _appGroupService.GetRolesByGroupId(id);
 
                     Item = Mapper.Map<ApplicationGroupViewModel>(DbItem);
@@ -72,7 +72,7 @@ namespace BTS.Web.Controllers
                         Item.RoleList.Add(listItem);
                     }
 
-                    var listUser = _appGroupService.GetUsersByGroupId(id);
+                    var listUser = _appGroupService.GetUsersByGroupId(id).ToList();
                     foreach (var userItem in listUser)
                     {
                         var listItem = new SelectListItem()
@@ -92,7 +92,7 @@ namespace BTS.Web.Controllers
             }
             else
             {
-                var allRole = RoleManager.Roles;
+                var allRole = RoleManager.Roles.ToList();
                 foreach (var roleItem in allRole)
                 {
                     var listItem = new SelectListItem()
@@ -161,7 +161,7 @@ namespace BTS.Web.Controllers
                     _appGroupService.AddRolesToGroup(listRoleGroup);
                     _appGroupService.Save();
 
-                    var users = _appGroupService.GetUsersByGroupId(appGroup.Id);
+                    var users = _appGroupService.GetUsersByGroupId(appGroup.Id).ToList();
                     foreach (var userItem in users)
                     {
                         var newUserRoles = _appGroupService.GetLogicRolesByUserId(userItem.Id);

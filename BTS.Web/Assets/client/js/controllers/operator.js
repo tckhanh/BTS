@@ -133,7 +133,7 @@ function Delete(id) {
     if (confirm('Bạn có chắc muốn xóa Nhà mạng này không?')) {
         $.ajax({
             type: "POST",
-            url: '@Url.Encode(Url.Action("Delete","Operator"))/' + id,
+            url: '@Url.Action("Delete","Operator")/' + id,
             success: function (data) {
                 if (data.status = "Success") {
                     if (response.status == "TimeOut") {

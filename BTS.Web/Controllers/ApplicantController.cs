@@ -53,7 +53,7 @@ namespace BTS.Web.Controllers
                 {
                     ItemVm = Mapper.Map<ApplicantViewModel>(DbItem);
                 }
-                IEnumerable<Operator> operatorList = _applicantService.GetAllOperator();
+                IEnumerable<Operator> operatorList = _applicantService.GetAllOperator().ToList();
                 foreach (var operatorItem in operatorList)
                 {
                     var listItem = new SelectListItem()
@@ -71,7 +71,7 @@ namespace BTS.Web.Controllers
             }
             else
             {
-                IEnumerable<Operator> operatorList = _applicantService.GetAllOperator();
+                IEnumerable<Operator> operatorList = _applicantService.GetAllOperator().ToList();
                 foreach (var operatorItem in operatorList)
                 {
                     var listItem = new SelectListItem()

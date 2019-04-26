@@ -113,7 +113,7 @@ namespace BTS.Web.Controllers
         //                ItemVm.GroupList.Add(listItem);
         //            }
 
-        //            var allUser = UserManager.Users;
+        //            var allUser = UserManager.Users.ToList();
         //            foreach (var userItem in allUser)
         //            {
         //                if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))

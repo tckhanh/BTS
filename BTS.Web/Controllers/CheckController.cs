@@ -162,7 +162,7 @@ namespace BTS.Web.Controllers
                     }
 
                     string dataString = "";
-                    IEnumerable<Profile> ProfilesBtsInProcess = _importService.findProfilesBtsInProcess(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString());
+                    IEnumerable<Profile> ProfilesBtsInProcess = _importService.findProfilesBtsInProcess(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString()).ToList();
                     foreach (var item in ProfilesBtsInProcess)
                     {
                         dataString += "Số " + item.ProfileNum + " ngày " + item.ProfileDate.ToString("dd/MM/yyyy") + " của " + item.ApplicantID + "\n";
@@ -170,7 +170,7 @@ namespace BTS.Web.Controllers
                     dt.Rows[i][CommonConstants.Sheet_Bts_ProfileInProcess] = dataString;
 
                     dataString = "";
-                    IEnumerable<NoCertificate> btsNoCertificate = _importService.findBtsNoCertificate(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString());
+                    IEnumerable<NoCertificate> btsNoCertificate = _importService.findBtsNoCertificate(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString(), dt.Rows[i][CommonConstants.Sheet_Bts_OperatorID]?.ToString()).ToList();
                     foreach (var item in btsNoCertificate)
                     {
                         dataString += item.ReasonNoCertificate + "\n";

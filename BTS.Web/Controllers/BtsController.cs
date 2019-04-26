@@ -63,7 +63,7 @@ namespace BTS.Web.Controllers
                 }
             }
 
-            IEnumerable<Operator> operatorList = _btsService.getAllOperator();
+            IEnumerable<Operator> operatorList = _btsService.getAllOperator().ToList();
             foreach (var operatorItem in operatorList)
             {
                 var listItem = new SelectListItem()
@@ -75,7 +75,7 @@ namespace BTS.Web.Controllers
                 ItemVm.OperatorList.Add(listItem);
             }
 
-            IEnumerable<Model.Models.Profile> profileList = _btsService.getAllProfile();
+            IEnumerable<Model.Models.Profile> profileList = _btsService.getAllProfile().ToList();
             foreach (var profileItem in profileList)
             {
                 var listItem = new SelectListItem()
@@ -87,7 +87,7 @@ namespace BTS.Web.Controllers
                 ItemVm.ProfileList.Add(listItem);
             }
 
-            IEnumerable<City> cityList = _btsService.getAllCity();
+            IEnumerable<City> cityList = _btsService.getAllCity().ToList();
             foreach (var cityItem in cityList)
             {
                 var listItem = new SelectListItem()
@@ -99,7 +99,7 @@ namespace BTS.Web.Controllers
                 ItemVm.CityList.Add(listItem);
             }
 
-            IEnumerable<InCaseOf> inCaseOfList = _btsService.getAllInCaseOf();
+            IEnumerable<InCaseOf> inCaseOfList = _btsService.getAllInCaseOf().ToList();
             foreach (var inCaseOfItem in inCaseOfList)
             {
                 var listItem = new SelectListItem()

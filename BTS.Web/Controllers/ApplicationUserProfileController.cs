@@ -38,7 +38,7 @@ namespace BTS.Web.Controllers
         public ICollection<SelectListItem> ListRolesOfUser(string id = "")
         {
             ICollection<SelectListItem> allRolesOfUser = new List<SelectListItem>();
-            IEnumerable<ApplicationRole> listRoles = RoleManager.Roles;
+            IEnumerable<ApplicationRole> listRoles = RoleManager.Roles.ToList();
             foreach (var roleItem in listRoles)
             {
                 allRolesOfUser.Add(new SelectListItem()
@@ -49,7 +49,7 @@ namespace BTS.Web.Controllers
                 });
             }
 
-            IEnumerable<ApplicationGroup> listGroupOfUser = _appGroupService.GetGroupsByUserId(id);
+            IEnumerable<ApplicationGroup> listGroupOfUser = _appGroupService.GetGroupsByUserId(id).ToList();
             foreach (var groupItem in listGroupOfUser)
             {
                 IEnumerable<ApplicationRole> listRoleOfGroup = _appGroupService.GetRolesByGroupId(groupItem.Id);
@@ -88,7 +88,7 @@ namespace BTS.Web.Controllers
             ApplicationUserViewModel Item = new ApplicationUserViewModel();
             id = User.Identity.GetUserId<string>();
 
-            if ((act == CommonConstants.Action_Add || act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit || act == CommonConstants.Action_Reset) && !string.IsNullOrEmpty(id))
+            if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit || act == CommonConstants.Action_Reset) && !string.IsNullOrEmpty(id))
             {
                 var DbItem = UserManager.FindById(id);
                 if (DbItem == null)
@@ -112,8 +112,8 @@ namespace BTS.Web.Controllers
                         Item.GroupList.Add(listItem);
                     }
 
-                    var allRole = RoleManager.Roles.OrderByDescending(x => x.Name);
-                    var listRole = UserManager.GetRoles(id);
+                    var allRole = RoleManager.Roles.OrderByDescending(x => x.Name).ToList();
+                    var listRole = UserManager.GetRoles(id).ToList();
                     foreach (var roleItem in allRole)
                     {
                         var listItem = new SelectListItem()
@@ -154,7 +154,7 @@ namespace BTS.Web.Controllers
                     };
                     Item.GroupList.Add(listItem);
                 }
-                return View("Add", Item);
+                return View("Detail", Item);
             }
         }
 
@@ -174,7 +174,8 @@ namespace BTS.Web.Controllers
                     {
                         string fileName = Path.GetFileNameWithoutExtension(Item.ImageUpload.FileName);
                         string extension = Path.GetExtension(Item.ImageUpload.FileName);
-                        fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                        //fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                        fileName = "UserImage"+ DateTime.Now.ToString("yyyymmssfff") + extension;
                         Item.ImagePath = "~/AppFiles/Images/" + fileName;
                         Item.ImageUpload.SaveAs(Path.Combine(Server.MapPath("~/AppFiles/Images/"), fileName));
                     }

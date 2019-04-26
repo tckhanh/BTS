@@ -141,12 +141,12 @@
 
         <ul class="nav nav-tabs nav-pills">
             <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách GCNKĐ</a></li>
-            @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+              @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
             {
                 <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
             }
 
-            @if (User.IsInRole(CommonConstants.Data_CanViewChart_Role))
+              @if (User.IsInRole(CommonConstants.Data_CanViewChart_Role))
             {
                 <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
             }

@@ -4,7 +4,7 @@
     ViewBag.Title = "Sửa đổi";
 }
 
-@if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+  @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
 {
     using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
     {

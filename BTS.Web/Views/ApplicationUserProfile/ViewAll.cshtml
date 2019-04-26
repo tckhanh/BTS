@@ -42,20 +42,20 @@
                     {
                         if (item.Locked)
                         {
-                            <a data-toggle="tooltip" data-placement="top" title="Khóa"><i class="fa fa-lock fa-lg"></i></a>
+                            <a class="btn btn-warning btn-sm" onclick="commonController.Lock('@Url.Action("Lock", "ApplicationUserProfile", new { id=@item.Id})')" data-toggle="tooltip" data-placement="top" title="Mở khóa"><i class="fa fa-lock fa-lg"></i></a>
                         }
                         else
                         {
-                            <a data-toggle="tooltip" data-placement="top" title="Mở khóa"><i class="fa fa-unlock fa-lg"></i></a>
+                            <a class="btn btn-warning btn-sm" onclick="commonController.Lock('@Url.Action("Lock", "ApplicationUserProfile", new { id=@item.Id})')" data-toggle="tooltip" data-placement="top" title="Khóa"><i class="fa fa-unlock fa-lg"></i></a>
                         }
                     }
                 </td>
                 <td>
-                    <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Encode(Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @item.Id, act = CommonConstants.Action_Detail }))')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
-                    @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                    <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @item.Id, act = CommonConstants.Action_Detail })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
+                      @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                     {
-                        <a class="btn btn-success btn-sm" onclick="commonController.Edit('@Url.Encode(Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @item.Id, act = CommonConstants.Action_Edit }))')" data-toggle="tooltip" data-placement="top" title="Sửa đổi"><i class="fa fa-pencil fa-lg"></i></a>
-                        <a class="btn btn-warning btn-sm" onclick="commonController.Reset('@Url.Encode(Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @item.Id, act = CommonConstants.Action_Reset }))')" data-toggle="tooltip" data-placement="top" title="Đặt lại mật khẩu"><i class="fa fa-gear fa-lg"></i></a>
+                        <a class="btn btn-success btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @item.Id, act = CommonConstants.Action_Edit })')" data-toggle="tooltip" data-placement="top" title="Sửa đổi"><i class="fa fa-pencil fa-lg"></i></a>
+                        <a class="btn btn-warning btn-sm" onclick="commonController.Reset('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @item.Id, act = CommonConstants.Action_Reset })')" data-toggle="tooltip" data-placement="top" title="Đặt lại mật khẩu"><i class="fa fa-gear fa-lg"></i></a>
                     }
                 </td>
             </tr>

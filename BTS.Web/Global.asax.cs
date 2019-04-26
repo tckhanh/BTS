@@ -1,4 +1,5 @@
-﻿using BTS.Web.Infrastructure.Core;
+﻿using BTS.Data;
+using BTS.Web.Infrastructure.Core;
 using BTS.Web.Mappings;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.Security;
 
 namespace BTS.Web
 {

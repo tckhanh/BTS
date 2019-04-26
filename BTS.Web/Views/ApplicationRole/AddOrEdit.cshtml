@@ -5,7 +5,7 @@
     Layout = null;
 }
 
-@using (Html.BeginForm("AddOrEdit", "ApplicationRole", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Encode(Url.Action("AddOrEdit", "ApplicationRole", new { id = "" })) }))//data-resetUrl
+@using (Html.BeginForm("AddOrEdit", "ApplicationRole", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationRole", new { id = "" }) }))//data-resetUrl
 {
     @Html.AntiForgeryToken()
     <div class="row">
@@ -94,9 +94,9 @@
                     <div class="col-md-offset-2 col-md-10">
                         @if (!string.IsNullOrEmpty(Model.Id))
                         {
-                            <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Encode(Url.Action("AddOrEdit","ApplicationRole",new{id=""}))',false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                            <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole",new{id=""})',false)"><i class="fa fa-plus"></i> Thêm mới</a>
                         }
-                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Encode(Url.Action("AddOrEdit","ApplicationRole", new{id = ""}))', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole", new { id = "", act = CommonConstants.Action_View })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
 
                         <input type="submit" value="Lưu" class="btn btn-primary" />
                     </div>

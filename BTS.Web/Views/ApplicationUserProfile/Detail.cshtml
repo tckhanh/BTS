@@ -5,9 +5,9 @@
     Layout = null;
 }
 
-@if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+  @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
 {
-    using (Html.BeginForm("AddOrEdit", "ApplicationUserProfile", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Encode(Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = "", act = CommonConstants.Action_Detail })) }))//data-resetUrl
+    using (Html.BeginForm("AddOrEdit", "ApplicationUserProfile", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = "", act = CommonConstants.Action_Detail }) }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -141,12 +141,12 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                              @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                             {
-                                <a class="btn btn-success" onclick="commonController.Edit('@Url.Encode(Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @Model.Id, act = CommonConstants.Action_Edit }))')"><i class="fa fa-pencil"></i> Sửa đổi</a>
-                                <a class="btn btn-warning" onclick="commonController.Reset('@Url.Encode(Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @Model.Id, act = CommonConstants.Action_Reset }))')"><i class="fa fa-pencil"></i> Đổi mật khẩu</a>
+                                <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
+                                <a class="btn btn-warning" onclick="commonController.Reset('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = @Model.Id, act = CommonConstants.Action_Reset })')"><i class="fa fa-pencil"></i> Đổi mật khẩu</a>
                             }
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Encode(Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = "", act = CommonConstants.Action_Detail }))', false)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = "", act = CommonConstants.Action_Detail })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
                         </div>
                     </div>
                 </div>

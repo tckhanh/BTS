@@ -48,11 +48,13 @@ namespace BTS.Web.Controllers
         {
             if (Request.Files["file"].ContentLength > 0)
             {
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(Request.Files["file"].FileName);
                 string fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
 
                 if (fileExtension == ".xls" || fileExtension == ".xlsx" || fileExtension == ".xlsm")
                 {
-                    string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + Request.Files["file"].FileName;
+                    //string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + Request.Files["file"].FileName;
+                    string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + "InputData" + DateTime.Now.ToString("yyyymmssfff") + fileExtension;                    
                     try
                     {
                         if (System.IO.File.Exists(fileLocation))
@@ -565,7 +567,7 @@ namespace BTS.Web.Controllers
                             _importService.Delete(dbBts);
                             _importService.Save();
                         }
-                        
+
 
                         for (int j = 0; j < Item.SubBtsQuantity; j++)
                         {
@@ -750,12 +752,12 @@ namespace BTS.Web.Controllers
 
             if (dt.Rows.Count > 0)
             {
-                if (Int32.Parse(dt.Rows[0][CommonConstants.Sheet_NoCertificate_TotalBtsNum]?.ToString()) <= int.Parse(dt.Rows[0][CommonConstants.Sheet_NoCertificate_CerBtsNum]?.ToString()))
+                if (Int32.Parse(dt.Rows[0][CommonConstants.Sheet_NoCertificate_NoCerBtsNum]?.ToString()) <= 0)
                 {
                     return CommonConstants.Status_Success;
                 }
             }
-                
+
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {

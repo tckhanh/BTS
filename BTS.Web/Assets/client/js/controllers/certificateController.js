@@ -5,7 +5,8 @@
     latlng = L.latLng(10.796841, 106.66252);
 var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
 var myMarkerClusters = L.markerClusterGroup();
-var userRoleAdmin = "@(User.IsInRole('System_CanExport') ? 'true' : 'false')";
+var arrayRoles = AppGlobal.LoginUser.roles.split(';');
+var system_CanExport_Role = $.inArray('System_CanExport', arrayRoles)
 var data = "";
 
 var certificateController = {
@@ -174,7 +175,7 @@ var certificateController = {
         //    }
         //});
 
-        if (userRoleAdmin) {
+        if (system_CanExport_Role > -1) {
             $("#MyDataTable")
                 .on('draw.dt', function (e, settings, json, xhr) {
                     certificateController.initCompleteFunction(settings, json);

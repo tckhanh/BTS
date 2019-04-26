@@ -4,7 +4,7 @@
     ViewBag.Title = "Thêm mới";
 }
 
-@if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+  @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
 {
     using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
     {

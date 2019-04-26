@@ -340,7 +340,7 @@ namespace BTS.Service
 
         public void RemoveCertsInProfile(string ProFileID)
         {
-            IEnumerable<Certificate> CertList = getCertificatesByProfile(ProFileID);
+            IEnumerable<Certificate> CertList = getCertificatesByProfile(ProFileID).ToList();
             foreach (var item in CertList)
             {
                 RemoveSubBtsInCert(item.Id);

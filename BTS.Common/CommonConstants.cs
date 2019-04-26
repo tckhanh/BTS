@@ -16,6 +16,7 @@
         public const string LAB_GROUP_NAME = "Phòng Đo kiểm";
         public const string STTT_GROUP_NAME = "Sở TTTT";
 
+        public const string Action_View = "View";
         public const string Action_Add = "Add";
         public const string Action_Detail = "Detail";
         public const string Action_Edit = "Edit";
@@ -208,7 +209,7 @@
         public const string Sheet_NoCertificate_TestReportDate = "TestReportDate";
         public const string Sheet_NoCertificate_ReasonNoCertificate = "ReasonNoCertificate";
         public const string Sheet_NoCertificate_TotalBtsNum = "TotalBtsNum";
-        public const string Sheet_NoCertificate_CerBtsNum = "CerBtsNum";
+        public const string Sheet_NoCertificate_NoCerBtsNum = "NoCerBtsNum";
 
         public const string Sheet_User = "User";
         public const string Sheet_User_FullName = "FullName";

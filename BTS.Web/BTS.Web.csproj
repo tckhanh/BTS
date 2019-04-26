@@ -292,6 +292,7 @@
     <Compile Include="Infrastructure\Extensions\ClaimsToRazorParser.cs" />
     <Compile Include="Infrastructure\Extensions\DataTableExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\EntityExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\IdentityExtensions.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\ApplicantViewModel.cs" />
@@ -9590,6 +9591,7 @@
     <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\Chart.PieceLabel.js" />
     <Content Include="Scripts\dataTables.rowsGroup.js" />
+    <Content Include="Views\Account\Error.cshtml" />
     <Content Include="Views\HtmlPage1.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -9813,6 +9815,7 @@
     <Content Include="Views\NoCertificate\Index.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Certificate\Detail.cshtml" />
+    <Content Include="Views\Base\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />
@@ -9835,7 +9838,6 @@
     <Folder Include="Assets\admin\libs\ngBootbox\typings\jquery\" />
     <Folder Include="Assets\client\font-awesome-4.6.3\" />
     <Folder Include="Assets\client\images\" />
-    <Folder Include="Views\Base\" />
     <Folder Include="Views\Employee\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

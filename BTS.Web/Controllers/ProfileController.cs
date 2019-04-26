@@ -55,7 +55,7 @@ namespace BTS.Web.Controllers
                 }
             }
 
-            IEnumerable<Applicant> applicantList = _profileService.getAllApplicant();
+            IEnumerable<Applicant> applicantList = _profileService.getAllApplicant().ToList();
             foreach (var applicantItem in applicantList)
             {
                 var listItem = new SelectListItem()
