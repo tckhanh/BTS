@@ -303,6 +303,7 @@
     <Compile Include="Models\ApplicationUserViewModel.cs" />
     <Compile Include="Models\AuditableViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
+    <Compile Include="Models\ReportTT18CertViewModel.cs" />
     <Compile Include="Models\LabViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NoCertificateViewModel.cs" />
@@ -4616,6 +4617,9 @@
     <Content Include="Assets\admin\libs\datatables-buttons\License.txt" />
     <Content Include="Assets\admin\libs\datatables-buttons\swf\flashExport.swf" />
     <Content Include="Assets\admin\libs\datatables-buttons\test\api\button%28%29.add%28%29.js" />
+    <Content Include="Assets\admin\libs\datatables-rowsgroup\anotherExample.html" />
+    <Content Include="Assets\admin\libs\datatables-rowsgroup\dataTables.rowsGroup.js" />
+    <Content Include="Assets\admin\libs\datatables-rowsgroup\example.html" />
     <Content Include="Assets\admin\libs\datatables.net-bs\css\dataTables.bootstrap.css" />
     <Content Include="Assets\admin\libs\datatables.net-bs\css\dataTables.bootstrap.min.css" />
     <Content Include="Assets\admin\libs\datatables.net-bs\js\dataTables.bootstrap.js" />
@@ -9769,6 +9773,9 @@
     <Content Include="AppFiles\Samples\Khanh - GKQDK - Copy %282%29.docm" />
     <Content Include="AppFiles\Samples\Khanh - GKQDK - Copy.docm" />
     <Content Include="AppFiles\Samples\User List Sample.xls" />
+    <Content Include="Assets\admin\libs\datatables-rowsgroup\.bower.json" />
+    <Content Include="Assets\admin\libs\datatables-rowsgroup\LICENSE" />
+    <Content Include="Assets\admin\libs\datatables-rowsgroup\README.md" />
     <None Include="Properties\PublishProfiles\BTS.pubxml" />
     <None Include="Properties\PublishProfiles\BTS_V1.pubxml" />
     <Content Include="Views\InCaseOf\Add.cshtml" />

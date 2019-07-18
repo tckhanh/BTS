@@ -45,6 +45,7 @@
             $('#btnSearch').off('click').on('click', function () {
                 $("#BTS-Result").html(" " + (parseInt(month) + 1) + "/" + year);
                 $('#MyDataTable').DataTable().ajax.reload();
+                $('#MyDataTable2').DataTable().ajax.reload();
             });
 
             $("a[href='#mapTab']").on('shown.bs.tab', function (e) {
@@ -148,7 +149,11 @@
             //        userRoleAdmin = data.Roles;
             //    }
             //});
+            reportController.loadHomeTab();
+            reportController.loadHome2Tab();
+        },
 
+        loadHomeTab: function () {
             if (userRoleAdmin) {
                 $("#MyDataTable")
                     .on('draw.dt', function (e, settings, json, xhr) {
@@ -396,6 +401,236 @@
                 }).draw();
             }
         },
+        loadHome2Tab: function () {
+            if (userRoleAdmin) {
+                $("#MyDataTable2")
+                    .on('draw.dt', function (e, settings, json, xhr) {
+                        reportController.initCompleteFunction(settings, json);
+                    })
+                    .on('xhr.dt', function (e, settings, json, xhr) {
+                        //new $.fn.dataTable.Api(settings).one('draw', function () {
+                        //    reportController.initCompleteFunction(settings, json);
+                        //});
+                        new $.fn.dataTable.Api(settings).one('draw', function () {
+                            reportController.initCompleteFunction(settings, json);
+                        });
+
+                        //if (myMap != undefined && myMap != null && myMarkerClusters != null) {
+                        //    myMap.removeLayer(myMarkerClusters);
+                        //    myMarkerClusters.clearLayers();
+                        //    //myMap.eachLayer(function (layer) {
+                        //    //    myMap.removeLayer(layer);
+                        //    //});
+                        //}
+                        //reportController.loadMap(json.data);
+                        //reportController.loadPivotTable(json.data);
+                    })
+                    .dataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                extend: 'colvis',
+                                text: 'Ẩn/hiện cột',
+                                className: 'btn-success'
+                            },
+                            {
+                                extend: 'excel',
+                                text: 'Xuất Excel',
+                                className: 'btn-success',
+                            },
+                            {
+                                extend: 'pdf',
+                                text: 'Xuất Pdf',
+                                className: 'btn-success'
+                            },
+                            {
+                                extend: 'print',
+                                text: 'In ấn',
+                                className: 'btn-success'
+                            }
+                        ],
+                        "processing": true,
+                        "paging": false,
+                        "info": true,
+                        "selector": true,
+                        "ajax": {
+                            "async": true,
+                            "url": "/Report/loadReportTT18Cert",
+                            "type": "POST",
+                            "data": function (d) {
+                                d.Month = month;
+                                d.Year = year;
+                            }
+                        },
+                        "columns": [
+                            {
+                                "data": null,
+                            },
+                            {
+                                "data": "Address", "name": "Address"
+                            },
+                            {
+                                "data": "CityID", "name": "CityID"
+                            },
+                            {
+                                "data": "Longtitude",
+                                "name": "Location",
+                                "render": function (data, type, row) {
+                                    return row["Longtitude"] + "; " + row["Latitude"];
+                                }
+                            },
+                            {
+                                "data": "SubOperatorID", "name": "SubOperatorID"                                
+                            },
+                            {
+                                "data": "SubBtsQuantity", "name": "SubBtsQuantity"
+                            },
+                            {
+                                "data": "SubBtsCode", "name": "SubBtsCode",
+                                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                    $(nTd).html("<a href='/Bts/Detail/" + oData.SubBtsCode + "'>" + oData.SubBtsCode + "</a>");
+                                }
+                            },
+                            {
+                                "data": "Equipment", "name": "Equipment"
+                            },
+                            {
+                                "data": "AntenNum", "name": "AntenNum"
+                            },
+                            {
+                                "data": "Configuration", "name": "Configuration"
+                            },
+                            {
+                                "data": "PowerSum", "name": "PowerSum"
+                            },
+                            {
+                                "data": "Band", "name": "Band"
+                            },
+                            {
+                                "data": "AntenHeight", "name": "AntenHeight"
+                            },
+                            {
+                                "data": "CertificateId", "name": "CertificateId"
+                            }],   
+                        rowsGroup: [13, 1, 2, 3, 4, 5],
+                        //rowsGroup: ['CertificateId:name', 'Location:name', 'Address:name', 'CityID:name'],
+                        "language": {
+                            url: '/AppFiles/localization/vi_VI.json'
+                        },
+                        "initComplete": function () {
+                        }
+                    });
+
+                var t = $('#MyDataTable2').DataTable();
+                t.on('order.dt search.dt', function () {
+                    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }).draw();
+
+            } else {
+                $("#MyDataTable2")
+                    .on('draw.dt', function (e, settings, json, xhr) {
+                        reportController.initCompleteFunction(settings, json);
+                    })
+                    .on('xhr.dt', function (e, settings, json, xhr) {
+                        //new $.fn.dataTable.Api(settings).one('draw', function () {
+                        //    reportController.initCompleteFunction(settings, json);
+                        //});
+                        if (myMap != undefined && myMap != null && myMarkerClusters != null) {
+                            myMap.removeLayer(myMarkerClusters);
+                            myMarkerClusters.clearLayers();
+                            //myMap.eachLayer(function (layer) {
+                            //    myMap.removeLayer(layer);
+                            //});
+                        }
+                        if (json != null) {
+                            var data = json.data;
+                            reportController.loadMap(data);
+                            reportController.loadPivotTable(data);
+                        }
+                    })
+                    .dataTable({
+                        "processing": true,
+                        "info": true,
+                        "selector": true,
+                        "ajax": {
+                            "async": true,
+                            "url": "/Report/loadReportTT18Cert",
+                            "type": "POST",
+                            "data": function (d) {
+                                d.Month = month;
+                                d.Year = year;
+                            }
+                        },
+                        "columns": [
+                            {
+                                "data": null,
+                            },
+                            {
+                                "data": "Address", "name": "Address"
+                            },
+                            {
+                                "data": "CityID", "name": "CityID"
+                            },
+                            { 
+                                "data": "Longtitude",
+                                "name": "Location",
+                                "render": function (data, type, row) {
+                                    return row["Longtitude"] + "; " + row["Latitude"];
+                                }
+                            },
+                            {
+                                "data": "SubOperatorID", "name": "SubOperatorID"
+                            },
+                            {
+                                "data": "SubBtsQuantity", "name": "SubBtsQuantity"
+                            },
+                            {
+                                "data": "SubBtsCode", "name": "SubBtsCode",
+                                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                    $(nTd).html("<a href='/Bts/Detail/" + oData.SubBtsCode + "'>" + oData.SubBtsCode + "</a>");
+                                }
+                            },
+                            {
+                                "data": "Equipment", "name": "Equipment"
+                            },
+                            {
+                                "data": "AntenNum", "name": "AntenNum"
+                            },
+                            {
+                                "data": "Configuration", "name": "Configuration"
+                            },
+                            {
+                                "data": "PowerSum", "name": "PowerSum"
+                            },
+                            {
+                                "data": "Band", "name": "Band"
+                            },
+                            {
+                                "data": "AntenHeight", "name": "AntenHeight"
+                            },
+                            {
+                                "data": "CertificateId", "name": "CertificateId"
+                            }],
+                        rowsGroup: [13,1,2,3,4,5],
+                        //rowsGroup: ['CertificateId:name', 'Location:name', 'Address:name', 'CityID:name'],
+                        //rowsGroup: ['OperatorID:name', 1],
+                        "language": {
+                            url: '/AppFiles/localization/vi_VI.json'
+                        },
+                        initComplete: function () {
+                        }
+                    });
+                var t = $('#MyDataTable2').DataTable();
+                t.on('order.dt search.dt', function () {
+                    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }).draw();
+            }
+        }
+        ,
         initCompleteFunction: function (settings, json) {
             var api = new $.fn.dataTable.Api(settings);
             api.columns().every(function () {
@@ -478,7 +713,7 @@
                             renderers: renderers,
                             rows: ["OperatorID"],
                             cols: ["CityID"],
-                            rendererName: "Horizontal Stacked Bar Chart",
+                            rendererName: "Bar Chart",
                             rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
                             hiddenAttributes: ["select.pvtRenderer", "renderers"]
                         }, true);

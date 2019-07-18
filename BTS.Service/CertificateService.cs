@@ -18,7 +18,7 @@ namespace BTS.Service
         void Delete(int Id);
 
         IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate, DateTime startDate, DateTime endDate);
-
+        IEnumerable<ReportTT18Cert> getReportTT18(out int totalRows, DateTime startDate, DateTime endDate);
         IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate);
 
         IEnumerable<Certificate> getByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
@@ -73,6 +73,14 @@ namespace BTS.Service
         public void Delete(int Id)
         {
             _CertificateRepository.Delete(Id);
+        }
+
+        public IEnumerable<ReportTT18Cert> getReportTT18(out int totalRows, DateTime startDate, DateTime endDate)
+        {
+            IEnumerable<ReportTT18Cert> result;
+            result = _CertificateRepository.GetReportTT18CertByDate(startDate, endDate);        
+            totalRows = result.Count();
+            return result;
         }
 
         public IEnumerable<Certificate> getAll(out int totalRows, bool onlyValidCertificate, DateTime startDate, DateTime endDate)

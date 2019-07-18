@@ -280,7 +280,7 @@
 
             homeController.loadLineChart("/Home/CertStatByOperatorCity", "#lineChart_CertStatByOperatorCity", "Tỉnh/ Thành phố", "Giấy CNKĐ", "Nhà mạng");
             homeController.loadLineChart("/Home/CertStatByOperatorYear", "#lineChart_CertStatByOperatorYear", "Năm", "Giấy CNKĐ", "Nhà mạng");
-
+            
             homeController.loadPieChart("/Home/BtsStatByBand", "#pieChart_BtsStatByBand");
             homeController.loadPieChart("/Home/BtsStatByManufactory", "#pieChart_BtsStatByManufactory");
 

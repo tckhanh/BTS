@@ -91,6 +91,7 @@
     <Compile Include="Models\Applicant.cs" />
     <Compile Include="Models\Bts.cs" />
     <Compile Include="Models\Certificate.cs" />
+    <Compile Include="Models\ReportTT18Cert.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\ContactDetail.cs" />
     <Compile Include="Models\Error.cs" />

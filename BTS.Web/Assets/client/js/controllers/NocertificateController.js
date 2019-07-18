@@ -370,7 +370,7 @@ var noCertificateController = {
                         renderers: renderers,
                         rows: ["OperatorID"],
                         cols: ["CityID"],
-                        rendererName: "Horizontal Stacked Bar Chart",
+                        rendererName: "Bar Chart",
                         rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
                         hiddenAttributes: ["select.pvtRenderer", "renderers"]
                     }, true);

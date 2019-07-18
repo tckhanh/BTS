@@ -1,0 +1,14 @@
+{
+  "name": "datatables-rowsgroup",
+  "homepage": "https://github.com/ashl1/datatables-rowsgroup",
+  "version": "2.0.0",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.0.0",
+    "commit": "bfd42a2185ee08797a330d2daa327f86fd85e020"
+  },
+  "_source": "https://github.com/ashl1/datatables-rowsgroup.git",
+  "_target": "~2.0.0",
+  "_originalSource": "datatables-rowsgroup"
+}

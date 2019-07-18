@@ -76,6 +76,32 @@ namespace BTS.Web.Controllers
             return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult loadReportTT18Cert()
+        {
+            int countItem = 0;
+
+            int Month = Int32.Parse(Request.Form.GetValues("Month").FirstOrDefault());
+            int Year = Int32.Parse(Request.Form.GetValues("Year").FirstOrDefault());
+
+            DateTime StartDate = new DateTime(Year, Month + 1, 1);
+            DateTime EndDate = StartDate.AddMonths(1).AddDays(-1);
+
+            // searching ...
+            IEnumerable<ReportTT18Cert> Items = new List<ReportTT18Cert>();
+
+            if (StartDate != null && EndDate != null)
+            {
+                Items = _certificateService.getReportTT18(out countItem, StartDate, EndDate).ToList();
+            }
+
+            IEnumerable<ReportTT18CertViewModel> dataViewModel = Mapper.Map<List<ReportTT18CertViewModel>>(Items);
+            if (countItem > 0)
+            {
+                //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };
+                return Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult PivotTable()
         {
             return View();

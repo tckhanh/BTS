@@ -60,12 +60,12 @@ namespace BTS.Web.Models
 
         [Display(Name = "Ngày ban hành")]
         [DataType(DataType.Date)]
-        public DateTime? IssuedDate { get; set; }
+        public DateTime IssuedDate { get; set; }
 
         [Display(Name = "Ngày hết hạn")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime? ExpiredDate { get; set; }
+        public DateTime ExpiredDate { get; set; }
 
         [StringLength(30, ErrorMessage = "Nơi cấp không quá 30 ký tự")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Nơi cấp")]

@@ -1,4 +1,4 @@
-﻿#MyDataTable {
+﻿#MyDataTable, #MyDataTable2 {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: medium;
     border-collapse: collapse;
@@ -11,31 +11,31 @@ td.details-control {
 }
 
 tr.shown td.details-control {
-    background: url('/AppFiles/Resources/details_close.png') no-repeat center center;    
+    background: url('/AppFiles/Resources/details_close.png') no-repeat center center;
 }
 
-#MyDataTable td, #MyDataTable th {
+#MyDataTable td, #MyDataTable th, #MyDataTable2 td, #MyDataTable2 th {
     border: 1px solid #ddd;
     padding: 4px;
     font-weight: bold;
 }
 
-#MyDataTable a {
+#MyDataTable, #MyDataTable2 a {
     color: blue;
 }
 
-#MyDataTable tr:nth-child(even) {
-    background-color: #f5ebb8;
-}
+    #MyDataTable tr:nth-child(even){
+        background-color: #f5ebb8;
+    }
 
-#MyDataTable tr:hover {
-    background-color: #73edf1;
-}
+    #MyDataTable tr:hover, #MyDataTable2 tr:hover {
+        background-color: #73edf1;
+    }
 
-#MyDataTable th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: center;
-    background-color: #1069a9;
-    color: white;
-}
+    #MyDataTable th, #MyDataTable2 th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #1069a9;
+        color: white;
+    }

@@ -47,10 +47,10 @@ namespace BTS.Model.Models
         public DateTime TestReportDate { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? IssuedDate { get; set; }
+        public DateTime IssuedDate { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? ExpiredDate { get; set; }
+        public DateTime ExpiredDate { get; set; }
 
         [StringLength(30)]
         [Required]
