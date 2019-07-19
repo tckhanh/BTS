@@ -2,7 +2,7 @@
 @using BTS.Common
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/Layouts.cshtml";
+    Layout = "~/Views/Shared/Layouts_Chart.cshtml";
     IEnumerable<Operator> operatorList = ViewBag.operatorList;
     IEnumerable<City> cityList = ViewBag.cityList;
 }
@@ -12,14 +12,7 @@
 }
 
 @section footerJS{
-    @*<script src="http://malsup.github.com/jquery.form.js"></script>*@
-    <script src="~/Assets/admin/libs/jquery-form/dist/jquery.form.min.js"></script>
-
-    <script src="~/Scripts/Chart.min.js"></script>
-    <script src="~/Scripts/Chart.PieceLabel.js"></script>
     <script src="~/Assets/client/js/controllers/homeController.js"></script>
-    <script>
-    </script>
 }
 
 <!-- Content Wrapper. Contains page content -->

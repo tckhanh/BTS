@@ -1,9 +1,11 @@
-﻿#MyDataTable, #MyDataTable2 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: medium;
-    border-collapse: collapse;
-    width: 100%;
+﻿table.dataTable tbody tr.selected {
+    background: rgba(38, 185, 154, 0.16);
 }
+
+    table.dataTable tbody tr.selected td {
+        border-top: 1px solid rgba(38, 185, 154, 0.4);
+        border-bottom: 1px solid rgba(38, 185, 154, 0.4);
+    }
 
 td.details-control {
     background: url('/AppFiles/Resources/details_open.png') no-repeat center center;
@@ -12,6 +14,13 @@ td.details-control {
 
 tr.shown td.details-control {
     background: url('/AppFiles/Resources/details_close.png') no-repeat center center;
+}
+
+#MyDataTable, #MyDataTable2 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: medium;
+    border-collapse: collapse;
+    width: 100%;
 }
 
 #MyDataTable td, #MyDataTable th, #MyDataTable2 td, #MyDataTable2 th {

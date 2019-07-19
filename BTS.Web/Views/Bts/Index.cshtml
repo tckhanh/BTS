@@ -2,18 +2,15 @@
 @using BTS.Web.Models
 @{
     ViewBag.Title = "Bts";
-    Layout = "~/Views/Shared/Layouts.cshtml";
+    Layout = "~/Views/Shared/Layouts_DataTable_Export_Map_PivotTable.cshtml";
     IEnumerable<ProfileViewModel> profiles = ViewBag.profiles;
     IEnumerable<CityViewModel> cities = ViewBag.cities;
 }
 
 @section headCSS{
-    <link href="~/Assets/client/css/custom.css" rel="stylesheet" />
-    <link href="~/Assets/client/css/custom-DataTable.css" rel="stylesheet" />
 }
 
-@section footerJS{
-    <script src="~/Assets/admin/libs/moment/moment.js"></script>
+@section footerJS{    
     <script src="~/Assets/client/js/controllers/commonController.js"></script>
 }
 <br />
