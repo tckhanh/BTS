@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace BTS.Web
@@ -66,13 +62,13 @@ namespace BTS.Web
             url: "gio-hang.html",
             defaults: new { controller = "ShoppingCart", action = "Index", id = UrlParameter.Optional },
             namespaces: new string[] { "BTS.Web.Controllers" }
-        );
+            );
             routes.MapRoute(
-           name: "Checkout",
-           url: "thanh-toan.html",
-           defaults: new { controller = "ShoppingCart", action = "Index", id = UrlParameter.Optional },
-           namespaces: new string[] { "BTS.Web.Controllers" }
-       );
+                name: "Checkout",
+                url: "thanh-toan.html",
+                defaults: new { controller = "ShoppingCart", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "BTS.Web.Controllers" }
+            );
             routes.MapRoute(
                    name: "Page",
                    url: "trang/{alias}.html",
@@ -99,7 +95,6 @@ namespace BTS.Web
                  defaults: new { controller = "Product", action = "ListByTag", tagId = UrlParameter.Optional },
                  namespaces: new string[] { "BTS.Web.Controllers" }
              );
-
             routes.MapRoute(
                  name: "importCertificates",
                  url: "cap-nhat-GCNKD.html",
@@ -113,6 +108,8 @@ namespace BTS.Web
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "BTS.Web.Controllers" }
             );
+
+
         }
     }
 }

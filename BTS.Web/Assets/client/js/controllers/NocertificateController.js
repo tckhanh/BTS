@@ -169,6 +169,7 @@ var noCertificateController = {
                     ],
                     "processing": true,
                     "info": true,
+                    "scrollX": true, // ảnh hưởng đến DataTable Id
                     "selector": true,
                     "ajax": {
                         "async": true,
@@ -241,6 +242,7 @@ var noCertificateController = {
                     "processing": true,
                     "info": true,
                     "selector": true,
+                    "scrollX": true, // ảnh hưởng đến DataTable Id
                     "ajax": {
                         "async": true,
                         "url": "/NoCertificate/loadNoCertificate",

@@ -19,7 +19,7 @@ namespace BTS.Web.Controllers
     public class ApplicationGroupController : BaseController
     {
         private IApplicationGroupService _appGroupService;
-        private ApplicationUserManager _userManager;
+        //private ApplicationUserManager _userManager;
 
         public ApplicationGroupController(IErrorService errorService,
             IApplicationGroupService appGroupService) : base(errorService)

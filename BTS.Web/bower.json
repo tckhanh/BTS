@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "bootstrap-wysihtml5": "*",
+    "font-awesome": "~4.7.0",
     "adminLTE": "~2.4.2",
     "jquery-form": "~4.2.2",
     "jquery-validation": "~1.17.0",

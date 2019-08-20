@@ -106,39 +106,54 @@
 
         loadData: function () {
             $.datepicker.setDefaults($.datepicker.regional['vi']);
+
+            //$("#DateRange").datepicker(
+            //    {
+            //        dateFormat: "mm/yy",
+            //        changeMonth: true,
+            //        changeYear: true,
+            //        showButtonPanel: true,
+            //        onClose: function (dateText, inst) {
+            //            function isDonePressed() {
+            //                return ($('#ui-datepicker-div').html().indexOf('ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover') > -1);
+            //            }
+
+            //            if (isDonePressed()) {
+            //                month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            //                year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            //                $(this).datepicker('setDate', new Date(year, month, 1)).trigger('change');
+
+            //                $('.date-picker').focusout()//Added to remove focus from datepicker input box on selecting date
+            //            }
+            //        },
+            //        beforeShow: function (input, inst) {
+            //            inst.dpDiv.addClass('month_year_datepicker')
+
+            //            if ((datestr = $(this).val()).length > 0) {
+            //                year = datestr.substring(datestr.length - 4, datestr.length);
+            //                month = datestr.substring(0, 2);
+            //                $(this).datepicker('option', 'defaultDate', new Date(year, month - 1, 1));
+            //                $(this).datepicker('setDate', new Date(year, month - 1, 1));
+            //                $(".ui-datepicker-calendar").hide();
+            //            }
+            //        }
+            //    });
+            //$("#DateRange").datepicker("setDate", currDate);
+
             $("#DateRange").datepicker(
-                        {
-                            dateFormat: "mm/yy",
-                            changeMonth: true,
-                            changeYear: true,
-                            showButtonPanel: true,
-                            onClose: function (dateText, inst) {
-                                function isDonePressed() {
-                                    return ($('#ui-datepicker-div').html().indexOf('ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover') > -1);
-                                }
-
-                                if (isDonePressed()) {
-                                    month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                                    year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                                    $(this).datepicker('setDate', new Date(year, month, 1)).trigger('change');
-
-                                    $('.date-picker').focusout()//Added to remove focus from datepicker input box on selecting date
-                                }
-                            },
-                            beforeShow: function (input, inst) {
-                                inst.dpDiv.addClass('month_year_datepicker')
-
-                                if ((datestr = $(this).val()).length > 0) {
-                                    year = datestr.substring(datestr.length - 4, datestr.length);
-                                    month = datestr.substring(0, 2);
-                                    $(this).datepicker('option', 'defaultDate', new Date(year, month - 1, 1));
-                                    $(this).datepicker('setDate', new Date(year, month - 1, 1));
-                                    $(".ui-datepicker-calendar").hide();
-                                }
-                            }
-                        });
-            $("#DateRange").datepicker("setDate", currDate);
-            $("#BTS-Result").html(" " + (parseInt(month) + 1) + "/" + year);
+                {
+                    format: "mm/yyyy",
+                    viewMode: "months",
+                    minViewMode: "months",
+                    autoclose: true,
+                }).on('changeDate', function (selected) {
+                    startDate = new Date(selected.date.valueOf());
+                    //startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+                    month = startDate.getMonth();
+                    year = startDate.getFullYear();
+                    $("#BTS-Result").html(" " + (parseInt(month) + 1) + "/" + year);
+                }); 
+            $("#DateRange").datepicker("setDate", currDate);            
 
             //$.ajax({
             //    url: 'Certificate/GetUserRoles',
@@ -204,6 +219,7 @@
                         "processing": true,
                         "paging": false,
                         "info": true,
+                        "scrollX": true,
                         "selector": true,
                         "ajax": {
                             "async": true,
@@ -314,7 +330,9 @@
                     })
                     .dataTable({
                         "processing": true,
+                        "paging": false,
                         "info": true,
+                        "scrollX": true,
                         "selector": true,
                         "ajax": {
                             "async": true,
@@ -452,6 +470,7 @@
                         "processing": true,
                         "paging": false,
                         "info": true,
+                        "scrollX": true,
                         "selector": true,
                         "ajax": {
                             "async": true,
@@ -473,107 +492,6 @@
                                 "data": "CityID", "name": "CityID"
                             },
                             {
-                                "data": "Longtitude",
-                                "name": "Location",
-                                "render": function (data, type, row) {
-                                    return row["Longtitude"] + "; " + row["Latitude"];
-                                }
-                            },
-                            {
-                                "data": "SubOperatorID", "name": "SubOperatorID"                                
-                            },
-                            {
-                                "data": "SubBtsQuantity", "name": "SubBtsQuantity"
-                            },
-                            {
-                                "data": "SubBtsCode", "name": "SubBtsCode",
-                                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                    $(nTd).html("<a href='/Bts/Detail/" + oData.SubBtsCode + "'>" + oData.SubBtsCode + "</a>");
-                                }
-                            },
-                            {
-                                "data": "Equipment", "name": "Equipment"
-                            },
-                            {
-                                "data": "AntenNum", "name": "AntenNum"
-                            },
-                            {
-                                "data": "Configuration", "name": "Configuration"
-                            },
-                            {
-                                "data": "PowerSum", "name": "PowerSum"
-                            },
-                            {
-                                "data": "Band", "name": "Band"
-                            },
-                            {
-                                "data": "AntenHeight", "name": "AntenHeight"
-                            },
-                            {
-                                "data": "CertificateId", "name": "CertificateId"
-                            }],   
-                        rowsGroup: [13, 1, 2, 3, 4, 5],
-                        //rowsGroup: ['CertificateId:name', 'Location:name', 'Address:name', 'CityID:name'],
-                        "language": {
-                            url: '/AppFiles/localization/vi_VI.json'
-                        },
-                        "initComplete": function () {
-                        }
-                    });
-
-                var t = $('#MyDataTable2').DataTable();
-                t.on('order.dt search.dt', function () {
-                    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-                        cell.innerHTML = i + 1;
-                    });
-                }).draw();
-
-            } else {
-                $("#MyDataTable2")
-                    .on('draw.dt', function (e, settings, json, xhr) {
-                        reportController.initCompleteFunction(settings, json);
-                    })
-                    .on('xhr.dt', function (e, settings, json, xhr) {
-                        //new $.fn.dataTable.Api(settings).one('draw', function () {
-                        //    reportController.initCompleteFunction(settings, json);
-                        //});
-                        if (myMap != undefined && myMap != null && myMarkerClusters != null) {
-                            myMap.removeLayer(myMarkerClusters);
-                            myMarkerClusters.clearLayers();
-                            //myMap.eachLayer(function (layer) {
-                            //    myMap.removeLayer(layer);
-                            //});
-                        }
-                        if (json != null) {
-                            var data = json.data;
-                            reportController.loadMap(data);
-                            reportController.loadPivotTable(data);
-                        }
-                    })
-                    .dataTable({
-                        "processing": true,
-                        "info": true,
-                        "selector": true,
-                        "ajax": {
-                            "async": true,
-                            "url": "/Report/loadReportTT18Cert",
-                            "type": "POST",
-                            "data": function (d) {
-                                d.Month = month;
-                                d.Year = year;
-                            }
-                        },
-                        "columns": [
-                            {
-                                "data": null,
-                            },
-                            {
-                                "data": "Address", "name": "Address"
-                            },
-                            {
-                                "data": "CityID", "name": "CityID"
-                            },
-                            { 
                                 "data": "Longtitude",
                                 "name": "Location",
                                 "render": function (data, type, row) {
@@ -613,9 +531,113 @@
                             {
                                 "data": "CertificateId", "name": "CertificateId"
                             }],
-                        rowsGroup: [13,1,2,3,4,5],
-                        //rowsGroup: ['CertificateId:name', 'Location:name', 'Address:name', 'CityID:name'],
-                        //rowsGroup: ['OperatorID:name', 1],
+                        rowsGroup: [13, 1],
+                        //rowsGroup: [13, 1, 2, 3, 4, 5],
+                        //rowsGroup: ['CertificateId:name', 'Address:name' ],
+                        "language": {
+                            url: '/AppFiles/localization/vi_VI.json'
+                        },
+                        "initComplete": function () {
+                        }
+                    });
+
+                var t = $('#MyDataTable2').DataTable();
+                t.on('order.dt search.dt', function () {
+                    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }).draw();
+
+            } else {
+                $("#MyDataTable2")
+                    .on('draw.dt', function (e, settings, json, xhr) {
+                        reportController.initCompleteFunction(settings, json);
+                    })
+                    .on('xhr.dt', function (e, settings, json, xhr) {
+                        //new $.fn.dataTable.Api(settings).one('draw', function () {
+                        //    reportController.initCompleteFunction(settings, json);
+                        //});
+                        if (myMap != undefined && myMap != null && myMarkerClusters != null) {
+                            myMap.removeLayer(myMarkerClusters);
+                            myMarkerClusters.clearLayers();
+                            //myMap.eachLayer(function (layer) {
+                            //    myMap.removeLayer(layer);
+                            //});
+                        }
+                        if (json != null) {
+                            var data = json.data;
+                            reportController.loadMap(data);
+                            reportController.loadPivotTable(data);
+                        }
+                    })
+                    .dataTable({
+                        "processing": true,
+                        "paging": false,
+                        "info": true,
+                        "scrollX": true,
+                        "selector": true,
+                        "ajax": {
+                            "async": true,
+                            "url": "/Report/loadReportTT18Cert",
+                            "type": "POST",
+                            "data": function (d) {
+                                d.Month = month;
+                                d.Year = year;
+                            }
+                        },
+                        "columns": [
+                            {
+                                "data": null,
+                            },
+                            {
+                                "data": "Address", "name": "Address"
+                            },
+                            {
+                                "data": "CityID", "name": "CityID"
+                            },
+                            {
+                                "data": "Longtitude",
+                                "name": "Location",
+                                "render": function (data, type, row) {
+                                    return row["Longtitude"] + "; " + row["Latitude"];
+                                }
+                            },
+                            {
+                                "data": "SubOperatorID", "name": "SubOperatorID"
+                            },
+                            {
+                                "data": "SubBtsQuantity", "name": "SubBtsQuantity"
+                            },
+                            {
+                                "data": "SubBtsCode", "name": "SubBtsCode",
+                                fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                    $(nTd).html("<a href='/Bts/Detail/" + oData.SubBtsCode + "'>" + oData.SubBtsCode + "</a>");
+                                }
+                            },
+                            {
+                                "data": "Equipment", "name": "Equipment"
+                            },
+                            {
+                                "data": "AntenNum", "name": "AntenNum"
+                            },
+                            {
+                                "data": "Configuration", "name": "Configuration"
+                            },
+                            {
+                                "data": "PowerSum", "name": "PowerSum"
+                            },
+                            {
+                                "data": "Band", "name": "Band"
+                            },
+                            {
+                                "data": "AntenHeight", "name": "AntenHeight"
+                            },
+                            {
+                                "data": "CertificateId", "name": "CertificateId"
+                            }],
+                        rowsGroup: [13, 1],
+                        //rowsGroup: [13, 1, 2, 3, 4, 5],
+                        //rowsGroup: ['CertificateId:name', 'Address:name'],
                         "language": {
                             url: '/AppFiles/localization/vi_VI.json'
                         },
@@ -657,9 +679,9 @@
             if (markers != null) {
                 for (var i = 0; i < markers.length; ++i) {
                     var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
-                                '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
-                                '<br/><b>G.CNKĐ:</b> ' + markers[i].Id +
-                                '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
+                        '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
+                        '<br/><b>G.CNKĐ:</b> ' + markers[i].Id +
+                        '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
                     var img24 = 'images/pin24.png';
                     var img48 = 'images/pin48.png';
                     if (markers[i].OperatorID == "VINAPHONE") {
@@ -685,7 +707,7 @@
                     });
 
                     var m = L.marker([markers[i].Latitude, markers[i].Longtitude], { icon: myIcon })
-                                    .bindPopup(popup);
+                        .bindPopup(popup);
                     myMarkerClusters.addLayer(m);
                 }
                 myMap.addLayer(myMarkerClusters);
@@ -709,14 +731,14 @@
             var derivers = $.pivotUtilities.derivers;
             var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.plotly_renderers, $.pivotUtilities.c3_renderers);
             $("#pivotTable").pivotUI(inputFunction,
-                        {
-                            renderers: renderers,
-                            rows: ["OperatorID"],
-                            cols: ["CityID"],
-                            rendererName: "Bar Chart",
-                            rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
-                            hiddenAttributes: ["select.pvtRenderer", "renderers"]
-                        }, true);
+                {
+                    renderers: renderers,
+                    rows: ["OperatorID"],
+                    cols: ["CityID"],
+                    rendererName: "Bar Chart",
+                    rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
+                    hiddenAttributes: ["select.pvtRenderer", "renderers"]
+                }, true);
         }
     }
 

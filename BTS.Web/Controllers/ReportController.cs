@@ -70,8 +70,10 @@ namespace BTS.Web.Controllers
             IEnumerable<CertificateViewModel> dataViewModel = Mapper.Map<List<CertificateViewModel>>(Items);
             if (countItem > 0)
             {
-                //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };
-                return Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
+                //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };                
+                JsonResult result = Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
+                result.MaxJsonLength = Int32.MaxValue;
+                return result;
             }
             return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
         }
@@ -97,8 +99,10 @@ namespace BTS.Web.Controllers
             IEnumerable<ReportTT18CertViewModel> dataViewModel = Mapper.Map<List<ReportTT18CertViewModel>>(Items);
             if (countItem > 0)
             {
-                //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };
-                return Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
+                //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };                
+                JsonResult result = Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
+                result.MaxJsonLength = Int32.MaxValue;
+                return result;
             }
             return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
         }

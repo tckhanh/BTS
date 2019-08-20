@@ -23,17 +23,12 @@ tr.shown td.details-control {
     width: 100%;
 }
 
-#MyDataTable td, #MyDataTable th, #MyDataTable2 td, #MyDataTable2 th {
-    border: 1px solid #ddd;
-    padding: 4px;
-    font-weight: bold;
-}
 
-#MyDataTable, #MyDataTable2 a {
-    color: blue;
-}
+    #MyDataTable a, #MyDataTable2 a {
+        color: blue;
+    }
 
-    #MyDataTable tr:nth-child(even){
+    #MyDataTable tr:nth-child(even) {
         background-color: #f5ebb8;
     }
 
@@ -41,10 +36,18 @@ tr.shown td.details-control {
         background-color: #73edf1;
     }
 
-    #MyDataTable th, #MyDataTable2 th {
+    #MyDataTable th, #MyDataTable2 th, #MyDataTable_wrapper th, #MyDataTable2_wrapper th {
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: center;
         background-color: #1069a9;
         color: white;
+        border: 1px solid #ddd;
+        font-weight: bold;
+    }
+
+    #MyDataTable td, #MyDataTable2 td {
+        border: 1px solid #ddd;
+        padding: 4px;
+        font-weight: bold;
     }

@@ -1,8 +1,8 @@
 ﻿@using BTS.Common
 @{
-    ViewBag.Title = "Certificate";    
+    ViewBag.Title = "Certificate";
     Layout = "~/Views/Shared/Layouts_DataTable_Export_Map_PivotTable.cshtml";
-    IEnumerable<BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
+     IEnumerable <BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
     IEnumerable<BTS.Web.Models.ProfileViewModel> profiles = ViewBag.profiles;
     IEnumerable<BTS.Web.Models.CityViewModel> cities = ViewBag.cities;
 }
@@ -189,7 +189,6 @@
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-
                                 <table id="MyDataTable" class="table table-bordered table-striped" style="width:100%">
                                     <thead>
                                         <tr>
@@ -220,11 +219,11 @@
                 </div>
             </div>
             <div id="mapTab" class="tab-pane fade">
-                <h3 class="BTS-title">DANH SÁCH CÁC TRẠM BTS ĐÃ ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                <h3 class="BTS-title">VỊ TRÍ CÁC TRẠM BTS ĐÃ ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
                 <div id="mapBTS" style="width: 100%; height: 500px;"></div>
             </div>
             <div id="pivotTableTab" class="tab-pane fade">
-                <h3 class="BTS-title">THỐNG KÊ SỐ LƯỢNG TRẠM GỐC BTS ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                <h3 class="BTS-title">THỐNG KÊ SỐ LƯỢNG GIẤY CHỨNG NHẬN KIỂM ĐỊNH ĐÃ ĐƯỢC CẤP </h3>
                 <div id="pivotTable" style="width: 100%"></div>
             </div>
             <!-- /.row -->

@@ -152,18 +152,18 @@ var certificateController = {
         var endDate = new Date();
 
         $('input[name="DateRange"]').daterangepicker(
-                {
-                    locale: {
-                        format: 'DD/MM/YYYY'
-                    },
-                    startDate: startDate,
-                    endDate: endDate
+            {
+                locale: {
+                    format: 'DD/MM/YYYY'
                 },
-                function (start, end, label) {
-                    //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
-                    startDate = start;
-                    endDate = end;
-                });
+                startDate: startDate,
+                endDate: endDate
+            },
+            function (start, end, label) {
+                //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
+                startDate = start;
+                endDate = end;
+            });
 
         //$.ajax({
         //    url: 'Certificate/GetUserRoles',
@@ -207,7 +207,7 @@ var certificateController = {
                     select: {
                         style: 'multi',
                         selector: 'td:first-child'
-                            },
+                    },
                     dom: 'Bfrtip',
                     buttons: [
                         {
@@ -232,7 +232,9 @@ var certificateController = {
                         }
                     ],
                     "processing": true,
+                    "paging": true,
                     "info": true,
+                    "scrollX": true, // ảnh hưởng đến DataTable Id
                     "selector": true,
                     "ajax": {
                         "async": true,
@@ -253,7 +255,8 @@ var certificateController = {
                             className: 'details-control',
                             orderable: false,
                             data: null,
-                            defaultContent: ''
+                            defaultContent: '',
+                            width: "3%"
                         },
                         { "data": "OperatorID", "name": "OperatorID" },
                         { "data": "CityID", "name": "CityID" },
@@ -288,6 +291,12 @@ var certificateController = {
                     "initComplete": function () {
                     }
                 });
+            //var t = $('#MyDataTable').DataTable();
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
         } else {
             $("#MyDataTable")
                 .on('draw.dt', function (e, settings, json, xhr) {
@@ -321,7 +330,9 @@ var certificateController = {
                         selector: 'td:first-child'
                     },
                     "processing": true,
+                    "paging": true,
                     "info": true,
+                    "scrollX": true, // ảnh hưởng đến DataTable Id
                     "selector": true,
                     "ajax": {
                         "async": true,
@@ -338,29 +349,36 @@ var certificateController = {
                         }
                     },
                     "columns": [
-                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },
-                        { "data": "CityID", "name": "CityID", "width": "4%" },
                         {
-                            "data": "Id", "name": "Id", "width": "20%",
+                            className: 'details-control',
+                            orderable: false,
+                            data: null,
+                            defaultContent: '',
+                            width: "3%"
+                        },
+                        { "data": "OperatorID", "name": "OperatorID"},
+                        { "data": "CityID", "name": "CityID"},
+                        {
+                            "data": "Id", "name": "Id",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Certificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
                             }
                         },
                         {
-                            "data": "BtsCode", "name": "BtsCode", "width": "10%",
+                            "data": "BtsCode", "name": "BtsCode",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
                             }
                         },
-                        { "data": "Address", "name": "Address", "width": "40%" },
+                        { "data": "Address", "name": "Address"},
                         {
-                            "data": "IssuedDate", "name": "IssuedDate", "width": "8%",
+                            "data": "IssuedDate", "name": "IssuedDate",
                             "render": function (data, type, row) {
                                 return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
                             }
                         },
                         {
-                            "data": "ExpiredDate", "name": "ExpiredDate", "width": "8%",
+                            "data": "ExpiredDate", "name": "ExpiredDate",
                             "render": function (data, type, row) {
                                 return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
                             }
@@ -371,6 +389,12 @@ var certificateController = {
                     initComplete: function () {
                     }
                 });
+            //var t = $('#MyDataTable').DataTable();
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
         }
     },
     initCompleteFunction: function (settings, json) {
@@ -399,9 +423,9 @@ var certificateController = {
         if (markers != null) {
             for (var i = 0; i < markers.length; ++i) {
                 var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
-                            '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
-                            '<br/><b>G.CNKĐ:</b> ' + markers[i].Id +
-                            '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
+                    '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
+                    '<br/><b>G.CNKĐ:</b> ' + markers[i].Id +
+                    '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
                 var img24 = 'images/pin24.png';
                 var img48 = 'images/pin48.png';
                 if (markers[i].OperatorID == "VINAPHONE") {
@@ -427,7 +451,7 @@ var certificateController = {
                 });
 
                 var m = L.marker([markers[i].Latitude, markers[i].Longtitude], { icon: myIcon })
-                                .bindPopup(popup);
+                    .bindPopup(popup);
                 myMarkerClusters.addLayer(m);
             }
             myMap.addLayer(myMarkerClusters);
@@ -451,14 +475,14 @@ var certificateController = {
         var derivers = $.pivotUtilities.derivers;
         var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.plotly_renderers, $.pivotUtilities.c3_renderers);
         $("#pivotTable").pivotUI(inputFunction,
-                    {
-                        renderers: renderers,
-                        rows: ["OperatorID"],
-                        cols: ["CityID"],
-                        rendererName: "Bar Chart",
-                        rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
-                        hiddenAttributes: ["select.pvtRenderer", "renderers"]
-                    }, true);
+            {
+                renderers: renderers,
+                rows: ["OperatorID"],
+                cols: ["CityID"],
+                rendererName: "Bar Chart",
+                rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
+                hiddenAttributes: ["select.pvtRenderer", "renderers"]
+            }, true);
     }
 }
 

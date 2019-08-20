@@ -129,7 +129,9 @@ namespace BTS.Web.Controllers
             if (recordsFiltered > 0)
             {
                 //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };
-                return Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
+                JsonResult result = Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
+                result.MaxJsonLength = Int32.MaxValue;
+                return result;
             }
             return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
         }
