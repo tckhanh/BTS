@@ -1,11 +1,13 @@
-﻿var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+﻿/// <reference path="applicationgroupaddcontroller.js" />
+var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }),
     latlng = L.latLng(10.796841, 106.66252);
 var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
 var myMarkerClusters = L.markerClusterGroup();
-var userRoleAdmin = "@(User.IsInRole('System_CanExport') ? 'true' : 'false')";
+var arrayRoles = AppGlobal.LoginUser.roles.split(';');
+var system_CanExport_Role = $.inArray(myConstant.System_CanExport_Role, arrayRoles);
 var data = "";
 
 var noCertificateController = {
@@ -97,18 +99,18 @@ var noCertificateController = {
         var endDate = new Date();
 
         $('input[name="DateRange"]').daterangepicker(
-                {
-                    locale: {
-                        format: 'DD/MM/YYYY'
-                    },
-                    startDate: startDate,
-                    endDate: endDate
+            {
+                locale: {
+                    format: 'DD/MM/YYYY'
                 },
-                function (start, end, label) {
-                    //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
-                    startDate = start;
-                    endDate = end;
-                });
+                startDate: startDate,
+                endDate: endDate
+            },
+            function (start, end, label) {
+                //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
+                startDate = start;
+                endDate = end;
+            });
 
         //$.ajax({
         //    url: 'NoCertificate/GetUserRoles',
@@ -120,7 +122,7 @@ var noCertificateController = {
         //    }
         //});
 
-        if (userRoleAdmin) {
+        if (system_CanExport_Role > -1) {
             $("#MyDataTable")
                 .on('draw.dt', function (e, settings, json, xhr) {
                     noCertificateController.initCompleteFunction(settings, json);
@@ -169,7 +171,7 @@ var noCertificateController = {
                     ],
                     "processing": true,
                     "info": true,
-                    "scrollX": true, // ảnh hưởng đến DataTable Id
+                    //"scrollX": true, // ảnh hưởng đến DataTable Id
                     "selector": true,
                     "ajax": {
                         "async": true,
@@ -186,30 +188,47 @@ var noCertificateController = {
                         }
                     },
                     "columns": [
-                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },
-                        { "data": "CityID", "name": "CityID", "width": "4%" },
+                        { "data": "OperatorID", "name": "OperatorID", "width": "6%" },
+                        { "data": "CityID", "name": "CityID", "width": "4%", "className": "dt-body-center"},
                         {
                             "data": "BtsCode", "name": "BtsCode", "width": "10%",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
                             }
                         },        // index 2
-                        { "data": "Address", "name": "Address", "width": "30%" },
+                        { "data": "Address", "name": "Address", "width": "25%" },
                         {
-                            "data": "LabID", "name": "LabID", "width": "8%",
+                            "data": "LabID", "name": "LabID", "width": "8%", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Lab/Detail/" + oData.LabID + "'>" + oData.LabID + "</a>");
                             }
                         },
                         {
-                            "data": "TestReportDate", "name": "TestReportDate", "width": "8%",
+                            "data": "TestReportDate", "name": "TestReportDate", "width": "8%", "className": "dt-body-center",
                             "render": function (data, type, row) {
                                 return (moment(row["TestReportDate"]).format("DD/MM/YYYY"));
                             }
                         },
                         {
-                            "data": "ReasonNoCertificate", "name": "ReasonNoCertificate", "width": "30%"
-                        }],
+                            "data": "ReasonNoCertificate", "name": "ReasonNoCertificate", "width": "25%"
+                        },
+                        {
+                            "data": "Id", "name": "Id", "width": "14%", "className": "dt-body-center",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                var htmlLink = "";
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {                                    
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/NoCertificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/NoCertificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/NoCertificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';                                    
+                                }
+                                $(nTd).html(htmlLink);
+                            }
+                        }                        
+                    ],
                     "language": {
                         url: '/AppFiles/localization/vi_VI.json'
                     },
@@ -242,7 +261,7 @@ var noCertificateController = {
                     "processing": true,
                     "info": true,
                     "selector": true,
-                    "scrollX": true, // ảnh hưởng đến DataTable Id
+                    //"scrollX": true, // ảnh hưởng đến DataTable Id
                     "ajax": {
                         "async": true,
                         "url": "/NoCertificate/loadNoCertificate",
@@ -258,30 +277,47 @@ var noCertificateController = {
                         }
                     },
                     "columns": [
-                        { "data": "OperatorID", "name": "OperatorID", "width": "10%" },
-                        { "data": "CityID", "name": "CityID", "width": "4%" },
+                        { "data": "OperatorID", "name": "OperatorID", "width": "6%" },
+                        { "data": "CityID", "name": "CityID", "width": "4%", "className": "dt-body-center" },
                         {
                             "data": "BtsCode", "name": "BtsCode", "width": "10%",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
                             }
                         },        // index 2
-                        { "data": "Address", "name": "Address", "width": "30%" },
+                        { "data": "Address", "name": "Address", "width": "25%" },
                         {
-                            "data": "LabID", "name": "LabID", "width": "8%",
+                            "data": "LabID", "name": "LabID", "width": "8%", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Lab/Detail/" + oData.LabID + "'>" + oData.LabID + "</a>");
                             }
                         },
                         {
-                            "data": "TestReportDate", "name": "TestReportDate", "width": "8%",
+                            "data": "TestReportDate", "name": "TestReportDate", "width": "8%", "className": "dt-body-center",
                             "render": function (data, type, row) {
                                 return (moment(row["TestReportDate"]).format("DD/MM/YYYY"));
                             }
                         },
                         {
-                            "data": "ReasonNoCertificate", "name": "ReasonNoCertificate", "width": "30%"
-                        }],
+                            "data": "ReasonNoCertificate", "name": "ReasonNoCertificate", "width": "25%",
+                        },
+                        {
+                            "data": "Id", "name": "Id", "width": "14%", "className": "dt-body-center",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                var htmlLink = "";
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/NoCertificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/NoCertificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/NoCertificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';                                    
+                                }
+                                $(nTd).html(htmlLink);
+                            }
+                        }
+                    ],
                     "language": {
                         url: '/AppFiles/localization/vi_VI.json'
                     },
@@ -316,9 +352,9 @@ var noCertificateController = {
         if (markers != null) {
             for (var i = 0; i < markers.length; ++i) {
                 var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
-                            '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
-                            '<br/><b>Địa chỉ:</b> ' + markers[i].Address +
-                            '<br/><b>Lý do Không cấp:</b> ' + markers[i].ReasonNoCertificate;
+                    '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
+                    '<br/><b>Địa chỉ:</b> ' + markers[i].Address +
+                    '<br/><b>Lý do Không cấp:</b> ' + markers[i].ReasonNoCertificate;
                 var img24 = 'images/pin24.png';
                 var img48 = 'images/pin48.png';
                 if (markers[i].OperatorID == "VINAPHONE") {
@@ -344,7 +380,7 @@ var noCertificateController = {
                 });
 
                 var m = L.marker([markers[i].Latitude, markers[i].Longtitude], { icon: myIcon })
-                                .bindPopup(popup);
+                    .bindPopup(popup);
                 myMarkerClusters.addLayer(m);
             }
             myMap.addLayer(myMarkerClusters);
@@ -368,14 +404,14 @@ var noCertificateController = {
         var derivers = $.pivotUtilities.derivers;
         var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.plotly_renderers, $.pivotUtilities.c3_renderers);
         $("#pivotTable").pivotUI(inputFunction,
-                    {
-                        renderers: renderers,
-                        rows: ["OperatorID"],
-                        cols: ["CityID"],
-                        rendererName: "Bar Chart",
-                        rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
-                        hiddenAttributes: ["select.pvtRenderer", "renderers"]
-                    }, true);
+            {
+                renderers: renderers,
+                rows: ["OperatorID"],
+                cols: ["CityID"],
+                rendererName: "Bar Chart",
+                rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
+                hiddenAttributes: ["select.pvtRenderer", "renderers"]
+            }, true);
     }
 }
 

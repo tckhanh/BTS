@@ -15,6 +15,9 @@ namespace BTS.Web.Models
         [StringLength(16, ErrorMessage = "Số Giấy CNKĐ không quá 16 ký tự")]
         public string CertificateID { get; set; }
 
+        [Display(Name = "Trạm BTS thứ")]
+        public int BtsSerialNo { get; set; }
+
         [Display(Name = "Mã trạm BTS")]
         [StringLength(50, ErrorMessage = "Mã trạm BTS không quá 50 ký tự")]
         public string BtsCode { get; set; }
@@ -32,7 +35,11 @@ namespace BTS.Web.Models
         public string Equipment { get; set; }
 
         [Display(Name = "Số Anten")]
-        public int? AntenNum { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số Anten")]
+        [Range(1, int.MaxValue, ErrorMessage = "Yêu cầu nhập Số Anten là số nguyên trong phạm vi [1->2147483647]")]
+        [RegularExpression(@"[1-9][0-9]*$", ErrorMessage = "Yêu cầu nhập Số Anten là số nguyên")]
+        public int AntenNum { get; set; }
 
         [Display(Name = "Cấu hình máy phát")]
         [StringLength(30, ErrorMessage = "Cấu hình máy phát không quá 30 ký tự")]
@@ -53,5 +60,9 @@ namespace BTS.Web.Models
         public virtual CertificateViewModel Certificates { get; set; }
 
         public virtual OperatorViewModel Operator { get; set; }
+        public SubBtsInCertViewModel()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

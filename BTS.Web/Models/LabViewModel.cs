@@ -19,10 +19,12 @@ namespace BTS.Web.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tên Phòng Đo kiểm")]
         [StringLength(255, ErrorMessage = "Tên Phòng Đo kiểm không quá 255 ký tự")]
         [Unique(ErrorMessage = "Tên Phòng Đo kiểm đã tồn tại rồi !!", TargetModelType = typeof(Lab), TargetPropertyName = "Name")]
+        [DataType(DataType.MultilineText)]
         public string Name { get; set; }
 
         [Display(Name = "Địa chỉ")]
         [StringLength(255, ErrorMessage = "Địa chỉ không quá 255 ký tự")]
+        [DataType(DataType.MultilineText)]
         public string Address { get; set; }
 
         [Display(Name = "Số điện thoại")]

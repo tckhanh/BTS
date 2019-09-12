@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,13 +21,17 @@ namespace BTS.Web.Controllers
         private IOperatorService _operatorService;
         private IProfileService _profileService;
         private ICityService _cityService;
+        private IInCaseOfService _inCaseOfService;
+        private ILabService _labService;
 
-        public CertificateController(ICertificateService certificateService, IOperatorService operatorService, IProfileService profileService, ICityService cityService, IErrorService errorService) : base(errorService)
+        public CertificateController(ICertificateService certificateService, IOperatorService operatorService, IProfileService profileService, ICityService cityService, IInCaseOfService inCaseOfService, ILabService labService, IErrorService errorService) : base(errorService)
         {
             _certificateService = certificateService;
             _operatorService = operatorService;
             _profileService = profileService;
             _cityService = cityService;
+            _inCaseOfService = inCaseOfService;
+            _labService = labService;
         }
 
         // GET: Certificate
@@ -43,15 +48,6 @@ namespace BTS.Web.Controllers
             return View();
         }
 
-        [HttpPost]
-        public JsonResult GetUserRoles()
-        {
-            return Json(new
-            {
-                IsAuthenticated = User.Identity.IsAuthenticated,
-                Roles = UserManager.GetRolesAsync(User.Identity.GetUserId())
-            });
-        }
 
         [HttpPost]
 
@@ -139,7 +135,7 @@ namespace BTS.Web.Controllers
         [HttpPost]
 
         //[ValidateAntiForgeryToken]
-        public JsonResult Details(string Id)
+        public JsonResult SubDetail(string Id)
         {
             if (!string.IsNullOrEmpty(Id))
             {
@@ -150,7 +146,7 @@ namespace BTS.Web.Controllers
                 IEnumerable<SubBtsInCertViewModel> dataViewModel = Mapper.Map<List<SubBtsInCertViewModel>>(Items);
                 if (countItem > 0)
                 {
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "Detail", dataViewModel), message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "SubDetail", dataViewModel), message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -181,6 +177,307 @@ namespace BTS.Web.Controllers
             List<Certificate> dataSumary = _certificateService.getAll(out countBTS, true).ToList();
 
             return Json(dataSumary, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult ViewAll()
+        {
+            return View(GetAll());
+        }
+
+        private IEnumerable<CertificateViewModel> GetAll()
+        {
+            int rows;
+            var model = _certificateService.getAll(out rows,false).ToList();
+            return Mapper.Map<IEnumerable<CertificateViewModel>>(model);
+        }
+
+
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
+        public async Task<ActionResult> AddOrEdit(string act, string id = "0")
+        {
+            CertificateViewModel ItemVm = new CertificateViewModel();
+            if (!string.IsNullOrEmpty(id))
+            {
+                var DbItem = _certificateService.getByID(id);
+
+                if (DbItem != null)
+                {
+                    ItemVm = Mapper.Map<CertificateViewModel>(DbItem);
+                }
+            }
+
+            IEnumerable<Operator> operatorList = _operatorService.getAll().ToList();
+            foreach (var operatorItem in operatorList)
+            {
+                var listItem = new SelectListItem()
+                {
+                    Text = operatorItem.Name,
+                    Value = operatorItem.Id,
+                    Selected = false
+                };
+                ItemVm.OperatorList.Add(listItem);
+            }
+
+            IEnumerable<Model.Models.Profile> profileList = _profileService.getAll().ToList();
+            foreach (var profileItem in profileList)
+            {
+                var listItem = new SelectListItem()
+                {
+                    Text = profileItem.BtsQuantity + "-" + profileItem.ApplicantID + "-" + profileItem.ProfileNum,
+                    Value = profileItem.Id?.ToString(),
+                    Selected = false
+                };
+                ItemVm.ProfileList.Add(listItem);
+            }
+
+            IEnumerable<City> cityList = _cityService.getAll().ToList();
+            foreach (var cityItem in cityList)
+            {
+                var listItem = new SelectListItem()
+                {
+                    Text = cityItem.Name,
+                    Value = cityItem.Id,
+                    Selected = false
+                };
+                ItemVm.CityList.Add(listItem);
+            }
+
+            IEnumerable<InCaseOf> inCaseOfList = _inCaseOfService.getAll().ToList();
+            foreach (var inCaseOfItem in inCaseOfList)
+            {
+                var listItem = new SelectListItem()
+                {
+                    Text = inCaseOfItem.Name,
+                    Value = inCaseOfItem.Id.ToString(),
+                    Selected = false
+                };
+                ItemVm.InCaseOfList.Add(listItem);
+            }
+
+            IEnumerable<Lab> labList = _labService.getAll().ToList();
+            foreach (var labItem in labList)
+            {
+                var listItem = new SelectListItem()
+                {
+                    Text = labItem.Name,
+                    Value = labItem.Id.ToString(),
+                    Selected = false
+                };
+                ItemVm.LabList.Add(listItem);
+            }
+
+
+            if (act == CommonConstants.Action_Edit)
+                return View("Edit", ItemVm);
+            else if (act == CommonConstants.Action_Detail)
+            {
+                return View("Detail", ItemVm);
+            }
+            else
+            {
+                return View("Add", ItemVm);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
+        public async Task<ActionResult> AddOrEdit(string act, CertificateViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
+
+                    SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
+                    if (Item.SubBtsQuantity != SubBtsCodes.Count())
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã trạm của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
+                    if (Item.SubBtsQuantity != SubBtsOperatorIDs.Count())
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã Doanh nghiệp CCDV của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
+                    if (Item.SubBtsQuantity != SubBtsEquipments.Count())
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Thiết bị phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
+                    if (Item.SubBtsQuantity != SubBtsAntenNums.Count())
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
+                    if (Item.SubBtsQuantity != SubBtsConfigurations.Count())
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số máy phát, thu phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
+                    if (Item.SubBtsQuantity != SubBtsBands.Count())
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Băng tần của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                    }
+                    
+                    SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
+                    if (Item.SubBtsQuantity != SubBtsPowerSums.Count())
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Tổng công suất phát các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
+                    if (Item.SubBtsQuantity != SubBtsAntenHeights.Count())
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Độ cao các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    if (act == CommonConstants.Action_Add)
+                    {
+                        var newItem = new Certificate();
+
+                        if (_certificateService.getByID(Item.Id) != null)
+                        {
+                            return Json(new { status = CommonConstants.Status_Error, message = "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi" }, JsonRequestBehavior.AllowGet);
+                        }
+
+                        if (_certificateService.findCertificate(Item.BtsCode, Item.ProfileID) != null)
+                        {
+                            return Json(new { status = CommonConstants.Status_Error, message = "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")" }, JsonRequestBehavior.AllowGet);
+                        }
+
+                        newItem.UpdateCertificate(Item);
+
+                        newItem.Id = Item.Id;
+                        newItem.CreatedBy = User.Identity.Name;
+                        newItem.CreatedDate = DateTime.Now;
+
+                        _certificateService.Add(newItem);
+                        _certificateService.SaveChanges();
+
+                        for (int j = 0; j < Item.SubBtsQuantity; j++)
+                        {
+                            SubBtsInCert subBtsItem = new SubBtsInCert();
+                            subBtsItem.CertificateID = Item.Id;
+                            subBtsItem.BtsSerialNo = j + 1;
+                            subBtsItem.BtsCode = SubBtsCodes[j];
+                            subBtsItem.OperatorID = SubBtsOperatorIDs[j];
+                            subBtsItem.AntenHeight = SubBtsAntenHeights[j];
+                            subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
+                            subBtsItem.Band = SubBtsBands[j];
+                            subBtsItem.Configuration = SubBtsConfigurations[j];
+                            subBtsItem.Equipment = SubBtsEquipments[j];
+                            if (subBtsItem.Equipment.IndexOf(' ') >= 0)
+                            {
+                                subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                            }
+                            else
+                            {
+                                subBtsItem.Manufactory = SubBtsEquipments[j];
+                            }
+                            subBtsItem.PowerSum = SubBtsPowerSums[j];
+
+                            subBtsItem.CreatedBy = User.Identity.Name;
+                            subBtsItem.CreatedDate = DateTime.Now;
+
+
+                            _certificateService.Add(subBtsItem);
+                            _certificateService.SaveChanges();
+                        }
+
+                        return Json(new { status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
+                    }
+                    else
+                    {
+                        var editItem = _certificateService.getByID(Item.Id);
+                        editItem.UpdateCertificate(Item);
+                        editItem.UpdatedBy = User.Identity.Name;
+                        editItem.UpdatedDate = DateTime.Now;
+
+                        _certificateService.Update(editItem);
+                        _certificateService.SaveChanges();
+
+                        _certificateService.DeleteSubBTSinCert(Item.Id);
+                        _certificateService.SaveChanges();
+
+                        for (int j = 0; j < Item.SubBtsQuantity; j++)
+                        {
+                            SubBtsInCert subBtsItem = new SubBtsInCert();
+                            subBtsItem.CertificateID = Item.Id;
+                            subBtsItem.BtsSerialNo = j + 1;
+                            subBtsItem.BtsCode = SubBtsCodes[j];
+                            subBtsItem.OperatorID = SubBtsOperatorIDs[j];
+                            subBtsItem.AntenHeight = SubBtsAntenHeights[j];
+                            subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
+                            subBtsItem.Band = SubBtsBands[j];
+                            subBtsItem.Configuration = SubBtsConfigurations[j];
+                            subBtsItem.Equipment = SubBtsEquipments[j];
+                            if (subBtsItem.Equipment.IndexOf(' ') >= 0) {
+                                subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                            }
+                            else
+                            {
+                                subBtsItem.Manufactory = SubBtsEquipments[j];
+                            }
+                            subBtsItem.PowerSum = SubBtsPowerSums[j];
+
+                            subBtsItem.CreatedBy = User.Identity.Name;
+                            subBtsItem.CreatedDate = DateTime.Now;
+
+
+                            _certificateService.Add(subBtsItem);
+                            _certificateService.SaveChanges();
+                        }
+
+                        return Json(new { status = CommonConstants.Status_Success, message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
+                    }
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanDelete_Role)]
+        public async Task<ActionResult> Delete(string id = "0")
+        {
+            try
+            {
+                var dbItem = _certificateService.getByID(id);
+                if (dbItem == null)
+                {
+                    return HttpNotFound();
+                }
+
+                //if (_btsService.IsUsed(id))
+                //{
+                //    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
+                //}
+
+                _certificateService.Delete(id);
+                _certificateService.SaveChanges();
+
+                return Json(new { status = CommonConstants.Status_Success, message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()),
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

@@ -38,7 +38,7 @@ namespace BTS.Service
 
         IEnumerable<Certificate> getCertificatesByProfile(string profileID);
 
-        NoCertificate getNoCertificate(int Id);
+        NoCertificate getNoCertificate(string Id);
 
         Certificate findCertificate(string BtsCode, string ProfileID);
 
@@ -308,7 +308,7 @@ namespace BTS.Service
             return _certificateRepository.GetMulti(x => x.ProfileID == profileID);
         }
 
-        public NoCertificate getNoCertificate(int Id)
+        public NoCertificate getNoCertificate(string Id)
         {
             return _noCertificateRepository.GetSingleById(Id);
         }

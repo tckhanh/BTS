@@ -45,6 +45,7 @@ namespace BTS.Web.Infrastructure.Extensions
         public static void UpdateCertificate(this Certificate certificate, CertificateViewModel btsCertificateVm)
         {
             certificate.ProfileID = btsCertificateVm.ProfileID;
+            certificate.BtsCode = btsCertificateVm.BtsCode;
             certificate.Longtitude = btsCertificateVm.Longtitude;
             certificate.Latitude = btsCertificateVm.Latitude;
             certificate.Address = btsCertificateVm.Address;
@@ -65,7 +66,7 @@ namespace BTS.Web.Infrastructure.Extensions
             certificate.TestReportNo = btsCertificateVm.TestReportNo;
             certificate.TestReportDate = btsCertificateVm.TestReportDate;
 
-            certificate.IsPoleOnGround = btsCertificateVm.PoleOnGround;
+            certificate.IsPoleOnGround = btsCertificateVm.IsPoleOnGround;
             certificate.IsSafeLimit = btsCertificateVm.IsSafeLimit;
             certificate.SafeLimitHeight = btsCertificateVm.SafeLimitHeight;
             certificate.IsHouseIn100m = btsCertificateVm.IsHouseIn100m;

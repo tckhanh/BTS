@@ -30,11 +30,17 @@ namespace BTS.Web.Models
         public DateTime ProfileDate { get; set; }
 
         [Display(Name = "Số BTS nộp")]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số Trạm BTS nộp")]
+        [Range(1, int.MaxValue, ErrorMessage = "Yêu cầu nhập Phí Kiểm định là số nguyên trong phạm vi [1->2147483647]")]
+        [RegularExpression(@"[1-9][0-9]*$", ErrorMessage = "Yêu cầu nhập Số Trạm BTS nộp là số nguyên")]
         public int BtsQuantity { get; set; }
 
         [Display(Name = "Số BTS tiếp nhận")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số Trạm BTS tiếp nhận")]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số BTS tiếp nhận")]
+        [Range(1, int.MaxValue, ErrorMessage = "Yêu cầu nhập Phí Kiểm định là số nguyên trong phạm vi [1->2147483647]")]
+        [RegularExpression(@"[1-9][0-9]*$", ErrorMessage = "Yêu cầu nhập Số Trạm BTS tiếp nhận là số nguyên")]
         public int AcceptedBtsQuantity { get; set; }
 
         [Display(Name = "Ngày nộp Đơn KĐ")]
@@ -44,6 +50,12 @@ namespace BTS.Web.Models
         public DateTime ApplyDate { get; set; }
 
         [Display(Name = "Phí Kiểm định")]
+        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số Phí Kiểm định")]
+        [Range(1, int.MaxValue, ErrorMessage = "Yêu cầu nhập Phí Kiểm định là số nguyên trong phạm vi [1->2147483647]")]
+        [RegularExpression(@"[1-9][0-9]*$", ErrorMessage = "Yêu cầu nhập Số Trạm BTS tiếp nhận là số nguyên")]
+        //Ap dung cho so Double
+        //[RegularExpression(@"^\d+.\d{0,}$", ErrorMessage = "Yêu cầu nhập Số Phí Kiểm định là số nguyên")]
         public int Fee { get; set; }
 
         [Display(Name = "Số CV Báo phí")]
@@ -57,6 +69,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Ngày nộp phí")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? FeeReceiptDate { get; set; }
 
         [Display(Name = "Danh sách các Đơn vị")]
@@ -70,7 +83,10 @@ namespace BTS.Web.Models
 
         public ProfileViewModel()
         {
+            Id = Guid.NewGuid().ToString();
             ApplicantList = new List<SelectListItem>();
+            ProfileDate = DateTime.Now;
+            ApplyDate = DateTime.Now;
         }
     }
 }

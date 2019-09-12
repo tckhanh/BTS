@@ -13,13 +13,18 @@ namespace BTS.Service
     {
         Certificate Add(Certificate btsCertificate);
 
+        SubBtsInCert Add(SubBtsInCert subBtsInCert);
+
         void Update(Certificate btsCertificate);
 
-        void Delete(int Id);
+        void Delete(string Id);
+
+        void DeleteSubBTSinCert(string Id);
 
         IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate, DateTime startDate, DateTime endDate);
-        IEnumerable<ReportTT18Cert> getReportTT18(out int totalRows, DateTime startDate, DateTime endDate);
+        IEnumerable<ReportTT18Cert> getReportTT18Cert(out int totalRows, DateTime startDate, DateTime endDate);
         IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate);
+        Certificate findCertificate(string BtsCode, string ProfileID);
 
         IEnumerable<Certificate> getByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
 
@@ -49,18 +54,20 @@ namespace BTS.Service
 
         IEnumerable<string> getIssueYears();
 
-        void Save();
+        void SaveChanges();
     }
 
     public class CertificateService : ICertificateService
     {
         private ICertificateRepository _CertificateRepository;
+        private INoCertificateRepository _NoCertificateRepository;
         private ISubBTSinCertRepository _SubBTSinCertRepository;
         private IUnitOfWork _unitOfWork;
 
-        public CertificateService(ICertificateRepository certificateRepository, ISubBTSinCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
+        public CertificateService(ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository, ISubBTSinCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
         {
             _CertificateRepository = certificateRepository;
+            _NoCertificateRepository = noCertificateRepository;
             _SubBTSinCertRepository = subBTSinCertRepository;
             _unitOfWork = unitOfWork;
         }
@@ -70,12 +77,23 @@ namespace BTS.Service
             return _CertificateRepository.Add(btsCertificate);
         }
 
-        public void Delete(int Id)
+        public SubBtsInCert Add(SubBtsInCert subBtsInCert)
         {
+            return _SubBTSinCertRepository.Add(subBtsInCert);
+        }
+
+        public void Delete(string Id)
+        {
+            _SubBTSinCertRepository.DeleteMulti(x => x.CertificateID == Id);
             _CertificateRepository.Delete(Id);
         }
 
-        public IEnumerable<ReportTT18Cert> getReportTT18(out int totalRows, DateTime startDate, DateTime endDate)
+        public void DeleteSubBTSinCert(string Id)
+        {
+            _SubBTSinCertRepository.DeleteMulti(x => x.CertificateID == Id);
+        }
+
+        public IEnumerable<ReportTT18Cert> getReportTT18Cert(out int totalRows, DateTime startDate, DateTime endDate)
         {
             IEnumerable<ReportTT18Cert> result;
             result = _CertificateRepository.GetReportTT18CertByDate(startDate, endDate);        
@@ -113,6 +131,11 @@ namespace BTS.Service
 
             totalRows = result.Count();
             return result;
+        }
+
+        public Certificate findCertificate(string BtsCode, string ProfileID)
+        {
+            return _CertificateRepository.GetSingleByCondition(x => x.BtsCode == BtsCode && x.ProfileID == ProfileID);
         }
 
         public IEnumerable<Certificate> getByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10)
@@ -157,7 +180,7 @@ namespace BTS.Service
             return _CertificateRepository.GetMultiPaging(x => x.OperatorID == operatorID, out totalRow, pageIndex, pageSize);
         }
 
-        public void Save()
+        public void SaveChanges()
         {
             _unitOfWork.Commit();
         }

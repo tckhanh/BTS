@@ -552,8 +552,8 @@ namespace BTS.Web.Controllers
                             return "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi";
                         }
 
-                        Certificate existCertificate = _importService.findCertificate(Item.BtsCode, Item.ProfileID);
-                        if (existCertificate != null)
+                        //Certificate existCertificate = _importService.findCertificate(Item.BtsCode, Item.ProfileID);
+                        if (_importService.findCertificate(Item.BtsCode, Item.ProfileID) != null)
                         {
                             return "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")";
                         }
@@ -573,6 +573,7 @@ namespace BTS.Web.Controllers
                         {
                             SubBtsInCert subBtsItem = new SubBtsInCert();
                             subBtsItem.CertificateID = Item.Id;
+                            subBtsItem.BtsSerialNo = j + 1;
                             subBtsItem.BtsCode = SubBtsCodes[j];
                             subBtsItem.OperatorID = SubBtsOperatorIDs[j];
                             subBtsItem.AntenHeight = SubBtsAntenHeights[j];
@@ -580,7 +581,14 @@ namespace BTS.Web.Controllers
                             subBtsItem.Band = SubBtsBands[j];
                             subBtsItem.Configuration = SubBtsConfigurations[j];
                             subBtsItem.Equipment = SubBtsEquipments[j];
-                            subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                            if (subBtsItem.Equipment.IndexOf(' ') >= 0)
+                            {
+                                subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                            }
+                            else
+                            {
+                                subBtsItem.Manufactory = SubBtsEquipments[j];
+                            }
                             subBtsItem.PowerSum = SubBtsPowerSums[j];
 
                             subBtsItem.CreatedBy = User.Identity.Name;
@@ -719,6 +727,7 @@ namespace BTS.Web.Controllers
                         {
                             SubBtsInCert subBtsItem = new SubBtsInCert();
                             subBtsItem.CertificateID = Item.Id;
+                            subBtsItem.BtsSerialNo = j + 1;
                             subBtsItem.BtsCode = SubBtsCodes[j];
                             subBtsItem.OperatorID = SubBtsOperatorIDs[j];
                             subBtsItem.AntenHeight = SubBtsAntenHeights[j];
@@ -726,7 +735,14 @@ namespace BTS.Web.Controllers
                             subBtsItem.Band = SubBtsBands[j];
                             subBtsItem.Configuration = SubBtsConfigurations[j];
                             subBtsItem.Equipment = SubBtsEquipments[j];
-                            subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                            if (subBtsItem.Equipment.IndexOf(' ') >= 0)
+                            {
+                                subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                            }
+                            else
+                            {
+                                subBtsItem.Manufactory = SubBtsEquipments[j];
+                            }
                             subBtsItem.PowerSum = SubBtsPowerSums[j];
 
                             subBtsItem.CreatedBy = User.Identity.Name;

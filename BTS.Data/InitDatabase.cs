@@ -9,8 +9,6 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BTS.Data
 {
@@ -28,11 +26,11 @@ namespace BTS.Data
                 ApplicationUserManager _userManager = new ApplicationUserManager(new UserStore<ApplicationUser, ApplicationRole, string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>(context));
                 ApplicationRoleManager _roleManager = new ApplicationRoleManager(new ApplicationRoleStore(context));
 
-                var newGroup = new ApplicationGroup();
-                var newRole = new ApplicationRole();
+                ApplicationGroup newGroup = new ApplicationGroup();
+                ApplicationRole newRole = new ApplicationRole();
                 List<string> roleList = new List<string>();
                 List<string[]> roleList2;
-                var listRoleGroup = new List<ApplicationRoleGroup>();
+                List<ApplicationRoleGroup> listRoleGroup = new List<ApplicationRoleGroup>();
                 ApplicationGroup groupItem;
 
                 roleList2 = new List<string[]> {
@@ -71,7 +69,7 @@ namespace BTS.Data
                         CommonConstants.System_CanDelete_Description }
                 };
 
-                foreach (var roleItem in roleList2)
+                foreach (string[] roleItem in roleList2)
                 {
                     if (!_roleManager.RoleExists(roleItem.ElementAt(0)))
                     {
@@ -92,6 +90,9 @@ namespace BTS.Data
                     new string[]{
                         CommonConstants.Data_CanViewChart_Role,
                         CommonConstants.Data_CanViewChart_Description },
+                    new string[]{
+                        CommonConstants.Data_CanViewReport_Role,
+                        CommonConstants.Data_CanViewReport_Description },
                     new string[]{
                         CommonConstants.Data_CanViewStatitics_Role,
                         CommonConstants.Data_CanViewStatitics_Description },
@@ -115,10 +116,26 @@ namespace BTS.Data
                         CommonConstants.Data_CanLock_Description },
                     new string[]{
                         CommonConstants.Data_CanDelete_Role,
-                        CommonConstants.Data_CanDelete_Description }
+                        CommonConstants.Data_CanDelete_Description },
+
+                    new string[]{
+                        CommonConstants.Info_CanView_Role,
+                        CommonConstants.Info_CanView_Description },
+                    new string[]{
+                        CommonConstants.Info_CanViewDetail_Role,
+                        CommonConstants.Info_CanViewDetail_Description },
+                    new string[]{
+                        CommonConstants.Info_CanViewChart_Role,
+                        CommonConstants.Info_CanViewChart_Description },
+                    new string[]{
+                        CommonConstants.Info_CanViewReport_Role,
+                        CommonConstants.Info_CanViewReport_Description },
+                    new string[]{
+                        CommonConstants.Info_CanViewStatitics_Role,
+                        CommonConstants.Info_CanViewStatitics_Description },
                 };
 
-                foreach (var roleItem in roleList2)
+                foreach (string[] roleItem in roleList2)
                 {
                     if (!_roleManager.RoleExists(roleItem.ElementAt(0)))
                     {
@@ -290,6 +307,7 @@ namespace BTS.Data
                     CommonConstants.Data_CanView_Role,
                     CommonConstants.Data_CanViewDetail_Role,
                     CommonConstants.Data_CanViewChart_Role,
+                    CommonConstants.Data_CanViewReport_Role,
                     CommonConstants.Data_CanViewStatitics_Role,
                     CommonConstants.Data_CanAdd_Role,
                     CommonConstants.Data_CanImport_Role,
@@ -297,15 +315,21 @@ namespace BTS.Data
                     CommonConstants.Data_CanEdit_Role,
                     CommonConstants.Data_CanReset_Role,
                     CommonConstants.Data_CanLock_Role,
-                    CommonConstants.Data_CanDelete_Role
+                    CommonConstants.Data_CanDelete_Role,
+
+                    CommonConstants.Info_CanView_Role,
+                    CommonConstants.Info_CanViewDetail_Role,
+                    CommonConstants.Info_CanViewChart_Role,
+                    CommonConstants.Info_CanViewReport_Role,
+                    CommonConstants.Info_CanViewStatitics_Role,
                 };
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    var dbRole = _roleManager.FindByName(roleItem);
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
 
                     if (dbRole != null && context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
                     {
-                        var appRoleGroup = new ApplicationRoleGroup()
+                        ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
                         {
                             GroupId = groupItem.Id,
                             RoleId = dbRole.Id
@@ -329,13 +353,13 @@ namespace BTS.Data
                 CommonConstants.Data_CanReset_Role,
                 CommonConstants.Data_CanExport_Role
                  };
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    var dbRole = _roleManager.FindByName(roleItem);
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
 
                     if (dbRole != null && context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
                     {
-                        var appRoleGroup = new ApplicationRoleGroup()
+                        ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
                         {
                             GroupId = groupItem.Id,
                             RoleId = dbRole.Id
@@ -354,22 +378,28 @@ namespace BTS.Data
                 CommonConstants.Data_CanView_Role,
                 CommonConstants.Data_CanViewDetail_Role,
                 CommonConstants.Data_CanViewChart_Role,
+                CommonConstants.Data_CanViewReport_Role,
                 CommonConstants.Data_CanViewStatitics_Role,
                 CommonConstants.Data_CanAdd_Role,
                 CommonConstants.Data_CanImport_Role,
                 CommonConstants.Data_CanExport_Role,
                 CommonConstants.Data_CanEdit_Role,
                 CommonConstants.Data_CanReset_Role,
-                CommonConstants.Data_CanLock_Role
+                CommonConstants.Data_CanLock_Role,
+                CommonConstants.Info_CanView_Role,
+                CommonConstants.Info_CanViewDetail_Role,
+                CommonConstants.Info_CanViewChart_Role,
+                CommonConstants.Info_CanViewReport_Role,
+                CommonConstants.Info_CanViewStatitics_Role
             };
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    var dbRole = _roleManager.FindByName(roleItem);
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
                     if (dbRole != null)
                     {
                         if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
                         {
-                            var appRoleGroup = new ApplicationRoleGroup()
+                            ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
                             {
                                 GroupId = groupItem.Id,
                                 RoleId = dbRole.Id
@@ -388,20 +418,21 @@ namespace BTS.Data
                 CommonConstants.Data_CanView_Role,
                 CommonConstants.Data_CanViewDetail_Role,
                 CommonConstants.Data_CanViewChart_Role,
+                CommonConstants.Data_CanViewReport_Role,
                 CommonConstants.Data_CanAdd_Role,
                 CommonConstants.Data_CanImport_Role,
                 CommonConstants.Data_CanEdit_Role,
                 CommonConstants.Data_CanReset_Role,
                 CommonConstants.Data_CanLock_Role
             };
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    var dbRole = _roleManager.FindByName(roleItem);
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
                     if (dbRole != null)
                     {
                         if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
                         {
-                            var appRoleGroup = new ApplicationRoleGroup()
+                            ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
                             {
                                 GroupId = groupItem.Id,
                                 RoleId = dbRole.Id
@@ -422,14 +453,14 @@ namespace BTS.Data
                 CommonConstants.Data_CanViewChart_Role,
                 CommonConstants.Data_CanReset_Role,
             };
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    var dbRole = _roleManager.FindByName(roleItem);
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
                     if (dbRole != null)
                     {
                         if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
                         {
-                            var appRoleGroup = new ApplicationRoleGroup()
+                            ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
                             {
                                 GroupId = groupItem.Id,
                                 RoleId = dbRole.Id
@@ -450,14 +481,14 @@ namespace BTS.Data
                 CommonConstants.Data_CanViewChart_Role,
                 CommonConstants.Data_CanReset_Role,
             };
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    var dbRole = _roleManager.FindByName(roleItem);
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
                     if (dbRole != null)
                     {
                         if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
                         {
-                            var appRoleGroup = new ApplicationRoleGroup()
+                            ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
                             {
                                 GroupId = groupItem.Id,
                                 RoleId = dbRole.Id
@@ -473,7 +504,7 @@ namespace BTS.Data
 
                 // Add Default SuperAdmin User
 
-                var newAppUser = new ApplicationUser()
+                ApplicationUser newAppUser = new ApplicationUser()
                 {
                     UserName = CommonConstants.SuperAdmin_Name,
                     FullName = CommonConstants.SuperAdmin_FullName,
@@ -485,11 +516,11 @@ namespace BTS.Data
                     Locked = false
                 };
 
-                var userItem = _userManager.FindByName(CommonConstants.SuperAdmin_Name);
+                ApplicationUser userItem = _userManager.FindByName(CommonConstants.SuperAdmin_Name);
 
                 if (userItem == null)
                 {
-                    var chkUser = _userManager.Create(newAppUser, CommonConstants.SuperAdmin_Password);
+                    IdentityResult chkUser = _userManager.Create(newAppUser, CommonConstants.SuperAdmin_Password);
                     chkUser = _userManager.SetLockoutEnabled(newAppUser.Id, false);
                 }
 
@@ -498,7 +529,7 @@ namespace BTS.Data
                 groupItem = context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.SUPERADMIN_GROUP);
                 if (userItem != null && groupItem != null)
                 {
-                    var appUserGroup = new ApplicationUserGroup()
+                    ApplicationUserGroup appUserGroup = new ApplicationUserGroup()
                     {
                         GroupId = groupItem.Id,
                         UserId = userItem.Id
@@ -510,21 +541,21 @@ namespace BTS.Data
                     }
 
                     //Xóa Roles cũ Tạo Roles mới cho User
-                    var userRoles = _userManager.GetRoles(userItem.Id);
-                    foreach (var role in userRoles)
+                    IList<string> userRoles = _userManager.GetRoles(userItem.Id);
+                    foreach (string role in userRoles)
                     {
                         _userManager.RemoveFromRole(userItem.Id, role);
                         context.SaveChanges();
                     }
 
                     //add role to user
-                    var query = from g in context.Roles
-                                join rg in context.ApplicationRoleGroups
-                                on g.Id equals rg.RoleId
-                                join ug in context.ApplicationUserGroups
-                                on rg.GroupId equals ug.GroupId
-                                where ug.UserId == userItem.Id
-                                select g.Name;
+                    IQueryable<string> query = from g in context.Roles
+                                               join rg in context.ApplicationRoleGroups
+                                               on g.Id equals rg.RoleId
+                                               join ug in context.ApplicationUserGroups
+                                               on rg.GroupId equals ug.GroupId
+                                               where ug.UserId == userItem.Id
+                                               select g.Name;
                     string[] roles = query.Distinct().ToArray();
                     _userManager.AddToRoles(userItem.Id, roles);
                     context.SaveChanges();
@@ -533,11 +564,11 @@ namespace BTS.Data
             catch (DbEntityValidationException ex)
             {
                 string description = "";
-                foreach (var eve in ex.EntityValidationErrors)
+                foreach (DbEntityValidationResult eve in ex.EntityValidationErrors)
                 {
                     Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
                     description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
-                    foreach (var ve in eve.ValidationErrors)
+                    foreach (DbValidationError ve in eve.ValidationErrors)
                     {
                         Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
                         description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
@@ -563,19 +594,21 @@ namespace BTS.Data
         {
             try
             {
-                Error error = new Error();
-                error.Controller = e.Source;
-                error.CreatedDate = DateTime.Now;
-                error.Message = e.Message;
-                error.Description = description;
-                error.StackTrace = e.StackTrace;
+                Error error = new Error
+                {
+                    Controller = e.Source,
+                    CreatedDate = DateTime.Now,
+                    Message = e.Message,
+                    Description = description,
+                    StackTrace = e.StackTrace
+                };
             }
             catch (DbEntityValidationException ex)
             {
-                foreach (var eve in ex.EntityValidationErrors)
+                foreach (DbEntityValidationResult eve in ex.EntityValidationErrors)
                 {
                     Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
-                    foreach (var ve in eve.ValidationErrors)
+                    foreach (DbValidationError ve in eve.ValidationErrors)
                     {
                         Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
                     }
@@ -610,7 +643,6 @@ namespace BTS.Data
         {
             if (context.Footers.Count(x => x.Id == CommonConstants.DefaultFooterId) == 0)
             {
-                string content = "";
             }
         }
 
@@ -655,7 +687,7 @@ namespace BTS.Data
             {
                 try
                 {
-                    var page = new WebPage()
+                    WebPage page = new WebPage()
                     {
                         Name = "Giới thiệu",
                         Alias = "gioi-thieu",
@@ -667,10 +699,10 @@ namespace BTS.Data
                 }
                 catch (DbEntityValidationException ex)
                 {
-                    foreach (var eve in ex.EntityValidationErrors)
+                    foreach (DbEntityValidationResult eve in ex.EntityValidationErrors)
                     {
                         Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
-                        foreach (var ve in eve.ValidationErrors)
+                        foreach (DbValidationError ve in eve.ValidationErrors)
                         {
                             Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
                         }
@@ -685,7 +717,7 @@ namespace BTS.Data
             {
                 try
                 {
-                    var contactDetail = new ContactDetail()
+                    ContactDetail contactDetail = new ContactDetail()
                     {
                         Name = "Shop thời trang TEDU",
                         Address = "Ngõ 77 Xuân La",
@@ -702,10 +734,10 @@ namespace BTS.Data
                 }
                 catch (DbEntityValidationException ex)
                 {
-                    foreach (var eve in ex.EntityValidationErrors)
+                    foreach (DbEntityValidationResult eve in ex.EntityValidationErrors)
                     {
                         Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
-                        foreach (var ve in eve.ValidationErrors)
+                        foreach (DbValidationError ve in eve.ValidationErrors)
                         {
                             Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
                         }

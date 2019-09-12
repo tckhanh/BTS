@@ -5,7 +5,7 @@
     Layout = null;
 }
 
-<table class="display condensed" id="MyDataTable">
+<table class="display condensed MyDataTable" id="MyDataTable">
     <thead>
         <tr>
             <th>
@@ -65,20 +65,20 @@
                     @Html.DisplayFor(modelItem => item.ReasonsNoCertificate)
                 </td>
 
-                <td>
+                <td class="dt-body-center">
                       @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
                     {
-                        <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("AddOrEdit", "Bts", new { id = @item.Id, act = CommonConstants.Action_Detail })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
+                        <a class="btn btn-info btn-sm" onclick="addinController.Detail('@Url.Action("AddOrEdit", "Bts", new { id = @item.Id, act = CommonConstants.Action_Detail })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
                     }
 
                       @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                     {
-                        <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("AddOrEdit", "Bts", new { id = @item.Id, act = CommonConstants.Action_Edit})')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
+                        <a class="btn btn-primary btn-sm" onclick="addinController.Edit('@Url.Action("AddOrEdit", "Bts", new { id = @item.Id, act = CommonConstants.Action_Edit})')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
                     }
 
                       @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
                     {
-                        <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "Bts", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
+                        <a class="btn btn-danger btn-sm" onclick="addinController.Delete('@Url.Action("Delete", "Bts", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
                     }
                 </td>
             </tr>

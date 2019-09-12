@@ -17,5 +17,9 @@ namespace BTS.Web.Models
         public virtual ApplicationUserViewModel ApplicationUser { set; get; }
 
         public virtual ApplicationGroupViewModel ApplicationGroup { set; get; }
+        public ApplicationUserGroupViewModel()
+        {
+            UserId = Guid.NewGuid().ToString();
+        }
     }
 }

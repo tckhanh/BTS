@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BTS.Data.ApplicationModels;
+using BTS.Web.Infrastructure.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,6 +17,7 @@ namespace BTS.Web.Models
         [Display(Name = "Tên nhóm")]
         [Required(ErrorMessage = "Yêu cầu nhập Tên nhóm")]
         [StringLength(250, ErrorMessage = "Tên nhóm không quá 250 ký tự")]
+        [Unique(ErrorMessage = "Tên Nhóm đã tồn tại rồi !!", TargetModelType = typeof(ApplicationGroup), TargetPropertyName = "Name")]
         public string Name { get; set; }
 
         [Display(Name = "Mô tả nhóm")]
@@ -35,6 +38,7 @@ namespace BTS.Web.Models
 
         public ApplicationGroupViewModel()
         {
+            Id = Guid.NewGuid().ToString();
             RoleList = new List<SelectListItem>();
             UserList = new List<SelectListItem>();
             ApplicationRoleGroups = new List<ApplicationRoleGroupViewModel>();

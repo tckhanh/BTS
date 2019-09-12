@@ -15,10 +15,11 @@ namespace BTS.Service
 
         void Update(Bts newBts);
 
-        Bts Delete(int Id);
+        Bts Delete(string Id);
 
-        IEnumerable<Bts> getAll();
+        IEnumerable<Bts> getAll(out int totalRow);
 
+        IEnumerable<Bts> getAll(out int totalRow, DateTime startDate, DateTime endDate);
         IEnumerable<Bts> getAll(string keyword);
 
         IEnumerable<Operator> getAllOperator();
@@ -31,7 +32,7 @@ namespace BTS.Service
 
         IEnumerable<InCaseOf> getAllInCaseOf();
 
-        Bts getByID(int Id);
+        Bts getByID(string Id);
 
         bool IsUsed(string Id);
 
@@ -41,12 +42,14 @@ namespace BTS.Service
     public class BtsService : IBtsService
     {
         private IBtsRepository _btsRepository;
+        private IProfileService _profileService;
         private IUnitOfWork _unitOfWork;
 
-        public BtsService(IBtsRepository btsRepository, IUnitOfWork unitOfWork)
+        public BtsService(IBtsRepository btsRepository, IProfileService profileService, IUnitOfWork unitOfWork)
         {
-            this._btsRepository = btsRepository;
-            this._unitOfWork = unitOfWork;
+            _btsRepository = btsRepository;
+            _profileService = profileService;
+            _unitOfWork = unitOfWork;
         }
 
         public Bts Add(Bts newBts)
@@ -54,14 +57,25 @@ namespace BTS.Service
             return _btsRepository.Add(newBts);
         }
 
-        public Bts Delete(int Id)
+        public Bts Delete(string Id)
         {
             return _btsRepository.Delete(Id);
         }
 
-        public IEnumerable<Bts> getAll()
+        public IEnumerable<Bts> getAll(out int totalRow)
         {
-            return _btsRepository.GetAll(includes: new string[] { "Profile" });
+            IEnumerable<Bts> result;
+            result = _btsRepository.GetAll(includes: new string[] { "Profile" });
+            totalRow = result.Count();
+            return result;            
+        }
+
+        public IEnumerable<Bts> getAll(out int totalRow, DateTime startDate, DateTime endDate)
+        {
+            IEnumerable<Bts> result;
+            result = _btsRepository.getAll(startDate, endDate);
+            totalRow = result.Count();
+            return result;
         }
 
         public IEnumerable<Bts> getAll(string keyword)
@@ -72,7 +86,7 @@ namespace BTS.Service
                 return _btsRepository.GetAll();
         }
 
-        public Bts getByID(int Id)
+        public Bts getByID(string Id)
         {
             return _btsRepository.GetSingleById(Id);
         }

@@ -5,6 +5,7 @@
 }
 
 @section headCSS{
+    <meta http-equiv="content-type" content="text/plain; charset=UTF-8" />
     <style>
         .ui-datepicker-calendar {
             display: none;
@@ -14,6 +15,7 @@
 
 @section footerJS{
     <script src="~/Assets/client/js/controllers/reportController.js"></script>
+    <script src="~/Assets/client/js/common/toExcel.js"></script>
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -39,7 +41,7 @@
                 <!-- SELECT2 EXAMPLE -->
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <h3 class="BTS-title">BÁO CÁO KẾT QUẢ CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH TRONG THÁNG</h3>
+                        <h3 class="BTS-title">BÁO CÁO KẾT QUẢ XỬ LÝ HỒ SƠ KIỂM ĐỊNH TRONG THÁNG</h3>
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -93,6 +95,7 @@
             {
                 <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
             }
+            <li><a data-toggle="tab" href="#home3Tab">NOKĐ_TT18</a></li>
         </ul>
         <div class="tab-content">
             <div id="homeTab" class="tab-pane fade in active">
@@ -102,13 +105,16 @@
                             <div class="box-header">
                                 <h3 class="BTS-title">
                                     DANH SÁCH GIẤY CHỨNG NHẬN KIỂM ĐỊNH ĐÃ ĐƯỢC CẤP TRONG THÁNG
-                                    <span id="BTS-Result" class="BTS-title"></span>
+                                    <span id="BTS-Result" class="BTS-title BTS-Result"></span>
                                 </h3>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-
-                                <table id="MyDataTable" class="table table-bordered table-striped" style="width:100%">
+                                @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
+                                {
+                                    <input type="button" onclick="ExportTableToExcel.tableToExcel('MyDataTable','MonthlyReport_ISO','MonthlyReport_ISO')" value="Xuất Excel">
+                                }
+                                <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th rowspan="2">Stt</th>
@@ -146,13 +152,16 @@
                             <div class="box-header">
                                 <h3 class="BTS-title">
                                     DANH SÁCH TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH TRONG THÁNG
-                                    <span id="BTS-Result" class="BTS-title"></span>
+                                    <span id="BTS-Result" class="BTS-title BTS-Result"></span>
                                 </h3>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-
-                                <table id="MyDataTable2" class="table table-bordered" style="width:100%">
+                                @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
+                                {
+                                    <input type="button" onclick="ExportTableToExcel.tableToExcel('MyDataTable2','MonthlyCertReport_TT08','MonthlyCertReport_TT08')" value="Xuất Excel">
+                                }
+                                <table id="MyDataTable2" class="table table-bordered MyDataTable" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Stt</th>
@@ -180,7 +189,50 @@
                     <!-- /.col -->
                 </div>
             </div>
-
+            <div id="home3Tab" class="tab-pane fade">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="BTS-title">
+                                    DANH SÁCH TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG KHÔNG ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH TRONG THÁNG
+                                    <span id="BTS-Result" class="BTS-title BTS-Result"></span>
+                                </h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
+                                {
+                                    <input type="button" onclick="ExportTableToExcel.tableToExcel('MyDataTable3','MonthlyNoCertReport_TT08','MonthlyNoCertReport_TT08')" value="Xuất Excel">
+                                }
+                                <table id="MyDataTable3" class="table table-bordered MyDataTable" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Stt</th>
+                                            <th>Địa điểm lắp đặt</th>
+                                            <th>Tỉnh/TP</th>
+                                            <th>Tọa độ</th>
+                                            <th>Doanh nghiệp</th>
+                                            <th>Số lượng trạm</th>
+                                            <th>Mã trạm</th>
+                                            <th>Thiết bị phát</th>
+                                            <th>Số Anten</th>
+                                            <th>Số máy phát</th>
+                                            <th>Tổng công suất</th>
+                                            <th>Băng tần</th>
+                                            <th>Độ cao Anten</th>
+                                            <th>Lý do không cấp</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
             <div id="mapTab" class="tab-pane fade">
                 <h3 class="BTS-title">DANH SÁCH CÁC TRẠM BTS ĐÃ ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
                 <div id="mapBTS" style="width: 100%; height: 500px;"></div>

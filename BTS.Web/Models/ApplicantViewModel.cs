@@ -19,12 +19,14 @@ namespace BTS.Web.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tên đơn vị nộp hồ sơ")]
         [StringLength(255, ErrorMessage = "Tên đơn vị nộp hồ sơ không quá 255 ký tự")]
         [Display(Name = "Tên đơn vị nộp hồ sơ")]
+        [DataType(DataType.MultilineText)]
         [Unique(ErrorMessage = "Tên đơn vị nộp hồ sơ đã tồn tại rồi !!", TargetModelType = typeof(Applicant), TargetPropertyName = "Name")]
         public string Name { get; set; }
 
         [Display(Name = "Địa chỉ")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập địa chỉ")]
         [StringLength(255, ErrorMessage = "Địa chỉ không quá 255 ký tự")]
+        [DataType(DataType.MultilineText)]
         public string Address { get; set; }
 
         [Display(Name = "Số điện thoại")]
@@ -53,6 +55,7 @@ namespace BTS.Web.Models
 
         public ApplicantViewModel()
         {
+            Id = Guid.NewGuid().ToString();
             OperatorList = new List<SelectListItem>();
         }
     }

@@ -2,17 +2,19 @@
 @{
     ViewBag.Title = "Certificate";
     Layout = "~/Views/Shared/Layouts_DataTable_Export_Map_PivotTable.cshtml";
-     IEnumerable <BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
+    IEnumerable<BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
     IEnumerable<BTS.Web.Models.ProfileViewModel> profiles = ViewBag.profiles;
     IEnumerable<BTS.Web.Models.CityViewModel> cities = ViewBag.cities;
 }
 
 @section headCSS{
-    
+
 }
 
 @section footerJS{
+    <script src="~/Assets/client/js/controllers/addinController.js"></script>
     <script src="~/Assets/client/js/controllers/certificateController.js"></script>
+    <script src="~/Assets/client/js/common/toExcel.js"></script>
 }
 
 <!-- Content Wrapper. Contains page content -->
@@ -169,6 +171,10 @@
 
         <ul class="nav nav-tabs nav-pills">
             <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách GCNKĐ</a></li>
+            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role) || User.IsInRole(CommonConstants.Data_CanEdit_Role))
+            {
+                <li><a data-toggle="tab" href="#AddOrEditTab"> Thêm mới</a></li>
+            }
             @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
             {
                 <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
@@ -189,7 +195,11 @@
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-                                <table id="MyDataTable" class="table table-bordered table-striped" style="width:100%">
+                                @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
+                                {
+                                    <input type="button" onclick="ExportTableToExcel.tableToExcel('MyDataTable','Certificates','Certificates')" value="Xuất Excel">
+                                }
+                                <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -200,6 +210,7 @@
                                             <th>Địa chỉ</th>
                                             <th>Ngày ban hành</th>
                                             <th>Ngày hết hạn</th>
+                                            <th>Thao tác</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -218,6 +229,10 @@
                     <!-- /.col -->
                 </div>
             </div>
+            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role) || User.IsInRole(CommonConstants.Data_CanEdit_Role))
+            {
+                <div id="AddOrEditTab" class="tab-pane fade">@Html.Action("AddOrEdit")</div>
+            }
             <div id="mapTab" class="tab-pane fade">
                 <h3 class="BTS-title">VỊ TRÍ CÁC TRẠM BTS ĐÃ ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
                 <div id="mapBTS" style="width: 100%; height: 500px;"></div>

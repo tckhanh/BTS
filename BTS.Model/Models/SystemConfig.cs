@@ -12,6 +12,7 @@ namespace BTS.Model.Models
     public class SystemConfig
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { set; get; }
 
         [Required]

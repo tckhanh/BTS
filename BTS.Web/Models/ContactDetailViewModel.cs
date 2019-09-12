@@ -27,8 +27,16 @@ namespace BTS.Web.Models
 
         public string Other { set; get; }
 
+        [Display(Name = "Vĩ độ")]
+        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Vĩ độ")]
+        [Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Vĩ độ là số >= 0")]
         public double? Lat { set; get; }
 
+        [Display(Name = "Kinh độ")]
+        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Kinh độ")]
+        [Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Kinh độ là số >= 0")]
         public double? Lng { set; get; }
 
         public bool Status { set; get; }

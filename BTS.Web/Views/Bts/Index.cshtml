@@ -2,16 +2,20 @@
 @using BTS.Web.Models
 @{
     ViewBag.Title = "Bts";
-    Layout = "~/Views/Shared/Layouts_DataTable_Map_PivotTable.cshtml";
+    Layout = "~/Views/Shared/Layouts_DataTable_Export_Map_PivotTable.cshtml";
+    IEnumerable<OperatorViewModel> operators = ViewBag.operators;
     IEnumerable<ProfileViewModel> profiles = ViewBag.profiles;
     IEnumerable<CityViewModel> cities = ViewBag.cities;
+
 }
 
 @section headCSS{
 }
 
-@section footerJS{    
-    <script src="~/Assets/client/js/controllers/commonController.js"></script>
+@section footerJS{
+    <script src="~/Assets/client/js/controllers/addinController.js"></script>
+    <script src="~/Assets/client/js/controllers/btsController.js"></script>
+    <script src="~/Assets/client/js/common/toExcel.js"></script>
 }
 <br />
 
@@ -45,14 +49,94 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <ul class="nav nav-tabs nav-pills">
-                            <li class="active"><a data-toggle="tab" href="#firstTab"> Xem</a></li>
-                            <li><a data-toggle="tab" href="#secondTab"> Thêm mới</a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div id="firstTab" class="tab-pane fade in active">@Html.Action("ViewAll")</div>
-                            <div id="secondTab" class="tab-pane fade in">@Html.Action("AddOrEdit")</div>
-                        </div>
+                        <div class="clearfix"></div>
+                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                            @Html.AntiForgeryToken()
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="DateRange">
+                                        Khoảng thời gian<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="OperatorID">
+                                        Nhà mạng<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <select id="OperatorID" class="form-control selectYear">
+                                            <option value="" selected="selected">Tất cả</option>
+                                            @foreach (var item in operators)
+                                            {
+                                                <option value="@item.Id">@item.Id _ @item.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="CityID">
+                                        Tỉnh/Thành phố<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <select id="CityID" class="form-control">
+                                            <option value="" selected="selected">Tất cả</option>
+                                            @foreach (var item in cities)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ProfileID">
+                                        Hồ sơ nộp<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <select id="ProfileID" class="form-control selectYear">
+                                            <option value="" selected="selected">Tất cả</option>
+                                            @foreach (var item in profiles)
+                                            {
+                                                <option value="@item.Id">@item.BtsQuantity BTS _ @item.ApplicantID _ @item.ProfileNum</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="BtsCodeOrAddress">
+                                        Mã trạm/Địa chỉ trạm <span class="required"></span>
+                                    </label>
+                                    <div class="col-md-10 col-sm-10 col-xs-12">
+                                        <input id="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" required="required" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <button class="btn btn-primary" type="reset">Bỏ lọc</button>
+                                        <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -61,5 +145,85 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
+
+        <ul class="nav nav-tabs nav-pills">
+            <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách BTS</a></li>
+
+            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role) || User.IsInRole(CommonConstants.Data_CanEdit_Role))
+            {
+                <li><a data-toggle="tab" href="#AddOrEditTab"> Thêm mới</a></li>
+            }
+
+            @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+            {
+                <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
+            }
+
+            @if (User.IsInRole(CommonConstants.Data_CanViewChart_Role))
+            {
+                <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
+            }
+
+        </ul>
+        <div class="tab-content">
+            <div id="homeTab" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="BTS-title">DANH SÁCH CÁC TRẠM GỐC BTS ĐANG ĐƯỢC XỬ LÝ</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
+                                {
+                                    <input type="button" onclick="ExportTableToExcel.tableToExcel('MyDataTable','Certificates','Certificates')" value="Xuất Excel">
+                                }
+                                <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nhà mạng</th>
+                                            <th>Số đơn KĐ</th>
+                                            <th>Tỉnh/Tp</th>
+                                            <th>Mã trạm</th>
+                                            <th>Địa chỉ</th>
+                                            <th>GCNKĐ đã cấp</th>
+                                            <th>GCNKĐ đã cấp cùng</th>
+                                            <th>Lý do không cấp GCNKĐ</th>
+                                            <th>Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <td>Nhà mạng</td>
+                                            <td>Số đơn KĐ</td>
+                                            <td>Tỉnh</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                @*@Html.Action("ViewAll")*@
+            </div>
+            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role) || User.IsInRole(CommonConstants.Data_CanEdit_Role))
+            {
+                <div id="AddOrEditTab" class="tab-pane fade">@Html.Action("AddOrEdit")</div>
+            }
+            <div id="mapTab" class="tab-pane fade">
+                <h3 class="BTS-title">VỊ TRÍ CÁC TRẠM GỐC BTS NỘP HỒ SƠ ĐĂNG KÝ KIỂM ĐỊNH</h3>
+                <div id="mapBTS" style="width: 100%; height: 500px;"></div>
+            </div>
+            <div id="pivotTableTab" class="tab-pane fade">
+                <h3 class="BTS-title">THỐNG KÊ SỐ LƯỢNG TRẠM GỐC BTS NỘP HỒ SƠ ĐĂNG KÝ KIỂM ĐỊNH</h3>
+                <div id="pivotTable" style="width: 100%"></div>
+            </div>
+        </div>
     </section>
 </div>

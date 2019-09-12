@@ -11,21 +11,25 @@ namespace BTS.Service
 {
     public interface INoCertificateService
     {
+        NoCertificate getByID(string Id);
+
         NoCertificate Add(NoCertificate btsNoCertificate);
 
         void Update(NoCertificate btsNoCertificate);
 
-        void Delete(int Id);
+        void Delete(string Id);
 
         IEnumerable<NoCertificate> getAll(out int totalRow, bool onlyValidNoCertificate, DateTime startDate, DateTime endDate);
 
-        IEnumerable<NoCertificate> getAll(out int totalRow, bool onlyValidNoCertificate);
+        IEnumerable<NoCertificate> getAll(out int totalRow);
 
         IEnumerable<NoCertificate> getNoCertificateProfile(string profileID);
 
         IEnumerable<NoCertificate> getNoCertificateByCity(string cityID);
 
-        void Save();
+        IEnumerable<ReportTT18NoCert> getReportTT18NoCert(out int totalRows, DateTime startDate, DateTime endDate);
+
+        void SaveChanges();
     }
 
     public class NoCertificateService : INoCertificateService
@@ -44,7 +48,7 @@ namespace BTS.Service
             return _NoCertificateRepository.Add(btsNoCertificate);
         }
 
-        public void Delete(int Id)
+        public void Delete(string Id)
         {
             _NoCertificateRepository.Delete(Id);
         }
@@ -65,23 +69,14 @@ namespace BTS.Service
             return result;
         }
 
-        public IEnumerable<NoCertificate> getAll(out int totalRows, bool onlyValidNoCertificate)
+        public IEnumerable<NoCertificate> getAll(out int totalRow)
         {
-            IEnumerable<NoCertificate> result;
-            if (onlyValidNoCertificate)
-            {
-                result = _NoCertificateRepository.GetMulti(x => x.TestReportDate >= DateTime.Today);
-            }
-            else
-            {
-                result = _NoCertificateRepository.GetMulti(x => true);
-            }
-
-            totalRows = result.Count();
+            IEnumerable<NoCertificate> result = _NoCertificateRepository.GetMulti(x => true);
+            totalRow = result.Count();
             return result;
         }
 
-        public void Save()
+        public void SaveChanges()
         {
             _unitOfWork.Commit();
         }
@@ -99,6 +94,19 @@ namespace BTS.Service
         public IEnumerable<NoCertificate> getNoCertificateByCity(string cityID)
         {
             return _NoCertificateRepository.GetMulti(x => x.CityID == cityID);
+        }
+
+        public IEnumerable<ReportTT18NoCert> getReportTT18NoCert(out int totalRows, DateTime startDate, DateTime endDate)
+        {
+            IEnumerable<ReportTT18NoCert> result;
+            result = _NoCertificateRepository.GetReportTT18NoCertByDate(startDate, endDate);
+            totalRows = result.Count();
+            return result;
+        }
+
+        public NoCertificate getByID(string Id)
+        {
+            return _NoCertificateRepository.GetSingleById(Id);
         }
     }
 }

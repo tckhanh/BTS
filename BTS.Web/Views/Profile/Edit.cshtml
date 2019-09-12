@@ -99,7 +99,8 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.Fee, new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
-                                @Html.TextBoxFor(model => model.Fee, new { @class = "form-control" })
+                                @*@Html.TextBoxFor(model => model.Fee, new { @class = "form-control required numeric", id = "Fee", Value = String.Format("{0:N0}", Model.Fee) })*@
+                                @Html.TextBoxFor(model => model.Fee, new { @class = "form-control"})
                                 @Html.ValidationMessageFor(model => model.Fee)
                             </div>
                         </div>

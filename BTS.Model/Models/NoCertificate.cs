@@ -13,8 +13,7 @@ namespace BTS.Model.Models
     public class NoCertificate : Auditable
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string ProfileID { get; set; }
 
@@ -67,5 +66,10 @@ namespace BTS.Model.Models
 
         [ForeignKey("LabID")]
         public virtual Lab Lab { get; set; }
+
+        public NoCertificate()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

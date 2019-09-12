@@ -5,6 +5,7 @@ using BTS.Model.Models;
 using BTS.Service;
 using BTS.Web.App_Start;
 using BTS.Web.Common;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
@@ -31,6 +32,16 @@ namespace BTS.Web.Controllers
         public BaseController(IErrorService errorService)
         {
             _errorService = errorService;
+        }
+
+        [HttpPost]
+        public JsonResult GetUserRoles()
+        {
+            return Json(new
+            {
+                IsAuthenticated = User.Identity.IsAuthenticated,
+                Roles = UserManager.GetRolesAsync(User.Identity.GetUserId())
+            });
         }
 
         protected ApplicationUserManager UserManager
@@ -393,17 +404,15 @@ namespace BTS.Web.Controllers
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
             base.Initialize(requestContext);
-            if (Session[CommonConstants.CurrentCulture] != null)
-            {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(Session[CommonConstants.CurrentCulture]?.ToString());
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(Session[CommonConstants.CurrentCulture]?.ToString());
-            }
-            else
-            {
-                Session[CommonConstants.CurrentCulture] = "vi";
-                Thread.CurrentThread.CurrentCulture = new CultureInfo("vi");
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("vi");
-            }
+
+            // nếu đã cấu hình <system.web> <globalization uiCulture = "vi-VN" culture = "vi-VN"/> </system.web> trong Web.config thì không cần đoạn mã bên dưới
+
+            //if (Session[CommonConstants.CurrentCulture] != "vi")
+            //{
+            //    Thread.CurrentThread.CurrentCulture = new CultureInfo("vi");
+            //    Thread.CurrentThread.CurrentUICulture = new CultureInfo("vi");
+            //    Session[CommonConstants.CurrentCulture] = "vi";
+            //}
         }
 
         // changing culture

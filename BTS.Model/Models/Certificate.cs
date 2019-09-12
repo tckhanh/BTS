@@ -141,5 +141,8 @@ namespace BTS.Model.Models
         public virtual Lab Lab { get; set; }
 
         public virtual IEnumerable<SubBtsInCert> SubBtsInCerts { get; set; }
+        public Certificate()
+        {            
+        }
     }
 }

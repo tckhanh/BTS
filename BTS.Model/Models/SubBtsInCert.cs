@@ -14,6 +14,8 @@ namespace BTS.Model.Models
         [StringLength(16)]
         public string CertificateID { get; set; }
 
+        public int BtsSerialNo { get; set; }
+
         [StringLength(50)]
         public string BtsCode { get; set; }
 
@@ -26,7 +28,7 @@ namespace BTS.Model.Models
         [StringLength(50)]
         public string Equipment { get; set; }
 
-        public int? AntenNum { get; set; }
+        public int AntenNum { get; set; }
 
         [StringLength(30)]
         public string Configuration { get; set; }

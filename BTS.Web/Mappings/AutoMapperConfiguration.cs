@@ -48,6 +48,7 @@ namespace BTS.Web.Mappings
                 cfg.CreateMap<ApplicationRole, ApplicationRoleViewModel>();
                 cfg.CreateMap<ApplicationUser, ApplicationUserViewModel>();
                 cfg.CreateMap<ReportTT18Cert, ReportTT18CertViewModel>();
+                cfg.CreateMap<ReportTT18NoCert, ReportTT18NoCertViewModel>();
                 /* etc */
             });
         }

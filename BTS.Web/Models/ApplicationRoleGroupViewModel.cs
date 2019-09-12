@@ -17,5 +17,9 @@ namespace BTS.Web.Models
         public virtual ApplicationRoleViewModel ApplicationRole { set; get; }
 
         public virtual ApplicationGroupViewModel ApplicationGroup { set; get; }
+        public ApplicationRoleGroupViewModel()
+        {
+            GroupId = Guid.NewGuid().ToString();
+        }
     }
 }

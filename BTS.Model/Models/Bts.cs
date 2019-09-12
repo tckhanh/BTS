@@ -13,8 +13,7 @@ namespace BTS.Model.Models
     public class Bts : Auditable
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string ProfileID { get; set; }
 
@@ -63,5 +62,10 @@ namespace BTS.Model.Models
 
         [ForeignKey("InCaseOfID")]
         public virtual InCaseOf InCaseOf { get; set; }
+
+        public Bts()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace BTS.Web.Models
         [Display(Name = "Địa chỉ")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập địa chỉ trạm BTS")]
         [StringLength(255, ErrorMessage = "Địa chỉ trạm BTS không quá 255 ký tự")]
+        [DataType(DataType.MultilineText)]
         public string Address { get; set; }
 
         [Display(Name = "Mã Tỉnh/Thành phố")]

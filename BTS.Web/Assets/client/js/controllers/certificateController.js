@@ -6,7 +6,7 @@
 var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
 var myMarkerClusters = L.markerClusterGroup();
 var arrayRoles = AppGlobal.LoginUser.roles.split(';');
-var system_CanExport_Role = $.inArray('System_CanExport', arrayRoles)
+var system_CanExport_Role = $.inArray('System_CanExport', arrayRoles);
 var data = "";
 
 var certificateController = {
@@ -96,7 +96,7 @@ var certificateController = {
             .text('Loading...');
 
         $.ajax({
-            url: '/Certificate/Details',
+            url: '/Certificate/SubDetail',
             type: "POST",
             data: {
                 Id: rowData.Id
@@ -234,7 +234,7 @@ var certificateController = {
                     "processing": true,
                     "paging": true,
                     "info": true,
-                    "scrollX": true, // ảnh hưởng đến DataTable Id
+                    //"scrollX": true, // ảnh hưởng đến DataTable Id
                     "selector": true,
                     "ajax": {
                         "async": true,
@@ -259,9 +259,9 @@ var certificateController = {
                             width: "3%"
                         },
                         { "data": "OperatorID", "name": "OperatorID" },
-                        { "data": "CityID", "name": "CityID" },
+                        { "data": "CityID", "name": "CityID", "className": "dt-body-center" },
                         {
-                            "data": "Id", "name": "Id",
+                            "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Certificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
                             }
@@ -274,17 +274,34 @@ var certificateController = {
                         },        // index 2
                         { "data": "Address", "name": "Address" },
                         {
-                            "data": "IssuedDate", "name": "IssuedDate",
+                            "data": "IssuedDate", "name": "IssuedDate", "className": "dt-body-center",
                             "render": function (data, type, row) {
                                 return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
                             }
                         },
                         {
-                            "data": "ExpiredDate", "name": "ExpiredDate",
+                            "data": "ExpiredDate", "name": "ExpiredDate", "className": "dt-body-center",
                             "render": function (data, type, row) {
                                 return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
                             }
-                        }],
+                        },
+                        {
+                            "data": "Id", "name": "Id", "width": "14%",  "className": "dt-body-center",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                var htmlLink = "";
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Certificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
+                                }
+                                $(nTd).html(htmlLink);
+                            }
+                        }
+                    ],
                     "language": {
                         url: '/AppFiles/localization/vi_VI.json'
                     },
@@ -332,7 +349,7 @@ var certificateController = {
                     "processing": true,
                     "paging": true,
                     "info": true,
-                    "scrollX": true, // ảnh hưởng đến DataTable Id
+                    //"scrollX": true, // ảnh hưởng đến DataTable Id
                     "selector": true,
                     "ajax": {
                         "async": true,
@@ -357,9 +374,9 @@ var certificateController = {
                             width: "3%"
                         },
                         { "data": "OperatorID", "name": "OperatorID"},
-                        { "data": "CityID", "name": "CityID"},
+                        { "data": "CityID", "name": "CityID", "className": "dt-body-center"},
                         {
-                            "data": "Id", "name": "Id",
+                            "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 $(nTd).html("<a href='/Certificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
                             }
@@ -372,17 +389,34 @@ var certificateController = {
                         },
                         { "data": "Address", "name": "Address"},
                         {
-                            "data": "IssuedDate", "name": "IssuedDate",
+                            "data": "IssuedDate", "name": "IssuedDate", "className": "dt-body-center",
                             "render": function (data, type, row) {
                                 return (moment(row["IssuedDate"]).format("DD/MM/YYYY"));
                             }
                         },
                         {
-                            "data": "ExpiredDate", "name": "ExpiredDate",
+                            "data": "ExpiredDate", "name": "ExpiredDate", "className": "dt-body-center",
                             "render": function (data, type, row) {
                                 return (moment(row["ExpiredDate"]).format("DD/MM/YYYY"));
                             }
-                        }],
+                        },
+                        {
+                            "data": "Id", "name": "Id", "width": "14%",  "className": "dt-body-center",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                var htmlLink = "";
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Certificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
+                                }
+                                $(nTd).html(htmlLink);
+                            }
+                        }
+                    ],
                     "language": {
                         url: '/AppFiles/localization/vi_VI.json'
                     },

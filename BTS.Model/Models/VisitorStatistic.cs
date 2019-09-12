@@ -19,5 +19,10 @@ namespace BTS.Model.Models
 
         [MaxLength(50)]
         public string IPAddress { set; get; }
+
+        public VisitorStatistic()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

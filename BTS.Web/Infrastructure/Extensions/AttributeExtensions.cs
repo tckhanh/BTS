@@ -1,13 +1,18 @@
-﻿using System;
+﻿using BTS.Data;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Reflection;
-using BTS.Data;
 using System.Linq.Dynamic;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Threading;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace BTS.Web.Infrastructure.Extensions
-{    
+{
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class Unique : ValidationAttribute
     {
@@ -22,9 +27,9 @@ namespace BTS.Web.Infrastructure.Extensions
 
         private ValidationResult DirectlyValid(object value, ValidationContext validationContext)
         {
-            using (BTSDbContext db = new BTSDbContext() )
+            using (BTSDbContext db = new BTSDbContext())
             {
-                var Name = GetName(validationContext);
+                string Name = GetName(validationContext);
 
                 PropertyInfo IdProp = validationContext.ObjectInstance.GetType().GetProperties().FirstOrDefault(x => x.CustomAttributes.Count(a => a.AttributeType == typeof(KeyAttribute)) > 0);
 
@@ -33,7 +38,7 @@ namespace BTS.Web.Infrastructure.Extensions
                 Type entityType = validationContext.ObjectType;
 
 
-                var result = db.Set(entityType).Where(Name + "==@0", value);
+                IQueryable result = db.Set(entityType).Where(Name + "==@0", value);
                 int count = 0;
 
                 if (Id > 0)
@@ -44,21 +49,25 @@ namespace BTS.Web.Infrastructure.Extensions
                 count = result.Count();
 
                 if (count == 0)
+                {
                     return ValidationResult.Success;
+                }
                 else
+                {
                     return new ValidationResult(ErrorMessageString);
+                }
             }
 
         }
         private string GetName(ValidationContext validationContext)
         {
-            var Name = validationContext.MemberName;
+            string Name = validationContext.MemberName;
 
             if (string.IsNullOrEmpty(Name))
             {
-                var displayName = validationContext.DisplayName;
+                string displayName = validationContext.DisplayName;
 
-                var prop = validationContext.ObjectInstance.GetType().GetProperty(displayName);
+                PropertyInfo prop = validationContext.ObjectInstance.GetType().GetProperty(displayName);
 
                 if (prop != null)
                 {
@@ -66,13 +75,13 @@ namespace BTS.Web.Infrastructure.Extensions
                 }
                 else
                 {
-                    var props = validationContext.ObjectInstance.GetType().GetProperties().Where(x => x.CustomAttributes.Count(a => a.AttributeType == typeof(DisplayAttribute)) > 0).ToList();
+                    List<PropertyInfo> props = validationContext.ObjectInstance.GetType().GetProperties().Where(x => x.CustomAttributes.Count(a => a.AttributeType == typeof(DisplayAttribute)) > 0).ToList();
 
                     foreach (PropertyInfo prp in props)
                     {
-                        var attr = prp.CustomAttributes.FirstOrDefault(p => p.AttributeType == typeof(DisplayAttribute));
+                        CustomAttributeData attr = prp.CustomAttributes.FirstOrDefault(p => p.AttributeType == typeof(DisplayAttribute));
 
-                        var val = attr.NamedArguments.FirstOrDefault(p => p.MemberName == "Name").TypedValue.Value;
+                        object val = attr.NamedArguments.FirstOrDefault(p => p.MemberName == "Name").TypedValue.Value;
 
                         if (val.Equals(displayName))
                         {
@@ -91,7 +100,46 @@ namespace BTS.Web.Infrastructure.Extensions
         {
             using (BTSDbContext db = new BTSDbContext())
             {
-                var Name = TargetPropertyName;
+                string Name = TargetPropertyName;
+
+                PropertyInfo IdProp = TargetModelType.GetProperties().FirstOrDefault(x => x.CustomAttributes.Count(a => a.AttributeType == typeof(KeyAttribute)) > 0) ?? TargetModelType.GetProperties().FirstOrDefault();
+
+
+
+                string Id = (string)validationContext.ObjectInstance.GetType().GetProperty(IdProp.Name).GetValue(validationContext.ObjectInstance, null);
+
+                //int Id = (int)IdProp.GetValue(validationContext.ObjectInstance, null);
+
+                Type entityType = TargetModelType;
+
+
+                IQueryable result = db.Set(entityType).Where(Name + "==@0", value);
+                int count = 0;
+
+                if (Id.Length > 0)
+                {
+                    result = result.Where(IdProp.Name + "<>@0", Id);
+                }
+
+                count = result.Count();
+
+                if (count == 0)
+                {
+                    return ValidationResult.Success;
+                }
+                else
+                {
+                    return new ValidationResult(ErrorMessageString);
+                }
+            }
+
+        }
+
+        private ValidationResult ViewModelValid_forIntKey(object value, ValidationContext validationContext)
+        {
+            using (BTSDbContext db = new BTSDbContext())
+            {
+                string Name = TargetPropertyName;
 
                 PropertyInfo IdProp = TargetModelType.GetProperties().FirstOrDefault(x => x.CustomAttributes.Count(a => a.AttributeType == typeof(KeyAttribute)) > 0) ?? TargetModelType.GetProperties().FirstOrDefault();
 
@@ -104,7 +152,7 @@ namespace BTS.Web.Infrastructure.Extensions
                 Type entityType = TargetModelType;
 
 
-                var result = db.Set(entityType).Where(Name + "==@0", value);
+                IQueryable result = db.Set(entityType).Where(Name + "==@0", value);
                 int count = 0;
 
                 if (Id > 0)
@@ -115,9 +163,13 @@ namespace BTS.Web.Infrastructure.Extensions
                 count = result.Count();
 
                 if (count == 0)
+                {
                     return ValidationResult.Success;
+                }
                 else
+                {
                     return new ValidationResult(ErrorMessageString);
+                }
             }
 
         }
@@ -125,12 +177,16 @@ namespace BTS.Web.Infrastructure.Extensions
 
     public class UserNameFilter : ActionFilterAttribute
     {
-        const string parameterName = "userName";
+        private const string parameterName = "userName";
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (filterContext.ActionParameters.ContainsKey(parameterName))
+            {
                 if (filterContext.HttpContext.User.Identity.IsAuthenticated)
+                {
                     filterContext.ActionParameters[parameterName] = filterContext.HttpContext.User.Identity.Name;
+                }
+            }
         }
     }
 
@@ -144,6 +200,36 @@ namespace BTS.Web.Infrastructure.Extensions
                 filterContext.Result = new ContentResult
                 { Content = "It's Sunday, get some rest" };
             }
+        }
+    }
+
+    public static class HtmlHelperExtension
+    {
+        // How to use [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)] for @Html.TextBox
+        // @Html.TextBoxWithFormatFor(m => m.CustomDate, new Dictionary<string, object> { { "class", "datepicker" } })
+
+        public static MvcHtmlString TextBoxWithFormatFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, IDictionary<string, object> htmlAttributes)
+        {
+            ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+            return htmlHelper.TextBox(htmlHelper.ViewData.TemplateInfo.GetFullHtmlFieldName(metadata.PropertyName), string.Format(metadata.DisplayFormatString, metadata.Model), htmlAttributes);
+        }
+
+        public static IHtmlString MetaAcceptLanguage<TModel>(this HtmlHelper<TModel> htmlHelper)
+        {
+            string acceptLanguage = HttpUtility.HtmlAttributeEncode(Thread.CurrentThread.CurrentUICulture.ToString());
+            return new HtmlString(string.Format("<meta name=\"accept-language\" content=\"{0}\">", acceptLanguage));
+        }
+
+        public static MvcHtmlString ListArrayItems(this HtmlHelper html, string[] list)
+        {
+            TagBuilder tag = new TagBuilder("ul");
+            foreach (string str in list)
+            {
+                TagBuilder itemTag = new TagBuilder("li");
+                itemTag.SetInnerText(str);
+                tag.InnerHtml += itemTag.ToString();
+            }
+            return new MvcHtmlString(tag.ToString());
         }
     }
 }

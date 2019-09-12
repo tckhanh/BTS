@@ -51,6 +51,7 @@
         public const string Data_CanView_Role = "Data_CanView";
         public const string Data_CanViewDetail_Role = "Data_CanViewDetail";
         public const string Data_CanViewChart_Role = "Data_CanViewChart";
+        public const string Data_CanViewReport_Role = "Data_CanViewReport";
         public const string Data_CanViewStatitics_Role = "Data_CanViewStatitics";
         public const string Data_CanAdd_Role = "Data_CanAdd";
         public const string Data_CanImport_Role = "Data_CanImport";
@@ -60,10 +61,17 @@
         public const string Data_CanLock_Role = "Data_CanLock";
         public const string Data_CanDelete_Role = "Data_CanDelete";
 
+        public const string Info_CanView_Role = "Info_CanView";
+        public const string Info_CanViewDetail_Role = "Info_CanViewDetail";
+        public const string Info_CanViewChart_Role = "Info_CanViewChart";
+        public const string Info_CanViewReport_Role = "Info_CanViewReport";
+        public const string Info_CanViewStatitics_Role = "Info_CanViewStatitics";
+
+
         public const string System_CanView_Description = "Xem hệ thống";
         public const string System_CanViewDetail_Description = "Xem chi tiết hệ thống";
         public const string System_CanViewChart_Description = "Xem biểu đồ hệ thống";
-        public const string System_CanViewStatitics_Description = "Xem thống kê hệ thống";
+        public const string System_CanViewStatitics_Description = "Xem thống kê hệ thống";        
         public const string System_CanAdd_Description = "Thêm hệ thống";
         public const string System_CanImport_Description = "Nhập hệ thống";
         public const string System_CanExport_Description = "Xuất hệ thống";
@@ -75,6 +83,7 @@
         public const string Data_CanView_Description = "Xem dữ liệu";
         public const string Data_CanViewDetail_Description = "Xem chi tiết dữ liệu";
         public const string Data_CanViewChart_Description = "Xem biểu đồ dữ liệu";
+        public const string Data_CanViewReport_Description = "Xem báo cáo dữ liệu";
         public const string Data_CanViewStatitics_Description = "Xem thống kê dữ liệu";
         public const string Data_CanAdd_Description = "Thêm dữ liệu";
         public const string Data_CanImport_Description = "Nhập dữ liệu";
@@ -84,10 +93,16 @@
         public const string Data_CanLock_Description = "Khóa dữ liệu";
         public const string Data_CanDelete_Description = "Xóa bỏ dữ liệu";
 
+        public const string Info_CanView_Description = "Xem thông tin";
+        public const string Info_CanViewDetail_Description = "Xem chi tiết thông tin";
+        public const string Info_CanViewChart_Description = "Xem biểu đồ thông tin";
+        public const string Info_CanViewReport_Description = "Xem báo cáo thông tin";
+        public const string Info_CanViewStatitics_Description = "Xem thống kê thông tin";
+
         public static string USER_SESSION = "USER_SESSION";
         public static string SESSION_CREDENTIALS = "SESSION_CREDENTIALS";
         public static string CartSession = "CartSession";
-        public static string CurrentCulture { set; get; }
+        public static string CurrentCulture = "MyCulture";
 
         public const string Status_Error = "Error";
         public const string Status_TimeOut = "TimeOut";

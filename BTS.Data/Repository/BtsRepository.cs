@@ -12,6 +12,7 @@ namespace BTS.Data.Repository
     {
         bool IsUsed(string Id);
 
+        IEnumerable<Bts> getAll(DateTime startDate, DateTime endDate);
         IEnumerable<Operator> getAllOperator();
 
         IEnumerable<Profile> getAllProfile();
@@ -27,6 +28,15 @@ namespace BTS.Data.Repository
     {
         public BtsRepository(IDbFactory dbFactory) : base(dbFactory)
         {
+        }
+
+        public IEnumerable<Bts> getAll(DateTime startDate, DateTime endDate)
+        {
+            var query = from item in DbContext.Btss
+                        join profile in DbContext.Profiles on item.ProfileID equals profile.Id
+                        where profile.ApplyDate >= startDate && profile.ApplyDate <= endDate
+                        select item;
+            return query;
         }
 
         public IEnumerable<City> getAllCity()

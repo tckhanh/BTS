@@ -1,18 +1,62 @@
-﻿
-var userRoleAdmin = "@(User.IsInRole('System_CanExport') ? 'true' : 'false')";
+﻿/// <reference path="applicationgroupaddcontroller.js" />
+var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}),
+    latlng = L.latLng(10.796841, 106.66252);
+var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
+var myMarkerClusters = L.markerClusterGroup();
+var arrayRoles = AppGlobal.LoginUser.roles.split(';');
+var system_CanExport_Role = $.inArray(myConstant.System_CanExport_Role, arrayRoles);
 var data = "";
 
 var btsController = {
-    init: function () {       
+    init: function () {
+        btsController.loadData();
         btsController.registerEventDataTable();
         btsController.registerEvent();
     },
     registerEventDataTable: function () {
-        
+        var table = $("#MyDataTable").DataTable();
+        table.on('draw', function () {
+            $('.btn-edit').off('click').on('click', function () {
+                $('#modalAddUpdate').modal('show');
+                var id = $(this).data('myid');
+                btsController.loadDetail(id);
+            });
+
+            $('.btn-delete').off('click').on('click', function () {
+                var id = $(this).data('myid');
+                bootbox.confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?", function (result) {
+                    btsController.deleteItem(id);
+                });
+            });
+        });
     },
     registerEvent: function () {
         $('#btnSearch').off('click').on('click', function () {
-            btsController.loadData();
+            $('#MyDataTable').DataTable().ajax.reload();
+        });
+
+        $("a[href='#mapTab']").on('shown.bs.tab', function (e) {
+            myMap.invalidateSize();
+        });
+
+        $('#btnAddNew').off('click').on('click', function () {
+            $('#modalAddUpdate').modal('show');
+            btsController.resetForm();
+        });
+
+        $('#btnSave').off('click').on('click', function () {
+            if ($('#frmSaveData').valid()) {
+                btsController.saveData();
+            }
+        });
+
+        $('#btnReset').off('click').on('click', function () {
+            $('#txtNameS').val('');
+            $('#ddlStatusS').val('');
+            btsController.loadData(true);
         });
     },
     loadDetail: function (id) {
@@ -50,80 +94,339 @@ var btsController = {
         });
     },
 
-    loadDdata: function () {
-        var bar = $('.progress-bar');
-        $('#jqueryForm').ajaxForm({
-            clearForm: true,
-            dataType: 'json',
-            forceSync: false,
-            beforeSerialize: function ($form, options) {
-                // return false to cancel submit
-            },
-            beforeSubmit: function (arr, $form, options) {
-                // The array of form data takes the following form:
-                // [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ]
-                // return false to cancel submit
-                $('#btnSubmit').prop('disabled', true);
-                $('#btnReset').prop('disabled', true);
-                $('#selectOperatorId').prop('disabled', true);
-                $('#selectCityId').prop('disabled', true);
-            },
-            beforeSend: function () {
-                $('html').addClass('waiting');
-                bar.html('Bắt đầu thực hiện!');
-                bar.addClass('active');
-                $('#progressRow').show();
-            },
-            uploadProgress: function (event, position, total, percentComplete) {
-                if (percentComplete = 100)
-                    bar.html('Đã gửi yêu cầu thống kê ....');
-                else
-                    bar.html('Đang gửi yêu cầu thống kê : ' + percentComplete + '%');
-            },
-            error: function (data) {
-                var r = jQuery.parseJSON(data.responseText);
-                alert("Message: " + r.message);
-                alert("StackTrace: " + r.StackTrace);
-                alert("ExceptionType: " + r.ExceptionType);
-                $('html').removeClass('waiting');
-                bar.removeClass('active');
-                $('#btnSubmit').prop('disabled', false);
-                $('#btnReset').prop('disabled', false);
-                $('#selectOperatorId').prop('disabled', false);
-                $('#selectCityId').prop('disabled', false);
-            },
-            success: function (response, statusText, xhr, element) {
-                if (response.status == "TimeOut") {
-                    $.notify(response.message, "warn");
-                    window.location.href = "/Account/Login"
-                } else if (response.status == "Success") {
-                    bar.html('Đã thực hiện xong!');
-                    var pieChartColumNames = response.chartData[0];
+    loadData: function () {
+        var startDate = new Date(new Date().getFullYear(), 0, 1);
+        var endDate = new Date();
 
-                    var pieChartLabels = response.chartData[1];
+        $('input[name="DateRange"]').daterangepicker(
+            {
+                locale: {
+                    format: 'DD/MM/YYYY'
+                },
+                startDate: startDate,
+                endDate: endDate
+            },
+            function (start, end, label) {
+                //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
+                startDate = start;
+                endDate = end;
+            });
 
-                    var pieChartOptions = {
-                        responsive: true,
-                        maintainAspectRatio: true
+        //$.ajax({
+        //    url: 'bts/GetUserRoles',
+        //    dataType: 'json',
+        //    data: {},
+        //    type: 'post',
+        //    success: function (data) {
+        //        userRoleAdmin = data.Roles;
+        //    }
+        //});
+
+        if (system_CanExport_Role > -1) {
+            $("#MyDataTable")
+                .on('draw.dt', function (e, settings, json, xhr) {
+                    btsController.initCompleteFunction(settings, json);
+                })
+                .on('xhr.dt', function (e, settings, json, xhr) {
+                    //new $.fn.dataTable.Api(settings).one('draw', function () {
+                    //    btsController.initCompleteFunction(settings, json);
+                    //});
+                    new $.fn.dataTable.Api(settings).one('draw', function () {
+                        btsController.initCompleteFunction(settings, json);
+                    });
+
+                    if (myMap != undefined && myMap != null && myMarkerClusters != null) {
+                        myMap.removeLayer(myMarkerClusters);
+                        myMarkerClusters.clearLayers();
+                        //myMap.eachLayer(function (layer) {
+                        //    myMap.removeLayer(layer);
+                        //});
                     }
-                }
-                else {
-                    bar.html('Lỗi trong quá trình thực hiện!');
-                    alert(xhr.response.message);
-                }
-                $('html').removeClass('waiting');
-                bar.removeClass('active');
-                $('#btnSubmit').prop('disabled', false);
-                $('#btnReset').prop('disabled', false);
-                $('#selectOperatorId').prop('disabled', false);
-                $('#selectCityId').prop('disabled', false);
-            },
-            complete: function (xhr) {
-            },
-            async: true
-        });
-    }
+                    btsController.loadMap(json.data);
+                    btsController.loadPivotTable(json.data);
+                })
+                .dataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'colvis',
+                            text: 'Ẩn/hiện cột',
+                            className: 'btn-success'
+                        },
+                        {
+                            extend: 'excel',
+                            text: 'Xuất Excel',
+                            className: 'btn-success',
+                        },
+                        {
+                            extend: 'pdf',
+                            text: 'Xuất Pdf',
+                            className: 'btn-success'
+                        },
+                        {
+                            extend: 'print',
+                            text: 'In ấn',
+                            className: 'btn-success'
+                        }
+                    ],
+                    "processing": true,
+                    "info": true,
+                    //"scrollX": true, // ảnh hưởng đến DataTable Id
+                    "selector": true,
+                    "ajax": {
+                        "async": true,
+                        "url": "/bts/loadBts",
+                        "type": "POST",
+                        "data": function (d) {
+                            d.CityID = $('#CityID').val().trim();
+                            d.OperatorID = $('#OperatorID').val().trim();
+                            d.ProfileID = $('#ProfileID').val().trim();
+                            d.StartDate = startDate.toISOString();
+                            d.EndDate = endDate.toISOString();
+                            d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
+                        }
+                    },
+                    "columns": [
+                        {
+                            orderable: false,
+                            data: null,
+                            defaultContent: '',
+                            width: "3%"
+                        },
+                        { "data": "OperatorID", "name": "OperatorID" },
+                        { "data": "Profile.ProfileNum", "name": "ProfileNum" },
+                        { "data": "CityID", "name": "CityID", "className": "dt-body-center" },
+                        {
+                            "data": "BtsCode", "name": "BtsCode",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
+                            }
+                        },        // index 2
+                        { "data": "Address", "name": "Address" },
+                        { "data": "LastOwnCertificateIDs", "name": "LastOwnCertificateIDs" },
+                        { "data": "LastNoOwnCertificateIDs", "name": "LastNoOwnCertificateIDs" },
+                        { "data": "ReasonsNoCertificate", "name": "ReasonsNoCertificate" },
+                        {
+                            "data": "Id", "name": "Id", "className": "dt-body-center",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                var htmlLink = "";
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Bts/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Bts/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Bts/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
+                                }
+                                $(nTd).html(htmlLink);
+                            }
+                        }
+                    ],                    
+                    "language": {
+                        url: '/AppFiles/localization/vi_VI.json'
+                    },
+                    "initComplete": function () {
+                    }
+                });
+            var t = $('#MyDataTable').DataTable();
+            t.on('order.dt search.dt', function () {
+                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+        } else {
+            $("#MyDataTable")
+                .on('draw.dt', function (e, settings, json, xhr) {
+                    btsController.initCompleteFunction(settings, json);
+                })
+                .on('xhr.dt', function (e, settings, json, xhr) {
+                    //new $.fn.dataTable.Api(settings).one('draw', function () {
+                    //    btsController.initCompleteFunction(settings, json);
+                    //});
+                    if (myMap != undefined && myMap != null && myMarkerClusters != null) {
+                        myMap.removeLayer(myMarkerClusters);
+                        myMarkerClusters.clearLayers();
+                        //myMap.eachLayer(function (layer) {
+                        //    myMap.removeLayer(layer);
+                        //});
+                    }
+                    if (json != null) {
+                        var data = json.data;
+                        btsController.loadMap(data);
+                        btsController.loadPivotTable(data);
+                    }
+                })
+                .dataTable({
+                    "processing": true,
+                    "info": true,
+                    "selector": true,
+                    //"scrollX": true, // ảnh hưởng đến DataTable Id
+                    "ajax": {
+                        "async": true,
+                        "url": "/Bts/loadBts",
+                        "type": "POST",
+                        "data": function (d) {
+                            d.CityID = $('#CityID').val().trim();
+                            d.OperatorID = $('#OperatorID').val().trim();
+                            d.ProfileID = $('#ProfileID').val().trim();
+                            d.StartDate = startDate.toISOString();
+                            d.EndDate = endDate.toISOString();
+                            d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
+                        }
+                    },
+                    "columns": [
+                        {
+                            orderable: false,
+                            data: null,
+                            defaultContent: '',
+                            width: "3%"
+                        },
+                        { "data": "OperatorID", "name": "OperatorID" },
+                        { "data": "Profile.ProfileNum", "name": "ProfileNum" },
+                        { "data": "CityID", "name": "CityID", "className": "dt-body-center" },
+                        {
+                            "data": "BtsCode", "name": "BtsCode",
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
+                            }
+                        },        // index 2
+                        { "data": "Address", "name": "Address" },
+                        { "data": "LastOwnCertificateIDs", "name": "LastOwnCertificateIDs" },
+                        { "data": "LastNoOwnCertificateIDs", "name": "LastNoOwnCertificateIDs" },
+                        { "data": "ReasonsNoCertificate", "name": "ReasonsNoCertificate" },
+                        {
+                            "data": "Id", "name": "Id", "className": "dt-body-center", 
+                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                                var htmlLink = "";
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Bts/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Bts/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                }
+                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Bts/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
+                                }
+                                $(nTd).html(htmlLink);
+                            }
+                        }
+                    ],
+                    "language": {
+                        url: '/AppFiles/localization/vi_VI.json'
+                    },
+                    initComplete: function () {
+                    }
+                });
+            var t = $('#MyDataTable').DataTable();
+            t.on('order.dt search.dt', function () {
+                t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+        }
+    },
+    initCompleteFunction: function (settings, json) {
+        var api = new $.fn.dataTable.Api(settings);
+        api.columns().every(function () {
+            var column = this;
+            var select = $('<select><option value=""></option></select>')
+                .appendTo($(column.footer()).empty())
+                .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                        $(this).val()
+                    );
 
+                    column
+                        .search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+
+            column.data().unique().sort().each(function (d, j) {
+                select.append('<option value="' + d + '">' + d + '</option>')
+            });
+        });
+    },
+    loadMap: function (markers) {
+        var myURL = $('script[src$="leaflet.js"]').attr('src').replace('leaflet.js', '');
+        if (markers != null) {
+            for (var i = 0; i < markers.length; ++i) {
+                var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
+                    '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
+                    '<br/><b>Địa chỉ:</b> ' + markers[i].Address +
+                    '<br/><b>Lý do Không cấp:</b> ' + markers[i].ReasonsNoCertificate;
+                var img24 = 'images/pin24.png';
+                var img48 = 'images/pin48.png';
+                if (markers[i].OperatorID == "VINAPHONE") {
+                    img24 = 'images/vinaphone24.png';
+                    img48 = 'images/vinaphone48.png';
+                } else if (markers[i].OperatorID == "MOBIFONE") {
+                    img24 = 'images/mobifone24.png';
+                    img48 = 'images/mobifone48.png';
+                } else if (markers[i].OperatorID == "VIETTEL") {
+                    img24 = 'images/viettel24.png';
+                    img48 = 'images/viettel48.png';
+                } else if (markers[i].OperatorID == "VNMOBILE") {
+                    img24 = 'images/vnmobile24.png';
+                    img48 = 'images/vnmobile48.png';
+                }
+
+                var myIcon = L.icon({
+                    iconUrl: myURL + img24,
+                    iconRetinaUrl: myURL + img48,
+                    iconSize: [29, 24],
+                    iconAnchor: [9, 21],
+                    popupAnchor: [0, -14]
+                });
+
+                var m = L.marker([markers[i].Latitude, markers[i].Longtitude], { icon: myIcon })
+                    .bindPopup(popup);
+                myMarkerClusters.addLayer(m);
+            }
+            myMap.addLayer(myMarkerClusters);
+        }
+    },
+
+    loadPivotTable: function (pivotTableData) {
+        var inputFunction = function (callback) {
+            for (var i = 0; i < pivotTableData.length; ++i) {
+                callback({
+                    "OperatorID": pivotTableData[i].OperatorID,
+                    "CityID": pivotTableData[i].CityID
+                });
+            }
+        };
+
+        // This example adds Plotly chart renderers.
+
+        var derivers = $.pivotUtilities.derivers;
+        var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.plotly_renderers, $.pivotUtilities.c3_renderers);
+        $("#pivotTable").pivotUI(inputFunction,
+            {
+                renderers: renderers,
+                rows: ["OperatorID"],
+                cols: ["CityID"],
+                rendererName: "Bar Chart",
+                rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
+                hiddenAttributes: ["select.pvtRenderer", "renderers"]
+            }, true);
+    }
 }
 
-certificateController.init();
+btsController.init();
+
+//$('#MyDataTable tbody').on('click', 'tr', function () {
+//    if ($(this).hasClass('selected')) {
+//        $(this).removeClass('selected');
+//    }
+//    else {
+//        table.$('tr.selected').removeClass('selected');
+//        $(this).addClass('selected');
+//    }
+//});
+
+//$('#button').click(function () {
+//    table.row('.selected').remove().draw(false);
+//});
+
+// See post: http://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps

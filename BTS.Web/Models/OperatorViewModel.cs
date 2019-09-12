@@ -18,6 +18,7 @@ namespace BTS.Web.Models
         [Display(Name = "Tên Nhà mạng")]
         [Required(ErrorMessage = "Yêu cầu nhập Tên Nhà mạng")]
         [MaxLength(255, ErrorMessage = "Tên Nhà mạng tối đa 255 ký tự")]
+        [DataType(DataType.MultilineText)]
         [Unique(ErrorMessage = "Tên Nhà mạng đã tồn tại rồi !!", TargetModelType = typeof(Operator), TargetPropertyName = "Name")]
         public string Name { get; set; }
 

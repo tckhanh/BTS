@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BTS.Data.ApplicationModels;
+using BTS.Web.Infrastructure.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Tên Quyền")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tên Quyền")]
+        [Unique(ErrorMessage = "Tên Quyền đã tồn tại rồi !!", TargetModelType = typeof(ApplicationRole), TargetPropertyName = "Name")]
         public string Name { set; get; }
 
         [Display(Name = "Mô tả quyền")]
@@ -29,6 +32,7 @@ namespace BTS.Web.Models
 
         public ApplicationRoleViewModel()
         {
+            Id = Guid.NewGuid().ToString();
             GroupList = new List<SelectListItem>();
             UserList = new List<SelectListItem>();
         }

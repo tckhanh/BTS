@@ -40,6 +40,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Địa chỉ")]
         [StringLength(255, ErrorMessage = "Địa chỉ không quá 255 ký tự")]
+        [DataType(DataType.MultilineText)]
         public string Address { get; set; }
 
         [Display(Name = "Ngày sinh")]
@@ -71,6 +72,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Các vị trí công việc đã đảm nhiệm")]
         [MaxLength(255)]
+        [DataType(DataType.MultilineText)]
         public string JobPositions { get; set; }
 
         [MaxLength(555)]
@@ -92,6 +94,7 @@ namespace BTS.Web.Models
 
         public ApplicationUserViewModel()
         {
+            Id = Guid.NewGuid().ToString();
             ImagePath = "~/AppFiles/Images/default.png";
             GroupList = new List<SelectListItem>();
             RoleList = new List<SelectListItem>();

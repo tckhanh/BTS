@@ -9,8 +9,9 @@ namespace BTS.Web.Models
 {
     public class BtsViewModel
     {
-        [Display(Name = "Mã")]
-        public int Id { get; set; }
+        [Display(Name = "Mã số")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Mã số")]
+        public string Id { get; set; }        
 
         [Display(Name = "Mã số hồ sơ")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Mã số hồ sơ")]
@@ -29,6 +30,7 @@ namespace BTS.Web.Models
         [Display(Name = "Địa chỉ")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập địa chỉ trạm BTS")]
         [StringLength(255, ErrorMessage = "Địa chỉ trạm BTS không quá 255 ký tự")]
+        [DataType(DataType.MultilineText)]
         public string Address { get; set; }
 
         [Display(Name = "Mã Tỉnh/TP")]
@@ -37,11 +39,15 @@ namespace BTS.Web.Models
         public string CityID { get; set; }
 
         [Display(Name = "Kinh độ")]
+        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Kinh độ")]
+        [Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Kinh độ là số >= 0")]
         public double? Longtitude { get; set; }
 
         [Display(Name = "Vĩ độ")]
+        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Vĩ độ")]
+        [Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Vĩ độ là số >= 0")]
         public double? Latitude { get; set; }
 
         [Display(Name = "TH Kiểm định")]
@@ -50,18 +56,22 @@ namespace BTS.Web.Models
 
         [Display(Name = "Giấy CNKĐ đã cấp")]
         [StringLength(255, ErrorMessage = "Giấy CNKĐ gồm 16 ký tự")]
+        [DataType(DataType.MultilineText)]
         public string LastOwnCertificateIDs { get; set; }
 
         [Display(Name = "Giấy CNKĐ đã cấp cùng")]
         [StringLength(255, ErrorMessage = "Các Giấy CNKĐ không quá 255 ký tự")]
+        [DataType(DataType.MultilineText)]
         public string LastNoOwnCertificateIDs { get; set; }
 
         [Display(Name = "Giấy Hồ sơ KĐ đang xử lý")]
         [StringLength(255, ErrorMessage = "Các Hồ sơ KĐ không quá 255 ký tự")]
+        [DataType(DataType.MultilineText)]
         public string ProfilesInProcess { get; set; }
 
         [Display(Name = "Lý do không cấp Giấy CNKĐ")]
         [StringLength(255, ErrorMessage = "Các lý do không cấp Giấy CNKĐ không quá 255 ký tự")]
+        [DataType(DataType.MultilineText)]
         public string ReasonsNoCertificate { get; set; }
 
         [Display(Name = "Thuộc hồ sơ KĐ")]
@@ -86,6 +96,7 @@ namespace BTS.Web.Models
 
         public BtsViewModel()
         {
+            Id = Guid.NewGuid().ToString();
             ProfileList = new List<SelectListItem>();
             OperatorList = new List<SelectListItem>();
             CityList = new List<SelectListItem>();
