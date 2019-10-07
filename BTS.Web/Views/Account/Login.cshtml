@@ -12,15 +12,16 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link href="~/Assets/admin/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome -->
-    <link href="~/Assets/admin/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Assets/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <!-- Ionicons -->
-    <link href="~/Assets/admin/libs/Ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/Assets/libs/Ionicons/css/ionicons.min.css" rel="stylesheet" />
     <!-- Theme style -->
-    <link href="~/Assets/admin/libs/adminLTE/dist/css/AdminLTE.css" rel="stylesheet" />
+    <link href="~/Assets/libs/adminLTE/dist/css/AdminLTE.css" rel="stylesheet" />
     <!-- iCheck -->
-    <link href="~/Assets/admin/libs/adminLTE/plugins/iCheck/square/blue.css" rel="stylesheet" />
+    <link href="~/Assets/libs/adminLTE/plugins/iCheck/square/blue.css" rel="stylesheet" />
+    <link href="~/Assets/client/css/custom-Site.css" rel="stylesheet" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,7 +34,7 @@
 </head>
 
 <body class="hold-transition login-page">
-    <div class="header-row" id="header-row" style="padding: 0px; overflow:hidden; height:100px; background: url(/AppFiles/Images/bannerVcc2.png) center repeat">     
+    <div class="header-row" id="header-row" style="padding: 0px; overflow:hidden; height:100px; background: url(/AppFiles/Images/bannerVcc2.png) center repeat">
     </div>
     <div class="login-box">
         <div class="login-logo">
@@ -42,18 +43,18 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <p class="login-box-msg"><b></b></p>
-
-            @using (Html.BeginForm("Login", "Account", new { returnUrl = @ViewBag.ReturnUrl }, FormMethod.Post))
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { returnUrl = @ViewBag.ReturnUrl, enctype = "multipart/form-data" }))//data-resetUrl
             {
                 @Html.AntiForgeryToken()
-                @Html.ValidationSummary(false, "", new { @class = "error" })
+                @Html.ValidationSummary()
                 <div class="form-group has-feedback">
-                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Tài khoản" })
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Tên đăng nhập" })
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
                     @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Mật khẩu" })
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+
                 </div>
                 <div class="row">
                     <div class="col-xs-8">
@@ -82,20 +83,19 @@
                     </a>
                 </div>*@
             <!-- /.social-auth-links -->
-
             @*<a href="#">Quên mật khẩu</a><br>
-            <a href="register.html" class="text-center">Đăng ký thành viên</a>*@
+                <a href="register.html" class="text-center">Đăng ký thành viên</a>*@
         </div>
         <!-- /.login-box-body -->
     </div>
     <!-- /.login-box -->
     <!-- jQuery 3 -->
-    <script src="~/Assets/admin/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/Assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
-    <script src="~/Assets/admin/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- iCheck -->
-    <script src="~/Assets/admin/libs/adminLTE/plugins/iCheck/icheck.min.js"></script>
+    <script src="~/Assets/libs/adminLTE/plugins/iCheck/icheck.min.js"></script>
     <script>
         $(function () {
             $('input').iCheck({

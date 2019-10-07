@@ -49,15 +49,15 @@ namespace BTS.Web.Models
         public DateTime? BirthDay { set; get; }
 
         [Display(Name = "Quê quán")]
-        [MaxLength(50)]
+        [StringLength(50)]
         public string FatherLand { get; set; }
 
         [Display(Name = "Trình độ chuyên môn")]
-        [MaxLength(50)]
+        [StringLength(50)]
         public string Level { get; set; }
 
         [Display(Name = "Chuyên ngành đào tạo")]
-        [MaxLength(150)]
+        [StringLength(150)]
         public string EducationalField { get; set; }
 
         [Display(Name = "Ngày vào cơ quan")]
@@ -71,7 +71,7 @@ namespace BTS.Web.Models
         public DateTime? EndDate { get; set; }
 
         [Display(Name = "Các vị trí công việc đã đảm nhiệm")]
-        [MaxLength(255)]
+        [StringLength(255)]
         [DataType(DataType.MultilineText)]
         public string JobPositions { get; set; }
 
@@ -84,6 +84,12 @@ namespace BTS.Web.Models
 
         public HttpPostedFileBase ImageUpload { get; set; }
 
+        [StringLength(255)]
+        public string CityIDsScope { get; set; }
+
+        [StringLength(255)]
+        public string AreasScope { get; set; }
+
         public virtual IEnumerable<ApplicationGroupViewModel> Groups { get; set; }
 
         [Display(Name = "Nhóm người dùng")]
@@ -92,12 +98,20 @@ namespace BTS.Web.Models
         [Display(Name = "Danh sách các Quyền được cấp")]
         public ICollection<SelectListItem> RoleList { get; set; }
 
+        [Display(Name = "Danh sách các Tỉnh/Thành phố")]
+        public ICollection<SelectListItem> CityList { get; set; }
+
+        [Display(Name = "Danh sách các Khu vực")]
+        public ICollection<SelectListItem> AreaList { get; set; }
+
         public ApplicationUserViewModel()
         {
             Id = Guid.NewGuid().ToString();
             ImagePath = "~/AppFiles/Images/default.png";
             GroupList = new List<SelectListItem>();
             RoleList = new List<SelectListItem>();
+            CityList = new List<SelectListItem>();
+            AreaList = new List<SelectListItem>();
         }
     }
 }

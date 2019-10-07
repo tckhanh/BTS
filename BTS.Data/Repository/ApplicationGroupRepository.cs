@@ -13,13 +13,11 @@ namespace BTS.Data.Repositories
     public interface IApplicationGroupRepository : IRepository<ApplicationGroup>
     {
         IEnumerable<ApplicationGroup> GetGroupsByUserId(string userId);
-
         IEnumerable<ApplicationGroup> GetGroupsByRoleId(string roleId);
-
         ICollection<ApplicationUser> GetUsersByGroupId(string groupId);
-
+        IEnumerable<ApplicationUserGroup> GetLogicUsersByRoleId(string roleId);
+        ICollection<ApplicationUser> GetUsersByGroupIds(string[] groupIds);
         IEnumerable<ApplicationRole> GetRolesByGroupId(string groupId);
-
         IEnumerable<ApplicationRole> GetLogicRolesByUserId(string userId);
     }
 
@@ -47,6 +45,28 @@ namespace BTS.Data.Repositories
                         join u in DbContext.Users
                         on ug.UserId equals u.Id
                         where ug.GroupId == groupId
+                        select u;
+            return query.ToList();
+        }
+
+        public IEnumerable<ApplicationUserGroup> GetLogicUsersByRoleId(string roleId)
+        {
+            var query = from ug in DbContext.ApplicationUserGroups
+                        join rg in DbContext.ApplicationRoleGroups
+                        on ug.GroupId equals rg.GroupId
+                        where rg.RoleId == roleId
+                        select ug;
+            return query;
+        }
+
+        public ICollection<ApplicationUser> GetUsersByGroupIds(string[] groupIds)
+        {
+            var query = from g in DbContext.ApplicationGroups
+                        join ug in DbContext.ApplicationUserGroups
+                        on g.Id equals ug.GroupId
+                        join u in DbContext.Users
+                        on ug.UserId equals u.Id
+                        where groupIds.Contains(ug.GroupId)
                         select u;
             return query.ToList();
         }

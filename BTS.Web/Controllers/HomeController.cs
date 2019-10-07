@@ -41,7 +41,6 @@ namespace BTS.Web.Controllers
         [OutputCache(Duration = 60, Location = System.Web.UI.OutputCacheLocation.Client)]
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -182,6 +181,8 @@ namespace BTS.Web.Controllers
             try
             {
                 IEnumerable<IssuedCertStatByOperatorCityVM> ByOperatorCity = _stattisticService.GetIssuedCertStatByOperatorCity();
+                ByOperatorCity = ByOperatorCity.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID));
+
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
 
                 List<String> ColumnNames = new List<string>();
@@ -357,6 +358,7 @@ namespace BTS.Web.Controllers
             try
             {
                 IEnumerable<BtsStatByBandCityVM> ByBandCity = _stattisticService.GetBtsStatByBandCity();
+                ByBandCity = ByBandCity.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByBandCity.ToPivotTable(item => item.Band, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
 
@@ -402,6 +404,7 @@ namespace BTS.Web.Controllers
             try
             {
                 IEnumerable<BtsStatByOperatorCityVM> ByOperatorCity = _stattisticService.GetBtsStatByOperatorCity();
+                ByOperatorCity = ByOperatorCity.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
 

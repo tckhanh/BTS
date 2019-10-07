@@ -88,7 +88,7 @@ namespace BTS.Data
             base.Seed(context);
         }
 
-        public void InitializeDatabase(BTSDbContext context)
+        public override void InitializeDatabase(BTSDbContext context)
         {
             if (!context.Database.Exists())
             {

@@ -1,20 +1,28 @@
 ﻿@model BTS.Web.Models.LabViewModel
 @using BTS.Common
 @{
-    ViewBag.Title = "AddOrEdit";
+    ViewBag.Title = "Edit";
     Layout = null;
 }
 
   @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
 {
-    using (Html.BeginForm("AddOrEdit", "Lab", new { act = CommonConstants.Action_Edit }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Lab", new { id = "" }) }))//data-resetUrl
+    using (Html.BeginForm("Edit", "Lab", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Lab") }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="form-horizontal">
                 @Html.ValidationSummary(true)
-                @Html.HiddenFor(model => model.Id)
                 <div class="col-md-10">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Id, new { @class = "form-control", disabled = "disabled" })
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.ValidationMessageFor(model => model.Id)
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
@@ -48,7 +56,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Lab", new{id = "", act = CommonConstants.Action_View })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","Lab")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
                             <input type="submit" value="Lưu" class="btn btn-primary" />
                         </div>
                     </div>

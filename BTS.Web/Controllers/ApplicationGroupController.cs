@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
-using BTS.Model.Models;
+using BTS.Common;
+using BTS.Data.ApplicationModels;
 using BTS.Service;
-using BTS.Web.App_Start;
+using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using BTS.Web.Infrastructure.Extensions;
-using BTS.Data.ApplicationModels;
-using BTS.Common;
 
 namespace BTS.Web.Controllers
 {
@@ -29,7 +26,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -40,30 +36,132 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<ApplicationGroupViewModel> GetAll()
         {
-            var model = _appGroupService.GetAll().ToList();
+            List<ApplicationGroup> model = _appGroupService.GetAll().ToList();
             return Mapper.Map<IEnumerable<ApplicationGroupViewModel>>(model);
         }
 
+
+        public ActionResult Add()
+        {
+            ApplicationGroupViewModel Item = new ApplicationGroupViewModel();
+            List<ApplicationRole> allRole = RoleManager.Roles.ToList();
+            foreach (ApplicationRole roleItem in allRole)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = roleItem.Description,
+                    Value = roleItem.Id,
+                    Selected = false
+                };
+                Item.RoleList.Add(listItem);
+            }
+            return View(Item);
+        }
+
+        [AuthorizeRoles(CommonConstants.System_CanViewDetail_Role)]
+        public ActionResult Detail(string id = "")
+        {
+            ApplicationGroupViewModel Item = new ApplicationGroupViewModel();
+            ApplicationGroup DbItem = _appGroupService.GetByID(id);
+            if (DbItem == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                List<ApplicationRole> allRole = RoleManager.Roles.OrderByDescending(x => x.Name).ToList();
+                IEnumerable<ApplicationRole> listRole = _appGroupService.GetRolesByGroupId(id);
+
+                Item = Mapper.Map<ApplicationGroupViewModel>(DbItem);
+                foreach (ApplicationRole roleItem in allRole)
+                {
+                    SelectListItem listItem = new SelectListItem()
+                    {
+                        Text = roleItem.Description,
+                        Value = roleItem.Id,
+                        Selected = listRole.Any(g => g.Id == roleItem.Id)
+                    };
+                    Item.RoleList.Add(listItem);
+                }
+
+                List<ApplicationUser> allUser = UserManager.Users.ToList();
+                List<ApplicationUser> listUser = _appGroupService.GetUsersByGroupId(id).ToList();
+                foreach (ApplicationUser userItem in allUser)
+                {
+                    SelectListItem listItem = new SelectListItem()
+                    {
+                        Text = userItem.FullName,
+                        Value = userItem.Id,
+                        Selected = listUser.Any(g => g.Id == userItem.Id)
+                    };
+                    Item.UserList.Add(listItem);
+                }
+                return View(Item);
+            }
+        }
+
+        [AuthorizeRoles(CommonConstants.System_CanEdit_Role)]
+        public ActionResult Edit(string id = "")
+        {
+            ApplicationGroupViewModel Item = new ApplicationGroupViewModel();
+            ApplicationGroup DbItem = _appGroupService.GetByID(id);
+            if (DbItem == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                List<ApplicationRole> allRole = RoleManager.Roles.OrderByDescending(x => x.Name).ToList();
+                IEnumerable<ApplicationRole> listRole = _appGroupService.GetRolesByGroupId(id);
+
+                Item = Mapper.Map<ApplicationGroupViewModel>(DbItem);
+                foreach (ApplicationRole roleItem in allRole)
+                {
+                    SelectListItem listItem = new SelectListItem()
+                    {
+                        Text = roleItem.Description,
+                        Value = roleItem.Id,
+                        Selected = listRole.Any(g => g.Id == roleItem.Id)
+                    };
+                    Item.RoleList.Add(listItem);
+                }
+
+                List<ApplicationUser> allUser = UserManager.Users.ToList();
+                List<ApplicationUser> listUser = _appGroupService.GetUsersByGroupId(id).ToList();
+                foreach (ApplicationUser userItem in allUser)
+                {
+                    SelectListItem listItem = new SelectListItem()
+                    {
+                        Text = userItem.FullName,
+                        Value = userItem.Id,
+                        Selected = listUser.Any(g => g.Id == userItem.Id)
+                    };
+                    Item.UserList.Add(listItem);
+                }
+                return View(Item);
+            }
+        }
+
         [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanViewDetail_Role, CommonConstants.System_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, string id = "")
+        public ActionResult AddOrEdit(string act, string id = "")
         {
             ApplicationGroupViewModel Item = new ApplicationGroupViewModel();
             if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
-                var DbItem = _appGroupService.GetByID(id);
+                ApplicationGroup DbItem = _appGroupService.GetByID(id);
                 if (DbItem == null)
                 {
                     return HttpNotFound();
                 }
                 else
                 {
-                    var allRole = RoleManager.Roles.OrderByDescending(x => x.Name).ToList();
-                    var listRole = _appGroupService.GetRolesByGroupId(id);
+                    List<ApplicationRole> allRole = RoleManager.Roles.OrderByDescending(x => x.Name).ToList();
+                    IEnumerable<ApplicationRole> listRole = _appGroupService.GetRolesByGroupId(id);
 
                     Item = Mapper.Map<ApplicationGroupViewModel>(DbItem);
-                    foreach (var roleItem in allRole)
+                    foreach (ApplicationRole roleItem in allRole)
                     {
-                        var listItem = new SelectListItem()
+                        SelectListItem listItem = new SelectListItem()
                         {
                             Text = roleItem.Description,
                             Value = roleItem.Id,
@@ -72,30 +170,35 @@ namespace BTS.Web.Controllers
                         Item.RoleList.Add(listItem);
                     }
 
-                    var listUser = _appGroupService.GetUsersByGroupId(id).ToList();
-                    foreach (var userItem in listUser)
+                    List<ApplicationUser> allUser = UserManager.Users.ToList();
+                    List<ApplicationUser> listUser = _appGroupService.GetUsersByGroupId(id).ToList();
+                    foreach (ApplicationUser userItem in allUser)
                     {
-                        var listItem = new SelectListItem()
+                        SelectListItem listItem = new SelectListItem()
                         {
                             Text = userItem.FullName,
                             Value = userItem.Id,
-                            Selected = true
+                            Selected = listUser.Any(g => g.Id == userItem.Id)
                         };
                         Item.UserList.Add(listItem);
                     }
 
                     if (act == CommonConstants.Action_Edit)
+                    {
                         return View("Edit", Item);
+                    }
                     else
+                    {
                         return View("Detail", Item);
+                    }
                 }
             }
             else
             {
-                var allRole = RoleManager.Roles.ToList();
-                foreach (var roleItem in allRole)
+                List<ApplicationRole> allRole = RoleManager.Roles.ToList();
+                foreach (ApplicationRole roleItem in allRole)
                 {
-                    var listItem = new SelectListItem()
+                    SelectListItem listItem = new SelectListItem()
                     {
                         Text = roleItem.Description,
                         Value = roleItem.Id,
@@ -109,8 +212,161 @@ namespace BTS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.System_CanAdd_Role)]
+        public ActionResult Add(ApplicationGroupViewModel Item, string[] selectedRoleItems, params string[] selectedUserItems)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ApplicationGroup appGroup;
+
+                    // Create new Group
+                    ApplicationGroup newItem = new ApplicationGroup();
+                    newItem.UpdateApplicationGroup(Item);
+
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
+
+                    appGroup = _appGroupService.Add(newItem);
+                    _appGroupService.Save();
+                    //save group
+
+                    UpdateFromGroupToRoleUser(appGroup, selectedRoleItems, selectedUserItems);
+                   
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+
+            {
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.System_CanEdit_Role)]
+        public ActionResult Edit(ApplicationGroupViewModel Item, string[] selectedRoleItems, params string[] selectedUserItems)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ApplicationGroup appGroup;
+
+                    // Edit new Group
+                    appGroup = _appGroupService.GetDetail(Item.Id);
+
+                    appGroup.UpdateApplicationGroup(Item);
+                    appGroup.UpdatedBy = User.Identity.Name;
+                    appGroup.UpdatedDate = DateTime.Now;
+
+                    _appGroupService.Update(appGroup);
+                    _appGroupService.Save();
+
+                    UpdateFromGroupToRoleUser(appGroup, selectedRoleItems, selectedUserItems);
+
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+
+            {
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private async void UpdateFromGroupToRoleUser(ApplicationGroup appGroup, string[] selectedRoleItems, string[] selectedUserItems)
+        {
+            //delete ApplicationRoleGroup
+            _appGroupService.DeleteRolesFromGroup(appGroup.Id);
+            _appGroupService.Save();
+
+            //add ApplicationRoleGroup
+            List<ApplicationRoleGroup> listRoleGroup = new List<ApplicationRoleGroup>();
+            selectedRoleItems = selectedRoleItems ?? new string[] { };
+            foreach (string role in selectedRoleItems)
+            {
+                listRoleGroup.Add(new ApplicationRoleGroup()
+                {
+                    GroupId = appGroup.Id,
+                    RoleId = role,
+                    CreatedBy = User.Identity.Name,
+                    CreatedDate = DateTime.Now
+                });
+            }
+            _appGroupService.AddRoleGroups(listRoleGroup);
+            _appGroupService.Save();
+
+
+            List<string> oldUserIds = _appGroupService.GetUsersByGroupId(appGroup.Id).Select(x => x.Id).ToList();
+
+            //delete ApplicationUserGroup
+            _appGroupService.DeleteUsersFromGroup(appGroup.Id);
+            _appGroupService.Save();
+
+            //add ApplicationUserGroup
+            List<ApplicationUserGroup> listUserGroup = new List<ApplicationUserGroup>();
+            selectedUserItems = selectedUserItems ?? new string[] { };
+            foreach (string userId in selectedUserItems)
+            {
+                listUserGroup.Add(new ApplicationUserGroup()
+                {
+                    GroupId = appGroup.Id,
+                    UserId = userId,
+                    CreatedBy = User.Identity.Name,
+                    CreatedDate = DateTime.Now
+                });
+            }
+            _appGroupService.AddUserGroups(listUserGroup);
+            _appGroupService.Save();
+
+            foreach (string userIdItem in oldUserIds)
+            {
+
+                await removeUserRoles(userIdItem);
+
+                List<ApplicationRole> newUserRoles = _appGroupService.GetLogicRolesByUserId(userIdItem).ToList();
+
+                await addUserRoles(userIdItem, newUserRoles);
+            }
+
+            List<ApplicationUser> users = _appGroupService.GetUsersByGroupId(appGroup.Id).ToList();
+
+            foreach (ApplicationUser userItem in users)
+            {
+                if (!oldUserIds.Contains(userItem.Id))
+                {
+                    await removeUserRoles(userItem.Id);
+
+                    List<ApplicationRole> newUserRoles = _appGroupService.GetLogicRolesByUserId(userItem.Id).ToList();
+
+                    await addUserRoles(userItem.Id, newUserRoles);
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, ApplicationGroupViewModel Item, params string[] selectedItems)
+        public async Task<ActionResult> AddOrEdit(string act, ApplicationGroupViewModel Item, string[] selectedRoleItems, params string[] selectedUserItems)
         {
             try
             {
@@ -142,13 +398,14 @@ namespace BTS.Web.Controllers
                         _appGroupService.Save();
                     }
 
+                    //delete ApplicationRoleGroup
                     _appGroupService.DeleteRolesFromGroup(appGroup.Id);
                     _appGroupService.Save();
 
                     //add ApplicationRoleGroup
-                    var listRoleGroup = new List<ApplicationRoleGroup>();
-                    selectedItems = selectedItems ?? new string[] { };
-                    foreach (var role in selectedItems)
+                    List<ApplicationRoleGroup> listRoleGroup = new List<ApplicationRoleGroup>();
+                    selectedRoleItems = selectedRoleItems ?? new string[] { };
+                    foreach (string role in selectedRoleItems)
                     {
                         listRoleGroup.Add(new ApplicationRoleGroup()
                         {
@@ -158,20 +415,60 @@ namespace BTS.Web.Controllers
                             CreatedDate = DateTime.Now
                         });
                     }
-                    _appGroupService.AddRolesToGroup(listRoleGroup);
+                    _appGroupService.AddRoleGroups(listRoleGroup);
                     _appGroupService.Save();
 
-                    var users = _appGroupService.GetUsersByGroupId(appGroup.Id).ToList();
-                    foreach (var userItem in users)
+
+                    List<string> oldUserIds = _appGroupService.GetUsersByGroupId(appGroup.Id).Select(x => x.Id).ToList();
+
+                    //delete ApplicationUserGroup
+                    _appGroupService.DeleteUsersFromGroup(appGroup.Id);
+                    _appGroupService.Save();
+
+                    //add ApplicationUserGroup
+                    List<ApplicationUserGroup> listUserGroup = new List<ApplicationUserGroup>();
+                    selectedUserItems = selectedUserItems ?? new string[] { };
+                    foreach (string userId in selectedUserItems)
                     {
-                        var newUserRoles = _appGroupService.GetLogicRolesByUserId(userItem.Id);
-                        await updateRoles(userItem.Id, newUserRoles);
+                        listUserGroup.Add(new ApplicationUserGroup()
+                        {
+                            GroupId = appGroup.Id,
+                            UserId = userId,
+                            CreatedBy = User.Identity.Name,
+                            CreatedDate = DateTime.Now
+                        });
+                    }
+                    _appGroupService.AddUserGroups(listUserGroup);
+                    _appGroupService.Save();
+
+                    foreach (string userIdItem in oldUserIds)
+                    {
+
+                        await removeUserRoles(userIdItem);
+
+                        List<ApplicationRole> newUserRoles = _appGroupService.GetLogicRolesByUserId(userIdItem).ToList();
+
+                        await addUserRoles(userIdItem, newUserRoles);
+                    }
+
+                    List<ApplicationUser> users = _appGroupService.GetUsersByGroupId(appGroup.Id).ToList();
+
+                    foreach (ApplicationUser userItem in users)
+                    {
+                        if (!oldUserIds.Contains(userItem.Id))
+                        {
+                            await removeUserRoles(userItem.Id);
+
+                            List<ApplicationRole> newUserRoles = _appGroupService.GetLogicRolesByUserId(userItem.Id).ToList();
+
+                            await addUserRoles(userItem.Id, newUserRoles);
+                        }
                     }
                     return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -186,11 +483,11 @@ namespace BTS.Web.Controllers
         }
 
         [AuthorizeRoles(CommonConstants.System_CanDelete_Role)]
-        public async Task<ActionResult> Delete(string id)
+        public ActionResult Delete(string id)
         {
             try
             {
-                var group = _appGroupService.GetByID(id);
+                ApplicationGroup group = _appGroupService.GetByID(id);
                 if (group == null)
                 {
                     return HttpNotFound();
@@ -207,7 +504,7 @@ namespace BTS.Web.Controllers
                 _appGroupService.Delete(id);
                 _appGroupService.Save();
 
-                return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+                return Json(new { data_restUrl = "/ApplicationGroup/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

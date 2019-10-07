@@ -7,7 +7,7 @@
 
   @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
 {
-    using (Html.BeginForm("AddOrEdit", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Applicant", new { id = "" }) }))//data-resetUrl
+    using (Html.BeginForm("Detail", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Applicant") }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -71,11 +71,11 @@
                         <div class="col-md-offset-2 col-md-10">
                               @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
                             {
-                                <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit", "Applicant", new { id = "", act = CommonConstants.Action_Add })',false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                                <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("Add", "Applicant")',false)"><i class="fa fa-plus"></i> Thêm mới</a>
                             }
                               @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                             {
-                                <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "Applicant", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
+                                <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("Edit", "Applicant", new { id = @Model.Id })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
                             }
 
                               @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
@@ -83,7 +83,7 @@
                                 <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "Applicant", new { id=@Model.Id})')"><i class="fa fa-trash"></i> Xóa bỏ</a>
                             }
 
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","Applicant", new { id = "", act = CommonConstants.Action_View })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","Applicant")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
                         </div>
                     </div>
                 </div>

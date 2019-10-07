@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
@@ -25,7 +24,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -36,26 +34,60 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<LabViewModel> GetAll()
         {
-            var model = _labService.getAll().ToList();
+            List<Lab> model = _labService.getAll().ToList();
             return Mapper.Map<IEnumerable<LabViewModel>>(model);
         }
 
+        public ActionResult Add()
+        {
+            LabViewModel ItemVm = new LabViewModel();
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanViewDetail_Role)]
+        public ActionResult Detail(string id = "0")
+        {
+            LabViewModel ItemVm = new LabViewModel();
+            Lab DbItem = _labService.getByID(id);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<LabViewModel>(DbItem);
+            }
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(string id = "0")
+        {
+            LabViewModel ItemVm = new LabViewModel();
+            Lab DbItem = _labService.getByID(id);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<LabViewModel>(DbItem);
+            }
+            return View(ItemVm);
+        }
+
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, string id = "0")
+        public ActionResult AddOrEdit(string act, string id = "0")
         {
             LabViewModel ItemVm = new LabViewModel();
             if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
-                var DbItem = _labService.getByID(id);
+                Lab DbItem = _labService.getByID(id);
 
                 if (DbItem != null)
                 {
                     ItemVm = Mapper.Map<LabViewModel>(DbItem);
                 }
                 if (act == CommonConstants.Action_Edit)
+                {
                     return View("Edit", ItemVm);
+                }
                 else
+                {
                     return View("Detail", ItemVm);
+                }
             }
             else
             {
@@ -65,8 +97,67 @@ namespace BTS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
+        public ActionResult Add(LabViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                        Lab newItem = new Lab();
+                        newItem.UpdateLab(Item);
+
+                        newItem.CreatedBy = User.Identity.Name;
+                        newItem.CreatedDate = DateTime.Now;
+
+                        _labService.Add(newItem);
+                        _labService.Save();
+                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<LabViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(LabViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                        Lab editItem = _labService.getByID(Item.Id);
+                        editItem.UpdateLab(Item);
+                        editItem.UpdatedBy = User.Identity.Name;
+                        editItem.UpdatedDate = DateTime.Now;
+
+                        _labService.Update(editItem);
+                        _labService.Save();
+                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<LabViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, LabViewModel Item)
+        public ActionResult AddOrEdit(string act, LabViewModel Item)
         {
             try
             {
@@ -74,7 +165,7 @@ namespace BTS.Web.Controllers
                 {
                     if (act == CommonConstants.Action_Add)
                     {
-                        var newItem = new Lab();
+                        Lab newItem = new Lab();
                         newItem.UpdateLab(Item);
 
                         newItem.CreatedBy = User.Identity.Name;
@@ -86,7 +177,7 @@ namespace BTS.Web.Controllers
                     }
                     else
                     {
-                        var editItem = _labService.getByID(Item.Id);
+                        Lab editItem = _labService.getByID(Item.Id);
                         editItem.UpdateLab(Item);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
@@ -98,7 +189,7 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -112,7 +203,7 @@ namespace BTS.Web.Controllers
         {
             try
             {
-                var dbItem = _labService.getByID(id);
+                Lab dbItem = _labService.getByID(id);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
@@ -126,7 +217,7 @@ namespace BTS.Web.Controllers
                 _labService.Delete(id);
                 _labService.Save();
 
-                return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { data_restUrl = "/Lab/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

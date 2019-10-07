@@ -3,12 +3,11 @@
 @{
     ViewBag.Title = "Detail";
     Layout = null;
-    var action = ViewBag.action;
 }
 
-  @if (User.IsInRole(CommonConstants.System_CanViewDetail_Role))
+@if (User.IsInRole(CommonConstants.System_CanViewDetail_Role))
 {
-    using (Html.BeginForm("AddOrEdit", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationGroup", new { id = "", act = "Add" }) }))//data-resetUrl
+    using (Html.BeginForm("Detail", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "ApplicationGroup") }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -36,23 +35,34 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.RoleList, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-
-                            @foreach (var item in Model.RoleList)
+                            @if (Model.RoleList.Where(x => x.Selected).Count() == 0)
                             {
-                                <div class="col-md-6">
-                                    <label class="control-label">
-                                        <input disabled type="checkbox" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                                        @item.Text
-                                    </label>
+                                <div>
+                                    @Html.Label("Không có", new { @class = "control-label", disabled = "disabled" })
                                 </div>
                             }
-                        </div>
+                            else
+                            {
+                                foreach (var item in Model.RoleList)
+                                {
+                                    if (@item.Selected)
+                                    {
+                                        <div class="col-md-6">
+                                            <label class="control-label">
+                                                <input disabled type="checkbox" name="selectedRoleItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                                @item.Text
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                            }
+                            </div>
                     </div>
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.UserList, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-                            @if (Model.UserList.Count == 0)
+                            @if (Model.UserList.Where(x => x.Selected).Count() == 0)
                             {
                                 <div>
                                     @Html.Label("Không có", new { @class = "control-label", disabled = "disabled" })
@@ -62,12 +72,15 @@
                             {
                                 foreach (var item in Model.UserList)
                                 {
-                                    <div class="col-md-6">
-                                        <label class="control-label">
-                                            <input disabled type="checkbox" name="selectedItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                                            @item.Text
-                                        </label>
-                                    </div>
+                                    if (@item.Selected)
+                                    {
+                                        <div class="col-md-6">
+                                            <label class="control-label">
+                                                <input disabled type="checkbox" name="selectedUserItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                                @item.Text
+                                            </label>
+                                        </div>
+                                    }
                                 }
                             }
                         </div>
@@ -75,21 +88,21 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                              @if (User.IsInRole(CommonConstants.System_CanAdd_Role))
+                            @if (User.IsInRole(CommonConstants.System_CanAdd_Role))
                             {
-                                <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationGroup", new {id = "", act = "Add"})', false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                                <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("Add","ApplicationGroup")', false)"><i class="fa fa-plus"></i> Thêm mới</a>
                             }
-                              @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
+                            @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
                             {
-                                <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("AddOrEdit", "ApplicationGroup", new { id = @Model.Id, act = CommonConstants.Action_Edit })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
-                            }
-
-                              @if (User.IsInRole(CommonConstants.System_CanDelete_Role))
-                            {
-                                <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "ApplicationGroup", new { id=@Model.Id})')"><i class="fa fa-trash"></i> Xóa bỏ</a>
+                                <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("Edit", "ApplicationGroup", new { id = @Model.Id })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
                             }
 
-                            <a class=" btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationGroup",new { id = "", act = CommonConstants.Action_View })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            @if (User.IsInRole(CommonConstants.System_CanDelete_Role))
+                            {
+                                <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "ApplicationGroup", new { id = @Model.Id })')"><i class="fa fa-trash"></i> Xóa bỏ</a>
+                            }
+
+                            <a class=" btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","ApplicationGroup")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
                         </div>
                     </div>
                 </div>

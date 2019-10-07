@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
@@ -25,7 +24,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -36,8 +34,38 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<OperatorViewModel> GetAll()
         {
-            var model = _operatorService.getAll().ToList();
+            List<Operator> model = _operatorService.getAll().ToList();
             return Mapper.Map<IEnumerable<OperatorViewModel>>(model);
+        }
+
+        public ActionResult Add()
+        {
+            OperatorViewModel ItemVm = new OperatorViewModel();
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanViewDetail_Role)]
+        public ActionResult Detail(string id = "0")
+        {
+            OperatorViewModel ItemVm = new OperatorViewModel();
+            Operator DbItem = _operatorService.getByID(id);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<OperatorViewModel>(DbItem);
+            }
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(string id = "0")
+        {
+            OperatorViewModel ItemVm = new OperatorViewModel();
+            Operator DbItem = _operatorService.getByID(id);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<OperatorViewModel>(DbItem);
+            }
+            return View(ItemVm);
         }
 
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
@@ -46,20 +74,83 @@ namespace BTS.Web.Controllers
             OperatorViewModel ItemVm = new OperatorViewModel();
             if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
-                var DbItem = _operatorService.getByID(id);
+                Operator DbItem = _operatorService.getByID(id);
 
                 if (DbItem != null)
                 {
                     ItemVm = Mapper.Map<OperatorViewModel>(DbItem);
                 }
                 if (act == CommonConstants.Action_Edit)
+                {
                     return View("Edit", ItemVm);
+                }
                 else
+                {
                     return View("Detail", ItemVm);
+                }
             }
             else
             {
                 return View("Add", ItemVm);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
+        public ActionResult Add(OperatorViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Operator newItem = new Operator();
+                    newItem.UpdateOperator(Item);
+
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
+
+                    _operatorService.Add(newItem);
+                    _operatorService.SaveChanges();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<OperatorViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(OperatorViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Operator editItem = _operatorService.getByID(Item.Id);
+                    editItem.UpdateOperator(Item);
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _operatorService.Update(editItem);
+                    _operatorService.SaveChanges();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<OperatorViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -74,7 +165,7 @@ namespace BTS.Web.Controllers
                 {
                     if (act == CommonConstants.Action_Add)
                     {
-                        var newItem = new Operator();
+                        Operator newItem = new Operator();
                         newItem.UpdateOperator(Item);
 
                         newItem.CreatedBy = User.Identity.Name;
@@ -86,7 +177,7 @@ namespace BTS.Web.Controllers
                     }
                     else
                     {
-                        var editItem = _operatorService.getByID(Item.Id);
+                        Operator editItem = _operatorService.getByID(Item.Id);
                         editItem.UpdateOperator(Item);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
@@ -98,7 +189,7 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -112,7 +203,7 @@ namespace BTS.Web.Controllers
         {
             try
             {
-                var dbItem = _operatorService.getByID(id);
+                Operator dbItem = _operatorService.getByID(id);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
@@ -126,7 +217,7 @@ namespace BTS.Web.Controllers
                 _operatorService.Delete(id);
                 _operatorService.SaveChanges();
 
-                return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { data_restUrl = "/Operator/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

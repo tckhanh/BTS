@@ -1,8 +1,5 @@
 ﻿@using BTS.Common
-@{
-    var imagePath = TempData["imagePath"];
-}
-
+@using BTS.Web.Infrastructure.Extensions
 @section footerJS{
 
 }
@@ -230,7 +227,7 @@
 
                 <li class="dropdown tasks-menu">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <img src="@imagePath" alt="">@User.Identity.Name
+                        <img src='@Session["ImagePath"]' alt="">@User.Identity.Name
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -248,7 +245,7 @@
                 </li>
                 @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
                 {
-                <!-- Control Sidebar Toggle Button -->
+                    <!-- Control Sidebar Toggle Button -->
                     <li>
                         <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                     </li>

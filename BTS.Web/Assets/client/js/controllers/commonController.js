@@ -1,4 +1,9 @@
 ﻿var commonController = {
+    token: function () {
+        var form = $('#__AjaxAntiForgeryForm');
+        return $('input[name="__RequestVerificationToken"]', form).val();
+    },
+
     init: function () {
         $("#loaderbody").addClass('hide');
         $(document).bind('ajaxStart', function () {
@@ -73,7 +78,10 @@
             var ajaxConfig = {
                 type: 'POST',
                 url: form.action,
-                data: new FormData(form),
+                data: {
+                    form: new FormData(form),
+                    __RequestVerificationToken = btsController.token();
+                },
                 success: function (response) {
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
@@ -83,11 +91,13 @@
                     } else if (response.status = "Success") {
                         $("#firstTab").html(response.html);
                         commonController.refreshAddNewTab($(form).attr('data-restUrl'), true);
-                        $.notify(response.message, "success");
+                        $.notify(response.message, "Success");
                         if (typeof commonController.activatejQueryTable !== 'undefined' && $.isFunction(commonController.activatejQueryTable))
                             commonController.activatejQueryTable();
-                    }
-                    else {
+                    } else if (response.status = "Recovery") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else {
                         $.notify(response.message, "error");
                     }
                 },
@@ -202,6 +212,9 @@
             $.ajax({
                 type: 'POST',
                 url: url,
+                data: {
+                    __RequestVerificationToken = btsController.token();
+                },
                 success: function (response) {
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
@@ -227,6 +240,9 @@
             $.ajax({
                 type: 'POST',
                 url: url,
+                data: {
+                    __RequestVerificationToken = btsController.token();
+                },
                 success: function (response) {
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
@@ -236,6 +252,7 @@
                     } else if (response.status = "Success") {
                         $("#firstTab").html(response.html);
                         $.notify(response.message, "warn");
+                        commonController.refreshAddNewTab(response.data_restUrl, true);
                         if (typeof commonController.activatejQueryTable !== 'undefined' && $.isFunction(commonController.activatejQueryTable))
                             commonController.activatejQueryTable();
                     }

@@ -17,6 +17,7 @@ using BTS.Web.Models;
 using BTS.Service;
 using static BTS.Web.Models.AccountViewModel;
 using BTS.Data.ApplicationModels;
+using BTS.Web.Infrastructure.Extensions;
 
 namespace BTS.Web.Controllers
 {
@@ -64,8 +65,12 @@ namespace BTS.Web.Controllers
                         ClaimsIdentity identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
 
                         //identity.AddClaim(new Claim("FullName", user.FullName));
-                        //identity.AddClaim(new Claim("Email", user.Email));
-                        identity.AddClaim(new Claim("ImagePath", user.ImagePath));
+                        //identity.AddClaim(new Claim("Email", user.Email));                        
+                        identity.AddClaim(new Claim("CityIDsScope", user.CityIDsScope ?? ""));
+                        identity.AddClaim(new Claim("ImagePath", user.ImagePath ?? ""));
+
+                        // Session["CityIDsScope"] = user.CityIDsScope ?? "";
+                        Session["ImagePath"] = user.ImagePath ?? "";
 
                         AuthenticationProperties props = new AuthenticationProperties();
                         props.IsPersistent = model.RememberMe;

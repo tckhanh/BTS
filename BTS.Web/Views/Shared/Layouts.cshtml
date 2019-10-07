@@ -72,9 +72,13 @@
         var AppGlobal = {
             "LoginUser": {
             "name": "@(User.Identity.Name)",
-            "roles": "@string.Join(";", ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList());"
-           }
+                "roles": "@string.Join(";", ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList());",
+                "arrayRoles": "@((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();",
+                "ImagePath": "@(((ClaimsIdentity)User.Identity).FindFirst("ImagePath")?.Value)",
+                "CityIDsScope": "@(((ClaimsIdentity)User.Identity).FindFirst("CityIDsScope")?.Value)"
+            }
         };
+        var myArrayRoles = AppGlobal.LoginUser.roles.split(';');
     </script>
     @RenderSection("headerJS", required: false)
 

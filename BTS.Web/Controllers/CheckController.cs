@@ -40,7 +40,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 

@@ -1,20 +1,18 @@
 ﻿/// <reference path="applicationgroupaddcontroller.js" />
-var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}),
-    latlng = L.latLng(10.796841, 106.66252);
-var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
-var myMarkerClusters = L.markerClusterGroup();
-var arrayRoles = AppGlobal.LoginUser.roles.split(';');
-var system_CanExport_Role = $.inArray(myConstant.System_CanExport_Role, arrayRoles);
-var data = "";
+
+// var data = "";
 
 var btsController = {
+    token: function () {
+        var form = $('#__AjaxAntiForgeryForm');
+        return $('input[name="__RequestVerificationToken"]', form).val();
+    },
+    
     init: function () {
+
         btsController.loadData();
         btsController.registerEventDataTable();
-        btsController.registerEvent();
+        btsController.registerEvent();        
     },
     registerEventDataTable: function () {
         var table = $("#MyDataTable").DataTable();
@@ -119,10 +117,11 @@ var btsController = {
         //    type: 'post',
         //    success: function (data) {
         //        userRoleAdmin = data.Roles;
+        //        __RequestVerificationToken = btsController.token();
         //    }
         //});
 
-        if (system_CanExport_Role > -1) {
+        if ($.inArray(myConstant.System_CanExport_Role, myArrayRoles) > -1) {
             $("#MyDataTable")
                 .on('draw.dt', function (e, settings, json, xhr) {
                     btsController.initCompleteFunction(settings, json);
@@ -142,8 +141,12 @@ var btsController = {
                         //    myMap.removeLayer(layer);
                         //});
                     }
-                    btsController.loadMap(json.data);
-                    btsController.loadPivotTable(json.data);
+                    if (json != null) {
+                        if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
+                            btsController.loadMap(json.data);
+                        if ($.inArray(myConstant.Info_CanViewStatitics_Role, myArrayRoles) > -1)
+                            btsController.loadPivotTable(json.data);
+                    }
                 })
                 .dataTable({
                     dom: 'Bfrtip',
@@ -184,6 +187,7 @@ var btsController = {
                             d.StartDate = startDate.toISOString();
                             d.EndDate = endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
+                            d.__RequestVerificationToken = btsController.token();
                         }
                     },
                     "columns": [
@@ -210,13 +214,13 @@ var btsController = {
                             "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 var htmlLink = "";
-                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
                                     htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Bts/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
                                 }
-                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanEdit_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Bts/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
                                 }
-                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanDelete_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Bts/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
                                 }
                                 $(nTd).html(htmlLink);
@@ -251,10 +255,11 @@ var btsController = {
                         //    myMap.removeLayer(layer);
                         //});
                     }
-                    if (json != null) {
-                        var data = json.data;
-                        btsController.loadMap(data);
-                        btsController.loadPivotTable(data);
+                    if (json != null) {                        
+                        if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
+                            btsController.loadMap(json.data);
+                        if ($.inArray(myConstant.Info_CanViewStatitics_Role, myArrayRoles) > -1)
+                            btsController.loadPivotTable(json.data);
                     }
                 })
                 .dataTable({
@@ -273,6 +278,7 @@ var btsController = {
                             d.StartDate = startDate.toISOString();
                             d.EndDate = endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
+                            d.__RequestVerificationToken = btsController.token();
                         }
                     },
                     "columns": [
@@ -299,13 +305,13 @@ var btsController = {
                             "data": "Id", "name": "Id", "className": "dt-body-center", 
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 var htmlLink = "";
-                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
                                     htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Bts/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
                                 }
-                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanEdit_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Bts/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
                                 }
-                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanDelete_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Bts/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
                                 }
                                 $(nTd).html(htmlLink);

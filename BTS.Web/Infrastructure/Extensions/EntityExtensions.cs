@@ -4,28 +4,12 @@ using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
 using System.Web;
 
 namespace BTS.Web.Infrastructure.Extensions
 {
     public static class EntityExtensions
     {
-        public static string GetImagePath(this IIdentity identity)
-        {
-            if (identity == null)
-            {
-                throw new ArgumentNullException("user");
-            }
-            var claimsIdentity = identity as ClaimsIdentity;
-            if (claimsIdentity != null)
-            {
-                return claimsIdentity.FindFirst("ImagePath").Value;
-            }
-            return null;
-        }
-
         public static void UpdateBts(this Bts bts, BtsViewModel btsVm)
         {
             bts.ProfileID = btsVm.ProfileID;
@@ -116,6 +100,7 @@ namespace BTS.Web.Infrastructure.Extensions
         public static void UpdateCity(this City myCity, CityViewModel cityVm)
         {
             myCity.Name = cityVm.Name;
+            myCity.Area = cityVm.Area;
         }
 
         public static void UpdateOperator(this Operator myoperator, OperatorViewModel operatorVm)
@@ -157,6 +142,25 @@ namespace BTS.Web.Infrastructure.Extensions
         }
 
         public static void UpdateUser(this ApplicationUser appUser, ApplicationUserViewModel appUserViewModel)
+        {
+            appUser.FullName = appUserViewModel.FullName;
+            appUser.Email = appUserViewModel.Email;
+            appUser.PhoneNumber = appUserViewModel.PhoneNumber;
+            appUser.Address = appUserViewModel.Address;
+            appUser.BirthDay = appUserViewModel.BirthDay;
+            appUser.FatherLand = appUserViewModel.FatherLand;
+            appUser.Level = appUserViewModel.Level;
+            appUser.EducationalField = appUserViewModel.EducationalField;
+            appUser.EntryDate = appUserViewModel.EntryDate;
+            appUser.EndDate = appUserViewModel.EndDate;
+            appUser.Locked = appUserViewModel.Locked;
+            appUser.JobPositions = appUserViewModel.JobPositions;
+            appUser.ImagePath = appUserViewModel.ImagePath;
+            appUser.CityIDsScope = appUserViewModel.CityIDsScope;
+            appUser.AreasScope = appUserViewModel.AreasScope;
+        }
+
+        public static void UpdateUserProfile(this ApplicationUser appUser, ApplicationUserViewModel appUserViewModel)
         {
             appUser.FullName = appUserViewModel.FullName;
             appUser.Email = appUserViewModel.Email;

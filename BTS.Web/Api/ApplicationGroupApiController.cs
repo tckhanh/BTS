@@ -143,15 +143,21 @@ namespace BTS.Web.Controllers
                             RoleId = role
                         });
                     }
-                    _appGroupService.AddRolesToGroup(listRoleGroup);
+                    _appGroupService.AddRoleGroups(listRoleGroup);
                     _appGroupService.Save();
 
-                    var users = _appGroupService.GetUsersByGroupId(appGroup.Id);
+                    var users = _appGroupService.GetUsersByGroupId(appGroup.Id).ToList();
+
                     foreach (var userItem in users)
                     {
+
+                        await removeUserRoles(userItem.Id);
+
                         var newUserRoles = _appGroupService.GetLogicRolesByUserId(userItem.Id);
-                        await updateRoles(userItem.Id, newUserRoles);
+
+                        await addUserRoles(userItem.Id, newUserRoles);
                     }
+                    
                     return Json(new { success = true, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else

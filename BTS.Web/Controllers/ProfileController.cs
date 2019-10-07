@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
@@ -25,7 +24,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -36,18 +34,88 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<ProfileViewModel> GetAll()
         {
-            var model = _profileService.getAll().ToList();
+            List<Model.Models.Profile> model = _profileService.getAll().ToList();
             return Mapper.Map<IEnumerable<ProfileViewModel>>(model);
         }
 
+        public ActionResult Add()
+        {
+            ProfileViewModel ItemVm = new ProfileViewModel();
+
+            IEnumerable<Applicant> applicantList = _profileService.getAllApplicant().ToList();
+            foreach (Applicant applicantItem in applicantList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = applicantItem.Name,
+                    Value = applicantItem.Id,
+                    Selected = false
+                };
+                ItemVm.ApplicantList.Add(listItem);
+            }
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanViewDetail_Role)]
+        public ActionResult Detail(string id = "")
+        {
+            ProfileViewModel ItemVm = new ProfileViewModel();
+
+            Model.Models.Profile DbItem = _profileService.getByID(id);
+
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<ProfileViewModel>(DbItem);
+            }
+
+            IEnumerable<Applicant> applicantList = _profileService.getAllApplicant().ToList();
+            foreach (Applicant applicantItem in applicantList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = applicantItem.Name,
+                    Value = applicantItem.Id,
+                    Selected = false
+                };
+                ItemVm.ApplicantList.Add(listItem);
+            }
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(string id = "")
+        {
+            ProfileViewModel ItemVm = new ProfileViewModel();
+
+            Model.Models.Profile DbItem = _profileService.getByID(id);
+
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<ProfileViewModel>(DbItem);
+            }
+
+            IEnumerable<Applicant> applicantList = _profileService.getAllApplicant().ToList();
+            foreach (Applicant applicantItem in applicantList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = applicantItem.Name,
+                    Value = applicantItem.Id,
+                    Selected = false
+                };
+                ItemVm.ApplicantList.Add(listItem);
+            }
+            return View(ItemVm);
+        }
+
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, string id = "")
+        public ActionResult AddOrEdit(string act, string id = "")
         {
             ProfileViewModel ItemVm = new ProfileViewModel();
 
             if (!string.IsNullOrEmpty(id))
             {
-                var DbItem = _profileService.getByID(id);
+                Model.Models.Profile DbItem = _profileService.getByID(id);
 
                 if (DbItem != null)
                 {
@@ -56,9 +124,9 @@ namespace BTS.Web.Controllers
             }
 
             IEnumerable<Applicant> applicantList = _profileService.getAllApplicant().ToList();
-            foreach (var applicantItem in applicantList)
+            foreach (Applicant applicantItem in applicantList)
             {
-                var listItem = new SelectListItem()
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = applicantItem.Name,
                     Value = applicantItem.Id,
@@ -68,7 +136,9 @@ namespace BTS.Web.Controllers
             }
 
             if (act == CommonConstants.Action_Edit)
+            {
                 return View("Edit", ItemVm);
+            }
             else if (act == CommonConstants.Action_Detail)
             {
                 return View("Detail", ItemVm);
@@ -81,8 +151,68 @@ namespace BTS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
+        public ActionResult Add(ProfileViewModel ItemVm)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Model.Models.Profile newItem = new Model.Models.Profile();
+                    newItem.UpdateProfile(ItemVm);
+                    newItem.Id = ItemVm.Id;
+
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
+
+                    _profileService.Add(newItem);
+                    _profileService.Save();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ProfileViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(ProfileViewModel ItemVm)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Model.Models.Profile editItem = _profileService.getByID(ItemVm.Id);
+                    editItem.UpdateProfile(ItemVm);
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _profileService.Update(editItem);
+                    _profileService.Save();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ProfileViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, ProfileViewModel ItemVm)
+        public ActionResult AddOrEdit(string act, ProfileViewModel ItemVm)
         {
             try
             {
@@ -90,7 +220,7 @@ namespace BTS.Web.Controllers
                 {
                     if (act == CommonConstants.Action_Add)
                     {
-                        var newItem = new Model.Models.Profile();
+                        Model.Models.Profile newItem = new Model.Models.Profile();
                         newItem.UpdateProfile(ItemVm);
                         newItem.Id = ItemVm.Id;
 
@@ -103,7 +233,7 @@ namespace BTS.Web.Controllers
                     }
                     else
                     {
-                        var editItem = _profileService.getByID(ItemVm.Id);
+                        Model.Models.Profile editItem = _profileService.getByID(ItemVm.Id);
                         editItem.UpdateProfile(ItemVm);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
@@ -115,7 +245,7 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -125,11 +255,11 @@ namespace BTS.Web.Controllers
         }
 
         [AuthorizeRoles(CommonConstants.Data_CanDelete_Role)]
-        public async Task<ActionResult> Delete(string id = "")
+        public ActionResult Delete(string id = "")
         {
             try
             {
-                var dbItem = _profileService.getByID(id);
+                Model.Models.Profile dbItem = _profileService.getByID(id);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
@@ -143,7 +273,7 @@ namespace BTS.Web.Controllers
                 _profileService.Delete(id);
                 _profileService.Save();
 
-                return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { data_restUrl = "/Profile/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

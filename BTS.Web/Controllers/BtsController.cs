@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
@@ -33,26 +32,31 @@ namespace BTS.Web.Controllers
             ViewBag.operators = operators;
             ViewBag.profiles = profiles;
             ViewBag.cities = cities;
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public JsonResult loadBts()
         {
             int countItem;
 
-            var CityID = Request.Form.GetValues("CityID").FirstOrDefault();
-            var OperatorID = Request.Form.GetValues("OperatorID").FirstOrDefault();
-            var ProfileID = Request.Form.GetValues("ProfileID").FirstOrDefault();
-            var BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress").FirstOrDefault().ToLower();
+            string CityID = Request.Form.GetValues("CityID").FirstOrDefault();
+            string OperatorID = Request.Form.GetValues("OperatorID").FirstOrDefault();
+            string ProfileID = Request.Form.GetValues("ProfileID").FirstOrDefault();
+            string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress").FirstOrDefault().ToLower();
 
             DateTime StartDate, EndDate;
+
             if (!DateTime.TryParse(Request.Form.GetValues("StartDate").FirstOrDefault(), out StartDate))
+            {
                 Console.Write("Loi chuyen doi kieu");
+            }
+
             if (!DateTime.TryParse(Request.Form.GetValues("EndDate").FirstOrDefault(), out EndDate))
+            {
                 Console.Write("Loi chuyen doi kieu");
+            }
 
             // searching ...
             IEnumerable<Bts> Items;
@@ -61,7 +65,7 @@ namespace BTS.Web.Controllers
             {
                 //Items = _btsService.getAll(out countItem, StartDate, EndDate).ToList();
                 Items = _btsService.getAll(out countItem).ToList();
-                Items = Items.Where(x => x.Profile.ApplyDate >= StartDate && x.Profile.ApplyDate <= EndDate);
+                Items = Items.Where(x => x.Profile.ApplyDate >= StartDate && x.Profile.ApplyDate <= EndDate).ToList();
             }
             else
             {
@@ -70,32 +74,34 @@ namespace BTS.Web.Controllers
 
             if (!(string.IsNullOrEmpty(CityID)))
             {
-                Items = Items.Where(x => x.CityID == CityID);
+                Items = Items.Where(x => x.CityID == CityID).ToList();
             }
+            Items = Items.Where(x => mySession("CityIDsScope").Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+
 
             if (!(string.IsNullOrEmpty(OperatorID)))
             {
-                Items = Items.Where(x => x.OperatorID.Contains(OperatorID));
+                Items = Items.Where(x => x.OperatorID.Contains(OperatorID)).ToList();
             }
 
             if (!(string.IsNullOrEmpty(ProfileID)))
             {
-                Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID);
+                Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
 
             if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
             {
-                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress));
+                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
 
-            var recordsFiltered = Items.Count();
+            int recordsFiltered = Items.Count();
 
-            IEnumerable<BtsViewModel> dataViewModel = Mapper.Map<List<BtsViewModel>>(Items);
+            IEnumerable<BtsViewModel> dataViewModel = Mapper.Map<List<BtsViewModel>>(Items).ToList();
             if (recordsFiltered > 0)
             {
                 //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };                
                 JsonResult result = Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
-                result.MaxJsonLength = Int32.MaxValue;
+                result.MaxJsonLength = int.MaxValue;
                 return result;
             }
             return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
@@ -111,28 +117,49 @@ namespace BTS.Web.Controllers
         private IEnumerable<BtsViewModel> GetAll()
         {
             int countItem;
-            var model = _btsService.getAll(out countItem).ToList();
+            List<Bts> model = _btsService.getAll(out countItem).ToList();
             return Mapper.Map<IEnumerable<BtsViewModel>>(model);
         }
 
-        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, string id = "0")
+        public ActionResult Add()
         {
             BtsViewModel ItemVm = new BtsViewModel();
-            if (!string.IsNullOrEmpty(id))
-            {                
-                var DbItem = _btsService.getByID(id);
+            ItemVm = FillInBtsVM(ItemVm);
+            return View(ItemVm);
+        }
 
-                if (DbItem != null)
-                {
-                    ItemVm = Mapper.Map<BtsViewModel>(DbItem);
-                }
-            }
-
-            IEnumerable<Operator> operatorList = _btsService.getAllOperator().ToList();
-            foreach (var operatorItem in operatorList)
+        [AuthorizeRoles(CommonConstants.Data_CanViewDetail_Role)]
+        public ActionResult Detail(string id = "0")
+        {
+            BtsViewModel ItemVm = new BtsViewModel();
+            Bts DbItem = _btsService.getByID(id);
+            if (DbItem != null)
             {
-                var listItem = new SelectListItem()
+                ItemVm = Mapper.Map<BtsViewModel>(DbItem);
+            }
+            ItemVm = FillInBtsVM(ItemVm);
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(string id = "0")
+        {
+            BtsViewModel ItemVm = new BtsViewModel();
+            Bts DbItem = _btsService.getByID(id);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<BtsViewModel>(DbItem);
+            }
+            ItemVm = FillInBtsVM(ItemVm);
+            return View(ItemVm);
+        }
+
+        private BtsViewModel FillInBtsVM(BtsViewModel ItemVm)
+        {
+            IEnumerable<Operator> operatorList = _btsService.getAllOperator().ToList();
+            foreach (Operator operatorItem in operatorList)
+            {
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = operatorItem.Name,
                     Value = operatorItem.Id,
@@ -142,9 +169,9 @@ namespace BTS.Web.Controllers
             }
 
             IEnumerable<Model.Models.Profile> profileList = _btsService.getAllProfile().ToList();
-            foreach (var profileItem in profileList)
+            foreach (Model.Models.Profile profileItem in profileList)
             {
-                var listItem = new SelectListItem()
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = profileItem.BtsQuantity + "-" + profileItem.ApplicantID + "-" + profileItem.ProfileNum,
                     Value = profileItem.Id?.ToString(),
@@ -154,9 +181,9 @@ namespace BTS.Web.Controllers
             }
 
             IEnumerable<City> cityList = _btsService.getAllCity().ToList();
-            foreach (var cityItem in cityList)
+            foreach (City cityItem in cityList)
             {
-                var listItem = new SelectListItem()
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = cityItem.Name,
                     Value = cityItem.Id,
@@ -166,9 +193,73 @@ namespace BTS.Web.Controllers
             }
 
             IEnumerable<InCaseOf> inCaseOfList = _btsService.getAllInCaseOf().ToList();
-            foreach (var inCaseOfItem in inCaseOfList)
+            foreach (InCaseOf inCaseOfItem in inCaseOfList)
             {
-                var listItem = new SelectListItem()
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = inCaseOfItem.Name,
+                    Value = inCaseOfItem.Id.ToString(),
+                    Selected = false
+                };
+                ItemVm.InCaseOfList.Add(listItem);
+            }
+            return ItemVm;
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
+        public ActionResult AddOrEdit(string act, string id = "0")
+        {
+            BtsViewModel ItemVm = new BtsViewModel();
+            if (!string.IsNullOrEmpty(id))
+            {
+                Bts DbItem = _btsService.getByID(id);
+
+                if (DbItem != null)
+                {
+                    ItemVm = Mapper.Map<BtsViewModel>(DbItem);
+                }
+            }
+
+            IEnumerable<Operator> operatorList = _btsService.getAllOperator().ToList();
+            foreach (Operator operatorItem in operatorList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = operatorItem.Name,
+                    Value = operatorItem.Id,
+                    Selected = false
+                };
+                ItemVm.OperatorList.Add(listItem);
+            }
+
+            IEnumerable<Model.Models.Profile> profileList = _btsService.getAllProfile().ToList();
+            foreach (Model.Models.Profile profileItem in profileList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = profileItem.BtsQuantity + "-" + profileItem.ApplicantID + "-" + profileItem.ProfileNum,
+                    Value = profileItem.Id?.ToString(),
+                    Selected = false
+                };
+                ItemVm.ProfileList.Add(listItem);
+            }
+
+            IEnumerable<City> cityList = _btsService.getAllCity().ToList();
+            foreach (City cityItem in cityList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = cityItem.Name,
+                    Value = cityItem.Id,
+                    Selected = false
+                };
+                ItemVm.CityList.Add(listItem);
+            }
+
+            IEnumerable<InCaseOf> inCaseOfList = _btsService.getAllInCaseOf().ToList();
+            foreach (InCaseOf inCaseOfItem in inCaseOfList)
+            {
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = inCaseOfItem.Name,
                     Value = inCaseOfItem.Id.ToString(),
@@ -178,7 +269,9 @@ namespace BTS.Web.Controllers
             }
 
             if (act == CommonConstants.Action_Edit)
+            {
                 return View("Edit", ItemVm);
+            }
             else if (act == CommonConstants.Action_Detail)
             {
                 return View("Detail", ItemVm);
@@ -191,8 +284,67 @@ namespace BTS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
+        public ActionResult Add(BtsViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Bts newItem = new Bts();
+                    newItem.UpdateBts(Item);
+
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
+
+                    _btsService.Add(newItem);
+                    _btsService.SaveChanges();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(BtsViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Bts editItem = _btsService.getByID(Item.Id);
+                    editItem.UpdateBts(Item);
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _btsService.Update(editItem);
+                    _btsService.SaveChanges();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, BtsViewModel Item)
+        public ActionResult AddOrEdit(string act, BtsViewModel Item)
         {
             try
             {
@@ -200,7 +352,7 @@ namespace BTS.Web.Controllers
                 {
                     if (act == CommonConstants.Action_Add)
                     {
-                        var newItem = new Bts();
+                        Bts newItem = new Bts();
                         newItem.UpdateBts(Item);
 
                         newItem.CreatedBy = User.Identity.Name;
@@ -212,7 +364,7 @@ namespace BTS.Web.Controllers
                     }
                     else
                     {
-                        var editItem = _btsService.getByID(Item.Id);
+                        Bts editItem = _btsService.getByID(Item.Id);
                         editItem.UpdateBts(Item);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
@@ -224,7 +376,7 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -234,11 +386,11 @@ namespace BTS.Web.Controllers
         }
 
         [AuthorizeRoles(CommonConstants.Data_CanDelete_Role)]
-        public async Task<ActionResult> Delete(string id = "0")
+        public ActionResult Delete(string id = "0")
         {
             try
             {
-                var dbItem = _btsService.getByID(id);
+                Bts dbItem = _btsService.getByID(id);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
@@ -252,7 +404,7 @@ namespace BTS.Web.Controllers
                 _btsService.Delete(id);
                 _btsService.SaveChanges();
 
-                return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { data_restUrl = "/Bts/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

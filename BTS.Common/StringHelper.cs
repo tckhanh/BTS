@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace BTS.Common
 {
-    public class StringHelper
+    public static class StringHelper
     {
-        public static string ToUnsignString(string input)
+        public static string ToUnsignString(this string input)
         {
             input = input.Trim();
             for (int i = 0x20; i < 0x30; i++)

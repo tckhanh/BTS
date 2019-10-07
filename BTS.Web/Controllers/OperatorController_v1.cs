@@ -24,7 +24,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -139,7 +138,7 @@ namespace BTS.Web.Controllers
         {
             _operatorService.Delete(id);
             _operatorService.SaveChanges();
-            return Json(new { status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+            return Json(new { data_restUrl = "/Operator/Add", status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

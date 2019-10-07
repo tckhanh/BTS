@@ -1,15 +1,12 @@
-﻿var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}),
-    latlng = L.latLng(10.796841, 106.66252);
-var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
-var myMarkerClusters = L.markerClusterGroup();
-var arrayRoles = AppGlobal.LoginUser.roles.split(';');
-var system_CanExport_Role = $.inArray('System_CanExport', arrayRoles);
-var data = "";
+﻿
+//var data = "";
 
 var certificateController = {
+    token: function () {
+        var form = $('#__AjaxAntiForgeryForm');
+        return $('input[name="__RequestVerificationToken"]', form).val();
+    },
+
     init: function () {
         certificateController.loadData();
         certificateController.registerEventDataTable();
@@ -97,9 +94,9 @@ var certificateController = {
 
         $.ajax({
             url: '/Certificate/SubDetail',
-            type: "POST",
+            type: "GET",
             data: {
-                Id: rowData.Id
+                Id: rowData.Id,
             },
             dataType: 'json',
             success: function (json) {
@@ -172,10 +169,11 @@ var certificateController = {
         //    type: 'post',
         //    success: function (data) {
         //        userRoleAdmin = data.Roles;
+        //        __RequestVerificationToken = btsController.token();
         //    }
         //});
 
-        if (system_CanExport_Role > -1) {
+        if ($.inArray(myConstant.System_CanExport_Role, myArrayRoles) > -1) {
             $("#MyDataTable")
                 .on('draw.dt', function (e, settings, json, xhr) {
                     certificateController.initCompleteFunction(settings, json);
@@ -195,8 +193,12 @@ var certificateController = {
                         //    myMap.removeLayer(layer);
                         //});
                     }
-                    certificateController.loadMap(json.data);
-                    certificateController.loadPivotTable(json.data);
+                    if (json != null) {
+                        if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
+                            certificateController.loadMap(json.data);
+                        if ($.inArray(myConstant.Info_CanViewStatitics_Role, myArrayRoles) > -1)
+                            certificateController.loadPivotTable(json.data);
+                    }
                 })
                 .dataTable({
                     columnDefs: [{
@@ -248,6 +250,7 @@ var certificateController = {
                             d.EndDate = endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
                             d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.__RequestVerificationToken = certificateController.token();
                         }
                     },
                     "columns": [
@@ -289,13 +292,13 @@ var certificateController = {
                             "data": "Id", "name": "Id", "width": "14%",  "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 var htmlLink = "";
-                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
                                     htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
                                 }
-                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanEdit_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
                                 }
-                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanDelete_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Certificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
                                 }
                                 $(nTd).html(htmlLink);
@@ -331,9 +334,10 @@ var certificateController = {
                         //});
                     }
                     if (json != null) {
-                        var data = json.data;
-                        certificateController.loadMap(data);
-                        certificateController.loadPivotTable(data);
+                        if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
+                            certificateController.loadMap(json.data);
+                        if ($.inArray(myConstant.Info_CanViewStatitics_Role, myArrayRoles) > -1)
+                            certificateController.loadPivotTable(json.data);
                     }
                 })
                 .dataTable({
@@ -363,6 +367,7 @@ var certificateController = {
                             d.EndDate = endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
                             d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.__RequestVerificationToken = certificateController.token();
                         }
                     },
                     "columns": [
@@ -404,13 +409,13 @@ var certificateController = {
                             "data": "Id", "name": "Id", "width": "14%",  "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 var htmlLink = "";
-                                if ($.inArray(myConstant.Data_CanViewDetail_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
                                     htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
                                 }
-                                if ($.inArray(myConstant.Data_CanEdit_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanEdit_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
                                 }
-                                if ($.inArray(myConstant.Data_CanDelete_Role, arrayRoles) > -1) {
+                                if ($.inArray(myConstant.Data_CanDelete_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Certificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
                                 }
                                 $(nTd).html(htmlLink);

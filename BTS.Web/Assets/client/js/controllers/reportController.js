@@ -1,14 +1,15 @@
 ﻿$(document).ready(function () {
-    var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }),
-        latlng = L.latLng(10.796841, 106.66252);
-    var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
-    var myMarkerClusters = L.markerClusterGroup();
-    var arrayRoles = AppGlobal.LoginUser.roles.split(';');
-    var system_CanExport_Role = $.inArray('System_CanExport', arrayRoles);
-    var data = "";
+    //var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    //    maxZoom: 18,
+    //    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    //}),
+    //    latlng = L.latLng(10.796841, 106.66252);
+    //var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
+    //var myMarkerClusters = L.markerClusterGroup();
+    //var arrayRoles = AppGlobal.LoginUser.roles.split(';');
+    //var system_CanExport_Role = $.inArray(myConstant.system_CanExport_Role, arrayRoles);
+    //var data = "";
+
     var currDate = new Date();
     var month = currDate.getMonth();
     var year = currDate.getFullYear();
@@ -20,6 +21,11 @@
     var operator_VINAPHONE = "VINAPHONE";
 
     var reportController = {
+        token: function () {
+            var form = $('#__AjaxAntiForgeryForm');
+            return $('input[name="__RequestVerificationToken"]', form).val();
+        },
+
         init: function () {
             reportController.loadData();
             reportController.registerEventDataTable();
@@ -164,6 +170,7 @@
             //    type: 'post',
             //    success: function (data) {
             //        userRoleAdmin = data.Roles;
+            //        __RequestVerificationToken = btsController.token();
             //    }
             //});
             reportController.loadHomeTab();
@@ -172,7 +179,7 @@
         },
 
         loadHomeTab: function () {
-            if (system_CanExport_Role > -1) {
+            if ($.inArray(myConstant.system_CanExport_Role, arrayRoles) > -1) {
                 $("#MyDataTable")
                     .on('draw.dt', function (e, settings, json, xhr) {
                         reportController.initCompleteFunction(settings, json);
@@ -192,8 +199,12 @@
                             //    myMap.removeLayer(layer);
                             //});
                         }
-                        reportController.loadMap(json.data);
-                        reportController.loadPivotTable(json.data);
+                        if (json != null) {
+                            if ($.inArray(myConstant.Info_CanViewMap_Role, arrayRoles) > -1)
+                                reportController.loadMap(json.data);
+                            if ($.inArray(myConstant.Info_CanViewStatitics_Role, arrayRoles) > -1)
+                                reportController.loadPivotTable(json.data);
+                        }
                     })
                     .dataTable({
                         dom: 'Bfrtip',
@@ -231,6 +242,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
+                                d.__RequestVerificationToken = btsController.token();
                             }
                         },
                         "columns": [
@@ -325,9 +337,10 @@
                             //});
                         }
                         if (json != null) {
-                            var data = json.data;
-                            reportController.loadMap(data);
-                            reportController.loadPivotTable(data);
+                            if ($.inArray(myConstant.Info_CanViewMap_Role, arrayRoles) > -1)
+                                reportController.loadMap(json.data);
+                            if ($.inArray(myConstant.Info_CanViewStatitics_Role, arrayRoles) > -1)
+                                reportController.loadPivotTable(json.data);
                         }
                     })
                     .dataTable({
@@ -343,6 +356,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
+                                d.__RequestVerificationToken = btsController.token();
                             }
                         },
                         "columns": [
@@ -478,6 +492,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
+                                d.__RequestVerificationToken = btsController.token();
                             }
                         },
                         "columns": [
@@ -582,6 +597,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
+                                d.__RequestVerificationToken = btsController.token();
                             }
                         },
                         "columns": [
@@ -709,6 +725,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
+                                d.__RequestVerificationToken = btsController.token();
                             }
                         },
                         "columns": [
@@ -812,6 +829,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
+                                d.__RequestVerificationToken = btsController.token();
                             }
                         },
                         "columns": [

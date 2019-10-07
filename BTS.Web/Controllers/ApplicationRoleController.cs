@@ -1,19 +1,15 @@
 ﻿using AutoMapper;
-using BTS.Model.Models;
+using BTS.Common;
+using BTS.Data.ApplicationModels;
 using BTS.Service;
-using BTS.Web.App_Start;
+using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using BTS.Web.Infrastructure.Extensions;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.AspNet.Identity;
-using BTS.Data.ApplicationModels;
-using BTS.Common;
 
 namespace BTS.Web.Controllers
 {
@@ -29,7 +25,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -38,23 +33,120 @@ namespace BTS.Web.Controllers
             return View(Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles.OrderByDescending(x => x.Name)));
         }
 
+
+        public ActionResult Add()
+        {
+            ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.System_CanViewDetail_Role)]
+        public async Task<ActionResult> Detail(string id = "")
+        {
+            ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
+            ApplicationRole DbItem = await RoleManager.FindByIdAsync(id);
+
+            if (DbItem == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
+
+                List<ApplicationGroup> allGroup = _appGroupService.GetAll().ToList();
+                List<ApplicationGroup> listGroup = _appGroupService.GetGroupsByRoleId(id).ToList();
+                foreach (ApplicationGroup groupItem in allGroup)
+                {
+                    SelectListItem listItem = new SelectListItem()
+                    {
+                        Text = groupItem.Description,
+                        Value = groupItem.Id,
+                        Selected = listGroup.Any(g => g.Id == groupItem.Id)
+                    };
+                    ItemVm.GroupList.Add(listItem);
+                }
+
+                List<ApplicationUser> allUser = UserManager.Users.ToList();
+                foreach (ApplicationUser userItem in allUser)
+                {
+                    if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))
+                    {
+                        SelectListItem listItem = new SelectListItem()
+                        {
+                            Text = userItem.FullName,
+                            Value = userItem.Id,
+                            Selected = await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name)
+                        };
+                        ItemVm.UserList.Add(listItem);
+                    }
+                }
+                return View(ItemVm);
+            }
+        }
+
+        [AuthorizeRoles(CommonConstants.System_CanEdit_Role)]
+        public async Task<ActionResult> Edit(string id = "")
+        {
+            ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
+            ApplicationRole DbItem = await RoleManager.FindByIdAsync(id);
+
+            if (DbItem == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
+
+                List<ApplicationGroup> allGroup = _appGroupService.GetAll().ToList();
+                List<ApplicationGroup> listGroup = _appGroupService.GetGroupsByRoleId(id).ToList();
+                foreach (ApplicationGroup groupItem in allGroup)
+                {
+                    SelectListItem listItem = new SelectListItem()
+                    {
+                        Text = groupItem.Description,
+                        Value = groupItem.Id,
+                        Selected = listGroup.Any(g => g.Id == groupItem.Id)
+                    };
+                    ItemVm.GroupList.Add(listItem);
+                }
+
+                List<ApplicationUser> allUser = UserManager.Users.ToList();
+                foreach (ApplicationUser userItem in allUser)
+                {
+                    if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))
+                    {
+                        SelectListItem listItem = new SelectListItem()
+                        {
+                            Text = userItem.FullName,
+                            Value = userItem.Id,
+                            Selected = await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name)
+                        };
+                        ItemVm.UserList.Add(listItem);
+                    }
+                }
+                return View(ItemVm);
+            }
+        }
+
         [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanViewDetail_Role, CommonConstants.System_CanEdit_Role)]
         public async Task<ActionResult> AddOrEdit(string act, string id = "")
         {
             ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
             if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
-                var DbItem = await RoleManager.FindByIdAsync(id);
+                ApplicationRole DbItem = await RoleManager.FindByIdAsync(id);
 
                 if (DbItem != null)
                 {
                     ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
 
-                    var allGroup = _appGroupService.GetAll().ToList();
-                    var listGroup = _appGroupService.GetGroupsByRoleId(id).ToList();
-                    foreach (var groupItem in allGroup)
+                    List<ApplicationGroup> allGroup = _appGroupService.GetAll().ToList();
+                    List<ApplicationGroup> listGroup = _appGroupService.GetGroupsByRoleId(id).ToList();
+                    foreach (ApplicationGroup groupItem in allGroup)
                     {
-                        var listItem = new SelectListItem()
+                        SelectListItem listItem = new SelectListItem()
                         {
                             Text = groupItem.Description,
                             Value = groupItem.Id,
@@ -63,12 +155,12 @@ namespace BTS.Web.Controllers
                         ItemVm.GroupList.Add(listItem);
                     }
 
-                    var allUser = UserManager.Users.ToList();
-                    foreach (var userItem in allUser)
+                    List<ApplicationUser> allUser = UserManager.Users.ToList();
+                    foreach (ApplicationUser userItem in allUser)
                     {
                         if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))
                         {
-                            var listItem = new SelectListItem()
+                            SelectListItem listItem = new SelectListItem()
                             {
                                 Text = userItem.FullName,
                                 Value = userItem.Id,
@@ -79,9 +171,13 @@ namespace BTS.Web.Controllers
                     }
                 }
                 if (act == CommonConstants.Action_Edit)
+                {
                     return View("Edit", ItemVm);
+                }
                 else
+                {
                     return View("Detail", ItemVm);
+                }
             }
             else
             {
@@ -89,85 +185,188 @@ namespace BTS.Web.Controllers
             }
         }
 
-        //public async Task<ActionResult> Detail(string id = "")
-        //{
-        //    ApplicationRoleViewModel ItemVm = new ApplicationRoleViewModel();
-        //    if (!string.IsNullOrEmpty(id))
-        //    {
-        //        var DbItem = await RoleManager.FindByIdAsync(id);
-
-        //        if (DbItem != null)
-        //        {
-        //            ItemVm = Mapper.Map<ApplicationRoleViewModel>(DbItem);
-
-        //            var allGroup = _appGroupService.GetAll().ToList();
-        //            var listGroup = _appGroupService.GetGroupsByRoleId(id).ToList();
-        //            foreach (var groupItem in allGroup)
-        //            {
-        //                var listItem = new SelectListItem()
-        //                {
-        //                    Text = groupItem.Name,
-        //                    Value = groupItem.Id,
-        //                    Selected = listGroup.Any(g => g.Id == groupItem.Id)
-        //                };
-        //                ItemVm.GroupList.Add(listItem);
-        //            }
-
-        //            var allUser = UserManager.Users.ToList();
-        //            foreach (var userItem in allUser)
-        //            {
-        //                if (await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name))
-        //                {
-        //                    var listItem = new SelectListItem()
-        //                    {
-        //                        Text = userItem.FullName,
-        //                        Value = userItem.Id,
-        //                        Selected = await UserManager.IsInRoleAsync(userItem.Id, ItemVm.Name)
-        //                    };
-        //                    ItemVm.UserList.Add(listItem);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return View(ItemVm);
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, ApplicationRoleViewModel Item)
+        [AuthorizeRoles(CommonConstants.System_CanAdd_Role)]
+        public async Task<ActionResult> Add(ApplicationRoleViewModel Item, params string[] selectedGroupItems)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    ApplicationRole appRole;
+
+                    appRole = new ApplicationRole(Item.Name, Item.Description)
+                    {
+                        CreatedBy = User.Identity.Name,
+                        CreatedDate = DateTime.Now
+                    };
+
+                    IdentityResult roleresult = await RoleManager.CreateAsync(appRole);
+                    if (!roleresult.Succeeded)
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    UpdateFromRoleToGroupUser(appRole, selectedGroupItems);
+
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.System_CanEdit_Role)]
+        public async Task<ActionResult> Edit(ApplicationRoleViewModel Item, params string[] selectedGroupItems)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ApplicationRole appRole;
+                    appRole = await RoleManager.FindByIdAsync(Item.Id);
+                    appRole.UpdateApplicationRole(Item, "update");
+                    appRole.UpdatedBy = User.Identity.Name;
+                    appRole.UpdatedDate = DateTime.Now;
+                    
+                    IdentityResult roleresult = await RoleManager.UpdateAsync(appRole);
+                    if (!roleresult.Succeeded)
+                    {
+                        return Json(new { status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    UpdateFromRoleToGroupUser(appRole, selectedGroupItems);
+                    
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private async void UpdateFromRoleToGroupUser(ApplicationRole appRole, string[] selectedGroupItems)
+        {
+            //delete ApplicationRoleGroup
+            List<string> oldUserIds = _appGroupService.GetLogicUsersByRoleId(appRole.Id).Select(x => x.UserId).ToList();
+
+            _appGroupService.DeleteRoleFromGroups(appRole.Id);
+            _appGroupService.Save();
+
+            //add ApplicationRoleGroup
+            List<ApplicationRoleGroup> listRoleGroup = new List<ApplicationRoleGroup>();
+            selectedGroupItems = selectedGroupItems ?? new string[] { };
+            foreach (string appGroup in selectedGroupItems)
+            {
+                listRoleGroup.Add(new ApplicationRoleGroup()
+                {
+                    GroupId = appGroup,
+                    RoleId = appRole.Id,
+                    CreatedBy = User.Identity.Name,
+                    CreatedDate = DateTime.Now
+                });
+            }
+            _appGroupService.AddRoleGroups(listRoleGroup);
+            _appGroupService.Save();
+
+            foreach (string userIdItem in oldUserIds)
+            {
+                await removeUserRole(userIdItem, appRole.Name);
+            }
+
+            ICollection<ApplicationUser> users = _appGroupService.GetUsersByGroupIds(selectedGroupItems);
+            foreach (ApplicationUser userItem in users)
+            {
+                await addUserRole(userItem.Id, appRole.Name);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.System_CanAdd_Role, CommonConstants.System_CanEdit_Role)]
+        public async Task<ActionResult> AddOrEdit(string act, ApplicationRoleViewModel Item, params string[] selectedGroupItems)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ApplicationRole appRole;
+
                     if (act == CommonConstants.Action_Add)
                     {
-                        var role = new ApplicationRole(Item.Name, Item.Description);
-                        role.CreatedBy = User.Identity.Name;
-                        role.CreatedDate = DateTime.Now;
+                        appRole = new ApplicationRole(Item.Name, Item.Description)
+                        {
+                            CreatedBy = User.Identity.Name,
+                            CreatedDate = DateTime.Now
+                        };
 
-                        var roleresult = await RoleManager.CreateAsync(role);
+                        IdentityResult roleresult = await RoleManager.CreateAsync(appRole);
                         if (!roleresult.Succeeded)
                         {
                             return Json(new { status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
                         }
-                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        var editItem = await RoleManager.FindByIdAsync(Item.Id);
-                        editItem.UpdateApplicationRole(Item, "update");
-                        editItem.UpdatedBy = User.Identity.Name;
-                        editItem.UpdatedDate = DateTime.Now;
+                        appRole = await RoleManager.FindByIdAsync(Item.Id);
+                        appRole.UpdateApplicationRole(Item, "update");
+                        appRole.UpdatedBy = User.Identity.Name;
+                        appRole.UpdatedDate = DateTime.Now;
 
-                        await RoleManager.UpdateAsync(editItem);
-                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        await RoleManager.UpdateAsync(appRole);
                     }
+
+                    //delete ApplicationRoleGroup
+                    List<string> oldUserIds = _appGroupService.GetLogicUsersByRoleId(appRole.Id).Select(x => x.UserId).ToList();
+
+                    _appGroupService.DeleteRoleFromGroups(appRole.Id);
+                    _appGroupService.Save();
+
+                    //add ApplicationRoleGroup
+                    List<ApplicationRoleGroup> listRoleGroup = new List<ApplicationRoleGroup>();
+                    selectedGroupItems = selectedGroupItems ?? new string[] { };
+                    foreach (string appGroup in selectedGroupItems)
+                    {
+                        listRoleGroup.Add(new ApplicationRoleGroup()
+                        {
+                            GroupId = appGroup,
+                            RoleId = appRole.Id,
+                            CreatedBy = User.Identity.Name,
+                            CreatedDate = DateTime.Now
+                        });
+                    }
+                    _appGroupService.AddRoleGroups(listRoleGroup);
+                    _appGroupService.Save();
+
+                    foreach (string userIdItem in oldUserIds)
+                    {
+                        await removeUserRole(userIdItem, appRole.Name);
+                    }
+
+                    ICollection<ApplicationUser> users = _appGroupService.GetUsersByGroupIds(selectedGroupItems);
+                    foreach (ApplicationUser userItem in users)
+                    {
+                        await addUserRole(userItem.Id, appRole.Name);
+                    }
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -181,7 +380,7 @@ namespace BTS.Web.Controllers
         {
             try
             {
-                var role = await RoleManager.FindByIdAsync(id);
+                ApplicationRole role = await RoleManager.FindByIdAsync(id);
                 if (role == null)
                 {
                     return HttpNotFound();
@@ -194,9 +393,13 @@ namespace BTS.Web.Controllers
 
                 IdentityResult result = await RoleManager.DeleteAsync(role);
                 if (result.Succeeded)
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", RoleManager.Roles), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                {
+                    return Json(new { data_restUrl = "/ApplicationRole/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", RoleManager.Roles), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
                 else
+                {
                     return Json(new { status = CommonConstants.Status_Error, message = "Xóa dữ liệu không thành công" }, JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception ex)
             {

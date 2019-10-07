@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
@@ -16,7 +15,7 @@ namespace BTS.Web.Controllers
     [AuthorizeRoles(CommonConstants.Data_CanView_Role)]
     public class InCaseOfController : BaseController
     {
-        private IInCaseOfService _inCaseOfService;
+        private readonly IInCaseOfService _inCaseOfService;
 
         public InCaseOfController(IErrorService errorService, IInCaseOfService inCaseOfService) : base(errorService)
         {
@@ -25,7 +24,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -36,33 +34,132 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<InCaseOfViewModel> GetAll()
         {
-            var model = _inCaseOfService.getAll().ToList();
+            List<InCaseOf> model = _inCaseOfService.getAll().ToList();
             return Mapper.Map<IEnumerable<InCaseOfViewModel>>(model);
         }
 
+
+        public ActionResult Add()
+        {
+            InCaseOfViewModel ItemVm = new InCaseOfViewModel();
+            return View("Add", ItemVm);
+        }
+
+
+        [AuthorizeRoles(CommonConstants.Data_CanViewDetail_Role)]
+        public ActionResult Detail(string id = "0")
+        {
+            int ID = Convert.ToInt32(id);
+            InCaseOfViewModel ItemVm = new InCaseOfViewModel();
+            InCaseOf DbItem = _inCaseOfService.getByID(ID);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<InCaseOfViewModel>(DbItem);
+            }
+            return View("Detail", ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(string id = "0")
+        {
+            int ID = Convert.ToInt32(id);
+            InCaseOfViewModel ItemVm = new InCaseOfViewModel();
+            InCaseOf DbItem = _inCaseOfService.getByID(ID);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<InCaseOfViewModel>(DbItem);
+            }
+            return View("Edit", ItemVm);
+        }
+
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, string id = "0")
+        public ActionResult AddOrEdit(string act, string id = "0")
         {
             int ID = Convert.ToInt32(id);
             InCaseOfViewModel ItemVm = new InCaseOfViewModel();
             if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
-                var DbItem = _inCaseOfService.getByID(ID);
+                InCaseOf DbItem = _inCaseOfService.getByID(ID);
 
                 if (DbItem != null)
                 {
                     ItemVm = Mapper.Map<InCaseOfViewModel>(DbItem);
                 }
                 if (act == CommonConstants.Action_Edit)
+                {
                     return View("Edit", ItemVm);
+                }
                 else
+                {
                     return View("Detail", ItemVm);
+                }
             }
             else
             {
                 return View("Add", ItemVm);
             }
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
+        public ActionResult Add(InCaseOfViewModel ItemVm)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    InCaseOf newItem = new InCaseOf();
+                    newItem.UpdateInCaseOf(ItemVm);
+                    newItem.Id = ItemVm.Id;
+
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
+
+                    _inCaseOfService.Add(newItem);
+                    _inCaseOfService.Save();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<InCaseOfViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x=> x.ErrorMessage)}, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public async Task<ActionResult> Edit(InCaseOfViewModel ItemVm)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    InCaseOf editItem = _inCaseOfService.getByID(ItemVm.Id);
+                    editItem.UpdateInCaseOf(ItemVm);
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _inCaseOfService.Update(editItem);
+                    _inCaseOfService.Save();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<InCaseOfViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -75,7 +172,7 @@ namespace BTS.Web.Controllers
                 {
                     if (act == CommonConstants.Action_Add)
                     {
-                        var newItem = new InCaseOf();
+                        InCaseOf newItem = new InCaseOf();
                         newItem.UpdateInCaseOf(ItemVm);
                         newItem.Id = ItemVm.Id;
 
@@ -88,7 +185,7 @@ namespace BTS.Web.Controllers
                     }
                     else
                     {
-                        var editItem = _inCaseOfService.getByID(ItemVm.Id);
+                        InCaseOf editItem = _inCaseOfService.getByID(ItemVm.Id);
                         editItem.UpdateInCaseOf(ItemVm);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
@@ -100,7 +197,7 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -115,7 +212,7 @@ namespace BTS.Web.Controllers
             int ID = Convert.ToInt32(id);
             try
             {
-                var dbItem = _inCaseOfService.getByID(ID);
+                InCaseOf dbItem = _inCaseOfService.getByID(ID);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
@@ -129,7 +226,7 @@ namespace BTS.Web.Controllers
                 _inCaseOfService.Delete(ID);
                 _inCaseOfService.Save();
 
-                return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { data_restUrl = "/InCaseOf/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

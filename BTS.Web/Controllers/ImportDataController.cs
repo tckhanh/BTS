@@ -38,7 +38,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -162,6 +161,8 @@ namespace BTS.Web.Controllers
                     var Item = new City();
                     Item.Id = dt.Rows[i][CommonConstants.Sheet_City_ID]?.ToString();
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_City_Name]?.ToString().Trim();
+                    if (dt.Columns.Contains(CommonConstants.Sheet_City_Area)) 
+                        Item.Area = dt.Rows[i][CommonConstants.Sheet_City_Area]?.ToString().Trim();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
 

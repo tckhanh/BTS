@@ -1,9 +1,5 @@
 ﻿@using BTS.Common
-@{
-    /**/
-
-    var imagePath = TempData["imagePath"];
-}
+@using BTS.Web.Infrastructure.Extensions
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -12,7 +8,7 @@
         <a href="/ApplicationUserProfile/">
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="@imagePath" class="img-circle" alt="User Image">
+                    <img src = '@Session["ImagePath"]' class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p><b>@User.Identity.Name</b></p>
@@ -98,7 +94,7 @@
                 </li>
             }
 
-            @if (User.IsInRole(CommonConstants.Info_CanView_Role))
+            @if (User.IsInRole(CommonConstants.Info_CanViewReport_Role))
             {
                 <li class="treeview">
                     <a href="#">

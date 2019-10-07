@@ -13,8 +13,9 @@ using System.Web.Mvc.Html;
 
 namespace BTS.Web.Infrastructure.Extensions
 {
+    
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class Unique : ValidationAttribute
+    public class Unique: ValidationAttribute
     {
         public Type TargetModelType { get; set; }
         public string TargetPropertyName { get; set; }
@@ -25,6 +26,7 @@ namespace BTS.Web.Infrastructure.Extensions
         }
 
 
+
         private ValidationResult DirectlyValid(object value, ValidationContext validationContext)
         {
             using (BTSDbContext db = new BTSDbContext())
@@ -33,7 +35,7 @@ namespace BTS.Web.Infrastructure.Extensions
 
                 PropertyInfo IdProp = validationContext.ObjectInstance.GetType().GetProperties().FirstOrDefault(x => x.CustomAttributes.Count(a => a.AttributeType == typeof(KeyAttribute)) > 0);
 
-                int Id = (int)IdProp.GetValue(validationContext.ObjectInstance, null);
+                var Id = IdProp.GetValue(validationContext.ObjectInstance, null);
 
                 Type entityType = validationContext.ObjectType;
 
@@ -41,7 +43,7 @@ namespace BTS.Web.Infrastructure.Extensions
                 IQueryable result = db.Set(entityType).Where(Name + "==@0", value);
                 int count = 0;
 
-                if (Id > 0)
+                if (Id != null)
                 {
                     result = result.Where(IdProp.Name + "<>@0", Id);
                 }
@@ -57,7 +59,6 @@ namespace BTS.Web.Infrastructure.Extensions
                     return new ValidationResult(ErrorMessageString);
                 }
             }
-
         }
         private string GetName(ValidationContext validationContext)
         {
@@ -96,6 +97,7 @@ namespace BTS.Web.Infrastructure.Extensions
 
 
         }
+        
         private ValidationResult ViewModelValid(object value, ValidationContext validationContext)
         {
             using (BTSDbContext db = new BTSDbContext())
@@ -106,7 +108,7 @@ namespace BTS.Web.Infrastructure.Extensions
 
 
 
-                string Id = (string)validationContext.ObjectInstance.GetType().GetProperty(IdProp.Name).GetValue(validationContext.ObjectInstance, null);
+                var Id = validationContext.ObjectInstance.GetType().GetProperty(IdProp.Name).GetValue(validationContext.ObjectInstance, null);
 
                 //int Id = (int)IdProp.GetValue(validationContext.ObjectInstance, null);
 
@@ -116,46 +118,7 @@ namespace BTS.Web.Infrastructure.Extensions
                 IQueryable result = db.Set(entityType).Where(Name + "==@0", value);
                 int count = 0;
 
-                if (Id.Length > 0)
-                {
-                    result = result.Where(IdProp.Name + "<>@0", Id);
-                }
-
-                count = result.Count();
-
-                if (count == 0)
-                {
-                    return ValidationResult.Success;
-                }
-                else
-                {
-                    return new ValidationResult(ErrorMessageString);
-                }
-            }
-
-        }
-
-        private ValidationResult ViewModelValid_forIntKey(object value, ValidationContext validationContext)
-        {
-            using (BTSDbContext db = new BTSDbContext())
-            {
-                string Name = TargetPropertyName;
-
-                PropertyInfo IdProp = TargetModelType.GetProperties().FirstOrDefault(x => x.CustomAttributes.Count(a => a.AttributeType == typeof(KeyAttribute)) > 0) ?? TargetModelType.GetProperties().FirstOrDefault();
-
-
-
-                int Id = (int)validationContext.ObjectInstance.GetType().GetProperty(IdProp.Name).GetValue(validationContext.ObjectInstance, null);
-
-                //int Id = (int)IdProp.GetValue(validationContext.ObjectInstance, null);
-
-                Type entityType = TargetModelType;
-
-
-                IQueryable result = db.Set(entityType).Where(Name + "==@0", value);
-                int count = 0;
-
-                if (Id > 0)
+                if (Id != null )
                 {
                     result = result.Where(IdProp.Name + "<>@0", Id);
                 }
@@ -174,6 +137,7 @@ namespace BTS.Web.Infrastructure.Extensions
 
         }
     }
+
 
     public class UserNameFilter : ActionFilterAttribute
     {
@@ -205,6 +169,17 @@ namespace BTS.Web.Infrastructure.Extensions
 
     public static class HtmlHelperExtension
     {
+        public static MvcHtmlString AntiForgeryTokenForAjaxPost(this HtmlHelper helper)
+        {
+            var antiForgeryInputTag = helper.AntiForgeryToken().ToString();
+            // Above gets the following: <input name="__RequestVerificationToken" type="hidden" value="PnQE7R0MIBBAzC7SqtVvwrJpGbRvPgzWHo5dSyoSaZoabRjf9pCyzjujYBU_qKDJmwIOiPRDwBV1TNVdXFVgzAvN9_l2yt9-nf4Owif0qIDz7WRAmydVPIm6_pmJAI--wvvFQO7g0VvoFArFtAR2v6Ch1wmXCZ89v0-lNOGZLZc1" />
+            var removedStart = antiForgeryInputTag.Replace(@"<input name=""__RequestVerificationToken"" type=""hidden"" value=""", "");
+            var tokenValue = removedStart.Replace(@""" />", "");
+            if (antiForgeryInputTag == removedStart || removedStart == tokenValue)
+                throw new InvalidOperationException("Oops! The Html.AntiForgeryToken() method seems to return something I did not expect.");
+            return new MvcHtmlString(string.Format(@"{0}:""{1}""", "__RequestVerificationToken", tokenValue));
+        }
+
         // How to use [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)] for @Html.TextBox
         // @Html.TextBoxWithFormatFor(m => m.CustomDate, new Dictionary<string, object> { { "class", "datepicker" } })
 

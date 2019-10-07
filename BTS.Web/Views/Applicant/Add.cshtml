@@ -1,13 +1,13 @@
 ﻿@model BTS.Web.Models.ApplicantViewModel
 @using BTS.Common
 @{
-    ViewBag.Title = "AddOrEdit";
+    ViewBag.Title = "Add";
     Layout = null;
 }
 
-  @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+@if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
 {
-    using (Html.BeginForm("AddOrEdit", "Applicant", new { act = CommonConstants.Action_Add }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Applicant", new { id = "" }) }))//data-resetUrl
+    using (Html.BeginForm("Add", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Applicant") }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -73,11 +73,8 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit", "Applicant", new { id = "", act = CommonConstants.Action_View })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
-                              @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
-                            {
-                                <input type="submit" value="Lưu" class="btn btn-primary" />
-                            }
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add", "Applicant")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <input type="submit" value="Lưu" class="btn btn-primary" />
                         </div>
                     </div>
                 </div>

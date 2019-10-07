@@ -5,6 +5,7 @@ using BTS.Model.Models;
 using BTS.Service;
 using BTS.Web.App_Start;
 using BTS.Web.Common;
+using BTS.Web.Infrastructure.Extensions;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -68,7 +69,125 @@ namespace BTS.Web.Controllers
             }
         }
 
-        protected async Task<bool> updateRoles(string userId, IEnumerable<ApplicationRole> roles)
+        protected async Task<bool> addUserRole(string userId, string roleName)
+        {
+            string description = "";
+            try
+            {
+                await UserManager.AddToRoleAsync(userId, roleName);
+                return true;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+                LogError(ex, description);
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            finally
+            {
+            }
+        }
+
+        protected async Task<bool> addUserRoles(string userId, IEnumerable<ApplicationRole> roles)
+        {
+            string description = "";
+            try
+            {
+                foreach (var role in roles)
+                {
+                    await UserManager.AddToRoleAsync(userId, role.Name);
+                }
+
+                return true;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+                LogError(ex, description);
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            finally
+            {
+            }
+        }
+
+        protected async Task<bool> removeUserRole(string userId, string roleName)
+        {
+            string description = "";
+            try
+            {
+                await UserManager.RemoveFromRoleAsync(userId, roleName);
+                return true;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+                LogError(ex, description);
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            finally
+            {
+            }
+        }
+
+        protected async Task<bool> removeUserRoles(string userId)
         {
             string description = "";
             try
@@ -78,13 +197,7 @@ namespace BTS.Web.Controllers
                 foreach (var role in userRoles)
                 {
                     await UserManager.RemoveFromRoleAsync(userId, role);
-                }
-
-                foreach (var role in roles)
-                {
-                    await UserManager.AddToRoleAsync(userId, role.Name);
-                }
-
+                }                
                 return true;
             }
             catch (DbEntityValidationException ex)
@@ -447,5 +560,12 @@ namespace BTS.Web.Controllers
             //this.View("Error").ExecuteResult(filterContext.Controller.ControllerContext);
         }
 
+        public string mySession(string name)
+        {
+            if (Session[name] == null) {
+                Session[name] = User.Identity.getUserField(name);
+            }
+            return Session[name].ToString();
+        }
     }
 }

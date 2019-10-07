@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
@@ -25,7 +24,6 @@ namespace BTS.Web.Controllers
 
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
@@ -36,27 +34,91 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<ApplicantViewModel> GetAll()
         {
-            var model = _applicantService.getAll().ToList();
+            List<Applicant> model = _applicantService.getAll().ToList();
             return Mapper.Map<IEnumerable<ApplicantViewModel>>(model);
         }
 
+
+        public ActionResult Add()
+        {
+            ApplicantViewModel ItemVm = new ApplicantViewModel();
+            IEnumerable<Operator> operatorList = _applicantService.GetAllOperator().ToList();
+            foreach (Operator operatorItem in operatorList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = operatorItem.Name,
+                    Value = operatorItem.Id,
+                    Selected = false
+                };
+                ItemVm.OperatorList.Add(listItem);
+            }
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanViewDetail_Role)]
+        public ActionResult Detail(string id = "0")
+        {
+            ApplicantViewModel ItemVm = new ApplicantViewModel();
+            Applicant DbItem = _applicantService.getByID(id);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<ApplicantViewModel>(DbItem);
+            }
+            IEnumerable<Operator> operatorList = _applicantService.GetAllOperator().ToList();
+            foreach (Operator operatorItem in operatorList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = operatorItem.Name,
+                    Value = operatorItem.Id,
+                    Selected = false
+                };
+                ItemVm.OperatorList.Add(listItem);
+            }
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(string id = "0")
+        {
+            ApplicantViewModel ItemVm = new ApplicantViewModel();
+            Applicant DbItem = _applicantService.getByID(id);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<ApplicantViewModel>(DbItem);
+            }
+            IEnumerable<Operator> operatorList = _applicantService.GetAllOperator().ToList();
+            foreach (Operator operatorItem in operatorList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = operatorItem.Name,
+                    Value = operatorItem.Id,
+                    Selected = false
+                };
+                ItemVm.OperatorList.Add(listItem);
+            }
+            return View(ItemVm);
+        }
+
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, string id = "0")
+        public ActionResult AddOrEdit(string act, string id = "0")
         {
             ApplicantViewModel ItemVm = new ApplicantViewModel();
 
             if ((act == CommonConstants.Action_Detail || act == CommonConstants.Action_Edit) && !string.IsNullOrEmpty(id))
             {
-                var DbItem = _applicantService.getByID(id);
+                Applicant DbItem = _applicantService.getByID(id);
 
                 if (DbItem != null)
                 {
                     ItemVm = Mapper.Map<ApplicantViewModel>(DbItem);
                 }
                 IEnumerable<Operator> operatorList = _applicantService.GetAllOperator().ToList();
-                foreach (var operatorItem in operatorList)
+                foreach (Operator operatorItem in operatorList)
                 {
-                    var listItem = new SelectListItem()
+                    SelectListItem listItem = new SelectListItem()
                     {
                         Text = operatorItem.Name,
                         Value = operatorItem.Id,
@@ -65,16 +127,20 @@ namespace BTS.Web.Controllers
                     ItemVm.OperatorList.Add(listItem);
                 }
                 if (act == CommonConstants.Action_Edit)
+                {
                     return View("Edit", ItemVm);
+                }
                 else
+                {
                     return View("Detail", ItemVm);
+                }
             }
             else
             {
                 IEnumerable<Operator> operatorList = _applicantService.GetAllOperator().ToList();
-                foreach (var operatorItem in operatorList)
+                foreach (Operator operatorItem in operatorList)
                 {
-                    var listItem = new SelectListItem()
+                    SelectListItem listItem = new SelectListItem()
                     {
                         Text = operatorItem.Name,
                         Value = operatorItem.Id,
@@ -88,8 +154,67 @@ namespace BTS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
+        public ActionResult Add(ApplicantViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Applicant newItem = new Applicant();
+                    newItem.UpdateApplicant(Item);
+
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
+
+                    _applicantService.Add(newItem);
+                    _applicantService.SaveChanges();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicantViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(string act, ApplicantViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Applicant editItem = _applicantService.getByID(Item.Id);
+                    editItem.UpdateApplicant(Item);
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _applicantService.Update(editItem);
+                    _applicantService.SaveChanges();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicantViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, ApplicantViewModel Item)
+        public ActionResult AddOrEdit(string act, ApplicantViewModel Item)
         {
             try
             {
@@ -97,7 +222,7 @@ namespace BTS.Web.Controllers
                 {
                     if (act == CommonConstants.Action_Add)
                     {
-                        var newItem = new Applicant();
+                        Applicant newItem = new Applicant();
                         newItem.UpdateApplicant(Item);
 
                         newItem.CreatedBy = User.Identity.Name;
@@ -109,7 +234,7 @@ namespace BTS.Web.Controllers
                     }
                     else
                     {
-                        var editItem = _applicantService.getByID(Item.Id);
+                        Applicant editItem = _applicantService.getByID(Item.Id);
                         editItem.UpdateApplicant(Item);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
@@ -121,7 +246,7 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -131,11 +256,11 @@ namespace BTS.Web.Controllers
         }
 
         [AuthorizeRoles(CommonConstants.Data_CanDelete_Role)]
-        public async Task<ActionResult> Delete(string id = "0")
+        public ActionResult Delete(string id = "0")
         {
             try
             {
-                var dbItem = _applicantService.getByID(id);
+                Applicant dbItem = _applicantService.getByID(id);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
@@ -149,7 +274,7 @@ namespace BTS.Web.Controllers
                 _applicantService.Delete(id);
                 _applicantService.SaveChanges();
 
-                return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { data_restUrl = "/Applicant/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

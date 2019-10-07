@@ -53,6 +53,12 @@ namespace BTS.Data.ApplicationModels
         [DefaultValue("true")]
         public bool Locked { get; set; } = true;
 
+        [MaxLength(255)]
+        public string CityIDsScope { get; set; }
+
+        [MaxLength(255)]
+        public string AreasScope { get; set; }
+
         public virtual ICollection<ApplicationUserGroup> Groups { get; set; }
 
         public DateTime? CreatedDate

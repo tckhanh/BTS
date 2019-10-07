@@ -1,5 +1,6 @@
 ﻿using BTS.Common;
 using BTS.Data;
+using BTS.Data.ApplicationModels;
 using BTS.Data.Infrastructure;
 using BTS.Data.Repositories;
 using BTS.Model.Models;
@@ -61,282 +62,461 @@ namespace BTS.Web.App_Start
         }
 
         // In this method we will create default User roles and Admin user for login
-        private void CreateRolesandUsers(BTSDbContext context)
+        public static void CreateRolesandUsers(BTSDbContext context)
         {
             try
             {
                 // Su dung RoleManager khong dung RoleService
-                var _roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-                var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-                var newGroup = new ApplicationGroup();
-                var newRole = new ApplicationRole();
-                var roleList = new string[0];
-                var listRoleGroup = new List<ApplicationRoleGroup>();
+                //var _roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new BTSDbContext()));
+                //var _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new BTSDbContext()));
+
+                ApplicationUserManager _userManager = new ApplicationUserManager(new UserStore<ApplicationUser, ApplicationRole, string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>(context));
+                ApplicationRoleManager _roleManager = new ApplicationRoleManager(new ApplicationRoleStore(context));
+
+                ApplicationGroup newGroup = new ApplicationGroup();
+                ApplicationRole newRole = new ApplicationRole();
+                List<string> roleList = new List<string>();
+                List<string[]> roleList2;
+                List<ApplicationRoleGroup> listRoleGroup = new List<ApplicationRoleGroup>();
                 ApplicationGroup groupItem;
 
-                // Create Default Roles
-                if (!_roleManager.RoleExists(CommonConstants.System_Admin_Role))
-                {
-                    // first we create Admin rool
-                    newRole = new ApplicationRole(CommonConstants.System_Admin_Role, CommonConstants.System_Admin_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanView_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanView_Role, CommonConstants.Data_CanView_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanViewDetail_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanViewDetail_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanViewChart_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanViewChart_Role, CommonConstants.Data_CanViewChart_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanViewStatitics_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanViewStatitics_Role, CommonConstants.Data_CanViewStatitics_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanAdd_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanAdd_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanImport_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanImport_Role, CommonConstants.Data_CanImport_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanExport_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanExport_Role, CommonConstants.Data_CanExport_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanEdit_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanEdit_Role, CommonConstants.Data_CanEdit_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanDisable_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanDisable_Role, CommonConstants.Data_CanDisable_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                if (!_roleManager.RoleExists(CommonConstants.Data_CanDelete_Role))
-                {
-                    newRole = new ApplicationRole(CommonConstants.Data_CanDelete_Role, CommonConstants.Data_CanDelete_Role_Description);
-                    _roleManager.Create(newRole);
-                }
-
-                // Create Default Groups
-
-                if (_appGroupService.GetDetail(CommonConstants.SUPERADMIN_GROUP) == null)
-                {
-                    newGroup = new ApplicationGroup(CommonConstants.SUPERADMIN_GROUP, CommonConstants.SUPERADMIN_GROUP_NAME);
-                    _appGroupService.Add(newGroup);
-                    _appGroupService.Save();
-                }
-
-                if (_appGroupService.GetDetail(CommonConstants.DIRECTOR_GROUP) == null)
-                {
-                    newGroup = new ApplicationGroup(CommonConstants.DIRECTOR_GROUP, CommonConstants.DIRECTOR_GROUP_NAME);
-                    _appGroupService.Add(newGroup);
-                    _appGroupService.Save();
-                }
-
-                if (_appGroupService.GetDetail(CommonConstants.VERTIFICATIONHEADER_GROUP) == null)
-                {
-                    newGroup = new ApplicationGroup(CommonConstants.VERTIFICATIONHEADER_GROUP, CommonConstants.VERTIFICATIONHEADER_GROUP_NAME);
-                    _appGroupService.Add(newGroup);
-                    _appGroupService.Save();
-                }
-
-                if (_appGroupService.GetDetail(CommonConstants.VERTIFICATION_GROUP) == null)
-                {
-                    newGroup = new ApplicationGroup(CommonConstants.VERTIFICATION_GROUP, CommonConstants.VERTIFICATION_GROUP_NAME);
-                    _appGroupService.Add(newGroup);
-                    _appGroupService.Save();
-                }
-
-                if (_appGroupService.GetDetail(CommonConstants.LAB_GROUP) == null)
-                {
-                    newGroup = new ApplicationGroup(CommonConstants.LAB_GROUP, CommonConstants.LAB_GROUP_NAME);
-                    _appGroupService.Add(newGroup);
-                    _appGroupService.Save();
-                }
-
-                if (_appGroupService.GetDetail(CommonConstants.STTT_GROUP) == null)
-                {
-                    newGroup = new ApplicationGroup(CommonConstants.STTT_GROUP, CommonConstants.LAB_GROUP_NAME);
-                    _appGroupService.Add(newGroup);
-                    _appGroupService.Save();
-                }
-
-                // Add Default SuperAdmin User
-
-                var newAppUser = new ApplicationUser
-                {
-                    UserName = CommonConstants.SuperAdmin_Name,
-                    FullName = CommonConstants.SuperAdmin_FullName,
-                    Email = CommonConstants.SuperAdmin_Email,
-                    EmailConfirmed = CommonConstants.SuperAdmin_EmailConfirmed,
+                roleList2 = new List<string[]> {
+                    new string[]{
+                        CommonConstants.System_CanView_Role,
+                        CommonConstants.System_CanView_Description },
+                    new string[]{
+                        CommonConstants.System_CanViewDetail_Role,
+                        CommonConstants.System_CanViewDetail_Description },
+                    new string[]{
+                        CommonConstants.System_CanViewChart_Role,
+                        CommonConstants.System_CanViewChart_Description },
+                    new string[]{
+                        CommonConstants.System_CanViewStatitics_Role,
+                        CommonConstants.System_CanViewStatitics_Description },
+                    new string[]{
+                        CommonConstants.System_CanAdd_Role,
+                        CommonConstants.System_CanAdd_Description },
+                    new string[]{
+                        CommonConstants.System_CanImport_Role,
+                        CommonConstants.System_CanImport_Description },
+                    new string[]{
+                        CommonConstants.System_CanExport_Role,
+                        CommonConstants.System_CanExport_Description },
+                    new string[]{
+                        CommonConstants.System_CanEdit_Role,
+                        CommonConstants.System_CanEdit_Description },
+                    new string[]{
+                        CommonConstants.System_CanReset_Role,
+                        CommonConstants.System_CanReset_Description },
+                    new string[]{
+                        CommonConstants.System_CanLock_Role,
+                        CommonConstants.System_CanLock_Description },
+                    new string[]{
+                        CommonConstants.System_CanDelete_Role,
+                        CommonConstants.System_CanDelete_Description }
                 };
 
-                if (_userManager.Users.Count(x => x.UserName == CommonConstants.SuperAdmin_Name) == 0)
+                foreach (string[] roleItem in roleList2)
                 {
-                    var chkUser = _userManager.Create(newAppUser, CommonConstants.SuperAdmin_Password);
-                    chkUser = _userManager.SetLockoutEnabled(newAppUser.Id, false);
+                    if (!_roleManager.RoleExists(roleItem.ElementAt(0)))
+                    {
+                        // first we create Admin rool
+                        newRole = new ApplicationRole(roleItem.ElementAt(0), roleItem.ElementAt(1));
+                        _roleManager.Create(newRole);
+                        context.SaveChanges();
+                    }
                 }
 
-                //Add default SuperAdmin User to Group SuperAdmin
+                roleList2 = new List<string[]> {
+                    new string[]{
+                        CommonConstants.Data_CanView_Role,
+                        CommonConstants.Data_CanView_Description },
+                    new string[]{
+                        CommonConstants.Data_CanViewDetail_Role,
+                        CommonConstants.Data_CanViewDetail_Description },
+                    new string[]{
+                        CommonConstants.Data_CanViewChart_Role,
+                        CommonConstants.Data_CanViewChart_Description },
+                    new string[]{
+                        CommonConstants.Data_CanViewReport_Role,
+                        CommonConstants.Data_CanViewReport_Description },
+                    new string[]{
+                        CommonConstants.Data_CanViewStatitics_Role,
+                        CommonConstants.Data_CanViewStatitics_Description },
+                    new string[]{
+                        CommonConstants.Data_CanAdd_Role,
+                        CommonConstants.Data_CanAdd_Description },
+                    new string[]{
+                        CommonConstants.Data_CanImport_Role,
+                        CommonConstants.Data_CanImport_Description },
+                    new string[]{
+                        CommonConstants.Data_CanExport_Role,
+                        CommonConstants.Data_CanExport_Description },
+                    new string[]{
+                        CommonConstants.Data_CanEdit_Role,
+                        CommonConstants.Data_CanEdit_Description },
+                    new string[]{
+                        CommonConstants.Data_CanReset_Role,
+                        CommonConstants.Data_CanReset_Description },
+                    new string[]{
+                        CommonConstants.Data_CanLock_Role,
+                        CommonConstants.Data_CanLock_Description },
+                    new string[]{
+                        CommonConstants.Data_CanDelete_Role,
+                        CommonConstants.Data_CanDelete_Description },
 
-                var userItem = _userManager.Users.FirstOrDefault(x => x.UserName == CommonConstants.SuperAdmin_Name);
-                if (userItem != null)
+                    new string[]{
+                        CommonConstants.Info_CanView_Role,
+                        CommonConstants.Info_CanView_Description },
+                    new string[]{
+                        CommonConstants.Info_CanViewDetail_Role,
+                        CommonConstants.Info_CanViewDetail_Description },
+                    new string[]{
+                        CommonConstants.Info_CanViewChart_Role,
+                        CommonConstants.Info_CanViewChart_Description },
+                    new string[]{
+                        CommonConstants.Info_CanViewReport_Role,
+                        CommonConstants.Info_CanViewReport_Description },
+                    new string[]{
+                        CommonConstants.Info_CanViewStatitics_Role,
+                        CommonConstants.Info_CanViewStatitics_Description },
+                };
+
+                foreach (string[] roleItem in roleList2)
                 {
-                    groupItem = _appGroupService.GetByID(CommonConstants.SUPERADMIN_GROUP);
-
-                    var listAppUserGroup = new List<ApplicationUserGroup>();
-                    listAppUserGroup.Add(new ApplicationUserGroup()
+                    if (!_roleManager.RoleExists(roleItem.ElementAt(0)))
                     {
-                        GroupId = groupItem.ID,
-                        UserId = userItem.Id
-                    });
-
-                    //add role to user
-                    var listRole = _appRoleService.GetListRoleByGroupId(groupItem.ID);
-                    foreach (var roleItem in listRole)
-                    {
-                        _userManager.RemoveFromRoleAsync(userItem.Id, roleItem.Name);
-                        _userManager.AddToRoleAsync(userItem.Id, roleItem.Name);
+                        // first we create Admin rool
+                        newRole = new ApplicationRole(roleItem.ElementAt(0), roleItem.ElementAt(1));
+                        _roleManager.Create(newRole);
+                        context.SaveChanges();
                     }
+                }
 
-                    _appGroupService.AddUserToGroups(listAppUserGroup, userItem.Id);
-                    _appGroupService.Save();
+
+                if (context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.SUPERADMIN_GROUP) == null)
+                {
+                    newGroup = new ApplicationGroup(CommonConstants.SUPERADMIN_GROUP, CommonConstants.SUPERADMIN_GROUP_NAME);
+                    context.ApplicationGroups.Add(newGroup);
+                    context.SaveChanges();
+                }
+
+                if (context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.DIRECTOR_GROUP) == null)
+                {
+                    newGroup = new ApplicationGroup(CommonConstants.DIRECTOR_GROUP, CommonConstants.DIRECTOR_GROUP_NAME);
+                    context.ApplicationGroups.Add(newGroup);
+                    context.SaveChanges();
+                }
+
+                if (context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.VERTIFICATIONHEADER_GROUP) == null)
+                {
+                    newGroup = new ApplicationGroup(CommonConstants.VERTIFICATIONHEADER_GROUP, CommonConstants.VERTIFICATIONHEADER_GROUP_NAME);
+                    context.ApplicationGroups.Add(newGroup);
+                    context.SaveChanges();
+                }
+
+                if (context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.VERTIFICATION_GROUP) == null)
+                {
+                    newGroup = new ApplicationGroup(CommonConstants.VERTIFICATION_GROUP, CommonConstants.VERTIFICATION_GROUP_NAME);
+                    context.ApplicationGroups.Add(newGroup);
+                    context.SaveChanges();
+                }
+
+                if (context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.LAB_GROUP) == null)
+                {
+                    newGroup = new ApplicationGroup(CommonConstants.LAB_GROUP, CommonConstants.LAB_GROUP_NAME);
+                    context.ApplicationGroups.Add(newGroup);
+                    context.SaveChanges();
+                }
+
+                if (context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.STTT_GROUP) == null)
+                {
+                    newGroup = new ApplicationGroup(CommonConstants.STTT_GROUP, CommonConstants.STTT_GROUP_NAME);
+                    context.ApplicationGroups.Add(newGroup);
+                    context.SaveChanges();
                 }
 
                 // Add Default Roles to Groups
-                groupItem = _appGroupService.GetByID(CommonConstants.DIRECTOR_GROUP);
-                roleList = new string[] {
+
+                groupItem = context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.SUPERADMIN_GROUP);
+                roleList = new List<string>(){
+                    CommonConstants.System_CanView_Role,
+                    CommonConstants.System_CanViewDetail_Role,
+                    CommonConstants.System_CanViewChart_Role,
+                    CommonConstants.System_CanViewStatitics_Role,
+                    CommonConstants.System_CanAdd_Role,
+                    CommonConstants.System_CanImport_Role,
+                    CommonConstants.System_CanExport_Role,
+                    CommonConstants.System_CanEdit_Role,
+                    CommonConstants.System_CanReset_Role,
+                    CommonConstants.System_CanLock_Role,
+                    CommonConstants.System_CanDelete_Role,
+
+                    CommonConstants.Data_CanView_Role,
+                    CommonConstants.Data_CanViewDetail_Role,
+                    CommonConstants.Data_CanViewChart_Role,
+                    CommonConstants.Data_CanViewReport_Role,
+                    CommonConstants.Data_CanViewStatitics_Role,
+                    CommonConstants.Data_CanAdd_Role,
+                    CommonConstants.Data_CanImport_Role,
+                    CommonConstants.Data_CanExport_Role,
+                    CommonConstants.Data_CanEdit_Role,
+                    CommonConstants.Data_CanReset_Role,
+                    CommonConstants.Data_CanLock_Role,
+                    CommonConstants.Data_CanDelete_Role,
+
+                    CommonConstants.Info_CanView_Role,
+                    CommonConstants.Info_CanViewDetail_Role,
+                    CommonConstants.Info_CanViewChart_Role,
+                    CommonConstants.Info_CanViewReport_Role,
+                    CommonConstants.Info_CanViewStatitics_Role,
+                };
+                foreach (string roleItem in roleList)
+                {
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
+
+                    if (dbRole != null && context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
+                    {
+                        ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
+                        {
+                            GroupId = groupItem.Id,
+                            RoleId = dbRole.Id
+                        };
+                        if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                        {
+                            context.ApplicationRoleGroups.Add(appRoleGroup);
+                            context.SaveChanges();
+                        }
+                    }
+                }
+
+                groupItem = context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.DIRECTOR_GROUP);
+                roleList = new List<string>()
+                {
+                CommonConstants.System_CanView_Role,
                 CommonConstants.Data_CanView_Role,
                 CommonConstants.Data_CanViewDetail_Role,
                 CommonConstants.Data_CanViewChart_Role,
                 CommonConstants.Data_CanViewStatitics_Role,
+                CommonConstants.Data_CanReset_Role,
                 CommonConstants.Data_CanExport_Role
-            };
-                listRoleGroup = new List<ApplicationRoleGroup>();
-                foreach (var roleItem in roleList)
+                 };
+                foreach (string roleItem in roleList)
                 {
-                    listRoleGroup.Add(new ApplicationRoleGroup()
-                    {
-                        GroupId = groupItem.ID,
-                        RoleId = roleItem
-                    });
-                }
-                _appRoleService.AddRolesToGroup(listRoleGroup, groupItem.ID);
-                _appRoleService.Save();
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
 
-                groupItem = _appGroupService.GetByID(CommonConstants.VERTIFICATIONHEADER_GROUP);
-                roleList = new string[] {
+                    if (dbRole != null && context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
+                    {
+                        ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
+                        {
+                            GroupId = groupItem.Id,
+                            RoleId = dbRole.Id
+                        };
+                        if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                        {
+                            context.ApplicationRoleGroups.Add(appRoleGroup);
+                            context.SaveChanges();
+                        }
+                    }
+                }
+
+                groupItem = context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.VERTIFICATIONHEADER_GROUP);
+                roleList = new List<string>() {
+                CommonConstants.System_CanView_Role,
                 CommonConstants.Data_CanView_Role,
                 CommonConstants.Data_CanViewDetail_Role,
                 CommonConstants.Data_CanViewChart_Role,
+                CommonConstants.Data_CanViewReport_Role,
                 CommonConstants.Data_CanViewStatitics_Role,
                 CommonConstants.Data_CanAdd_Role,
                 CommonConstants.Data_CanImport_Role,
                 CommonConstants.Data_CanExport_Role,
                 CommonConstants.Data_CanEdit_Role,
-                CommonConstants.Data_CanDisable_Role
+                CommonConstants.Data_CanReset_Role,
+                CommonConstants.Data_CanLock_Role,
+                CommonConstants.Info_CanView_Role,
+                CommonConstants.Info_CanViewDetail_Role,
+                CommonConstants.Info_CanViewChart_Role,
+                CommonConstants.Info_CanViewReport_Role,
+                CommonConstants.Info_CanViewStatitics_Role
             };
-                listRoleGroup = new List<ApplicationRoleGroup>();
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    listRoleGroup.Add(new ApplicationRoleGroup()
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
+                    if (dbRole != null)
                     {
-                        GroupId = groupItem.ID,
-                        RoleId = roleItem
-                    });
+                        if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
+                        {
+                            ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
+                            {
+                                GroupId = groupItem.Id,
+                                RoleId = dbRole.Id
+                            };
+                            if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                            {
+                                context.ApplicationRoleGroups.Add(appRoleGroup);
+                                context.SaveChanges();
+                            }
+                        }
+                    }
                 }
-                _appRoleService.AddRolesToGroup(listRoleGroup, groupItem.ID);
-                _appRoleService.Save();
 
-                groupItem = _appGroupService.GetByID(CommonConstants.VERTIFICATION_GROUP);
-                roleList = new string[] {
+                groupItem = context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.VERTIFICATION_GROUP);
+                roleList = new List<string>() {
                 CommonConstants.Data_CanView_Role,
                 CommonConstants.Data_CanViewDetail_Role,
                 CommonConstants.Data_CanViewChart_Role,
+                CommonConstants.Data_CanViewReport_Role,
                 CommonConstants.Data_CanAdd_Role,
                 CommonConstants.Data_CanImport_Role,
-                CommonConstants.Data_CanEdit_Role
+                CommonConstants.Data_CanEdit_Role,
+                CommonConstants.Data_CanReset_Role,
+                CommonConstants.Data_CanLock_Role
             };
-                listRoleGroup = new List<ApplicationRoleGroup>();
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    listRoleGroup.Add(new ApplicationRoleGroup()
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
+                    if (dbRole != null)
                     {
-                        GroupId = groupItem.ID,
-                        RoleId = roleItem
-                    });
+                        if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
+                        {
+                            ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
+                            {
+                                GroupId = groupItem.Id,
+                                RoleId = dbRole.Id
+                            };
+                            if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                            {
+                                context.ApplicationRoleGroups.Add(appRoleGroup);
+                                context.SaveChanges();
+                            }
+                        }
+                    }
                 }
-                _appRoleService.AddRolesToGroup(listRoleGroup, groupItem.ID);
-                _appRoleService.Save();
 
-                groupItem = _appGroupService.GetByID(CommonConstants.LAB_GROUP_NAME);
-                roleList = new string[] {
+                groupItem = context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.LAB_GROUP);
+                roleList = new List<string>() {
                 CommonConstants.Data_CanView_Role,
                 CommonConstants.Data_CanViewDetail_Role,
-                CommonConstants.Data_CanViewChart_Role
+                CommonConstants.Data_CanViewChart_Role,
+                CommonConstants.Data_CanReset_Role,
             };
-                listRoleGroup = new List<ApplicationRoleGroup>();
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    listRoleGroup.Add(new ApplicationRoleGroup()
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
+                    if (dbRole != null)
                     {
-                        GroupId = groupItem.ID,
-                        RoleId = roleItem
-                    });
+                        if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
+                        {
+                            ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
+                            {
+                                GroupId = groupItem.Id,
+                                RoleId = dbRole.Id
+                            };
+                            if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                            {
+                                context.ApplicationRoleGroups.Add(appRoleGroup);
+                                context.SaveChanges();
+                            }
+                        }
+                    }
                 }
-                _appRoleService.AddRolesToGroup(listRoleGroup, groupItem.ID);
-                _appRoleService.Save();
 
-                groupItem = _appGroupService.GetByID(CommonConstants.STTT_GROUP_NAME);
-                roleList = new string[] {
+                groupItem = context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.STTT_GROUP);
+                roleList = new List<string>() {
                 CommonConstants.Data_CanView_Role,
                 CommonConstants.Data_CanViewDetail_Role,
-                CommonConstants.Data_CanViewChart_Role
+                CommonConstants.Data_CanViewChart_Role,
+                CommonConstants.Data_CanReset_Role,
             };
-                listRoleGroup = new List<ApplicationRoleGroup>();
-                foreach (var roleItem in roleList)
+                foreach (string roleItem in roleList)
                 {
-                    listRoleGroup.Add(new ApplicationRoleGroup()
+                    ApplicationRole dbRole = _roleManager.FindByName(roleItem);
+                    if (dbRole != null)
                     {
-                        GroupId = groupItem.ID,
-                        RoleId = roleItem
-                    });
+                        if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == groupItem.Id && x.RoleId == dbRole.Id) == null)
+                        {
+                            ApplicationRoleGroup appRoleGroup = new ApplicationRoleGroup()
+                            {
+                                GroupId = groupItem.Id,
+                                RoleId = dbRole.Id
+                            };
+                            if (context.ApplicationRoleGroups.FirstOrDefault(x => x.GroupId == appRoleGroup.GroupId && x.RoleId == appRoleGroup.RoleId) == null)
+                            {
+                                context.ApplicationRoleGroups.Add(appRoleGroup);
+                                context.SaveChanges();
+                            }
+                        }
+                    }
                 }
-                _appRoleService.AddRolesToGroup(listRoleGroup, groupItem.ID);
-                _appRoleService.Save();
+
+                // Add Default SuperAdmin User
+
+                ApplicationUser newAppUser = new ApplicationUser()
+                {
+                    UserName = CommonConstants.SuperAdmin_Name,
+                    FullName = CommonConstants.SuperAdmin_FullName,
+                    Email = CommonConstants.SuperAdmin_Email,
+                    EmailConfirmed = CommonConstants.SuperAdmin_EmailConfirmed,
+                    ImagePath = CommonConstants.SuperAdmin_ImagePath,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = "System",
+                    Locked = false
+                };
+
+                ApplicationUser userItem = _userManager.FindByName(CommonConstants.SuperAdmin_Name);
+
+                if (userItem == null)
+                {
+                    IdentityResult chkUser = _userManager.Create(newAppUser, CommonConstants.SuperAdmin_Password);
+                    chkUser = _userManager.SetLockoutEnabled(newAppUser.Id, false);
+                }
+
+                //Add default SuperAdmin User to Group SuperAdmin
+                userItem = _userManager.FindByName(CommonConstants.SuperAdmin_Name);
+                groupItem = context.ApplicationGroups.FirstOrDefault(x => x.Name == CommonConstants.SUPERADMIN_GROUP);
+                if (userItem != null && groupItem != null)
+                {
+                    ApplicationUserGroup appUserGroup = new ApplicationUserGroup()
+                    {
+                        GroupId = groupItem.Id,
+                        UserId = userItem.Id
+                    };
+                    if (context.ApplicationUserGroups.FirstOrDefault(x => x.GroupId == appUserGroup.GroupId && x.UserId == appUserGroup.UserId) == null)
+                    {
+                        context.ApplicationUserGroups.Add(appUserGroup);
+                        context.SaveChanges();
+                    }
+
+                    //Xóa Roles cũ Tạo Roles mới cho User
+                    IList<string> userRoles = _userManager.GetRoles(userItem.Id);
+                    foreach (string role in userRoles)
+                    {
+                        _userManager.RemoveFromRole(userItem.Id, role);
+                        context.SaveChanges();
+                    }
+
+                    //add role to user
+                    IQueryable<string> query = from g in context.Roles
+                                               join rg in context.ApplicationRoleGroups
+                                               on g.Id equals rg.RoleId
+                                               join ug in context.ApplicationUserGroups
+                                               on rg.GroupId equals ug.GroupId
+                                               where ug.UserId == userItem.Id
+                                               select g.Name;
+                    string[] roles = query.Distinct().ToArray();
+                    _userManager.AddToRoles(userItem.Id, roles);
+                    context.SaveChanges();
+                }
             }
             catch (DbEntityValidationException ex)
             {
                 string description = "";
-                foreach (var eve in ex.EntityValidationErrors)
+                foreach (DbEntityValidationResult eve in ex.EntityValidationErrors)
                 {
                     Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
                     description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
-                    foreach (var ve in eve.ValidationErrors)
+                    foreach (DbValidationError ve in eve.ValidationErrors)
                     {
                         Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
                         description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
@@ -344,42 +524,39 @@ namespace BTS.Web.App_Start
                 }
 
                 LogError(ex, description);
-                throw;
             }
             catch (DbUpdateException ex)
             {
                 LogError(ex);
-                throw;
             }
             catch (Exception ex)
             {
                 LogError(ex);
-                throw;
             }
             finally
             {
             }
         }
 
-        public void LogError(Exception e, string description = "")
+        public static void LogError(Exception e, string description = "")
         {
             try
             {
-                Error error = new Error();
-                error.Controller = e.Source;
-                error.CreatedDate = DateTime.Now;
-                error.Message = e.Message;
-                error.Description = description;
-                error.StackTrace = e.StackTrace;
-                _errorService.Create(error);
-                _errorService.Save();
+                Error error = new Error
+                {
+                    Controller = e.Source,
+                    CreatedDate = DateTime.Now,
+                    Message = e.Message,
+                    Description = description,
+                    StackTrace = e.StackTrace
+                };
             }
             catch (DbEntityValidationException ex)
             {
-                foreach (var eve in ex.EntityValidationErrors)
+                foreach (DbEntityValidationResult eve in ex.EntityValidationErrors)
                 {
                     Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
-                    foreach (var ve in eve.ValidationErrors)
+                    foreach (DbValidationError ve in eve.ValidationErrors)
                     {
                         Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
                     }
@@ -401,9 +578,9 @@ namespace BTS.Web.App_Start
             {
                 List<Operator> listOperator = new List<Operator>()
             {
-                new Operator() { ID ="MOBIFONE", Name="Tổng Công Ty MobiFone"} ,
-                new Operator() { ID ="VIETTEL", Name="Tập đoàn VIETTEL"} ,
-                new Operator() { ID ="VINAPHONE", Name="Tập đoàn VNPT"}
+                new Operator() { Id ="MOBIFONE", Name="Tổng Công Ty MobiFone"} ,
+                new Operator() { Id ="VIETTEL", Name="Tập đoàn VIETTEL"} ,
+                new Operator() { Id ="VINAPHONE", Name="Tập đoàn VNPT"}
             };
                 context.Operators.AddRange(listOperator);
                 context.SaveChanges();
@@ -412,7 +589,7 @@ namespace BTS.Web.App_Start
 
         private void CreateFooter(BTSDbContext context)
         {
-            if (context.Footers.Count(x => x.ID == CommonConstants.DefaultFooterId) == 0)
+            if (context.Footers.Count(x => x.Id == CommonConstants.DefaultFooterId) == 0)
             {
                 string content = "";
             }

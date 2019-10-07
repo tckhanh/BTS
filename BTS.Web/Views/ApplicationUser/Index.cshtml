@@ -8,7 +8,7 @@
 }
 
 @section footerJS{
-    <script src="~/Assets/client/js/controllers/commonController.js"></script>
+    <script src="~/Assets/client/js/controllers/applicationUserController.js"></script>
 }
 <br />
 
@@ -48,7 +48,7 @@
                         </ul>
                         <div class="tab-content">
                             <div id="firstTab" class="tab-pane fade in active">@Html.Action("ViewAll")</div>
-                            <div id="secondTab" class="tab-pane fade in">@Html.Action("AddOrEdit", new { act = CommonConstants.Action_Add })</div>
+                            <div id="secondTab" class="tab-pane fade in">@Html.Action("Add")</div>
                         </div>
                     </div>
                     <!-- /.box-body -->

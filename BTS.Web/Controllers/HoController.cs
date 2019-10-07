@@ -46,8 +46,6 @@ namespace BTS.Web.Controllers
 
             ViewBag.operatorList = operatorList;
             ViewBag.cityList = cityList;
-            TempData["ImagePath"] = User.Identity.GetImagePath();
-
             return View();
         }
 

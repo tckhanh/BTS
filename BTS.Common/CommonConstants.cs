@@ -20,6 +20,7 @@
         public const string Action_Add = "Add";
         public const string Action_Detail = "Detail";
         public const string Action_Edit = "Edit";
+        public const string Action_Edit2 = "Edit2";
         public const string Action_Reset = "Reset";
         public const string Action_ChangePassword = "ChangePassword";
         public const string Action_Delete = "Delete";
@@ -28,6 +29,9 @@
         public const string InputType_AddMore = "AddMore";
         public const string InputType_DelAdd = "DelAdd";
 
+
+        public const string Recovery_Name = "Recovery";
+        public const string Recovery_Password = "P@ssword";
 
         public const string SuperAdmin_Name = "Admin";
         public const string SuperAdmin_FullName = "Trần Công Khanh";
@@ -61,7 +65,7 @@
         public const string Data_CanLock_Role = "Data_CanLock";
         public const string Data_CanDelete_Role = "Data_CanDelete";
 
-        public const string Info_CanView_Role = "Info_CanView";
+        public const string Info_CanViewMap_Role = "Info_CanViewMap";
         public const string Info_CanViewDetail_Role = "Info_CanViewDetail";
         public const string Info_CanViewChart_Role = "Info_CanViewChart";
         public const string Info_CanViewReport_Role = "Info_CanViewReport";
@@ -107,6 +111,7 @@
         public const string Status_Error = "Error";
         public const string Status_TimeOut = "TimeOut";
         public const string Status_Success = "Success";
+        public const string Status_Recovery = "Recovery";
 
         public const string ProductTag = "product";
         public const string PostTag = "post";
@@ -132,6 +137,7 @@
         public const string Sheet_City = "City";
         public const string Sheet_City_ID = "ID";
         public const string Sheet_City_Name = "Name";
+        public const string Sheet_City_Area = "Area";
 
         public const string Sheet_Operator = "Operator";
         public const string Sheet_Operator_ID = "ID";

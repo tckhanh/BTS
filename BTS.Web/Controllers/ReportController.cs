@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
 {
-    [AuthorizeRoles(CommonConstants.Data_CanView_Role)]
+    [AuthorizeRoles(CommonConstants.Data_CanViewReport_Role)]
     public class ReportController : BaseController
     {
         private INoCertificateService _noCertificateService;
@@ -34,12 +34,10 @@ namespace BTS.Web.Controllers
         // GET: Certificate
         public ActionResult Index()
         {
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
         [HttpPost]
-
         //[ValidateAntiForgeryToken]
         public JsonResult loadCertificate()
         {
@@ -58,6 +56,8 @@ namespace BTS.Web.Controllers
             {
                 Items = _certificateService.getAll(out countItem, false, StartDate, EndDate).ToList();
             }
+
+            Items = Items.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
             IEnumerable<CertificateViewModel> dataViewModel = Mapper.Map<List<CertificateViewModel>>(Items);
             if (countItem > 0)
@@ -87,6 +87,7 @@ namespace BTS.Web.Controllers
             {
                 Items = _certificateService.getReportTT18Cert(out countItem, StartDate, EndDate).ToList();
             }
+            Items = Items.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
             IEnumerable<ReportTT18CertViewModel> dataViewModel = Mapper.Map<List<ReportTT18CertViewModel>>(Items);
             if (countItem > 0)
@@ -116,6 +117,8 @@ namespace BTS.Web.Controllers
             {
                 Items = _noCertificateService.getReportTT18NoCert(out countItem, StartDate, EndDate).ToList();
             }
+            Items = Items.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+
 
             IEnumerable<ReportTT18NoCertViewModel> dataViewModel = Mapper.Map<List<ReportTT18NoCertViewModel>>(Items);
             if (countItem > 0)
@@ -134,7 +137,9 @@ namespace BTS.Web.Controllers
 
         public ActionResult GetCertificateByCity(string cityID)
         {
-            var CertificateData = _certificateService.getCertificateByCity(cityID);
+            IEnumerable<Certificate> CertificateData = _certificateService.getCertificateByCity(cityID).ToList();
+            CertificateData = CertificateData.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+
             var model = Mapper.Map<IEnumerable<Certificate>, IEnumerable<CertificateViewModel>>(CertificateData);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
@@ -143,6 +148,7 @@ namespace BTS.Web.Controllers
         {
             int countBTS = 0;
             List<Certificate> dataSumary = _certificateService.getAll(out countBTS, true).ToList();
+            dataSumary = dataSumary.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
             return Json(dataSumary, JsonRequestBehavior.AllowGet);
         }

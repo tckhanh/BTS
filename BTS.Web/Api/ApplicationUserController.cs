@@ -222,7 +222,7 @@ namespace BTS.Web.Api
                     CreatedDate = DateTime.Now
                 });
             }
-            _appGroupService.AddUserToGroups(listAppUserGroup);
+            _appGroupService.AddUserGroups(listAppUserGroup);
             _appGroupService.Save();
 
             var newUserRoles = _appGroupService.GetLogicRolesByUserId(userID);

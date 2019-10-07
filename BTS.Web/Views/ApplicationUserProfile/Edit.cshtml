@@ -1,13 +1,13 @@
 ﻿@model BTS.Web.Models.ApplicationUserViewModel
 @using BTS.Common
 @{
-    ViewBag.Title = "AddOrEdit";
+    ViewBag.Title = "Edit";
     Layout = null;
 }
 
   @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
 {
-    using (Html.BeginForm("AddOrEdit", "ApplicationUserProfile", new { act = CommonConstants.Action_Edit }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = "", act = CommonConstants.Action_Detail }) }))//data-resetUrl
+    using (Html.BeginForm("Edit", "ApplicationUserProfile", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Detail", "ApplicationUserProfile", new { id = @Model.Id }) }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -16,12 +16,22 @@
                     @Html.ValidationSummary(true)
                     @Html.HiddenFor(model => model.Id)
                     @Html.HiddenFor(model => model.ImagePath)
-                    @Html.HiddenFor(model => model.UserName)
+                    @Html.HiddenFor(model => model.AreasScope)
+                    @Html.HiddenFor(model => model.CityIDsScope)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", disabled = "disabled" })
+                            @Html.HiddenFor(model => model.UserName)
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.FullName, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-                            @Html.TextBoxFor(model => model.FullName, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.FullName, new { @class = "form-control", disabled = "disabled" })
+                            @Html.HiddenFor(model => model.FullName)
                             @Html.ValidationMessageFor(model => model.FullName)
                         </div>
                     </div>
@@ -45,7 +55,8 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Locked, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-                            @Html.EditorFor(model => model.Locked, new { @class = "form-control" })
+                            @Html.CheckBoxFor(model => model.Locked, new { disabled = "disabled" })
+                            @Html.HiddenFor(model => model.Locked)
                             @Html.ValidationMessageFor(model => model.Locked)
                         </div>
                     </div>
@@ -64,7 +75,7 @@
                             @Html.EditorFor(model => model.BirthDay, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.BirthDay)
                         </div>
-                        
+
                     </div>
 
                     <div class="form-group">
@@ -115,9 +126,10 @@
                         </div>
                     </div>
 
+                    
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit", "ApplicationUserProfile", new { id = "", act = CommonConstants.Action_Detail })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Detail", "ApplicationUserProfile", new { id = @Model.Id })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
                             <input type="submit" value="Cập nhật" class="btn btn-primary" />
                         </div>
                     </div>

@@ -4,12 +4,10 @@ using BTS.Model.Models;
 using BTS.Service;
 using BTS.Web.Infrastructure.Extensions;
 using BTS.Web.Models;
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
@@ -41,30 +39,35 @@ namespace BTS.Web.Controllers
             IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll().ToList());
             IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll().ToList());
 
+            cities = cities.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.Id));
+
             ViewBag.operators = operators;
             ViewBag.profiles = profiles;
             ViewBag.cities = cities;
 
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View();
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public JsonResult loadNoCertificate()
         {
             int countItem;
 
-            var CityID = Request.Form.GetValues("CityID").FirstOrDefault();
-            var OperatorID = Request.Form.GetValues("OperatorID").FirstOrDefault();
-            var ProfileID = Request.Form.GetValues("ProfileID").FirstOrDefault();
-            var BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress").FirstOrDefault().ToLower();
-
+            string CityID = Request.Form.GetValues("CityID").FirstOrDefault();
+            string OperatorID = Request.Form.GetValues("OperatorID").FirstOrDefault();
+            string ProfileID = Request.Form.GetValues("ProfileID").FirstOrDefault();
+            string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress").FirstOrDefault().ToLower();
             DateTime StartDate, EndDate;
             if (!DateTime.TryParse(Request.Form.GetValues("StartDate").FirstOrDefault(), out StartDate))
+            {
                 Console.Write("Loi chuyen doi kieu");
+            }
+
             if (!DateTime.TryParse(Request.Form.GetValues("EndDate").FirstOrDefault(), out EndDate))
+            {
                 Console.Write("Loi chuyen doi kieu");
+            }
 
             // searching ...
             IEnumerable<NoCertificate> Items;
@@ -80,32 +83,34 @@ namespace BTS.Web.Controllers
 
             if (!(string.IsNullOrEmpty(CityID)))
             {
-                Items = Items.Where(x => x.CityID == CityID);
+                Items = Items.Where(x => x.CityID == CityID).ToList();
             }
+            Items = Items.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+
 
             if (!(string.IsNullOrEmpty(OperatorID)))
             {
-                Items = Items.Where(x => x.OperatorID.Contains(OperatorID));
+                Items = Items.Where(x => x.OperatorID.Contains(OperatorID)).ToList();
             }
 
             if (!(string.IsNullOrEmpty(ProfileID)))
             {
-                Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID);
+                Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
 
             if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
             {
-                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress));
+                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
 
-            var recordsFiltered = Items.Count();
+            int recordsFiltered = Items.Count();
 
             IEnumerable<NoCertificateViewModel> dataViewModel = Mapper.Map<List<NoCertificateViewModel>>(Items);
             if (recordsFiltered > 0)
             {
                 //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };
                 JsonResult result = Json(new { data = dataViewModel }, JsonRequestBehavior.AllowGet);
-                result.MaxJsonLength = Int32.MaxValue;
+                result.MaxJsonLength = int.MaxValue;
                 return result;
             }
             return Json(new { data = "" }, JsonRequestBehavior.AllowGet);
@@ -118,14 +123,16 @@ namespace BTS.Web.Controllers
 
         public ActionResult GetNoCertificateByCity(string cityID)
         {
-            var NoCertificateData = _noCertificateService.getNoCertificateByCity(cityID);
-            var model = Mapper.Map<IEnumerable<NoCertificate>, IEnumerable<NoCertificateViewModel>>(NoCertificateData);
+            List<NoCertificate> NoCertificateData = _noCertificateService.getNoCertificateByCity(cityID).ToList();
+            NoCertificateData = NoCertificateData.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+
+            IEnumerable<NoCertificateViewModel> model = Mapper.Map<IEnumerable<NoCertificate>, IEnumerable<NoCertificateViewModel>>(NoCertificateData);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetNoCertificate()
         {
-            int countBTS = 0;
+            int countBTS;
             List<NoCertificate> dataSumary = _noCertificateService.getAll(out countBTS).ToList();
 
             return Json(dataSumary, JsonRequestBehavior.AllowGet);
@@ -139,29 +146,16 @@ namespace BTS.Web.Controllers
         private IEnumerable<NoCertificateViewModel> GetAll()
         {
             int rows;
-            var model = _noCertificateService.getAll(out rows).ToList();
+            List<NoCertificate> model = _noCertificateService.getAll(out rows).ToList();
             return Mapper.Map<IEnumerable<NoCertificateViewModel>>(model);
         }
 
-
-        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, string id = "0")
+        private NoCertificateViewModel FillInNoCertificateVM(NoCertificateViewModel ItemVm)
         {
-            NoCertificateViewModel ItemVm = new NoCertificateViewModel();
-            if (!string.IsNullOrEmpty(id))
-            {
-                var DbItem = _noCertificateService.getByID(id);
-
-                if (DbItem != null)
-                {
-                    ItemVm = Mapper.Map<NoCertificateViewModel>(DbItem);
-                }
-            }
-
             IEnumerable<Operator> operatorList = _operatorService.getAll().ToList();
-            foreach (var operatorItem in operatorList)
+            foreach (Operator operatorItem in operatorList)
             {
-                var listItem = new SelectListItem()
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = operatorItem.Name,
                     Value = operatorItem.Id,
@@ -171,9 +165,9 @@ namespace BTS.Web.Controllers
             }
 
             IEnumerable<Model.Models.Profile> profileList = _profileService.getAll().ToList();
-            foreach (var profileItem in profileList)
+            foreach (Model.Models.Profile profileItem in profileList)
             {
-                var listItem = new SelectListItem()
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = profileItem.BtsQuantity + "-" + profileItem.ApplicantID + "-" + profileItem.ProfileNum,
                     Value = profileItem.Id?.ToString(),
@@ -183,9 +177,9 @@ namespace BTS.Web.Controllers
             }
 
             IEnumerable<City> cityList = _cityService.getAll().ToList();
-            foreach (var cityItem in cityList)
+            foreach (City cityItem in cityList)
             {
-                var listItem = new SelectListItem()
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = cityItem.Name,
                     Value = cityItem.Id,
@@ -195,9 +189,9 @@ namespace BTS.Web.Controllers
             }
 
             IEnumerable<InCaseOf> inCaseOfList = _inCaseOfService.getAll().ToList();
-            foreach (var inCaseOfItem in inCaseOfList)
+            foreach (InCaseOf inCaseOfItem in inCaseOfList)
             {
-                var listItem = new SelectListItem()
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = inCaseOfItem.Name,
                     Value = inCaseOfItem.Id.ToString(),
@@ -207,9 +201,122 @@ namespace BTS.Web.Controllers
             }
 
             IEnumerable<Lab> labList = _labService.getAll().ToList();
-            foreach (var labItem in labList)
+            foreach (Lab labItem in labList)
             {
-                var listItem = new SelectListItem()
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = labItem.Name,
+                    Value = labItem.Id.ToString(),
+                    Selected = false
+                };
+                ItemVm.LabList.Add(listItem);
+            }
+
+            return ItemVm;
+        }
+
+        public ActionResult Add()
+        {
+            NoCertificateViewModel ItemVm = new NoCertificateViewModel();
+            FillInNoCertificateVM(ItemVm);
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanViewDetail_Role)]
+        public ActionResult Detail(string id = "0")
+        {
+            NoCertificateViewModel ItemVm = new NoCertificateViewModel();
+            NoCertificate DbItem = _noCertificateService.getByID(id);
+
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<NoCertificateViewModel>(DbItem);
+            }
+            FillInNoCertificateVM(ItemVm);
+            return View(ItemVm);
+        }
+
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(string id = "0")
+        {
+            NoCertificateViewModel ItemVm = new NoCertificateViewModel();
+            NoCertificate DbItem = _noCertificateService.getByID(id);
+
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<NoCertificateViewModel>(DbItem);
+            }
+            FillInNoCertificateVM(ItemVm);
+            return View(ItemVm);
+        }
+
+
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
+        public ActionResult AddOrEdit(string act, string id = "0")
+        {
+            NoCertificateViewModel ItemVm = new NoCertificateViewModel();
+            if (!string.IsNullOrEmpty(id))
+            {
+                NoCertificate DbItem = _noCertificateService.getByID(id);
+
+                if (DbItem != null)
+                {
+                    ItemVm = Mapper.Map<NoCertificateViewModel>(DbItem);
+                }
+            }
+
+            IEnumerable<Operator> operatorList = _operatorService.getAll().ToList();
+            foreach (Operator operatorItem in operatorList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = operatorItem.Name,
+                    Value = operatorItem.Id,
+                    Selected = false
+                };
+                ItemVm.OperatorList.Add(listItem);
+            }
+
+            IEnumerable<Model.Models.Profile> profileList = _profileService.getAll().ToList();
+            foreach (Model.Models.Profile profileItem in profileList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = profileItem.BtsQuantity + "-" + profileItem.ApplicantID + "-" + profileItem.ProfileNum,
+                    Value = profileItem.Id?.ToString(),
+                    Selected = false
+                };
+                ItemVm.ProfileList.Add(listItem);
+            }
+
+            IEnumerable<City> cityList = _cityService.getAll().ToList();
+            foreach (City cityItem in cityList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = cityItem.Name,
+                    Value = cityItem.Id,
+                    Selected = false
+                };
+                ItemVm.CityList.Add(listItem);
+            }
+
+            IEnumerable<InCaseOf> inCaseOfList = _inCaseOfService.getAll().ToList();
+            foreach (InCaseOf inCaseOfItem in inCaseOfList)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = inCaseOfItem.Name,
+                    Value = inCaseOfItem.Id.ToString(),
+                    Selected = false
+                };
+                ItemVm.InCaseOfList.Add(listItem);
+            }
+
+            IEnumerable<Lab> labList = _labService.getAll().ToList();
+            foreach (Lab labItem in labList)
+            {
+                SelectListItem listItem = new SelectListItem()
                 {
                     Text = labItem.Name,
                     Value = labItem.Id.ToString(),
@@ -220,7 +327,9 @@ namespace BTS.Web.Controllers
 
 
             if (act == CommonConstants.Action_Edit)
+            {
                 return View("Edit", ItemVm);
+            }
             else if (act == CommonConstants.Action_Detail)
             {
                 return View("Detail", ItemVm);
@@ -233,8 +342,70 @@ namespace BTS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
+        public ActionResult Add(NoCertificateViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    NoCertificate newItem = new NoCertificate();
+                    newItem.UpdateNoCertificate(Item);
+
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
+
+                    _noCertificateService.Add(newItem);
+                    _noCertificateService.SaveChanges();
+                    return Json(new { status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
+        public ActionResult Edit(NoCertificateViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    NoCertificate editItem = _noCertificateService.getByID(Item.Id);
+                    editItem.UpdateNoCertificate(Item);
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _noCertificateService.Update(editItem);
+                    _noCertificateService.SaveChanges();
+                    return Json(new { status = CommonConstants.Status_Success, message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, NoCertificateViewModel Item)
+        public ActionResult AddOrEdit(string act, NoCertificateViewModel Item)
         {
             try
             {
@@ -242,7 +413,7 @@ namespace BTS.Web.Controllers
                 {
                     if (act == CommonConstants.Action_Add)
                     {
-                        var newItem = new NoCertificate();
+                        NoCertificate newItem = new NoCertificate();
                         newItem.UpdateNoCertificate(Item);
 
                         newItem.CreatedBy = User.Identity.Name;
@@ -255,7 +426,7 @@ namespace BTS.Web.Controllers
                     }
                     else
                     {
-                        var editItem = _noCertificateService.getByID(Item.Id);
+                        NoCertificate editItem = _noCertificateService.getByID(Item.Id);
                         editItem.UpdateNoCertificate(Item);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
@@ -268,7 +439,7 @@ namespace BTS.Web.Controllers
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -278,11 +449,11 @@ namespace BTS.Web.Controllers
         }
 
         [AuthorizeRoles(CommonConstants.Data_CanDelete_Role)]
-        public async Task<ActionResult> Delete(string id = "0")
+        public ActionResult Delete(string id = "0")
         {
             try
             {
-                var dbItem = _noCertificateService.getByID(id);
+                NoCertificate dbItem = _noCertificateService.getByID(id);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
@@ -296,7 +467,7 @@ namespace BTS.Web.Controllers
                 _noCertificateService.Delete(id);
                 _noCertificateService.SaveChanges();
 
-                return Json(new { status = CommonConstants.Status_Success, message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { data_restUrl = "/NoCertificate/Add", status = CommonConstants.Status_Success, message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()),
             }
             catch (Exception ex)

@@ -5,7 +5,7 @@
 latlng = L.latLng(10.796841, 106.66252);
 var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
 var myMarkerClusters = L.markerClusterGroup();
-var userRoleAdmin = "@(User.IsInRole('System_CanExport') ? 'true' : 'false')";
+var userRoleAdmin = "@(User.IsInRole(myConstant.system_CanExport_Role) ? 'true' : 'false')";
 var fileLocation, fileExtension;
 var bar = $('.progress-bar');
 

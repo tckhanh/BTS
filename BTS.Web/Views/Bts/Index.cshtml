@@ -14,6 +14,7 @@
 
 @section footerJS{
     <script src="~/Assets/client/js/controllers/addinController.js"></script>
+    <script src="~/Assets/client/js/common/myMap.js"></script>
     <script src="~/Assets/client/js/controllers/btsController.js"></script>
     <script src="~/Assets/client/js/common/toExcel.js"></script>
 }
@@ -50,9 +51,10 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="clearfix"></div>
-                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                            @Html.AntiForgeryToken()
 
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
+                        {
+                            @Html.AntiForgeryToken()
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="DateRange">
@@ -136,7 +138,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        }
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -149,17 +151,14 @@
         <ul class="nav nav-tabs nav-pills">
             <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách BTS</a></li>
 
-            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role) || User.IsInRole(CommonConstants.Data_CanEdit_Role))
-            {
-                <li><a data-toggle="tab" href="#AddOrEditTab"> Thêm mới</a></li>
-            }
+            <li><a data-toggle="tab" href="#AddOrEditTab"> Thêm mới</a></li>
 
-            @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+            @if (User.IsInRole(CommonConstants.Info_CanViewMap_Role))
             {
                 <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
             }
 
-            @if (User.IsInRole(CommonConstants.Data_CanViewChart_Role))
+            @if (User.IsInRole(CommonConstants.Info_CanViewStatitics_Role))
             {
                 <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
             }
@@ -212,10 +211,7 @@
                 </div>
                 @*@Html.Action("ViewAll")*@
             </div>
-            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role) || User.IsInRole(CommonConstants.Data_CanEdit_Role))
-            {
-                <div id="AddOrEditTab" class="tab-pane fade">@Html.Action("AddOrEdit")</div>
-            }
+            <div id="AddOrEditTab" class="tab-pane fade">@Html.Action("Add")</div>
             <div id="mapTab" class="tab-pane fade">
                 <h3 class="BTS-title">VỊ TRÍ CÁC TRẠM GỐC BTS NỘP HỒ SƠ ĐĂNG KÝ KIỂM ĐỊNH</h3>
                 <div id="mapBTS" style="width: 100%; height: 500px;"></div>

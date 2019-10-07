@@ -10,12 +10,15 @@ namespace BTS.Model.Models
     public class City : Auditable
     {
         [Key]
-        [StringLength(3)]
+        [MaxLength(3)]
         public string Id { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [MaxLength(50)]
         public string Name { get; set; }
+
+        [MaxLength(20)]
+        public string Area { get; set; }
 
         public virtual IEnumerable<Bts> BTSs { get; set; }
 

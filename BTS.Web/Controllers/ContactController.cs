@@ -30,7 +30,6 @@ namespace BTS.Web.Controllers
         {
             FeedbackViewModel viewModel = new FeedbackViewModel();
             viewModel.ContactDetail = GetDetail();
-            TempData["ImagePath"] = User.Identity.GetImagePath();
             return View(viewModel);
         }
 
