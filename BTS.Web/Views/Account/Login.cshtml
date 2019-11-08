@@ -43,7 +43,7 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <p class="login-box-msg"><b></b></p>
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { returnUrl = @ViewBag.ReturnUrl, enctype = "multipart/form-data" }))//data-resetUrl
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { returnUrl = @ViewBag.ReturnUrl, enctype = "multipart/form-data", id = "__AjaxAntiForgeryForm" }))//data-resetUrl
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary()

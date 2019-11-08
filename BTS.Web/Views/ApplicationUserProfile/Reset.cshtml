@@ -1,7 +1,7 @@
 ﻿@model BTS.Web.Models.AccountViewModel.ManageUserViewModel
 @using BTS.Common
 
-@using (Html.BeginForm("Reset", "ApplicationUserProfile", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Detail", "ApplicationUserProfile", new { id = @Model.Id }) }))//data-resetUrl
+@using (Html.BeginForm("Reset", "ApplicationUserProfile", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Detail", "ApplicationUserProfile", new { id = @Model.Id }), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
 {
     @Html.AntiForgeryToken()
     <div class="row">

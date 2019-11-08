@@ -40,7 +40,7 @@ namespace BTS.Web.Controllers
             IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll());
             IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll());
 
-            cities = cities.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.Id)).ToList();
+            cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
 
             ViewBag.operators = operators;
             ViewBag.profiles = profiles;
@@ -98,7 +98,7 @@ namespace BTS.Web.Controllers
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }
 
-            Items = Items.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
 
             if (!(string.IsNullOrEmpty(OperatorID)))
@@ -115,6 +115,8 @@ namespace BTS.Web.Controllers
             {
                 Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
+
+            Items.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 
             IEnumerable<CertificateViewModel> dataViewModel = Mapper.Map<List<CertificateViewModel>>(Items);
 
@@ -172,7 +174,7 @@ namespace BTS.Web.Controllers
         public ActionResult GetCertificateByCity(string cityID)
         {
             IEnumerable<Certificate> Items = _certificateService.getCertificateByCity(cityID);
-            Items = Items.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
             IEnumerable<CertificateViewModel> model = Mapper.Map<IEnumerable<Certificate>, IEnumerable<CertificateViewModel>>(Items);
             return Json(model, JsonRequestBehavior.AllowGet);

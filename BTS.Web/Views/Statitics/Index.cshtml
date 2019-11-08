@@ -1,0 +1,245 @@
+﻿@using BTS.Model.Models
+@using BTS.Common
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layouts_Chart.cshtml";
+    IEnumerable<Operator> operatorList = ViewBag.operatorList;
+    IEnumerable<City> cityList = ViewBag.cityList;
+}
+
+@section headCSS{
+    
+}
+
+@section footerJS{
+    <script src="~/Assets/client/js/controllers/statiticsController.js"></script>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    @*<section class="content-header">
+            <h1>
+                Data Tables
+                <small>advanced tables</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Statitics</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">Data tables</li>
+            </ol>
+        </section>*@
+
+    <!-- Main content -->
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <!-- SELECT2 EXAMPLE -->
+                <div class="box box-default col col-md-12 col-lg-12">
+                    <div class="box-header with-border">
+                        <h3 class="BTS-title">THỐNG KÊ GIẤY CHỨNG NHẬN KIỂM ĐỊNH TRẠM GỐC BTS</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="clearfix"></div>
+                        <!-- Main content -->
+                        <section class="content">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- PIE CHART -->
+                                    <div class="box box-primary">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Giấy CNKĐ Còn hiệu lực/ gần hết hạn trong năm</h3>
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="chart">
+                                                <canvas id="pieChart_CerStatByOperator" style="height:300px"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                                <!-- /.col (LEFT) -->
+                                <div class="col-md-6">
+                                    <!-- PIE CHART -->
+                                    <div class="box box-info">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Số trạm BTS tồn đang xử lý/ chưa đóng phí/ chưa báo phí</h3>
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="chart">
+                                                <canvas id="pieChart_BtsStatInProcess" style="height:300px"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                                <!-- /.col (RIGHT) -->
+
+                                <div class="col-md-6">
+                                    <!-- LINE CHART -->
+                                    <div class="box box-info">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Giấy CNKĐ còn hiệu lực</h3>
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="chart">
+                                                <canvas id="lineChart_CertStatByOperatorCity" style="height:300px"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                                <!-- /.col (LEFT) -->
+                                <div class="col-md-6">
+                                    <!-- LINE CHART -->
+                                    <div class="box box-primary">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Giấy CNKĐ đã cấp</h3>
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="chart">
+                                                <canvas id="lineChart_CertStatByOperatorYear" style="height:300px"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                                <!-- /.col (RIGHT) -->
+
+                                <div class="col-md-6">
+                                    <!-- PIE CHART -->
+                                    <div class="box box-primary">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Thống kê Trạm gốc BTS theo băng tần</h3>
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="chart">
+                                                <canvas id="pieChart_BtsStatByBand" style="height:300px"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                                <!-- /.col (LEFT) -->
+                                <div class="col-md-6">
+                                    <!-- PIE CHART -->
+                                    <div class="box box-info">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Thống kê Trạm gốc BTS theo Hãng thiết bị</h3>
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="chart">
+                                                <canvas id="pieChart_BtsStatByManufactory" style="height:300px"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                                <!-- /.col (RIGHT) -->
+
+                                <div class="col-md-6">
+                                    <!-- LINE CHART -->
+                                    <div class="box box-info">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Thống kê Trạm gốc BTS theo Tỉnh/ Thành phố</h3>
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="chart">
+                                                <canvas id="lineChart_BtsStatByBandCity" style="height:300px"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                                <!-- /.col (LEFT) -->
+                                <div class="col-md-6">
+                                    <!-- LINE CHART -->
+                                    <div class="box box-primary">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">Thống kê Trạm gốc BTS theo Tỉnh/ Thành phố</h3>
+                                            <div class="box-tools pull-right">
+                                                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="chart">
+                                                <canvas id="lineChart_BtsStatByOperatorCity" style="height:300px"></canvas>
+                                            </div>
+                                        </div>
+                                        <!-- /.box-body -->
+                                    </div>
+                                    <!-- /.box -->
+                                </div>
+                                <!-- /.col (RIGHT) -->
+                            </div>
+
+                            <!-- /.row -->
+                        </section>
+                        <!-- /.content -->
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+        <!-- /.row -->
+    </section>
+</div>

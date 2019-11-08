@@ -6,7 +6,7 @@
 }
 <link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl" rel="stylesheet" type="text/css" />
 <div class="register">
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new {id = "__AjaxAntiForgeryForm" }))
     {
         @Html.AntiForgeryToken();
         @Html.ValidationSummary(false, "", new { @class = "error" })

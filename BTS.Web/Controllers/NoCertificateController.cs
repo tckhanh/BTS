@@ -39,7 +39,7 @@ namespace BTS.Web.Controllers
             IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll().ToList());
             IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll().ToList());
 
-            cities = cities.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.Id));
+            cities = cities.Where(x => getCityIDsScope().ToString().Split(new char[] { ';' }).Contains(x.Id));
 
             ViewBag.operators = operators;
             ViewBag.profiles = profiles;
@@ -85,7 +85,7 @@ namespace BTS.Web.Controllers
             {
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }
-            Items = Items.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            Items = Items.Where(x => getCityIDsScope().ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
 
             if (!(string.IsNullOrEmpty(OperatorID)))
@@ -102,6 +102,8 @@ namespace BTS.Web.Controllers
             {
                 Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
+
+            Items.OrderByDescending(x => x.TestReportDate.ToString());
 
             int recordsFiltered = Items.Count();
 
@@ -124,7 +126,7 @@ namespace BTS.Web.Controllers
         public ActionResult GetNoCertificateByCity(string cityID)
         {
             List<NoCertificate> NoCertificateData = _noCertificateService.getNoCertificateByCity(cityID).ToList();
-            NoCertificateData = NoCertificateData.Where(x => Session["CityIDsScope"].ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            NoCertificateData = NoCertificateData.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
             IEnumerable<NoCertificateViewModel> model = Mapper.Map<IEnumerable<NoCertificate>, IEnumerable<NoCertificateViewModel>>(NoCertificateData);
             return Json(model, JsonRequestBehavior.AllowGet);

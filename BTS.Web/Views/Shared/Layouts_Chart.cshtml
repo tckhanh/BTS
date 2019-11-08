@@ -1,0 +1,23 @@
+﻿
+@{
+    Layout = "~/Views/Shared/Layouts.cshtml";
+}
+
+@section headCSS{
+    <!-- Charts -->    
+    <link href="~/Assets/libs/chart.js/dist/Chart.min.css" rel="stylesheet" />
+    @RenderSection("headCSS", required: false)
+}
+
+@section headerJS{
+    @RenderSection("headerJS", required: false)
+}
+
+@section footerJS{
+    <script src="~/Assets/libs/Chart-js/dist/Chart.min.js"></script>
+    <script src="~/Assets/libs/Chart.PieceLabel.js/build/chartjs-plugin-labels.min.js"></script>    
+
+    @RenderSection("footerJS", required: false)
+}
+
+@RenderBody()

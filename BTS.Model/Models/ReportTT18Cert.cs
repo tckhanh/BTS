@@ -18,6 +18,8 @@ namespace BTS.Model.Models
         [StringLength(10)]
         public string OperatorID { get; set; }
 
+        public int BtsSerialNo { get; set; }
+
         [Required]
         [StringLength(100)]
         public string BtsCode { get; set; }

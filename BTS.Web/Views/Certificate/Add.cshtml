@@ -1,0 +1,429 @@
+﻿@model BTS.Web.Models.CertificateViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "Add";
+    Layout = null;
+}
+
+@if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+{
+    using (Html.BeginForm("Add", "Certificate", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return addinController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Certificate"), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                <br />
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ProfileID, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.ProfileID, Model.ProfileList, " Chọn lựa HS nộp", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ProfileID)
+                            </div>
+                            @*<div class="col-md-1">
+                                    <a href="/Profile/" class="btn btn-primary">...</a>
+                                </div>*@
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OperatorID, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.OperatorID, Model.OperatorList, " Chọn lựa Nhà mạng", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.OperatorID)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BtsCode, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.BtsCode, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.BtsCode)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CityID, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.CityID, Model.CityList, " Chọn lựa Tỉnh/Thành phố", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CityID)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.Address)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.InCaseOfID, new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.DropDownListFor(model => model.InCaseOfID, Model.InCaseOfList, " Chọn lựa Trường hợp KĐ", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.InCaseOfID)
+                            </div>
+                            <div class="ln_solid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Longtitude, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Longtitude, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Longtitude)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Latitude, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Latitude, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Latitude)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TestReportNo, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.TestReportNo, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.TestReportNo)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.TestReportDate, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.TestReportDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TestReportDate)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LabID, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(model => model.LabID, Model.LabList, " Chọn lựa Phòng đo kiểm", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.LabID)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsQuantity, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.SubBtsQuantity, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SubBtsQuantity)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsCodes, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsCodes, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsCodes)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsOperatorIDs, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsOperatorIDs, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsOperatorIDs)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsEquipments, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsEquipments, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsEquipments)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsAntenNums, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsAntenNums, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsAntenNums)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsConfigurations, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsConfigurations, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsConfigurations)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsBands, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsBands, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsBands)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsPowerSums, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsPowerSums, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsPowerSums)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsAntenHeights, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsAntenHeights, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsAntenHeights)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MaxPowerSum, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.MaxPowerSum, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MaxPowerSum)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MinAntenHeight, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.MinAntenHeight, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MinAntenHeight)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsPoleOnGround, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.IsPoleOnGround, new { @class = "form-check-input" })
+                                @Html.ValidationMessageFor(model => model.IsPoleOnGround)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsHouseIn100m, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.IsHouseIn100m, new { @class = "form-check-input" })
+                                @Html.ValidationMessageFor(model => model.IsHouseIn100m)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsSafeLimit, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.IsSafeLimit, new { @class = "form-check-input" })
+                                @Html.ValidationMessageFor(model => model.IsSafeLimit)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsMeasuringExposure, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.IsMeasuringExposure, new { @class = "form-check-input" })
+                                @Html.ValidationMessageFor(model => model.IsMeasuringExposure)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MaxHeightIn100m, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.MaxHeightIn100m, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MaxHeightIn100m)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SafeLimitHeight, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.SafeLimitHeight, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SafeLimitHeight)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.OffsetHeight, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.OffsetHeight, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.OffsetHeight)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Id, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Id)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IssuedDate, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.IssuedDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.IssuedDate)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Signer, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Signer, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Signer)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ExpiredDate, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.ExpiredDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ExpiredDate)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IssuedPlace, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.IssuedPlace, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.IssuedPlace)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <a class="btn btn-info" onclick="addinController.refreshAddNewTab('@Url.Action("Add","Certificate")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <input type="submit" value="Lưu" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3 class="text-danger">Bạn chưa được cấp quyền để thực hiện chức năng này !!!</h3>
+}

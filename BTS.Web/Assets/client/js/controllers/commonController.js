@@ -78,10 +78,7 @@
             var ajaxConfig = {
                 type: 'POST',
                 url: form.action,
-                data: {
-                    form: new FormData(form),
-                    __RequestVerificationToken = btsController.token();
-                },
+                data: new FormData(form),
                 success: function (response) {
                     if (response.status == "TimeOut") {
                         $.notify(response.message, "warn");
@@ -213,7 +210,7 @@
                 type: 'POST',
                 url: url,
                 data: {
-                    __RequestVerificationToken = btsController.token();
+                    __RequestVerificationToken: commonController.token()
                 },
                 success: function (response) {
                     if (response.status == "TimeOut") {
@@ -241,7 +238,7 @@
                 type: 'POST',
                 url: url,
                 data: {
-                    __RequestVerificationToken = btsController.token();
+                    __RequestVerificationToken: commonController.token()
                 },
                 success: function (response) {
                     if (response.status == "TimeOut") {

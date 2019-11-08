@@ -7,7 +7,7 @@
 
   @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
 {
-    using (Html.BeginForm("Detail", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Applicant") }))//data-resetUrl
+    using (Html.BeginForm("Detail", "Applicant", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Applicant"), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">

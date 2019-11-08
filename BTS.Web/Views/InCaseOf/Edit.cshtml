@@ -9,7 +9,7 @@
 
 @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
 {
-    using (Html.BeginForm("Edit", "InCaseOf", new { id = "editId" }, FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "InCaseOf") }))//data-resetUrl
+    using (Html.BeginForm("Edit", "InCaseOf", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "InCaseOf"), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">

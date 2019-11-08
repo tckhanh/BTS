@@ -3,6 +3,7 @@
     public class CommonConstants
     {
         public const string SUPERADMIN_GROUP = "SUPERADMIN";
+        public const string RECOVERY_GROUP = "RECOVERY";
         public const string DIRECTOR_GROUP = "DIRECTOR";
         public const string VERTIFICATIONHEADER_GROUP = "HEADER";
         public const string VERTIFICATION_GROUP = "VERTIFICATION";
@@ -10,6 +11,7 @@
         public const string STTT_GROUP = "STTT";
 
         public const string SUPERADMIN_GROUP_NAME = "Quản trị hệ thống";
+        public const string RECOVERY_GROUP_NAME = "Phục hồi hệ thống";
         public const string DIRECTOR_GROUP_NAME = "Lãnh đạo Trung tâm";
         public const string VERTIFICATIONHEADER_GROUP_NAME = "Quản lý Kiểm định";
         public const string VERTIFICATION_GROUP_NAME = "Phòng Kiểm định";
@@ -29,16 +31,19 @@
         public const string InputType_AddMore = "AddMore";
         public const string InputType_DelAdd = "DelAdd";
 
-
-        public const string Recovery_Name = "Recovery";
-        public const string Recovery_Password = "P@ssword";
-
         public const string SuperAdmin_Name = "Admin";
         public const string SuperAdmin_FullName = "Trần Công Khanh";
         public const string SuperAdmin_Email = "tckhanh.p@gmail.com";
         public const bool SuperAdmin_EmailConfirmed = true;
         public const string SuperAdmin_Password = "TckP@ssword";
         public const string SuperAdmin_ImagePath = "/AppFiles/Images/default.png";
+
+        public const string Recovery_Name = "Recovery";
+        public const string Recovery_FullName = "Recovery Name";
+        public const string Recovery_Email = "Recovery@gmail.com";
+        public const bool Recovery_EmailConfirmed = true;
+        public const string Recovery_Password = "RecoveryP@ssword";
+        public const string Recovery_ImagePath = "/AppFiles/Images/default.png";
 
         public const string System_CanView_Role = "System_CanView";
         public const string System_CanViewDetail_Role = "System_CanViewDetail";

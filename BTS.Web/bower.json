@@ -7,7 +7,7 @@
     "adminLTE": "~2.4.2",
     "jquery-form": "~4.2.2",
     "jquery-validation": "~1.17.0",
-    "jquery-validation-unobtrusive": "~3.2.9",    
+    "jquery-validation-unobtrusive": "~3.2.9",
     "modernizr": "~3.7.1",
     "datatables-buttons": "~1.2.0",
     "jszip": "~3.1.5",
@@ -36,6 +36,8 @@
     "datatables-rowsgroup": "~2.0.0"
   },
   "resolutions": {
-    "chart.js": ">= 2.6.0"
+    "chart.js": ">= 2.6.0",
+    "angular": "^1.0.8",
+    "jquery": "2 - 3"
   }
 }

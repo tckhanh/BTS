@@ -1,0 +1,132 @@
+﻿@using BTS.Common
+@using System.Security.Claims
+@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 2 | Dashboard</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/Assets/libs/bootstrap/dist/css/bootstrap.min.css">
+
+    <link href="~/Assets/libs/jquery-ui/themes/base/jquery-ui.min.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Assets/libs/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/Assets/libs/Ionicons/css/ionicons.min.css">
+
+    <!-- DataTables -->
+    <link href="~/Assets/libs/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Assets/libs/adminLTE/dist/css/AdminLTE.css">
+
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="~/Assets/libs/adminLTE/dist/css/skins/_all-skins.min.css">
+
+    <!-- Morris chart -->
+    <link rel="stylesheet" href="~/Assets/libs/morris.js/morris.css">
+
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="~/Assets/libs/jvectormap/jquery-jvectormap.css">
+
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="~/Assets/libs/adminLTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <link href="~/Assets/client/css/site.css" rel="stylesheet" />
+
+    @RenderSection("headCSS", required: false)
+
+    <script>
+       var AppGlobal = {
+           "LoginUser" : {
+               "name" : "@(User.Identity.Name)",
+               "roles" : "@string.Join(";", ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList());"
+           }
+       };
+    </script>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div>
+        <input type="hidden" id="success" value="@TempData["success"]" />
+        <input type="hidden" id="info" value="@TempData["info"]" />
+        <input type="hidden" id="warning" value="@TempData["warning"]" />
+        <input type="hidden" id="error" value="@TempData["error"]" />
+    </div>
+    <div class="wrapper">
+        <!--header-->
+        @{Html.RenderAction("Header", "Home");}
+        <!---->
+        <!-- Left side column. contains the logo and sidebar -->
+        @{Html.RenderAction("LeftSidebar", "Home");}
+        <!---->
+        <!-- Content Wrapper. Contains page content -->
+        @RenderBody()
+        <!-- /.content-wrapper -->
+        <!--footer-->
+        @{Html.RenderAction("Footer", "Home");}
+        <!---->
+        @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
+        {
+            <!-- Control Sidebar -->
+            Html.RenderAction("RightSideBar", "Home");
+        }
+        <!-- /.control-sidebar -->
+        <!-- Add the sidebar's background. This div must be placed
+             immediately after the control sidebar -->
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <!-- ./wrapper -->
+    @*<script src="https://cdn.plot.ly/plotly-basic-latest.min.js"></script>*@
+
+    <!-- jQuery 3 -->
+    <script src="~/Assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/Assets/libs/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/Assets/libs/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/Assets/libs/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/Assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- DataTables -->
+    <script src="~/Assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/libs/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    @*<script src="~/Scripts/dataTables.rowsGroup.js"></script>*@
+    <script src="~/Assets/libs/datatables-rowsgroup/dataTables.rowsGroup.js"></script>
+
+    <!-- SlimScroll -->
+    <script src="~/Assets/libs/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- FastClick -->
+    <script src="~/Assets/libs/fastclick/lib/fastclick.js"></script>
+
+    <!-- AdminLTE App -->
+    <script src="~/Assets/libs/adminLTE/dist/js/adminlte.min.js"></script>
+
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/Assets/libs/adminLTE/dist/js/demo.js"></script>
+
+    <script src="~/Assets/libs/notifyjs/dist/notify.js"></script>
+
+    <script src="~/Assets/libs/toastr/toastr.min.js"></script>
+    <script src="~/Assets/shared/message.js"></script>
+    <!-- page script -->
+    @RenderSection("footerJS", required: false)
+</body>
+</html>

@@ -13,7 +13,10 @@ namespace BTS.Web.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mã nhà mạng")]
         [StringLength(10, ErrorMessage = "Mã nhà mạng không quá 10 ký tự")]
         public string OperatorID { get; set; }
-
+        
+        [Display(Name = "Trạm BTS thứ")]
+        public int BtsSerialNo { get; set; }
+        
         [Display(Name = "Mã trạm BTS")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mã trạm BTS")]
         [StringLength(100)]

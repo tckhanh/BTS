@@ -131,6 +131,7 @@ namespace BTS.Data.Repository
                                                 Longtitude = certificate.Longtitude,
                                                 Latitude = certificate.Latitude,
                                                 SubBtsQuantity = certificate.SubBtsQuantity,
+                                                BtsSerialNo = subBtsInCert.BtsSerialNo,
                                                 SubBtsCode = subBtsInCert.BtsCode,
                                                 SubOperatorID = subBtsInCert.OperatorID,
                                                 Manufactory = subBtsInCert.Manufactory,

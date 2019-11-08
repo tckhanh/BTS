@@ -51,30 +51,31 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="clearfix"></div>
-                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                            @Html.AntiForgeryToken()
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
+                        { 
+                                @Html.AntiForgeryToken()
 
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="DateRange">
-                                        Tháng báo cáo<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <input class="form-control" type="text" id="DateRange" value="" style="width:100%" />
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-4 col-sm-4 col-xs-12" for="DateRange">
+                                            Tháng báo cáo<span class="required"></span>
+                                        </label>
+                                        <div class="col-md-8 col-sm-8 col-xs-12">
+                                            <input class="form-control" type="text" id="DateRange" value="" style="width:100%" />
+                                        </div>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                </div>
+
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                            <button class="btn btn-primary" type="reset">Bỏ lọc</button>
+                                            <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="ln_solid"></div>
-                            </div>
-
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                        <button class="btn btn-primary" type="reset">Bỏ lọc</button>
-                                        <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                            }
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">

@@ -6,7 +6,7 @@
 
   @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
 {
-    using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+    using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)", id = "__AjaxAntiForgeryForm" }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.Id)

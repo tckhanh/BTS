@@ -104,13 +104,13 @@
     <Compile Include="Models\MenuGroup.cs" />
     <Compile Include="Models\NoCertificate.cs" />
     <Compile Include="Models\Operator.cs" />
-    <Compile Include="Models\WebPage.cs" />
     <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\Slide.cs" />
     <Compile Include="Models\SubBtsInCert.cs" />
     <Compile Include="Models\SupportOnline.cs" />
     <Compile Include="Models\SystemConfig.cs" />
     <Compile Include="Models\VisitorStatistic.cs" />
+    <Compile Include="Models\WebPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

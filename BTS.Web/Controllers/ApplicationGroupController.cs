@@ -255,7 +255,7 @@ namespace BTS.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.System_CanEdit_Role)]
-        public ActionResult Edit(ApplicationGroupViewModel Item, string[] selectedRoleItems, params string[] selectedUserItems)
+        public async Task<ActionResult> Edit(ApplicationGroupViewModel Item, string[] selectedRoleItems, params string[] selectedUserItems)
         {
             try
             {
@@ -492,8 +492,8 @@ namespace BTS.Web.Controllers
                 {
                     return HttpNotFound();
                 }
-
-                if (_appGroupService.GetUsersByGroupId(id) != null)
+                var dbUser = _appGroupService.GetUsersByGroupId(id).LastOrDefault();
+                if (dbUser != null)
                 {
                     return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Nhóm còn người dùng" }, JsonRequestBehavior.AllowGet);
                 }

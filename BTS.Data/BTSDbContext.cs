@@ -94,7 +94,10 @@ namespace BTS.Data
             {
                 // if database did not exist before - create it
                 context.Database.Create();
-                InitDatabase.CreateRolesandUsers(context);
+                InitDatabase.SetupRolesGroups(context);
+                InitDatabase.GrantDefaultRolesForGroups(context);
+                InitDatabase.CreateSuperUser(context);
+
                 InitDatabase.CreateOperator(context);
                 InitDatabase.CreateSlide(context);
                 InitDatabase.CreatePage(context);
@@ -114,7 +117,7 @@ namespace BTS.Data
                 {
                     context.Database.Delete();
                     context.Database.Create();
-                    InitDatabase.CreateRolesandUsers(context);
+                    InitDatabase.GrantDefaultRolesForGroups(context);
                     InitDatabase.CreateOperator(context);
                     InitDatabase.CreateSlide(context);
                     InitDatabase.CreatePage(context);

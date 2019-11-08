@@ -36,7 +36,7 @@
 
 <h2>Index</h2>
 
-@using (Html.BeginForm("Index", "Import", FormMethod.Post, new { enctype = "multipart/form-data", id = "ImportForm" }))
+@using (Html.BeginForm("Index", "Import", FormMethod.Post, new { enctype = "multipart/form-data", id = "__AjaxAntiForgeryForm" }))
 {
     @Html.AntiForgeryToken()
     <input type="file" name="file" />

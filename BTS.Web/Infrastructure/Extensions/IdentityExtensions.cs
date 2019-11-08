@@ -40,7 +40,7 @@ namespace BTS.Web.Infrastructure.Extensions
             var claimsIdentity = identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
-                return claimsIdentity.FindFirst(fieldName).Value;
+                return claimsIdentity.FindFirst(fieldName)?.Value;
             }
             return null;
         }

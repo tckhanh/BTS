@@ -7,7 +7,7 @@
     IEnumerable<BTS.Web.Models.ApplicationRoleViewModel> Roles = ViewBag.Roles;
 }
 
-@using (Html.BeginForm("AddOrEdit", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationGroup", new { id = "", act = "Add" }) }))//data-resetUrl
+@using (Html.BeginForm("AddOrEdit", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationGroup", new { id = "", act = "Add" }), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
 {
     @Html.AntiForgeryToken()
     <div class="row">

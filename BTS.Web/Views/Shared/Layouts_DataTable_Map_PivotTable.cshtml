@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/Views/Shared/Layouts_DataTable.cshtml";
+}
+
+@section headCSS{
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="~/Assets/libs/jvectormap/jquery-jvectormap.css">
+    <link href="~/Assets/libs/leaflet/dist/leaflet.css" rel="stylesheet" />
+    <link href="~/Assets/libs/leaflet.markercluster/dist/MarkerCluster.css" rel="stylesheet" />
+    <link href="~/Assets/libs/leaflet.markercluster/dist/MarkerCluster.Default.css" rel="stylesheet" />
+    <link href="~/Assets/libs/leaflet-control-geocoder/dist/Control.Geocoder.css" rel="stylesheet" />
+
+    <link href="~/Assets/libs/pivottable/dist/pivot.min.css" rel="stylesheet" />
+
+    @RenderSection("headCSS", required: false)
+}
+
+@section headerJS{
+    @RenderSection("headerJS", required: false)
+}
+
+
+
+@section footerJS{
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="~/Assets/libs/leaflet/dist/leaflet.js"></script>
+    <script src="~/Assets/libs/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script src="~/Assets/libs/leaflet-control-geocoder/dist/Control.Geocoder.min.js"></script>
+   
+
+    <script src="~/Assets/libs/pivottable/dist/pivot.min.js"></script>
+    <script src="~/Assets/libs/plotly.js/dist/plotly-basic.min.js"></script>
+    <script src="~/Assets/libs/pivottable/dist/plotly_renderers.min.js"></script>
+
+    @RenderSection("footerJS", required: false)
+}
+
+@RenderBody()

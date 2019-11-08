@@ -6,8 +6,8 @@
     //    latlng = L.latLng(10.796841, 106.66252);
     //var myMap = L.map('mapBTS', { center: latlng, zoom: 8, layers: [tiles] });
     //var myMarkerClusters = L.markerClusterGroup();
-    //var arrayRoles = AppGlobal.LoginUser.roles.split(';');
-    //var system_CanExport_Role = $.inArray(myConstant.system_CanExport_Role, arrayRoles);
+    //var myArrayRoles = AppGlobal.LoginUser.roles.split(';');
+    //var system_CanExport_Role = $.inArray(myConstant.system_CanExport_Role, myArrayRoles);
     //var data = "";
 
     var currDate = new Date();
@@ -170,7 +170,7 @@
             //    type: 'post',
             //    success: function (data) {
             //        userRoleAdmin = data.Roles;
-            //        __RequestVerificationToken = btsController.token();
+            //        __RequestVerificationToken = reportController.token();
             //    }
             //});
             reportController.loadHomeTab();
@@ -179,7 +179,7 @@
         },
 
         loadHomeTab: function () {
-            if ($.inArray(myConstant.system_CanExport_Role, arrayRoles) > -1) {
+            if ($.inArray(myConstant.system_CanExport_Role, myArrayRoles) > -1) {
                 $("#MyDataTable")
                     .on('draw.dt', function (e, settings, json, xhr) {
                         reportController.initCompleteFunction(settings, json);
@@ -200,9 +200,9 @@
                             //});
                         }
                         if (json != null) {
-                            if ($.inArray(myConstant.Info_CanViewMap_Role, arrayRoles) > -1)
+                            if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
                                 reportController.loadMap(json.data);
-                            if ($.inArray(myConstant.Info_CanViewStatitics_Role, arrayRoles) > -1)
+                            if ($.inArray(myConstant.Info_CanViewStatitics_Role, myArrayRoles) > -1)
                                 reportController.loadPivotTable(json.data);
                         }
                     })
@@ -231,7 +231,7 @@
                             }
                         ],
                         "processing": true,
-                        "paging": true,
+                        "paging": false,
                         "info": true,
                         //"scrollX": true,
                         "selector": true,
@@ -242,7 +242,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
-                                d.__RequestVerificationToken = btsController.token();
+                                d.__RequestVerificationToken = reportController.token();
                             }
                         },
                         "columns": [
@@ -337,15 +337,15 @@
                             //});
                         }
                         if (json != null) {
-                            if ($.inArray(myConstant.Info_CanViewMap_Role, arrayRoles) > -1)
+                            if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
                                 reportController.loadMap(json.data);
-                            if ($.inArray(myConstant.Info_CanViewStatitics_Role, arrayRoles) > -1)
+                            if ($.inArray(myConstant.Info_CanViewStatitics_Role, myArrayRoles) > -1)
                                 reportController.loadPivotTable(json.data);
                         }
                     })
                     .dataTable({
                         "processing": true,
-                        "paging": true,
+                        "paging": false,
                         "info": true,
                         //"scrollX": true,
                         "selector": true,
@@ -356,7 +356,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
-                                d.__RequestVerificationToken = btsController.token();
+                                d.__RequestVerificationToken = reportController.token();
                             }
                         },
                         "columns": [
@@ -435,7 +435,7 @@
             }
         },
         loadHome2Tab: function () {
-            if (system_CanExport_Role > -1) {
+            if ($.inArray(myConstant.system_CanExport_Role, myArrayRoles) > -1) {
                 $("#MyDataTable2")
                     .on('draw.dt', function (e, settings, json, xhr) {
                         reportController.initCompleteFunction(settings, json);
@@ -481,7 +481,7 @@
                             }
                         ],
                         "processing": true,
-                        "paging": true,
+                        "paging": false,
                         "info": true,
                         //"scrollX": true,
                         "selector": true,
@@ -492,7 +492,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
-                                d.__RequestVerificationToken = btsController.token();
+                                d.__RequestVerificationToken = reportController.token();
                             }
                         },
                         "columns": [
@@ -586,7 +586,7 @@
                     })
                     .dataTable({
                         "processing": true,
-                        "paging": true,
+                        "paging": false,
                         "info": true,
                         //"scrollX": true,
                         "selector": true,
@@ -597,7 +597,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
-                                d.__RequestVerificationToken = btsController.token();
+                                d.__RequestVerificationToken = reportController.token();
                             }
                         },
                         "columns": [
@@ -668,7 +668,7 @@
             }
         },
         loadHome3Tab: function () {
-            if (system_CanExport_Role > -1) {
+            if ($.inArray(myConstant.system_CanExport_Role, myArrayRoles) > -1) {
                 $("#MyDataTable3")
                     .on('draw.dt', function (e, settings, json, xhr) {
                         reportController.initCompleteFunction(settings, json);
@@ -714,7 +714,7 @@
                             }
                         ],
                         "processing": true,
-                        "paging": true,
+                        "paging": false,
                         "info": true,
                         //"scrollX": true,
                         "selector": true,
@@ -725,7 +725,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
-                                d.__RequestVerificationToken = btsController.token();
+                                d.__RequestVerificationToken = reportController.token();
                             }
                         },
                         "columns": [
@@ -818,7 +818,7 @@
                     })
                     .dataTable({
                         "processing": true,
-                        "paging": true,
+                        "paging": false,
                         "info": true,
                         //"scrollX": true,
                         "selector": true,
@@ -829,7 +829,7 @@
                             "data": function (d) {
                                 d.Month = month;
                                 d.Year = year;
-                                d.__RequestVerificationToken = btsController.token();
+                                d.__RequestVerificationToken = reportController.token();
                             }
                         },
                         "columns": [

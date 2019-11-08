@@ -1,0 +1,100 @@
+﻿@model IEnumerable<BTS.Web.Models.BtsViewModel>
+@using BTS.Common
+@{
+    ViewBag.Title = "ViewAll";
+    Layout = null;
+}
+
+<table class="display condensed MyDataTable" id="MyDataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OperatorID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile.ProfileNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CityID)
+            </th>           <th>
+                @Html.DisplayNameFor(model => model.BtsCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.LastOwnCertificateIDs)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastNoOwnCertificateIDs)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReasonsCertificate)
+            </th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OperatorID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Profile.ProfileNum)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CityID)
+                </td>               <td>
+                    @Html.DisplayFor(modelItem => item.BtsCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastOwnCertificateIDs)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastNoOwnCertificateIDs)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReasonsCertificate)
+                </td>
+
+                <td>
+                      @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+                    {
+                        <a class="btn btn-info btn-sm" onclick="addinController.Detail('@Url.Action("Detail", "Certificate", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
+                    }
+
+                      @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                    {
+                        <a class="btn btn-primary btn-sm" onclick="addinController.Edit('@Url.Action("Edit", "Certificate", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
+                    }
+
+                      @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                    {
+                        <a class="btn btn-danger btn-sm" onclick="addinController.Delete('@Url.Action("Delete", "Certificate", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.OperatorID)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Profile.ProfileNum)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.CityID)
+            </td>
+        </tr>
+    </tfoot>
+</table>

@@ -6,7 +6,7 @@
 
   @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
 {
-    using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+    using (Html.BeginForm("SaveData", "Operator", FormMethod.Post, new { onsubmit = "return SubmitForm(this)", id = "__AjaxAntiForgeryForm" }))
     {
         @Html.AntiForgeryToken()
         <div class="form-group">

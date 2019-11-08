@@ -366,7 +366,7 @@
                         }
                     }
                     else {
-                        alert(xhr.response.message);
+                        alert(response.message);
                     }
                     $('html').removeClass('waiting');
                 },

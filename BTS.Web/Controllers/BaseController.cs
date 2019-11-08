@@ -23,7 +23,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace BTS.Web.Controllers
-{    
+{
     public class BaseController : Controller
     {
         private IErrorService _errorService;
@@ -197,7 +197,7 @@ namespace BTS.Web.Controllers
                 foreach (var role in userRoles)
                 {
                     await UserManager.RemoveFromRoleAsync(userId, role);
-                }                
+                }
                 return true;
             }
             catch (DbEntityValidationException ex)
@@ -288,7 +288,7 @@ namespace BTS.Web.Controllers
                 {
                     LogError(strReturn);
                     throw new Exception(strReturn);
-                }                    
+                }
             }
             catch (DbEntityValidationException ex)
             {
@@ -317,7 +317,7 @@ namespace BTS.Web.Controllers
             }
             finally
             {
-                
+
             }
         }
 
@@ -370,7 +370,7 @@ namespace BTS.Web.Controllers
             string description = "";
             try
             {
-                strReturn = function.Invoke(excelConnectionString, strReturn);                
+                strReturn = function.Invoke(excelConnectionString, strReturn);
             }
             catch (DbEntityValidationException ex)
             {
@@ -403,7 +403,7 @@ namespace BTS.Web.Controllers
         }
 
         protected void ExecuteDatabase(Func<string, string, string, string> function, string excelConnectionString, string InputType, string strReturn)
-        {            
+        {
             string description = "";
             try
             {
@@ -453,7 +453,7 @@ namespace BTS.Web.Controllers
                 Error error = new Error();
                 error.CreatedDate = DateTime.Now;
                 error.Message = description;
-                error.Description = description;                
+                error.Description = description;
                 _errorService.Create(error);
                 _errorService.Save();
             }
@@ -560,12 +560,14 @@ namespace BTS.Web.Controllers
             //this.View("Error").ExecuteResult(filterContext.Controller.ControllerContext);
         }
 
-        public string mySession(string name)
+        public string getCityIDsScope()
         {
-            if (Session[name] == null) {
-                Session[name] = User.Identity.getUserField(name);
-            }
-            return Session[name].ToString();
+            return User.Identity.getUserField("CityIDsScope") ?? UserManager.FindByName(User.Identity.Name).CityIDsScope;            
+        }
+
+        public string getUserField_(string name)
+        {
+            return User.Identity.getUserField(name) ?? UserManager.FindByName(User.Identity.Name).CityIDsScope;
         }
     }
 }
