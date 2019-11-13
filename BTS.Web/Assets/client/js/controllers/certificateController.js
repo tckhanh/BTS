@@ -2,6 +2,8 @@
 //var data = "";
 
 var certificateController = {
+    startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    endDate: new Date(),
     token: function () {
         var form = $('#__AjaxAntiForgeryForm');
         return $('input[name="__RequestVerificationToken"]', form).val();
@@ -145,21 +147,21 @@ var certificateController = {
     },
 
     loadData: function () {
-        var startDate = new Date(new Date().getFullYear(), 0, 1);
-        var endDate = new Date();
+        certificateController.startDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        certificateController.endDate = new Date();
 
         $('input[name="DateRange"]').daterangepicker(
             {
                 locale: {
                     format: 'DD/MM/YYYY'
                 },
-                startDate: startDate,
-                endDate: endDate
+                startDate: certificateController.startDate,
+                endDate: certificateController.endDate
             },
             function (start, end, label) {
                 //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
-                startDate = start;
-                endDate = end;
+                certificateController.startDate = start;
+                certificateController.endDate = end;
             });
 
         //$.ajax({
@@ -246,8 +248,8 @@ var certificateController = {
                             d.CityID = $('#CityID').val().trim();
                             d.OperatorID = $('#OperatorID').val().trim();
                             d.ProfileID = $('#ProfileID').val().trim();
-                            d.StartDate = startDate.toISOString();
-                            d.EndDate = endDate.toISOString();
+                            d.StartDate = certificateController.startDate.toISOString();
+                            d.EndDate = certificateController.endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
                             d.IsExpired = $('input[name=IsExpired]:checked').val();
                             d.__RequestVerificationToken = certificateController.token();
@@ -266,7 +268,7 @@ var certificateController = {
                         {
                             "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/Certificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
+                                $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
                             }
                         },
                         {
@@ -363,8 +365,8 @@ var certificateController = {
                             d.CityID = $('#CityID').val().trim();
                             d.OperatorID = $('#OperatorID').val().trim();
                             d.ProfileID = $('#ProfileID').val().trim();
-                            d.StartDate = startDate.toISOString();
-                            d.EndDate = endDate.toISOString();
+                            d.StartDate = certificateController.startDate.toISOString();
+                            d.EndDate = certificateController.endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
                             d.IsExpired = $('input[name=IsExpired]:checked').val();
                             d.__RequestVerificationToken = certificateController.token();
@@ -383,7 +385,7 @@ var certificateController = {
                         {
                             "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/Certificate/Detail/" + oData.Id + "'>" + oData.Id + "</a>");
+                                $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
                             }
                         },
                         {
@@ -522,6 +524,37 @@ var certificateController = {
                 rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
                 hiddenAttributes: ["select.pvtRenderer", "renderers"]
             }, true);
+    },
+
+    jQueryAjaxPost: function () {
+        var form = $("#__AjaxAntiForgeryForm")[0];
+        var dataForm = new FormData(form);
+        dataForm.append('StartDate', certificateController.startDate.toISOString());
+        dataForm.append('EndDate', certificateController.endDate.toISOString());
+        $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            var ajaxConfig = {
+                type: 'POST',
+                url: '/PrintCertificate/Print',
+                data: dataForm,
+                success: function (response) {
+                    //open a new window note:this is a popup so it may be blocked by your browser
+                    var newWindow = window.open("", "Print Certificates");
+
+                    //write the data to the document of the newWindow
+                    newWindow.document.write(response);
+                },
+                error: function (response) {
+                    $.notify(response.error, "error");
+                }
+            }
+            if ($(form).attr('enctype') == "multipart/form-data") {
+                ajaxConfig["contentType"] = false;
+                ajaxConfig["processData"] = false;
+            }
+            $.ajax(ajaxConfig);
+        }
+        return false;
     }
 }
 

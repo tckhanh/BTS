@@ -64,7 +64,7 @@
         public const string Data_CanViewStatitics_Role = "Data_CanViewStatitics";
         public const string Data_CanAdd_Role = "Data_CanAdd";
         public const string Data_CanImport_Role = "Data_CanImport";
-        public const string Data_CanExport_Role = "Data_CanExport";
+        public const string Data_CanExport_Role = "Data_CanExport";        
         public const string Data_CanEdit_Role = "Data_CanEdit";
         public const string Data_CanReset_Role = "Data_CanReset";
         public const string Data_CanLock_Role = "Data_CanLock";
@@ -72,6 +72,7 @@
 
         public const string Info_CanViewMap_Role = "Info_CanViewMap";
         public const string Info_CanViewDetail_Role = "Info_CanViewDetail";
+        public const string Info_CanPrintCertificate_Role = "Info_CanPrintCertificate";
         public const string Info_CanViewChart_Role = "Info_CanViewChart";
         public const string Info_CanViewReport_Role = "Info_CanViewReport";
         public const string Info_CanViewStatitics_Role = "Info_CanViewStatitics";
@@ -104,6 +105,7 @@
 
         public const string Info_CanView_Description = "Xem thông tin";
         public const string Info_CanViewDetail_Description = "Xem chi tiết thông tin";
+        public const string Info_CanPrintCertificate_Description = "In Giấy Chứng nhận Kiểm định";
         public const string Info_CanViewChart_Description = "Xem biểu đồ thông tin";
         public const string Info_CanViewReport_Description = "Xem báo cáo thông tin";
         public const string Info_CanViewStatitics_Description = "Xem thống kê thông tin";

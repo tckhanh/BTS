@@ -21,9 +21,9 @@ namespace BTS.Service
 
         void DeleteSubBTSinCert(string Id);
 
-        IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate, DateTime startDate, DateTime endDate);
+        IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate, DateTime startDate, DateTime endDate, string[] includes = null);        
+        IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate, string[] includes = null);
         IEnumerable<ReportTT18Cert> getReportTT18Cert(out int totalRows, DateTime startDate, DateTime endDate);
-        IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate);
         Certificate findCertificate(string BtsCode, string ProfileID);
 
         IEnumerable<Certificate> getByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
@@ -48,7 +48,7 @@ namespace BTS.Service
 
         IEnumerable<Certificate> getCertificateProfile(string profileID);
 
-        Certificate getByID(string Id);
+        Certificate getByID(string Id, string[] includes = null);
 
         List<SubBtsInCert> getDetailByID(string Id);
 
@@ -101,32 +101,32 @@ namespace BTS.Service
             return result;
         }
 
-        public IEnumerable<Certificate> getAll(out int totalRows, bool onlyValidCertificate, DateTime startDate, DateTime endDate)
+        public IEnumerable<Certificate> getAll(out int totalRows, bool onlyValidCertificate, DateTime startDate, DateTime endDate, string[] includes = null)
         {
             IEnumerable<Certificate> result;
             if (onlyValidCertificate)
             {
-                result = _CertificateRepository.GetMulti(x => x.ExpiredDate >= DateTime.Today && x.IssuedDate >= startDate && x.IssuedDate <= endDate);
+                result = _CertificateRepository.GetMulti(x => x.ExpiredDate >= DateTime.Today && x.IssuedDate >= startDate && x.IssuedDate <= endDate, includes);
             }
             else
             {
-                result = _CertificateRepository.GetMulti(x => x.IssuedDate >= startDate && x.IssuedDate <= endDate);
+                result = _CertificateRepository.GetMulti(x => x.IssuedDate >= startDate && x.IssuedDate <= endDate, includes);
             }
 
             totalRows = result.Count();
             return result;
         }
 
-        public IEnumerable<Certificate> getAll(out int totalRows, bool onlyValidCertificate)
+        public IEnumerable<Certificate> getAll(out int totalRows, bool onlyValidCertificate, string[] includes = null)
         {
             IEnumerable<Certificate> result;
             if (onlyValidCertificate)
             {
-                result = _CertificateRepository.GetMulti(x => x.ExpiredDate >= DateTime.Today);
+                result = _CertificateRepository.GetMulti(x => x.ExpiredDate >= DateTime.Today, includes);
             }
             else
             {
-                result = _CertificateRepository.GetMulti(x => true);
+                result = _CertificateRepository.GetMulti(x => true, includes);
             }
 
             totalRows = result.Count();
@@ -148,9 +148,9 @@ namespace BTS.Service
             return _CertificateRepository.GetMultiPaging(x => x.CityID == cityID, out totalRow, pageIndex, pageSize);
         }
 
-        public Certificate getByID(string Id)
+        public Certificate getByID(string Id, string[] includes = null)
         {
-            return _CertificateRepository.GetSingleById(Id);
+            return _CertificateRepository.GetSingleByCondition(x => x.Id == Id, includes);
         }
 
         public IEnumerable<Certificate> getByOperator(string operatorID, out int totalRow, int pageIndex = 1, int pageSize = 10)

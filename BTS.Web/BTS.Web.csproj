@@ -148,6 +148,13 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Stimulsoft.Base, Version=2019.3.1.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
+    <Reference Include="Stimulsoft.Controls, Version=2019.3.1.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
+    <Reference Include="Stimulsoft.Dashboard, Version=2019.3.1.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
+    <Reference Include="Stimulsoft.Data, Version=2019.3.1.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
+    <Reference Include="Stimulsoft.Report, Version=2019.3.1.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
+    <Reference Include="Stimulsoft.Report.Mvc, Version=2019.3.1.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
+    <Reference Include="Stimulsoft.Report.Web, Version=2019.3.1.0, Culture=neutral, PublicKeyToken=ebe6666cba19647a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -259,6 +266,7 @@
     <Compile Include="Controllers\ApplicationRoleController.cs" />
     <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\PrintCertificateController.cs" />
     <Compile Include="Controllers\RecoveryController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\NoCertificateController.cs" />
@@ -293,6 +301,7 @@
     <Compile Include="Infrastructure\Extensions\DataTableExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\EntityExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\IdentityExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\ApplicantViewModel.cs" />
@@ -303,6 +312,7 @@
     <Compile Include="Models\ApplicationUserViewModel.cs" />
     <Compile Include="Models\AuditableViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
+    <Compile Include="Models\PrintCertificateViewModel.cs" />
     <Compile Include="Models\ReportTT18NoCertViewModel.cs" />
     <Compile Include="Models\ReportTT18CertViewModel.cs" />
     <Compile Include="Models\LabViewModel.cs" />
@@ -522,6 +532,24 @@
     <Content Include="Assets\admin\img\user6-128x128.jpg" />
     <Content Include="Assets\admin\img\user7-128x128.jpg" />
     <Content Include="Assets\admin\img\user8-128x128.jpg" />
+    <Content Include="Assets\client\css\dtree.css" />
+    <Content Include="Assets\client\Images\hyperlink.png" />
+    <Content Include="Assets\client\Images\line.png" />
+    <Content Include="Assets\client\Images\logoweb.png" />
+    <Content Include="Assets\client\Images\Tree\empty.gif" />
+    <Content Include="Assets\client\Images\Tree\folder.gif" />
+    <Content Include="Assets\client\Images\Tree\folderopen.gif" />
+    <Content Include="Assets\client\Images\Tree\join.gif" />
+    <Content Include="Assets\client\Images\Tree\joinbottom.gif" />
+    <Content Include="Assets\client\Images\Tree\line.gif" />
+    <Content Include="Assets\client\Images\Tree\minus.gif" />
+    <Content Include="Assets\client\Images\Tree\minusbottom.gif" />
+    <Content Include="Assets\client\Images\Tree\nolines_minus.gif" />
+    <Content Include="Assets\client\Images\Tree\nolines_plus.gif" />
+    <Content Include="Assets\client\Images\Tree\plus.gif" />
+    <Content Include="Assets\client\Images\Tree\plusbottom.gif" />
+    <Content Include="Assets\client\Images\Tree\report.gif" />
+    <Content Include="Assets\client\css\printCertificate.css" />
     <Content Include="Assets\client\js\common\myMap.js" />
     <Content Include="Assets\client\js\common\myCulture2.js" />
     <Content Include="Assets\client\js\common\myCulture.js" />
@@ -531,7 +559,9 @@
     <Content Include="Assets\client\js\controllers\btsController - Copy.js" />
     <Content Include="Assets\client\js\controllers\addinController.js" />
     <Content Include="Assets\client\js\controllers\applicationUserController.js" />
+    <Content Include="Assets\client\js\common\dtree.js" />
     <Content Include="Assets\client\js\controllers\recoveryController.js" />
+    <Content Include="Assets\client\js\controllers\printCertificateController.js" />
     <Content Include="Assets\client\js\controllers\statiticsController.js" />
     <Content Include="Assets\libs\adminLTE\build\js\BoxRefresh.js" />
     <Content Include="Assets\libs\adminLTE\build\js\BoxWidget.js" />
@@ -11829,7 +11859,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Assets\admin\js\" />
     <Folder Include="Assets\client\font-awesome-4.6.3\" />
-    <Folder Include="Assets\client\images\" />
     <Folder Include="Assets\libs\angular-ui-router\release\" />
     <Folder Include="Assets\libs\checklist-model\test\" />
     <Folder Include="Assets\libs\inputmask\dist\min\inputmask\bindings\" />
@@ -12962,6 +12991,11 @@
     <Content Include="Assets\libs\leaflet-control-geocoder\README.md" />
     <Content Include="Assets\libs\leaflet-control-geocoder\scripts\postpublish.sh" />
     <Content Include="Assets\libs\leaflet-control-geocoder\scripts\publish.sh" />
+    <Content Include="Content\ReportTemplates\GCNKD_1BTS.mrt" />
+    <Content Include="Content\ReportTemplates\GCNKD_2BTS.mrt" />
+    <Content Include="Content\ReportTemplates\GCNKD_3BTS.mrt" />
+    <Content Include="Content\ReportTemplates\GCNKD_4BTS.mrt" />
+    <Content Include="Content\ReportTemplates\GCNKD_5BTS.mrt" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Shared\Layouts.cshtml" />
     <Content Include="Views\Ho\Index.cshtml" />
@@ -12998,6 +13032,11 @@
     <Content Include="Views\Certificate\ViewAll.cshtml" />
     <Content Include="Views\Statitics\Index.cshtml" />
     <Content Include="Views\Recovery\Index.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\Layouts_PrintCertificate.cshtml" />
+    <Content Include="Views\PrintCertificate\Index.cshtml" />
+    <Content Include="Views\PrintCertificate\Print.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Common\BTS.Common.csproj">

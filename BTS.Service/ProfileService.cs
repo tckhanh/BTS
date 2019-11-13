@@ -23,7 +23,7 @@ namespace BTS.Service
 
         IEnumerable<Applicant> getAllApplicant();
 
-        Profile getByID(string Id);
+        Profile getByID(string Id, string[] includes = null);
 
         bool IsUsed(string Id);
 
@@ -66,9 +66,9 @@ namespace BTS.Service
                 return _profileRepository.GetAll();
         }
 
-        public Profile getByID(string Id)
+        public Profile getByID(string Id, string[] includes = null)
         {
-            return _profileRepository.GetSingleById(Id);
+            return _profileRepository.GetSingleByCondition(x => x.Id == Id, includes);
         }
 
         public bool IsUsed(string Id)

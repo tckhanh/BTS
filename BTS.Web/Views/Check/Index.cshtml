@@ -44,7 +44,7 @@
                 <div class="box-body">
                     <div class="clearfix"></div>
                     <div class="row">
-                        @using (Html.BeginForm("CheckBTS", "Check", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
+                        @using (Html.BeginForm("CheckBTS", "Check", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "jqueryForm" }))
                         {
                             @Html.AntiForgeryToken()
                             <div class="col-md-6 col-sm-6 col-xs-12">

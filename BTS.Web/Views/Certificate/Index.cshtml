@@ -50,7 +50,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="clearfix"></div>
-                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
                         {
                             @Html.AntiForgeryToken()
                             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -70,7 +70,7 @@
                                         Nhà mạng<span class="required"></span>
                                     </label>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <select id="OperatorID" class="form-control selectYear">
+                                        <select id="OperatorID" name="OperatorID" class="form-control selectYear">
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in operators)
                                             {
@@ -88,7 +88,7 @@
                                         Tỉnh/Thành phố<span class="required"></span>
                                     </label>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <select id="CityID" class="form-control">
+                                        <select id="CityID" name="CityID" class="form-control">
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in cities)
                                             {
@@ -105,7 +105,7 @@
                                         Hồ sơ nộp<span class="required"></span>
                                     </label>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <select id="ProfileID" class="form-control selectYear">
+                                        <select id="ProfileID" name="ProfileID" class="form-control selectYear">
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in profiles)
                                             {
@@ -123,7 +123,7 @@
                                         Mã trạm/Địa chỉ trạm <span class="required"></span>
                                     </label>
                                     <div class="col-md-10 col-sm-10 col-xs-12">
-                                        <input id="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" required="required" type="text">
+                                        <input id="BtsCodeOrAddress" name="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" type="text">
                                     </div>
                                 </div>
                             </div>
@@ -195,8 +195,13 @@
                             <div class="box-body">
                                 @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
                                 {
-                                    <input type="button" onclick="ExportTableToExcel.tableToExcel('MyDataTable','Certificates','Certificates')" value="Xuất Excel">
+                                    <input type="button" class="btn" onclick="ExportTableToExcel.tableToExcel('MyDataTable','Certificates','Certificates')" value="Xuất Excel">
                                 }
+                                @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
+                                {
+                                    <input type="button" class="btn btn-success" onclick="certificateController.jQueryAjaxPost()" value="In Giấy CNKĐ">
+                                }
+
                                 <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">
                                     <thead>
                                         <tr>
