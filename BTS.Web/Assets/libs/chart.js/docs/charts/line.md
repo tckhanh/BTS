@@ -43,17 +43,26 @@ The line chart allows a number of properties to be specified for each dataset. T
 
 | Name | Type | [Scriptable](../general/options.md#scriptable-options) | [Indexable](../general/options.md#indexable-options) | Default
 | ---- | ---- | :----: | :----: | ----
-| [`backgroundColor`](#line-styling) | [`Color`](../general/colors.md) | - | - | `'rgba(0, 0, 0, 0.1)'`
-| [`borderCapStyle`](#line-styling) | `string` | - | - | `'butt'`
-| [`borderColor`](#line-styling) | [`Color`](../general/colors.md) | - | - | `'rgba(0, 0, 0, 0.1)'`
-| [`borderDash`](#line-styling) | `number[]` | - | - | `[]`
-| [`borderDashOffset`](#line-styling) | `number` | - | - | `0.0`
-| [`borderJoinStyle`](#line-styling) | `string` | - | - | `'miter'`
-| [`borderWidth`](#line-styling) | `number` | - | - | `3`
-| [`cubicInterpolationMode`](#cubicinterpolationmode) | `string` | - | - | `''`
-| [`fill`](#line-styling) | <code>boolean&#124;string</code> | - | - | `true`
+| [`backgroundColor`](#line-styling) | [`Color`](../general/colors.md) | Yes | - | `'rgba(0, 0, 0, 0.1)'`
+| [`borderCapStyle`](#line-styling) | `string` | Yes | - | `'butt'`
+| [`borderColor`](#line-styling) | [`Color`](../general/colors.md) | Yes | - | `'rgba(0, 0, 0, 0.1)'`
+| [`borderDash`](#line-styling) | `number[]` | Yes | - | `[]`
+| [`borderDashOffset`](#line-styling) | `number` | Yes | - | `0.0`
+| [`borderJoinStyle`](#line-styling) | `string` | Yes | - | `'miter'`
+| [`borderWidth`](#line-styling) | `number` | Yes | - | `3`
+| [`cubicInterpolationMode`](#cubicinterpolationmode) | `string` | Yes | - | `'default'`
+| [`clip`](#line-styling) | <code>number&#124;object</code> | - | - | `borderWidth / 2`
+| [`fill`](#line-styling) | <code>boolean&#124;string</code> | Yes | - | `true`
+| [`hoverBackgroundColor`](#line-styling) | [`Color`](../general/colors.md) | Yes | - | `undefined`
+| [`hoverBorderCapStyle`](#line-styling) | `string` | Yes | - | `undefined`
+| [`hoverBorderColor`](#line-styling) | [`Color`](../general/colors.md) | Yes | - | `undefined`
+| [`hoverBorderDash`](#line-styling) | `number[]` | Yes | - | `undefined`
+| [`hoverBorderDashOffset`](#line-styling) | `number` | Yes | - | `undefined`
+| [`hoverBorderJoinStyle`](#line-styling) | `string` | Yes | - | `undefined`
+| [`hoverBorderWidth`](#line-styling) | `number` | Yes | - | `undefined`
 | [`label`](#general) | `string` | - | - | `''`
 | [`lineTension`](#line-styling) | `number` | - | - | `0.4`
+| [`order`](#general) | `number` | - | - | `0`
 | [`pointBackgroundColor`](#point-styling) | `Color` | Yes | Yes | `'rgba(0, 0, 0, 0.1)'`
 | [`pointBorderColor`](#point-styling) | `Color` | Yes | Yes | `'rgba(0, 0, 0, 0.1)'`
 | [`pointBorderWidth`](#point-styling) | `number` | Yes | Yes | `1`
@@ -76,6 +85,7 @@ The line chart allows a number of properties to be specified for each dataset. T
 | Name | Description
 | ---- | ----
 | `label` | The label for the dataset which appears in the legend and tooltips.
+| `order` | The drawing order of dataset. Also affects order for stacking, tooltip, and legend.
 | `xAxisID` | The ID of the x axis to plot this dataset on.
 | `yAxisID` | The ID of the y axis to plot this dataset on.
 
@@ -108,6 +118,7 @@ The style of the line can be controlled with the following properties:
 | `borderDashOffset` | Offset for line dashes. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineDashOffset).
 | `borderJoinStyle` | Line joint style. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/lineJoin).
 | `borderWidth` | The line width (in pixels).
+| `clip` | How to clip relative to chartArea. Positive value allows overflow, negative value clips that many pixels inside chartArea. `0` = clip at chartArea. Clipping can also be configured per side: `clip: {left: 5, top: false, right: -2, bottom: 0}`
 | `fill` | How to fill the area under the line. See [area charts](area.md).
 | `lineTension` | Bezier curve tension of the line. Set to 0 to draw straightlines. This option is ignored if monotone cubic interpolation is used.
 | `showLine` | If false, the line is not drawn for this dataset.
@@ -204,78 +215,6 @@ var stackedLine = new Chart(ctx, {
                 stacked: true
             }]
         }
-    }
-});
-```
-
-## High Performance Line Charts
-
-When charting a lot of data, the chart render time may start to get quite large. In that case, the following strategies can be used to improve performance.
-
-### Data Decimation
-
-Decimating your data will achieve the best results. When there is a lot of data to display on the graph, it doesn't make sense to show tens of thousands of data points on a graph that is only a few hundred pixels wide.
-
-There are many approaches to data decimation and selection of an algorithm will depend on your data and the results you want to achieve. For instance, [min/max](https://digital.ni.com/public.nsf/allkb/F694FFEEA0ACF282862576020075F784) decimation will preserve peaks in your data but could require up to 4 points for each pixel. This type of decimation would work well for a very noisy signal where you need to see data peaks.
-
-### Disable Bezier Curves
-
-If you are drawing lines on your chart, disabling bezier curves will improve render times since drawing a straight line is more performant than a bezier curve.
-
-To disable bezier curves for an entire chart:
-
-```javascript
-new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-        elements: {
-            line: {
-                tension: 0 // disables bezier curves
-            }
-        }
-    }
-});
-```
-
-### Disable Line Drawing
-
-If you have a lot of data points, it can be more performant to disable rendering of the line for a dataset and only draw points. Doing this means that there is less to draw on the canvas which will improve render performance.
-
-To disable lines:
-
-```javascript
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        datasets: [{
-            showLine: false // disable for a single dataset
-        }]
-    },
-    options: {
-        showLines: false // disable for all datasets
-    }
-});
-```
-
-### Disable Animations
-
-If your charts have long render times, it is a good idea to disable animations. Doing so will mean that the chart needs to only be rendered once during an update instead of multiple times. This will have the effect of reducing CPU usage and improving general page performance.
-
-To disable animations
-
-```javascript
-new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-        animation: {
-            duration: 0 // general animation time
-        },
-        hover: {
-            animationDuration: 0 // duration of animations when hovering an item
-        },
-        responsiveAnimationDuration: 0 // animation duration after a resize
     }
 });
 ```

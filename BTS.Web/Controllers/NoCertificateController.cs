@@ -103,7 +103,7 @@ namespace BTS.Web.Controllers
                 Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
 
-            Items.OrderByDescending(x => x.TestReportDate.ToString());
+            //Items = Items.OrderByDescending(x => x.TestReportDate.ToString());
 
             int recordsFiltered = Items.Count();
 

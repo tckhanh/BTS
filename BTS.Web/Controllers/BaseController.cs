@@ -32,7 +32,7 @@ namespace BTS.Web.Controllers
 
         public BaseController(IErrorService errorService)
         {
-            _errorService = errorService;
+            _errorService = errorService;            
         }
 
         [HttpPost]
@@ -568,6 +568,12 @@ namespace BTS.Web.Controllers
         public string getUserField_(string name)
         {
             return User.Identity.getUserField(name) ?? UserManager.FindByName(User.Identity.Name).CityIDsScope;
+        }
+
+        public void loadLicense()
+        {
+            string licenseFile = Server.MapPath("~/Content/ReportTemplates/license.key");
+            Stimulsoft.Base.StiLicense.LoadFromFile(licenseFile);
         }
     }
 }

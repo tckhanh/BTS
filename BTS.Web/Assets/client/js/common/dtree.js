@@ -43,20 +43,20 @@ function dTree(objName) {
 	}
 
 	this.icon = {
-	    root: '/Content/Images/Tree/empty.gif',
-		folder: '/Content/Images/Tree/folder.gif',
-		folderOpen: '/Content/Images/Tree/folderopen.gif',
-		node: '/Content/Images/Tree/report.gif',
-		empty: '/Content/Images/Tree/empty.gif',
-		line: '/Content/Images/Tree/line.gif',
-		join: '/Content/Images/Tree/join.gif',
-		joinBottom: '/Content/Images/Tree/joinbottom.gif',
-		plus: '/Content/Images/Tree/plus.gif',
-		plusBottom: '/Content/Images/Tree/plusbottom.gif',
-		minus: '/Content/Images/Tree/minus.gif',
-		minusBottom: '/Content/Images/Tree/minusbottom.gif',
-		nlPlus: '/Content/Images/Tree/nolines_plus.gif',
-		nlMinus: '/Content/Images/Tree/nolines_minus.gif'
+	    root: '/Assets/Client/Images/Tree/empty.gif',
+        folder: '/Assets/Client/Images/Tree/folder.gif',
+        folderOpen: '/Assets/Client/Images/Tree/folderopen.gif',
+        node: '/Assets/Client/Images/Tree/report.gif',
+        empty: '/Assets/Client/Images/Tree/empty.gif',
+        line: '/Assets/Client/Images/Tree/line.gif',
+        join: '/Assets/Client/Images/Tree/join.gif',
+        joinBottom: '/Assets/Client/Images/Tree/joinbottom.gif',
+        plus: '/Assets/Client/Images/Tree/plus.gif',
+        plusBottom: '/Assets/Client/Images/Tree/plusbottom.gif',
+        minus: '/Assets/Client/Images/Tree/minus.gif',
+        minusBottom: '/Assets/Client/Images/Tree/minusbottom.gif',
+        nlPlus: '/Assets/Client/Images/Tree/nolines_plus.gif',
+        nlMinus: '/Assets/Client/Images/Tree/nolines_minus.gif'
 	};
 
 	this.obj = objName;

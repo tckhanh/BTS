@@ -100,7 +100,14 @@ namespace BTS.Web
                  url: "cap-nhat-GCNKD.html",
                  defaults: new { controller = "Import", action = "Index", tagId = UrlParameter.Optional },
                  namespaces: new string[] { "BTS.Web.Controllers" }
- );
+            );
+
+            //routes.MapRoute(
+            //    name: "Print Certifiacte",
+            //    url: "{alias}.pc-{id}.html",
+            //    defaults: new { controller = "PrintCertificate", action = "Index", id = UrlParameter.Optional },
+            //    namespaces: new string[] { "BTS.Web.Controllers" }
+            //);
 
             routes.MapRoute(
                 name: "Default",

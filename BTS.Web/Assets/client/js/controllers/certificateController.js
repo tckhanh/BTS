@@ -203,6 +203,7 @@ var certificateController = {
                     }
                 })
                 .dataTable({
+                    order: [[3, "desc"]],
                     columnDefs: [{
                         orderable: false,
                         className: 'select-checkbox',
@@ -268,14 +269,18 @@ var certificateController = {
                         {
                             "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
+                                if ($.inArray(myConstant.Info_CanPrintCertificate_Role, myArrayRoles) > -1) {
+                                    $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
+                                } else {
+                                    $(nTd).html(oData.Id);
+                                }
                             }
                         },
                         {
                             "data": "BtsCode", "name": "BtsCode",
-                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
-                            }
+                            //fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            //    $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
+                            //}
                         },        // index 2
                         { "data": "Address", "name": "Address" },
                         {
@@ -343,6 +348,7 @@ var certificateController = {
                     }
                 })
                 .dataTable({
+                    order: [[3, "desc"]],
                     columnDefs: [{
                         orderable: false,
                         className: 'select-checkbox',
@@ -385,14 +391,18 @@ var certificateController = {
                         {
                             "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
+                                if ($.inArray(myConstant.Info_CanPrintCertificate_Role, myArrayRoles) > -1) {
+                                    $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
+                                } else {
+                                    $(nTd).html(oData.Id);
+                                }
                             }
                         },
                         {
                             "data": "BtsCode", "name": "BtsCode",
-                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
-                            }
+                            //fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            //    $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
+                            //}
                         },
                         { "data": "Address", "name": "Address"},
                         {
@@ -526,23 +536,26 @@ var certificateController = {
             }, true);
     },
 
-    jQueryAjaxPost: function () {
+    printCertificate: function () {
         var form = $("#__AjaxAntiForgeryForm")[0];
         var dataForm = new FormData(form);
         dataForm.append('StartDate', certificateController.startDate.toISOString());
         dataForm.append('EndDate', certificateController.endDate.toISOString());
+        dataForm.append('action', 'GetReport');
         $.validator.unobtrusive.parse(form);
         if ($(form).valid()) {
             var ajaxConfig = {
                 type: 'POST',
-                url: '/PrintCertificate/Print',
+                url: '/PrintCertificate/Index',
                 data: dataForm,
                 success: function (response) {
                     //open a new window note:this is a popup so it may be blocked by your browser
-                    var newWindow = window.open("", "Print Certificates");
+                    var newWindow = window.open("/PrintCertificate/Index", "Print Certificates");
 
                     //write the data to the document of the newWindow
+                    newWindow.document.open();
                     newWindow.document.write(response);
+                    newWindow.document.close();
                 },
                 error: function (response) {
                     $.notify(response.error, "error");

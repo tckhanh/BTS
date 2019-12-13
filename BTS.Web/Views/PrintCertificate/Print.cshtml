@@ -2,17 +2,19 @@
 @using Stimulsoft.Report.Web;
 @using System.Web.UI.WebControls;
 @{
-    ViewBag.Title = "Print";
+    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Layouts_PrintCertificate.cshtml";
 }
 
 @Html.Stimulsoft().StiMvcViewer("StiMvcViewer1", new StiMvcViewerOptions()
 {
+    Server = {
+        UseRelativeUrls = true
+    },
     Actions =
     {
         GetReport = "GetReport",
-        ViewerEvent = "ViewerEvent",
-        DesignReport = "Design"
+        ViewerEvent = "ViewerEvent"
     },
     Appearance =
     {
@@ -22,7 +24,7 @@
     Toolbar =
     {
         DisplayMode = StiToolbarDisplayMode.Separated,
-        ShowDesignButton = true
+        ShowDesignButton = false
     },
     Width = Unit.Percentage(100),
     Height = Unit.Percentage(100)

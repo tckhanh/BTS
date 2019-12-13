@@ -116,7 +116,7 @@ namespace BTS.Web.Controllers
                 Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
 
-            Items.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
+            //Items = Items.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 
             IEnumerable<CertificateViewModel> dataViewModel = Mapper.Map<List<CertificateViewModel>>(Items);
 

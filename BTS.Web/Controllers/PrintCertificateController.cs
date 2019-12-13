@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BTS.Common;
 using BTS.Model.Models;
 using BTS.Service;
 using BTS.Web.Infrastructure.Extensions;
@@ -14,6 +15,7 @@ using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
 {
+    [AuthorizeRoles(CommonConstants.Info_CanPrintCertificate_Role)]
     public class PrintCertificateController : BaseController
     {
         private ICertificateService _certificateService;
@@ -27,17 +29,18 @@ namespace BTS.Web.Controllers
             _profileService = profileService;
         }
 
-        // GET: PrintCertificate
-        public ActionResult Index(string Id = "")
+        // GET: PrintCertificate        
+
+        public ActionResult Index(string id = "", string Template = "GCNKD", string BtsNum = "")
         {
             PrintCertificateViewModel ItemVm = new PrintCertificateViewModel();
             string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
             int SubBtsQuantityIndex;
             IEnumerable<PrintCertificateViewModel> printCertificates = new List<PrintCertificateViewModel>();
 
-            if (!string.IsNullOrEmpty(Id) && Id !="undefined")
+            if (!string.IsNullOrEmpty(id) && id !="undefined")
             {
-                Certificate DbItem = _certificateService.getByID(Id, new string[] { "Operator" });
+                Certificate DbItem = _certificateService.getByID(id, new string[] { "Operator" });
 
                 if (DbItem != null)
                 {
@@ -127,15 +130,9 @@ namespace BTS.Web.Controllers
             return View();
         }
 
-        public ActionResult Print(string Template, string BtsNum)
-        {
-            return View();
-        }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Print()
+        public ActionResult Index()
         {
             int countItem;
 
@@ -200,7 +197,7 @@ namespace BTS.Web.Controllers
                 DbItems = DbItems.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
 
-            DbItems.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
+            //DbItems = DbItems.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 
             IEnumerable<PrintCertificateViewModel> printCertificates = Mapper.Map<List<PrintCertificateViewModel>>(DbItems);
 
@@ -289,8 +286,8 @@ namespace BTS.Web.Controllers
             Session["printCertificates"] = printCertificates;
             return View();
         }
-
-        public ActionResult GetReport(string Id = "", string Template = "GCNKD", string BtsNum = "")
+      
+        public ActionResult GetReport(string id = "", string Template = "GCNKD", string BtsNum = "")
         {
             IEnumerable<PrintCertificateViewModel> printCertificates = (IEnumerable<PrintCertificateViewModel>)Session["printCertificates"];
             if (string.IsNullOrEmpty(BtsNum) && printCertificates != null)
@@ -320,6 +317,10 @@ namespace BTS.Web.Controllers
 
         public ActionResult ViewerEvent()
         {
+            //var TempData1 = StiMvcViewer.GetRequestParams();
+            //var TempData2 = StiMvcViewer.GetFormValues();
+            //var TempData3 = StiMvcViewer.GetRouteValues();
+            //var TempData4 = StiMvcViewer.ViewerEventResult();
             return StiMvcViewer.ViewerEventResult();
         }
     }

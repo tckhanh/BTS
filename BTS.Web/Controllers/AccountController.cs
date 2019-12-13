@@ -76,6 +76,8 @@ namespace BTS.Web.Controllers
                         props.IsPersistent = model.RememberMe;
                         authenticationManager.SignIn(props, identity);
 
+                        loadLicense();
+
                         if (Url.IsLocalUrl(returnUrl))
                         {
                             return Redirect(returnUrl);
@@ -228,6 +230,7 @@ namespace BTS.Web.Controllers
 
             return View();
         }
+
 
         #region Helpers
 

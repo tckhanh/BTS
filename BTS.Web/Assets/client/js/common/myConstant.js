@@ -26,6 +26,7 @@
 
     Info_CanViewMap_Role: "Info_CanViewMap",
     Info_CanViewDetail_Role: "Info_CanViewDetail",
+    Info_CanPrintCertificate_Role: "Info_CanPrintCertificate",
     Info_CanViewChart_Role: "Info_CanViewChart",
     Info_CanViewReport_Role: "Info_CanViewReport",
     Info_CanViewStatitics_Role: "Info_CanViewStatitics"

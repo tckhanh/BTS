@@ -59,7 +59,7 @@ namespace BTS.Web.Controllers
 
             Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
-            Items = Items.OrderBy(x => x.Id);
+            //Items = Items.OrderBy(x => x.Id);
 
             IEnumerable<CertificateViewModel> dataViewModel = Mapper.Map<List<CertificateViewModel>>(Items);
             if (countItem > 0)
@@ -123,7 +123,7 @@ namespace BTS.Web.Controllers
             }
             Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
-            Items = Items.OrderByDescending(x => x.TestReportDate.ToString());
+            //Items = Items.OrderByDescending(x => x.TestReportDate.ToString());
 
             IEnumerable<ReportTT18NoCertViewModel> dataViewModel = Mapper.Map<List<ReportTT18NoCertViewModel>>(Items);
             if (countItem > 0)

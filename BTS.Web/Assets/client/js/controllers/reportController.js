@@ -230,6 +230,7 @@
                                 className: 'btn-success'
                             }
                         ],
+                        order: [[1, "desc"]],
                         "processing": true,
                         "paging": false,
                         "info": true,
@@ -344,6 +345,7 @@
                         }
                     })
                     .dataTable({
+                        order: [[1, "desc"]],
                         "processing": true,
                         "paging": false,
                         "info": true,
@@ -712,7 +714,7 @@
                                 text: 'In ấn',
                                 className: 'btn-success'
                             }
-                        ],
+                        ],                        
                         "processing": true,
                         "paging": false,
                         "info": true,

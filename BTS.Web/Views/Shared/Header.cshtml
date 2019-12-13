@@ -227,7 +227,7 @@
 
                 <li class="dropdown tasks-menu">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <img src='@Session["ImagePath"]' alt="">@User.Identity.Name
+                        <img src=@User.Identity.getImagePath() alt="">@User.Identity.Name
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">

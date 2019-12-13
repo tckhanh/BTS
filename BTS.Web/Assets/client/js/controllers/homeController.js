@@ -275,6 +275,7 @@
 
     var homeController = {
         init: function () {
+            homeController.registerEvent();
             homeController.loadPieChart("/Home/CerStatByOperator", "#pieChart_CerStatByOperator");
             homeController.loadPieChart("/Home/BtsStatInProcess", "#pieChart_BtsStatInProcess");
 
@@ -289,7 +290,7 @@
         },
         registerEventDataTable: function () {
         },
-        registerEvent: function () {
+        registerEvent: function () {            
         },
 
         loadLineChart: function (strUrl, ChartId, strAx, strAy, strTitle) {

@@ -57,9 +57,10 @@ namespace BTS.Web.App_Start
                 },
                 AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
                 ExpireTimeSpan = TimeSpan.FromMinutes(30),
-                SlidingExpiration = true
+                SlidingExpiration = false
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+
 
             //// Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
             //app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));

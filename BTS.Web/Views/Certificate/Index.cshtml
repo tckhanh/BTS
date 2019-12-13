@@ -195,13 +195,13 @@
                             <div class="box-body">
                                 @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
                                 {
-                                    <input type="button" class="btn" onclick="ExportTableToExcel.tableToExcel('MyDataTable','Certificates','Certificates')" value="Xuất Excel">
+                                    <input type="button" class="btn btn-primary" onclick="ExportTableToExcel.tableToExcel('MyDataTable','Certificates','Certificates')" value="Xuất Excel">
                                 }
-                                @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
+                                @if (User.IsInRole(CommonConstants.Info_CanPrintCertificate_Role))
                                 {
-                                    <input type="button" class="btn btn-success" onclick="certificateController.jQueryAjaxPost()" value="In Giấy CNKĐ">
+                                    <input type="button" class="btn btn-success" onclick="certificateController.printCertificate()" value="In Giấy CNKĐ">
                                 }
-
+                                <br/><br/>
                                 <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">
                                     <thead>
                                         <tr>
