@@ -56,7 +56,7 @@ namespace BTS.Web.Controllers
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<CertStatByOperatorVM> ByOperator = _stattisticService.GetCertStatByOperator();
+                IEnumerable<StatCerByOperatorVM> ByOperator = _stattisticService.GetStatCerByOperator();
                 List<String> ColumnNames = new List<string>() {
                     "Operator", "ValidCertificates","ExpiredInYearCertificates"};
                 chartData.Add(ColumnNames);
@@ -162,7 +162,7 @@ namespace BTS.Web.Controllers
 
         public ActionResult GetCertificateSumary()
         {
-            List<IssuedCertStatByOperatorYearVM> dataSumary = _stattisticService.GetIssuedCertStatByOperatorYear().ToList();
+            List<IssuedStatCerByOperatorYearVM> dataSumary = _stattisticService.GetIssuedStatCerByOperatorYear().ToList();
 
             return Json(dataSumary, JsonRequestBehavior.AllowGet);
         }

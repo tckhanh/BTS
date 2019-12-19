@@ -47,14 +47,14 @@
     <Compile Include="Exceptions\NameDuplicatedException.cs" />
     <Compile Include="MailHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\BtsStatiticsViewModel.cs" />
+    <Compile Include="ViewModels\StatBtsVM.cs" />
     <Compile Include="ViewModels\ShortCertificate.cs" />
     <Compile Include="ViewModels\ShortSubBtsInCert.cs" />
     <Compile Include="StringHelper.cs" />
     <Compile Include="ViewModels\commonDataChart.cs" />
     <Compile Include="ViewModels\Message.cs" />
     <Compile Include="ViewModels\StatisticNoCertificate.cs" />
-    <Compile Include="ViewModels\CertificateStatiticsViewModel.cs" />
+    <Compile Include="ViewModels\StatCerVM.cs" />
     <Compile Include="ViewModels\StatisticSubBtsInCert.cs" />
     <Compile Include="WebMsgBox.cs" />
   </ItemGroup>

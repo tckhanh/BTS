@@ -16,27 +16,33 @@ namespace BTS.Service
 
         IEnumerable<City> GetCity();
 
-        IEnumerable<IssuedCertStatByOperatorYearVM> GetIssuedCertStatByOperatorYear();
+        IEnumerable<IssuedStatCerByOperatorYearVM> GetIssuedStatCerByOperatorYear();
 
-        IEnumerable<IssuedCertStatByOperatorCityVM> GetIssuedCertStatByOperatorCity();
+        IEnumerable<IssuedStatCerByOperatorAreaVM> GetIssuedStatCerByOperatorArea();        
+        
+        IEnumerable<IssuedStatCerByOperatorAreaVM> GetIssuedStatExpiredInYearCerByOperatorArea();
 
-        IEnumerable<ExpiredCertStatByOperatorYearVM> GetExpiredCertStatByOperatorYear();
+        IEnumerable<IssuedStatCerByOperatorCityVM> GetIssuedStatCerByOperatorCity();
 
-        IEnumerable<CertStatByOperatorVM> GetCertStatByOperator();
+        IEnumerable<ExpiredStatCerByOperatorYearVM> GetExpiredStatCerByOperatorYear();
 
-        IEnumerable<BtsStatByBandVM> GetBtsStatByBand();
+        IEnumerable<StatCerByOperatorVM> GetStatCerByOperator();
 
-        IEnumerable<BtsStatByOperatorBandVM> GetBtsStatByOperatorBand();
+        IEnumerable<StatBtsByBandVM> GetStatBtsByBand();
 
-        IEnumerable<BtsStatByBandCityVM> GetBtsStatByBandCity();
+        IEnumerable<StatBtsByOperatorBandVM> GetStatBtsByOperatorBand();
 
-        IEnumerable<BtsStatByOperatorCityVM> GetBtsStatByOperatorCity();
+        IEnumerable<StatBtsByBandCityVM> GetStatBtsByBandCity();
 
-        IEnumerable<BtsStatByEquipmentVM> GetBtsStatByEquipment();
+        IEnumerable<StatBtsByOperatorCityVM> GetStatBtsByOperatorCity();
 
-        IEnumerable<BtsStatByManufactoryVM> GetBtsStatByManufactory();
+        IEnumerable<StatBtsByOperatorAreaVM> GetStatBtsByOperatorArea();
 
-        IEnumerable<BtsStatByOperatorManufactoryVM> GetBtsStatByOperatorManufactory();
+        IEnumerable<StatBtsByEquipmentVM> GetStatBtsByEquipment();
+
+        IEnumerable<StatBtsByManufactoryVM> GetStatBtsByManufactory();
+
+        IEnumerable<StatBtsByOperatorManufactoryVM> GetStatBtsByOperatorManufactory();
 
         IEnumerable<StatBtsVm> GetStatAllBtsInProcess();
     }
@@ -56,14 +62,24 @@ namespace BTS.Service
             _cityRepository = cityRepository;
         }
 
-        public IEnumerable<ExpiredCertStatByOperatorYearVM> GetExpiredCertStatByOperatorYear()
+        public IEnumerable<ExpiredStatCerByOperatorYearVM> GetExpiredStatCerByOperatorYear()
         {
-            return _certificateRepository.GetExpiredCertStatByOperatorYear();
+            return _certificateRepository.GetExpiredStatCerByOperatorYear();
         }
 
-        public IEnumerable<IssuedCertStatByOperatorYearVM> GetIssuedCertStatByOperatorYear()
+        public IEnumerable<IssuedStatCerByOperatorYearVM> GetIssuedStatCerByOperatorYear()
         {
-            return _certificateRepository.GetIssuedCertStatByOperatorYear();
+            return _certificateRepository.GetIssuedStatCerByOperatorYear();
+        }
+
+        public IEnumerable<IssuedStatCerByOperatorAreaVM> GetIssuedStatCerByOperatorArea()
+        {
+            return _certificateRepository.GetIssuedStatCerByOperatorArea();
+        }
+
+        public IEnumerable<IssuedStatCerByOperatorAreaVM> GetIssuedStatExpiredInYearCerByOperatorArea()
+        {
+            return _certificateRepository.GetIssuedStatExpiredInYearCerByOperatorArea();
         }
 
         public IEnumerable<Operator> GetOperator()
@@ -76,49 +92,54 @@ namespace BTS.Service
             return _cityRepository.GetAll();
         }
 
-        public IEnumerable<CertStatByOperatorVM> GetCertStatByOperator()
+        public IEnumerable<StatCerByOperatorVM> GetStatCerByOperator()
         {
-            return _certificateRepository.GetCertStatByOperator();
+            return _certificateRepository.GetStatCerByOperator();
         }
 
-        public IEnumerable<BtsStatByBandVM> GetBtsStatByBand()
+        public IEnumerable<StatBtsByBandVM> GetStatBtsByBand()
         {
-            return _subBTSinCertRepository.GetBtsStatByBand();
+            return _subBTSinCertRepository.GetStatBtsByBand();
         }
 
-        public IEnumerable<BtsStatByOperatorBandVM> GetBtsStatByOperatorBand()
+        public IEnumerable<StatBtsByOperatorBandVM> GetStatBtsByOperatorBand()
         {
-            return _subBTSinCertRepository.GetBtsStatByOperatorBand();
+            return _subBTSinCertRepository.GetStatBtsByOperatorBand();
         }
 
-        public IEnumerable<BtsStatByBandCityVM> GetBtsStatByBandCity()
+        public IEnumerable<StatBtsByBandCityVM> GetStatBtsByBandCity()
         {
-            return _subBTSinCertRepository.GetBtsStatByBandCity();
+            return _subBTSinCertRepository.GetStatBtsByBandCity();
         }
 
-        public IEnumerable<BtsStatByOperatorCityVM> GetBtsStatByOperatorCity()
+        public IEnumerable<StatBtsByOperatorCityVM> GetStatBtsByOperatorCity()
         {
-            return _subBTSinCertRepository.GetBtsStatByOperatorCity();
+            return _subBTSinCertRepository.GetStatBtsByOperatorCity();
         }
 
-        public IEnumerable<BtsStatByManufactoryVM> GetBtsStatByManufactory()
+        public IEnumerable<StatBtsByOperatorAreaVM> GetStatBtsByOperatorArea()
         {
-            return _subBTSinCertRepository.GetBtsStatByManufactory();
+            return _subBTSinCertRepository.GetStatBtsByOperatorArea();
         }
 
-        public IEnumerable<BtsStatByOperatorManufactoryVM> GetBtsStatByOperatorManufactory()
+        public IEnumerable<StatBtsByManufactoryVM> GetStatBtsByManufactory()
         {
-            return _subBTSinCertRepository.GetBtsStatByOperatorManufactory();
+            return _subBTSinCertRepository.GetStatBtsByManufactory();
         }
 
-        public IEnumerable<BtsStatByEquipmentVM> GetBtsStatByEquipment()
+        public IEnumerable<StatBtsByOperatorManufactoryVM> GetStatBtsByOperatorManufactory()
         {
-            return _subBTSinCertRepository.GetBtsStatByEquipemnt();
+            return _subBTSinCertRepository.GetStatBtsByOperatorManufactory();
         }
 
-        public IEnumerable<IssuedCertStatByOperatorCityVM> GetIssuedCertStatByOperatorCity()
+        public IEnumerable<StatBtsByEquipmentVM> GetStatBtsByEquipment()
         {
-            return _certificateRepository.GetIssuedCertStatByOperatorCity(true);
+            return _subBTSinCertRepository.GetStatBtsByEquipemnt();
+        }
+
+        public IEnumerable<IssuedStatCerByOperatorCityVM> GetIssuedStatCerByOperatorCity()
+        {
+            return _certificateRepository.GetIssuedStatCerByOperatorCity(true);
         }
 
         IEnumerable<StatBtsVm> IStatisticService.GetStatAllBtsInProcess()

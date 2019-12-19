@@ -44,7 +44,7 @@ namespace BTS.UnitTest.RepositoryTest
         [TestMethod]
         public void BTSCertificate_Repository_Stat()
         {
-            var result1 = objRepository.GetIssuedCertStatByOperatorYear();
+            var result1 = objRepository.GetIssuedStatCerByOperatorYear();
 
             Assert.IsNotNull(result1);
         }

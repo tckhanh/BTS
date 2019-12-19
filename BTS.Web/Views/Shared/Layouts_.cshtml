@@ -1,0 +1,129 @@
+﻿@using BTS.Common
+@using System.Security.Claims
+@using BTS.Web.Infrastructure.Extensions
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    @Html.MetaAcceptLanguage()
+
+    <title>AdminLTE 2 | Dashboard</title>
+
+    <!--Default CSS* -->
+    <!-- jquery-ui -->
+    <link href="~/Assets/libs/jquery-ui/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/Assets/libs/bootstrap/dist/css/bootstrap.min.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link href="~/Assets/libs/bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet" />
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="~/Assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/Assets/libs/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Assets/libs/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/Assets/libs/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Assets/libs/adminLTE/dist/css/AdminLTE.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="~/Assets/libs/adminLTE/dist/css/skins/_all-skins.min.css">
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    <link href="~/Assets/client/css/custom-Site.css" rel="stylesheet" />
+
+    @RenderSection("headCSS", required: false)
+
+    <!--Default header Script -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- jQuery 3 -->
+    <script src="~/Assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="~/Assets/libs/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/Assets/libs/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/Assets/libs/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Assets/libs/jquery-number/jquery.number.min.js"></script>
+
+    <script src="~/Assets/libs/jquery-global/jquery.global.js"></script>
+    <script src="~/Assets/libs/jquery-global/globinfo/jquery.glob.vi-VN.js"></script>
+
+    <script src="~/Assets/libs/jquery-form/dist/jquery.form.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/Assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Assets/libs/bootstrap-wysihtml5/dist/bootstrap-wysihtml5-0.0.2.min.js"></script>
+    <script src="~/Assets/libs/moment/moment.js"></script>
+    //
+    <script src="~/Assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/Assets/libs/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <script src="~/Assets/client/js/common/myConstant.js"></script>
+    <script src="~/Assets/client/js/common/myCulture.js"></script>
+
+    <script>
+        var AppGlobal = {
+            "LoginUser": {
+            "name": "@(User.Identity.Name)",
+                "roles": "@string.Join(";", ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList());",
+                "arrayRoles": "@((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();",
+                "ImagePath": "@(((ClaimsIdentity)User.Identity).FindFirst("ImagePath")?.Value)",
+                "CityIDsScope": "@(((ClaimsIdentity)User.Identity).FindFirst("CityIDsScope")?.Value)"
+            }
+        };
+        var myArrayRoles = AppGlobal.LoginUser.roles.split(';');
+    </script>
+    @RenderSection("headerJS", required: false)
+
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div>
+        <input type="hidden" id="success" value="@TempData["success"]" />
+        <input type="hidden" id="info" value="@TempData["info"]" />
+        <input type="hidden" id="warning" value="@TempData["warning"]" />
+        <input type="hidden" id="error" value="@TempData["error"]" />
+    </div>
+
+    <div class="wrapper">
+        <!--header-->
+        @{Html.RenderAction("Header", "Home");}
+        <!---->
+        <!-- Left side column. contains the logo and sidebar -->
+        @*@{Html.RenderAction("LeftSidebar", "Home");}*@
+        <!---->
+        <!-- Content Wrapper. Contains page content -->
+        @RenderBody()
+        <!-- /.content-wrapper -->
+        <!--footer-->
+        @{Html.RenderAction("Footer", "Home");}
+        <!---->
+    </div>
+    <!-- ./wrapper -->
+    <!--Default footer Script -->
+    <!-- SlimScroll -->
+    <script src="~/Assets/libs/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Context Menu -->
+    <script src="~/Assets/libs/ui-contextmenu/jquery.ui-contextmenu.min.js"></script>
+    <!-- FastClick -->
+    <script src="~/Assets/libs/fastclick/lib/fastclick.js"></script>
+    <script src="~/Assets/libs/notifyjs/dist/notify.js"></script>
+    <script src="~/Assets/libs/toastr/toastr.min.js"></script>
+    <script src="~/Assets/shared/message.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Assets/libs/adminLTE/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/Assets/libs/adminLTE/dist/js/demo.js"></script>
+
+    <!-- page script -->
+    @RenderSection("footerJS", required: false)
+</body>
+</html>

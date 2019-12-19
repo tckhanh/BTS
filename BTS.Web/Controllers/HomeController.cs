@@ -45,12 +45,12 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult CerStatByOperator()
+        public ActionResult StatCerByOperator()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<CertStatByOperatorVM> ByOperator = _stattisticService.GetCertStatByOperator();
+                IEnumerable<StatCerByOperatorVM> ByOperator = _stattisticService.GetStatCerByOperator();
 
                 DataTable pivotTable = ByOperator.ToDataTable();
                 List<String> ColumnNames = new List<string>();
@@ -71,7 +71,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "StatisticByOperator Finished !",
+                    message = "StatCerByOperator Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -88,7 +88,7 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult BtsStatInProcess()
+        public ActionResult StatBtsInProcess()
         {
             List<object> chartData = new List<object>();
             try
@@ -114,7 +114,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "StatisticBtsInProcess Finished !",
+                    message = "StatBtsInProcess Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -131,13 +131,26 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult CertStatByOperatorYear()
+        public ActionResult StatCerByOperatorYear()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<IssuedCertStatByOperatorYearVM> ByOperatorYear = _stattisticService.GetIssuedCertStatByOperatorYear();
+                IEnumerable<IssuedStatCerByOperatorYearVM> ByOperatorYear = _stattisticService.GetIssuedStatCerByOperatorYear();
                 DataTable pivotTable = ByOperatorYear.ToPivotTable(item => item.OperatorID, item => item.Year, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
+                
+                pivotTable.Columns.Add("TOTAL", typeof(System.Int32));
+
+                foreach (DataRow row in pivotTable.Rows)
+                {
+                    long total = 0;
+                    foreach (DataColumn col in pivotTable.Columns)
+                    {
+                        if (col.ColumnName != "Year" && col.ColumnName != "TOTAL")
+                            total += Convert.ToInt32(row[col.ColumnName].ToString());
+                    }
+                    row["TOTAL"] = total;   // or set it to some other value
+                }
 
                 List<String> ColumnNames = new List<string>();
                 foreach (DataColumn col in pivotTable.Columns)
@@ -158,7 +171,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "IssuedStatisticByOperatorYear Finished !",
+                    message = "StatCerByOperatorYear Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -175,12 +188,127 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult CertStatByOperatorCity()
+        public ActionResult StatCerByOperatorArea()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<IssuedCertStatByOperatorCityVM> ByOperatorCity = _stattisticService.GetIssuedCertStatByOperatorCity();
+                IEnumerable<IssuedStatCerByOperatorAreaVM> ByOperatorArea = _stattisticService.GetIssuedStatCerByOperatorArea();
+                DataTable pivotTable = ByOperatorArea.ToPivotTable(item => item.OperatorID, item => item.Area, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
+
+                pivotTable.Columns.Add("TOTAL", typeof(System.Int32));
+
+                foreach (DataRow row in pivotTable.Rows)
+                {
+                    long total = 0;
+                    foreach (DataColumn col in pivotTable.Columns)
+                    {
+                        if (col.ColumnName != "Area" && col.ColumnName != "TOTAL")
+                            total += Convert.ToInt32(row[col.ColumnName].ToString());
+                    }
+                    row["TOTAL"] = total;   // or set it to some other value
+                }
+
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatCerByOperatorArea Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult StatExpiredInYearCerByOperatorArea()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<IssuedStatCerByOperatorAreaVM> ByOperatorArea = _stattisticService.GetIssuedStatExpiredInYearCerByOperatorArea();
+                DataTable pivotTable = ByOperatorArea.ToPivotTable(item => item.OperatorID, item => item.Area, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
+
+                pivotTable.Columns.Add("TOTAL", typeof(System.Int32));
+
+                foreach (DataRow row in pivotTable.Rows)
+                {
+                    long total = 0;
+                    foreach (DataColumn col in pivotTable.Columns)
+                    {
+                        if (col.ColumnName != "Area" && col.ColumnName != "TOTAL")
+                            total += Convert.ToInt32(row[col.ColumnName].ToString());
+                    }
+                    row["TOTAL"] = total;   // or set it to some other value
+                }
+
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatExpiredInYearCerByOperatorArea Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult StatCerByOperatorCity()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<IssuedStatCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetIssuedStatCerByOperatorCity();
                 ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
@@ -204,7 +332,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "IssuedStatisticByOperatorCity Finished !",
+                    message = "StatCerByOperatorCity Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -221,12 +349,12 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult BtsStatByBand()
+        public ActionResult StatBtsByBand()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<BtsStatByOperatorBandVM> ByBand = _stattisticService.GetBtsStatByOperatorBand();
+                IEnumerable<StatBtsByOperatorBandVM> ByBand = _stattisticService.GetStatBtsByOperatorBand();
 
                 DataTable pivotTable = ByBand.ToPivotTable(item => item.OperatorID, item => item.Band, items => items.Any() ? items.Sum(item => item.Btss) : 0);
 
@@ -249,7 +377,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "BtsStatByBand Finished !",
+                    message = "StatBtsByBand Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -266,12 +394,12 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult BtsStatByManufactory()
+        public ActionResult StatBtsByManufactory()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<BtsStatByOperatorManufactoryVM> ByManufactory = _stattisticService.GetBtsStatByOperatorManufactory();
+                IEnumerable<StatBtsByOperatorManufactoryVM> ByManufactory = _stattisticService.GetStatBtsByOperatorManufactory();
 
                 DataTable pivotTable = ByManufactory.ToPivotTable(item => item.OperatorID, item => item.Manufactory, items => items.Any() ? items.Sum(item => item.Btss) : 0);
                 List<String> ColumnNames = new List<string>();
@@ -292,7 +420,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "BtsStatByManufactory Finished !",
+                    message = "StatBtsByManufactory Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -309,12 +437,12 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult BtsStatByEquipment()
+        public ActionResult StatBtsByEquipment()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<BtsStatByEquipmentVM> ByEquipment = _stattisticService.GetBtsStatByEquipment();
+                IEnumerable<StatBtsByEquipmentVM> ByEquipment = _stattisticService.GetStatBtsByEquipment();
 
                 DataTable pivotTable = ByEquipment.ToDataTable();
                 List<String> ColumnNames = new List<string>();
@@ -335,7 +463,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "BtsStatByEquipment Finished !",
+                    message = "StatBtsByEquipment Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -352,12 +480,12 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult BtsStatByBandCity()
+        public ActionResult StatBtsByBandCity()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<BtsStatByBandCityVM> ByBandCity = _stattisticService.GetBtsStatByBandCity();
+                IEnumerable<StatBtsByBandCityVM> ByBandCity = _stattisticService.GetStatBtsByBandCity();
                 ByBandCity = ByBandCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByBandCity.ToPivotTable(item => item.Band, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
@@ -381,7 +509,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "BtsStatByBandCity Finished !",
+                    message = "StatBtsByBandCity Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -398,12 +526,69 @@ namespace BTS.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult BtsStatByOperatorCity()
+        public ActionResult StatBtsByOperatorArea()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<BtsStatByOperatorCityVM> ByOperatorCity = _stattisticService.GetBtsStatByOperatorCity();
+                IEnumerable<StatBtsByOperatorAreaVM> ByOperatorArea = _stattisticService.GetStatBtsByOperatorArea();
+
+                DataTable pivotTable = ByOperatorArea.ToPivotTable(item => item.OperatorID, item => item.Area, items => items.Any() ? items.Sum(item => item.Btss) : 0);
+
+                pivotTable.Columns.Add("TOTAL", typeof(System.Int32));
+
+                foreach (DataRow row in pivotTable.Rows)
+                {
+                    long total = 0;
+                    foreach (DataColumn col in pivotTable.Columns)
+                    {
+                        if (col.ColumnName != "Area" && col.ColumnName != "TOTAL")
+                            total += Convert.ToInt32(row[col.ColumnName].ToString());
+                    }
+                    row["TOTAL"] = total;   // or set it to some other value
+                }
+                
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatBtsByOperatorArea Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult StatBtsByOperatorCity()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<StatBtsByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatBtsByOperatorCity();
                 ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
@@ -427,7 +612,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "BtsStatByOperatorCity Finished !",
+                    message = "StatBtsByOperatorCity Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
