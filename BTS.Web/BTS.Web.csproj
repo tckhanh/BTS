@@ -283,6 +283,8 @@
     <Compile Include="Controllers\ApplicationRoleController.cs" />
     <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\InspectController.cs" />
     <Compile Include="Controllers\PrintCertificateController.cs" />
     <Compile Include="Controllers\RecoveryController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -294,7 +296,6 @@
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\HoController.cs" />
     <Compile Include="Controllers\CheckController.cs" />
     <Compile Include="Controllers\ImportDataController.cs" />
     <Compile Include="Controllers\ImportUserController.cs" />
@@ -580,10 +581,11 @@
     <Content Include="Assets\client\js\controllers\applicationUserController.js" />
     <Content Include="Assets\client\js\common\dtree.js" />
     <Content Include="Assets\client\js\common\myChart.js" />
+    <Content Include="Assets\client\js\controllers\statisticsController.js" />
+    <Content Include="Assets\client\js\controllers\inspectController.js" />
     <Content Include="Assets\client\js\controllers\homeController - Copy.js" />
     <Content Include="Assets\client\js\controllers\recoveryController.js" />
     <Content Include="Assets\client\js\controllers\printCertificateController.js" />
-    <Content Include="Assets\client\js\controllers\statiticsController.js" />
     <Content Include="Assets\libs\adminLTE\build\js\BoxRefresh.js" />
     <Content Include="Assets\libs\adminLTE\build\js\BoxWidget.js" />
     <Content Include="Assets\libs\adminLTE\build\js\ControlSidebar.js" />
@@ -1472,8 +1474,6 @@
     <Content Include="Assets\libs\c3\extensions\js\c3ext.js" />
     <Content Include="Assets\libs\c3\karma.conf.js" />
     <Content Include="Assets\libs\c3\rollup.config.js" />
-    <Content Include="Assets\libs\chart.js\.bower.json" />
-    <Content Include="Assets\libs\chart.js\bower.json" />
     <Content Include="Assets\libs\chart.js\Chart.js" />
     <Content Include="Assets\libs\chart.js\dist\Chart.bundle.js" />
     <Content Include="Assets\libs\chart.js\dist\Chart.bundle.min.js" />
@@ -1484,9 +1484,6 @@
     <Content Include="Assets\libs\chart.js\docs\style.css" />
     <Content Include="Assets\libs\chart.js\gulpfile.js" />
     <Content Include="Assets\libs\chart.js\karma.conf.js" />
-    <Content Include="Assets\libs\chart.js\LICENSE.md" />
-    <Content Include="Assets\libs\chart.js\package.json" />
-    <Content Include="Assets\libs\chart.js\README.md" />
     <Content Include="Assets\libs\chart.js\rollup.config.js" />
     <Content Include="Assets\libs\chart.js\rollup.plugins.js" />
     <Content Include="Assets\libs\chart.js\samples\advanced\content-security-policy.css" />
@@ -13034,11 +13031,24 @@
     <Content Include="Content\ReportTemplates\CopyGCNKD_4BTS.mrt" />
     <Content Include="Content\ReportTemplates\CopyGCNKD_5BTS.mrt" />
     <Content Include="Content\ReportTemplates\license.key" />
+    <Content Include="Assets\libs\Chart.PieceLabel.js\.bower.json" />
+    <Content Include="Assets\libs\Chart.PieceLabel.js\.gitignore" />
+    <Content Include="Assets\libs\Chart.PieceLabel.js\bower.json" />
+    <Content Include="Assets\libs\Chart.PieceLabel.js\CHANGELOG.md" />
+    <Content Include="Assets\libs\Chart.PieceLabel.js\package.json" />
+    <Content Include="Assets\libs\Chart.PieceLabel.js\README.md" />
+    <Content Include="Assets\libs\jquery-number\.bower.json" />
+    <Content Include="Assets\libs\jquery-number\.gitignore" />
+    <Content Include="Assets\libs\jquery-number\bower.json" />
+    <Content Include="Assets\libs\jquery-number\df-number-format.jquery.json" />
+    <Content Include="Assets\libs\jquery-number\jquery.number.min.js.map" />
+    <Content Include="Assets\libs\chart.js\.bower.json" />
     <Content Include="Assets\libs\chart.js\.editorconfig" />
     <Content Include="Assets\libs\chart.js\.eslintignore" />
     <Content Include="Assets\libs\chart.js\.eslintrc.yml" />
     <Content Include="Assets\libs\chart.js\.htmllintrc" />
     <Content Include="Assets\libs\chart.js\book.json" />
+    <Content Include="Assets\libs\chart.js\bower.json" />
     <Content Include="Assets\libs\chart.js\composer.json" />
     <Content Include="Assets\libs\chart.js\docs\axes\cartesian\category.md" />
     <Content Include="Assets\libs\chart.js\docs\axes\cartesian\linear.md" />
@@ -13095,8 +13105,11 @@
     <Content Include="Assets\libs\chart.js\docs\notes\README.md" />
     <Content Include="Assets\libs\chart.js\docs\README.md" />
     <Content Include="Assets\libs\chart.js\docs\SUMMARY.md" />
+    <Content Include="Assets\libs\chart.js\LICENSE.md" />
     <Content Include="Assets\libs\chart.js\MAINTAINING.md" />
     <Content Include="Assets\libs\chart.js\package-lock.json" />
+    <Content Include="Assets\libs\chart.js\package.json" />
+    <Content Include="Assets\libs\chart.js\README.md" />
     <Content Include="Assets\libs\chart.js\samples\.eslintrc.yml" />
     <Content Include="Assets\libs\chart.js\test\.eslintrc.yml" />
     <Content Include="Assets\libs\chart.js\test\fixtures\controller.bar\bar-thickness-absolute.json" />
@@ -13212,17 +13225,6 @@
     <Content Include="Assets\libs\chart.js\test\fixtures\scale.radialLinear\gridlines-no-z.json" />
     <Content Include="Assets\libs\chart.js\test\fixtures\scale.radialLinear\gridlines-z.json" />
     <Content Include="Assets\libs\chart.js\test\fixtures\scale.radialLinear\indexable-gridlines.json" />
-    <Content Include="Assets\libs\Chart.PieceLabel.js\.bower.json" />
-    <Content Include="Assets\libs\Chart.PieceLabel.js\.gitignore" />
-    <Content Include="Assets\libs\Chart.PieceLabel.js\bower.json" />
-    <Content Include="Assets\libs\Chart.PieceLabel.js\CHANGELOG.md" />
-    <Content Include="Assets\libs\Chart.PieceLabel.js\package.json" />
-    <Content Include="Assets\libs\Chart.PieceLabel.js\README.md" />
-    <Content Include="Assets\libs\jquery-number\.bower.json" />
-    <Content Include="Assets\libs\jquery-number\.gitignore" />
-    <Content Include="Assets\libs\jquery-number\bower.json" />
-    <Content Include="Assets\libs\jquery-number\df-number-format.jquery.json" />
-    <Content Include="Assets\libs\jquery-number\jquery.number.min.js.map" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Shared\Layouts_.cshtml" />
     <Content Include="Views\Ho\Index.cshtml" />
@@ -13234,7 +13236,6 @@
     <Content Include="Views\ImportData\Index_.cshtml" />
     <Content Include="Views\PivotTable\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
@@ -13257,7 +13258,6 @@
     <Content Include="Views\Certificate\Detail.cshtml" />
     <Content Include="Views\Certificate\Edit.cshtml" />
     <Content Include="Views\Certificate\ViewAll.cshtml" />
-    <Content Include="Views\Statitics\Index.cshtml" />
     <Content Include="Views\Recovery\Index.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -13266,6 +13266,14 @@
     <Content Include="Views\PrintCertificate\Print.cshtml" />
     <Content Include="Views\Shared\Header.cshtml" />
     <Content Include="Views\Shared\Layouts.cshtml" />
+    <Content Include="Views\Inspect\Index.cshtml" />
+    <Content Include="Views\Inspect\SubDetail.cshtml" />
+    <Content Include="Views\Inspect\Add.cshtml" />
+    <Content Include="Views\Inspect\Detail.cshtml" />
+    <Content Include="Views\Inspect\Edit.cshtml" />
+    <Content Include="Views\Statistics\Index.cshtml" />
+    <Content Include="Views\PrintCertificate\PrintFromInspect.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Common\BTS.Common.csproj">

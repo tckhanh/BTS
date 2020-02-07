@@ -1,0 +1,67 @@
+﻿@model IEnumerable<BTS.Web.Models.SubBtsInCertViewModel>
+
+<table class="table">    
+    <tr>        
+        <th>
+            @Html.DisplayNameFor(model => model.BtsCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OperatorID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Manufactory)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Equipment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AntenNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Configuration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PowerSum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Band)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AntenHeight)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BtsCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OperatorID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manufactory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Equipment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AntenNum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Configuration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PowerSum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Band)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AntenHeight)
+            </td>
+        </tr>
+    }
+</table>

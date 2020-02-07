@@ -179,9 +179,9 @@ var noCertificateController = {
                         "url": "/NoCertificate/loadNoCertificate",
                         "type": "POST",
                         "data": function (d) {
-                            d.CityID = $('#CityID').val().trim();
-                            d.OperatorID = $('#OperatorID').val().trim();
-                            d.ProfileID = $('#ProfileID').val().trim();
+                            d.CityID = $('#SelCityID').val().trim();
+                            d.OperatorID = $('#SelOperatorID').val().trim();
+                            d.ProfileID = $('#SelProfileID').val().trim();
                             d.StartDate = startDate.toISOString();
                             d.EndDate = endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
@@ -237,6 +237,18 @@ var noCertificateController = {
                     "initComplete": function () {
                     }
                 });
+            var t = $('#MyDataTable').DataTable();
+            t.on('preXhr.dt', function (e, settings, data) {
+                $('html').addClass('waiting');
+            });
+            t.on('xhr.dt', function (e, settings, json, xhr) {
+                $('html').removeClass('waiting');
+            });
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
         } else {
             $("#MyDataTable")
                 .on('draw.dt', function (e, settings, json, xhr) {
@@ -271,9 +283,9 @@ var noCertificateController = {
                         "url": "/NoCertificate/loadNoCertificate",
                         "type": "POST",
                         "data": function (d) {
-                            d.CityID = $('#CityID').val().trim();
-                            d.OperatorID = $('#OperatorID').val().trim();
-                            d.ProfileID = $('#ProfileID').val().trim();
+                            d.CityID = $('#SelCityID').val().trim();
+                            d.OperatorID = $('#SelOperatorID').val().trim();
+                            d.ProfileID = $('#SelProfileID').val().trim();
                             d.StartDate = startDate.toISOString();
                             d.EndDate = endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
@@ -329,6 +341,18 @@ var noCertificateController = {
                     initComplete: function () {
                     }
                 });
+            var t = $('#MyDataTable').DataTable();
+            t.on('preXhr.dt', function (e, settings, data) {
+                $('html').addClass('waiting');
+            });
+            t.on('xhr.dt', function (e, settings, json, xhr) {
+                $('html').removeClass('waiting');
+            });
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
         }
     },
     initCompleteFunction: function (settings, json) {

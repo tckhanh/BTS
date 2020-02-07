@@ -31,6 +31,13 @@ namespace BTS.Common.ViewModels
         public int Btss { get; set; }
     }
 
+    public class StatBtsByAreaBandVM
+    {
+        public string Area { get; set; }
+        public string Band { get; set; }
+        public int Btss { get; set; }
+    }
+
     public class StatBtsByOperatorCityVM
     {
         public string OperatorID { get; set; }
@@ -61,6 +68,13 @@ namespace BTS.Common.ViewModels
     public class StatBtsByOperatorManufactoryVM
     {
         public string OperatorID { get; set; }
+        public string Manufactory { get; set; }
+        public int Btss { get; set; }
+    }
+
+    public class StatBtsByAreaManufactoryVM
+    {
+        public string Area { get; set; }
         public string Manufactory { get; set; }
         public int Btss { get; set; }
     }

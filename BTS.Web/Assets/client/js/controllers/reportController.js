@@ -315,6 +315,17 @@
                     });
 
                 var t = $('#MyDataTable').DataTable();
+                t.on('preXhr.dt', function (e, settings, data) {
+                    $('html').addClass('waiting');
+                });
+                t.on('xhr.dt', function (e, settings, json, xhr) {
+                    $('html').removeClass('waiting');
+                });
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
                 t.on('order.dt search.dt', function () {
                     t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                         cell.innerHTML = i + 1;
@@ -429,6 +440,17 @@
                         }
                     });
                 var t = $('#MyDataTable').DataTable();
+                t.on('preXhr.dt', function (e, settings, data) {
+                    $('html').addClass('waiting');
+                });
+                t.on('xhr.dt', function (e, settings, json, xhr) {
+                    $('html').removeClass('waiting');
+                });
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
                 t.on('order.dt search.dt', function () {
                     t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                         cell.innerHTML = i + 1;
@@ -558,6 +580,17 @@
                     });
 
                 var t = $('#MyDataTable2').DataTable();
+                t.on('preXhr.dt', function (e, settings, data) {
+                    $('html').addClass('waiting');
+                });
+                t.on('xhr.dt', function (e, settings, json, xhr) {
+                    $('html').removeClass('waiting');
+                });
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
                 t.on('order.dt search.dt', function () {
                     t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                         cell.innerHTML = i + 1;
@@ -662,6 +695,17 @@
                         }
                     });
                 var t = $('#MyDataTable2').DataTable();
+                t.on('preXhr.dt', function (e, settings, data) {
+                    $('html').addClass('waiting');
+                });
+                t.on('xhr.dt', function (e, settings, json, xhr) {
+                    $('html').removeClass('waiting');
+                });
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
                 t.on('order.dt search.dt', function () {
                     t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                         cell.innerHTML = i + 1;
@@ -791,6 +835,17 @@
                     });
 
                 var t = $('#MyDataTable3').DataTable();
+                t.on('preXhr.dt', function (e, settings, data) {
+                    $('html').addClass('waiting');
+                });
+                t.on('xhr.dt', function (e, settings, json, xhr) {
+                    $('html').removeClass('waiting');
+                });
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
                 t.on('order.dt search.dt', function () {
                     t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                         cell.innerHTML = i + 1;
@@ -894,6 +949,17 @@
                         }
                     });
                 var t = $('#MyDataTable3').DataTable();
+                t.on('preXhr.dt', function (e, settings, data) {
+                    $('html').addClass('waiting');
+                });
+                t.on('xhr.dt', function (e, settings, json, xhr) {
+                    $('html').removeClass('waiting');
+                });
+            //t.on('order.dt search.dt', function () {
+            //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            //        cell.innerHTML = i + 1;
+            //    });
+            //}).draw();
                 t.on('order.dt search.dt', function () {
                     t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
                         cell.innerHTML = i + 1;

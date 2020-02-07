@@ -246,9 +246,9 @@ var certificateController = {
                         "url": "/Certificate/loadCertificate",
                         "type": "POST",
                         "data": function (d) {
-                            d.CityID = $('#CityID').val().trim();
-                            d.OperatorID = $('#OperatorID').val().trim();
-                            d.ProfileID = $('#ProfileID').val().trim();
+                            d.CityID = $('#SelCityID').val().trim();
+                            d.OperatorID = $('#SelOperatorID').val().trim();
+                            d.ProfileID = $('#SelProfileID').val().trim();
                             d.StartDate = certificateController.startDate.toISOString();
                             d.EndDate = certificateController.endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
@@ -318,7 +318,13 @@ var certificateController = {
                     "initComplete": function () {
                     }
                 });
-            //var t = $('#MyDataTable').DataTable();
+            var t = $('#MyDataTable').DataTable();
+            t.on('preXhr.dt', function (e, settings, data) {
+                $('html').addClass('waiting');
+            });
+            t.on('xhr.dt', function (e, settings, json, xhr) {
+                $('html').removeClass('waiting');
+            });
             //t.on('order.dt search.dt', function () {
             //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
             //        cell.innerHTML = i + 1;
@@ -368,9 +374,9 @@ var certificateController = {
                         "url": "/Certificate/loadCertificate",
                         "type": "POST",
                         "data": function (d) {
-                            d.CityID = $('#CityID').val().trim();
-                            d.OperatorID = $('#OperatorID').val().trim();
-                            d.ProfileID = $('#ProfileID').val().trim();
+                            d.CityID = $('#SelCityID').val().trim();
+                            d.OperatorID = $('#SelOperatorID').val().trim();
+                            d.ProfileID = $('#SelProfileID').val().trim();
                             d.StartDate = certificateController.startDate.toISOString();
                             d.EndDate = certificateController.endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
@@ -440,7 +446,13 @@ var certificateController = {
                     initComplete: function () {
                     }
                 });
-            //var t = $('#MyDataTable').DataTable();
+            var t = $('#MyDataTable').DataTable();
+            t.on('preXhr.dt', function (e, settings, data) {
+                $('html').addClass('waiting');
+            });
+            t.on('xhr.dt', function (e, settings, json, xhr) {
+                $('html').removeClass('waiting');
+            });
             //t.on('order.dt search.dt', function () {
             //    t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
             //        cell.innerHTML = i + 1;
@@ -544,11 +556,13 @@ var certificateController = {
         dataForm.append('action', 'GetReport');
         $.validator.unobtrusive.parse(form);
         if ($(form).valid()) {
+            $('html').addClass('waiting');
             var ajaxConfig = {
                 type: 'POST',
                 url: '/PrintCertificate/Index',
                 data: dataForm,
                 success: function (response) {
+                    $('html').removeClass('waiting');
                     //open a new window note:this is a popup so it may be blocked by your browser
                     var newWindow = window.open("/PrintCertificate/Index", "Print Certificates");
 

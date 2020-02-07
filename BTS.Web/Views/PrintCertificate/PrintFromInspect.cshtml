@@ -1,0 +1,32 @@
+﻿@using Stimulsoft.Report.Mvc;
+@using Stimulsoft.Report.Web;
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layouts_PrintCertificate.cshtml";
+}
+
+@Html.Stimulsoft().StiMvcViewer("StiMvcViewer1", new StiMvcViewerOptions()
+{
+    Server = {
+        UseRelativeUrls = true,
+        Controller = "PrintCertificate",        
+    },
+    Actions =
+    {
+        GetReport = "GetReport",
+        ViewerEvent = "ViewerEvent"
+    },
+    Appearance =
+    {
+        BackgroundColor = System.Drawing.Color.FromArgb(0xe8, 0xe8, 0xe8),
+        ScrollbarsMode = true
+    },
+    Toolbar =
+    {
+        DisplayMode = StiToolbarDisplayMode.Separated,
+        ShowDesignButton = false
+    },
+    Width = Unit.Percentage(100),
+    Height = Unit.Percentage(100)
+})

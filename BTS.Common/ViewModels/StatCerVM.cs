@@ -17,11 +17,45 @@ namespace BTS.Common.ViewModels
         public int ExpiredInYearCertificates { get; set; }
     }
 
-    public class StatCerByOperatorVM
+    public class StatCoupleCerByOperatorVM
     {
         public string OperatorID { get; set; }
         public int ValidCertificates { get; set; }
         public int ExpiredInYearCertificates { get; set; }
+    }
+
+    public class StatCoupleCerByAreaVM
+    {
+        public string Area { get; set; }
+        public int ValidCertificates { get; set; }
+        public int ExpiredInYearCertificates { get; set; }
+    }
+
+    public class StatCoupleCerByOperatorAreaVM
+    {
+        public string OperatorID { get; set; }
+        public int ValidCertificates { get; set; }
+        public int ExpiredInYearCertificates { get; set; }
+        public string Area { get; set; }
+    }
+
+    public class StatCerByOperatorAreaVM
+    {
+        public string OperatorID { get; set; }
+        public int ValidCertificates { get; set; }
+        public string Area { get; set; }
+    }
+
+    public class StatCerByOperatorVM
+    {
+        public string OperatorID { get; set; }
+        public int ValidCertificates { get; set; }        
+    }
+
+    public class StatCerByAreaVM
+    {
+        public string Area { get; set; }
+        public int ValidCertificates { get; set; }
     }
 
     public class StatBtsInProcessVm
@@ -45,14 +79,22 @@ namespace BTS.Common.ViewModels
         public int NoAnnounceFeeBtss { get; set; }
     }
 
-    public class IssuedStatCerByOperatorYearVM
+    public class StatIssuedCerByOperatorYearVM
     {
         public string OperatorID { get; set; }
         public string Year { get; set; }
         public int IssuedCertificates { get; set; }
     }
 
-    public class IssuedStatCerByOperatorAreaVM
+    public class StatIssuedCerByAreaYearVM
+    {
+        public string Area { get; set; }
+        public string Year { get; set; }
+        public int IssuedCertificates { get; set; }
+    }
+
+
+    public class StatIssuedCerByOperatorAreaVM
     {
         public string OperatorID { get; set; }
         public string Area { get; set; }
@@ -60,17 +102,38 @@ namespace BTS.Common.ViewModels
     }
 
 
-    public class IssuedStatCerByOperatorCityVM
+    public class StatIssuedCerByOperatorCityVM
     {
         public string OperatorID { get; set; }
         public string CityID { get; set; }
         public int IssuedCertificates { get; set; }
     }
 
-    public class ExpiredStatCerByOperatorYearVM
+    public class StatNearExpiredInYearCerByOperatorCityVM
+    {
+        public string OperatorID { get; set; }
+        public string CityID { get; set; }
+        public int NearExpiredInYearCertificates { get; set; }
+    }
+
+    public class StatExpiredCerByOperatorCityVM
+    {
+        public string OperatorID { get; set; }
+        public string CityID { get; set; }
+        public int ExpiredCertificates { get; set; }
+    }
+
+    public class StatExpiredCerByOperatorYearVM
     {
         public string OperatorID { get; set; }
         public string Year { get; set; }
-        public int ExpiredInYearCertificates { get; set; }
+        public int ExpiredCertificates { get; set; }
+    }
+
+    public class StatExpiredCerByAreaYearVM
+    {
+        public string Area { get; set; }
+        public string Year { get; set; }
+        public int ExpiredCertificates { get; set; }
     }
 }

@@ -55,19 +55,19 @@ namespace BTS.Web.Controllers
         {
             int countItem;
 
-            string CityID = Request.Form.GetValues("CityID").FirstOrDefault();
-            string OperatorID = Request.Form.GetValues("OperatorID").FirstOrDefault();
-            string ProfileID = Request.Form.GetValues("ProfileID").FirstOrDefault();
-            string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress").FirstOrDefault().ToLower();
-            string IsExpired = Request.Form.GetValues("IsExpired").FirstOrDefault().ToLower();
+            string CityID = Request.Form.GetValues("CityID")?.FirstOrDefault();
+            string OperatorID = Request.Form.GetValues("OperatorID")?.FirstOrDefault();
+            string ProfileID = Request.Form.GetValues("ProfileID")?.FirstOrDefault();
+            string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress")?.FirstOrDefault().ToLower();
+            string IsExpired = Request.Form.GetValues("IsExpired")?.FirstOrDefault().ToLower();
             DateTime StartDate, EndDate;
 
-            if (!DateTime.TryParse(Request.Form.GetValues("StartDate").FirstOrDefault(), out StartDate))
+            if (!DateTime.TryParse(Request.Form.GetValues("StartDate")?.FirstOrDefault(), out StartDate))
             {
                 Console.Write("Loi chuyen doi kieu");
             }
 
-            if (!DateTime.TryParse(Request.Form.GetValues("EndDate").FirstOrDefault(), out EndDate))
+            if (!DateTime.TryParse(Request.Form.GetValues("EndDate")?.FirstOrDefault(), out EndDate))
             {
                 Console.Write("Loi chuyen doi kieu");
             }

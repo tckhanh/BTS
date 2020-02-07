@@ -20,17 +20,28 @@ namespace BTS.Data.Repository
 
         IEnumerable<ReportTT18Cert> GetReportTT18CertByDate(DateTime fromDate, DateTime toDate);
 
-        IEnumerable<IssuedStatCerByOperatorYearVM> GetIssuedStatCerByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
+        IEnumerable<StatIssuedCerByOperatorYearVM> GetIssuedStatCerByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
-        IEnumerable<IssuedStatCerByOperatorAreaVM> GetIssuedStatCerByOperatorArea(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
-       
-        IEnumerable<IssuedStatCerByOperatorAreaVM> GetIssuedStatExpiredInYearCerByOperatorArea(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
+        IEnumerable<StatIssuedCerByAreaYearVM> GetIssuedStatCerByAreaYear(string Area = CommonConstants.SelectAll, bool onlyIsValid = false);
 
-        IEnumerable<IssuedStatCerByOperatorCityVM> GetIssuedStatCerByOperatorCity(bool onlyIsValid = false);
+        IEnumerable<StatIssuedCerByOperatorAreaVM> GetIssuedStatCerByOperatorArea(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
-        IEnumerable<ExpiredStatCerByOperatorYearVM> GetExpiredStatCerByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
+        IEnumerable<StatIssuedCerByOperatorAreaVM> GetStatExpiredInYearCerByOperatorArea(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
 
+        IEnumerable<StatIssuedCerByOperatorCityVM> GetIssuedStatCerByOperatorCity(string Area = CommonConstants.SelectAll, bool onlyIsValid = false);
+        IEnumerable<StatIssuedCerByOperatorCityVM> GetStatInYearCerByOperatorCity(string Area = CommonConstants.SelectAll);
+
+        IEnumerable<StatNearExpiredInYearCerByOperatorCityVM> GetStatNearExpiredInYearCerByOperatorCity(string Area = CommonConstants.SelectAll);
+        IEnumerable<StatExpiredCerByOperatorCityVM> GetStatExpiredInYearCerByOperatorCity(string Area = CommonConstants.SelectAll);
+        
+        IEnumerable<StatExpiredCerByOperatorYearVM> GetStatExpiredCerByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
+
+        IEnumerable<StatExpiredCerByAreaYearVM> GetStatExpiredCerByAreaYear(string Area = CommonConstants.SelectAll, bool onlyIsValid = false);
+
+        IEnumerable<StatCoupleCerByOperatorVM> GetStatCoupleCerByOperator(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
+        IEnumerable<StatCoupleCerByAreaVM> GetStatCoupleCerByArea(string area = CommonConstants.SelectAll, bool onlyIsValid = false);
         IEnumerable<StatCerByOperatorVM> GetStatCerByOperator(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false);
+        IEnumerable<StatCerByAreaVM> GetStatCerByArea(string area = CommonConstants.SelectAll, bool onlyIsValid = false);
 
         IEnumerable<StatBtsVm> GetStatAllBtsInProcess();
 
@@ -123,152 +134,258 @@ namespace BTS.Data.Repository
                                              select certificate;
 
             IQueryable<ReportTT18Cert> query2 = from certificate in query1
-                                            join subBtsInCert in DbContext.SubBtsInCerts
-                                            on certificate.Id equals subBtsInCert.CertificateID
-                                            select new ReportTT18Cert()
-                                            {
-                                                CertificateId = certificate.Id,
-                                                OperatorID = certificate.OperatorID,
-                                                BtsCode = certificate.BtsCode,
-                                                Address = certificate.Address,
-                                                CityID = certificate.CityID,
-                                                Longtitude = certificate.Longtitude,
-                                                Latitude = certificate.Latitude,
-                                                SubBtsQuantity = certificate.SubBtsQuantity,
-                                                BtsSerialNo = subBtsInCert.BtsSerialNo,
-                                                SubBtsCode = subBtsInCert.BtsCode,
-                                                SubOperatorID = subBtsInCert.OperatorID,
-                                                Manufactory = subBtsInCert.Manufactory,
-                                                Equipment = subBtsInCert.Equipment,
-                                                AntenNum = subBtsInCert.AntenNum,
-                                                Configuration = subBtsInCert.Configuration,
-                                                PowerSum = subBtsInCert.PowerSum,
-                                                Band = subBtsInCert.Band,
-                                                AntenHeight = subBtsInCert.AntenHeight
-                                            };
+                                                join subBtsInCert in DbContext.SubBtsInCerts
+                                                on certificate.Id equals subBtsInCert.CertificateID
+                                                select new ReportTT18Cert()
+                                                {
+                                                    CertificateId = certificate.Id,
+                                                    OperatorID = certificate.OperatorID,
+                                                    BtsCode = certificate.BtsCode,
+                                                    Address = certificate.Address,
+                                                    CityID = certificate.CityID,
+                                                    Longtitude = certificate.Longtitude,
+                                                    Latitude = certificate.Latitude,
+                                                    SubBtsQuantity = certificate.SubBtsQuantity,
+                                                    BtsSerialNo = subBtsInCert.BtsSerialNo,
+                                                    SubBtsCode = subBtsInCert.BtsCode,
+                                                    SubOperatorID = subBtsInCert.OperatorID,
+                                                    Manufactory = subBtsInCert.Manufactory,
+                                                    Equipment = subBtsInCert.Equipment,
+                                                    AntenNum = subBtsInCert.AntenNum,
+                                                    Configuration = subBtsInCert.Configuration,
+                                                    PowerSum = subBtsInCert.PowerSum,
+                                                    Band = subBtsInCert.Band,
+                                                    AntenHeight = subBtsInCert.AntenHeight
+                                                };
             return query2;
         }
 
-        public IEnumerable<IssuedStatCerByOperatorYearVM> GetIssuedStatCerByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        public IEnumerable<StatIssuedCerByOperatorYearVM> GetIssuedStatCerByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
         {
             if (onlyIsValid)
             {
-                IQueryable<IssuedStatCerByOperatorYearVM> query = from certificate in DbContext.Certificates
+                IQueryable<StatIssuedCerByOperatorYearVM> query = from certificate in DbContext.Certificates
+                                                                  where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                                  group certificate by new { Year = certificate.IssuedDate.Year.ToString(), OperatorID = certificate.OperatorID } into ItemGroup
+                                                                  select new StatIssuedCerByOperatorYearVM()
+                                                                  {
+                                                                      Year = ItemGroup.Key.Year,
+                                                                      OperatorID = ItemGroup.Key.OperatorID,
+                                                                      IssuedCertificates = ItemGroup.Count(_ => true)
+                                                                  };
+                return query;
+            }
+            else
+            {
+                IQueryable<StatIssuedCerByOperatorYearVM> query = from certificate in DbContext.Certificates
+                                                                  where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                                  group certificate by new { Year = certificate.IssuedDate.Year.ToString(), OperatorID = certificate.OperatorID } into ItemGroup
+                                                                  select new StatIssuedCerByOperatorYearVM()
+                                                                  {
+                                                                      Year = ItemGroup.Key.Year,
+                                                                      OperatorID = ItemGroup.Key.OperatorID,
+                                                                      IssuedCertificates = ItemGroup.Count(_ => true)
+                                                                  };
+                return query;
+            }
+        }
+
+        public IEnumerable<StatIssuedCerByAreaYearVM> GetIssuedStatCerByAreaYear(string area = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                IQueryable<StatIssuedCerByAreaYearVM> query = from certificateArea in (from certificate in DbContext.Certificates
+                                                                                       join city in DbContext.Cities
+                                                                                       on certificate.CityID equals city.Id
+                                                                                       where ((certificate.ExpiredDate >= DateTime.Now) && (area == CommonConstants.SelectAll || city.Area == area))
+                                                                                       select new { certificate.OperatorID, certificate.IssuedDate, city.Area })
+                                                              group certificateArea by new { Year = certificateArea.IssuedDate.Year.ToString(), Area = certificateArea.Area } into ItemGroup
+                                                              select new StatIssuedCerByAreaYearVM()
+                                                              {
+                                                                  Year = ItemGroup.Key.Year,
+                                                                  Area = ItemGroup.Key.Area,
+                                                                  IssuedCertificates = ItemGroup.Count(_ => true)
+                                                              };
+                return query;
+            }
+            else
+            {
+                IQueryable<StatIssuedCerByAreaYearVM> query = from certificateArea in (from certificate in DbContext.Certificates
+                                                                                       join city in DbContext.Cities
+                                                                                       on certificate.CityID equals city.Id
+                                                                                       where ((area == CommonConstants.SelectAll || city.Area == area))
+                                                                                       select new { certificate.OperatorID, certificate.IssuedDate, city.Area })
+                                                              group certificateArea by new { Year = certificateArea.IssuedDate.Year.ToString(), Area = certificateArea.Area } into ItemGroup
+                                                              select new StatIssuedCerByAreaYearVM()
+                                                              {
+                                                                  Year = ItemGroup.Key.Year,
+                                                                  Area = ItemGroup.Key.Area,
+                                                                  IssuedCertificates = ItemGroup.Count(_ => true)
+                                                              };
+                return query;
+            }
+        }
+
+        public IEnumerable<StatIssuedCerByOperatorAreaVM> GetIssuedStatCerByOperatorArea(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                IQueryable<StatIssuedCerByOperatorAreaVM> query = from certificate in DbContext.Certificates
+                                                                  join city in DbContext.Cities on certificate.CityID equals city.Id
+                                                                  where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                                  group certificate by new { Area = city.Area, OperatorID = certificate.OperatorID } into ItemGroup
+                                                                  select new StatIssuedCerByOperatorAreaVM()
+                                                                  {
+                                                                      Area = ItemGroup.Key.Area,
+                                                                      OperatorID = ItemGroup.Key.OperatorID,
+                                                                      IssuedCertificates = ItemGroup.Count(_ => true),
+                                                                  };
+                return query;
+            }
+            else
+            {
+                IQueryable<StatIssuedCerByOperatorAreaVM> query = from certificate in DbContext.Certificates
+                                                                  join city in DbContext.Cities on certificate.CityID equals city.Id
+                                                                  where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                                  group certificate by new { Area = city.Area, OperatorID = certificate.OperatorID } into ItemGroup
+                                                                  select new StatIssuedCerByOperatorAreaVM()
+                                                                  {
+                                                                      Area = ItemGroup.Key.Area,
+                                                                      OperatorID = ItemGroup.Key.OperatorID,
+                                                                      IssuedCertificates = ItemGroup.Count(_ => true),
+                                                                  };
+                return query;
+            }
+        }
+
+        public IEnumerable<StatNearExpiredInYearCerByOperatorCityVM> GetStatNearExpiredInYearCerByOperatorCity(string Area = CommonConstants.SelectAll)
+        {
+
+            IQueryable<StatNearExpiredInYearCerByOperatorCityVM> query = from certificate in DbContext.Certificates
+                                                                         join city in DbContext.Cities on certificate.CityID equals city.Id
+                                                                         where ((certificate.ExpiredDate >= DateTime.Now) && (Area == CommonConstants.SelectAll || city.Area == Area))
+                                                                         group certificate by new { certificate.OperatorID, certificate.CityID } into ItemGroup
+                                                                         select new StatNearExpiredInYearCerByOperatorCityVM()
+                                                                         {
+                                                                             CityID = ItemGroup.Key.CityID,
+                                                                             OperatorID = ItemGroup.Key.OperatorID,
+                                                                             NearExpiredInYearCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
+                                                                         };
+            return query;
+        }
+
+        public IEnumerable<StatExpiredCerByOperatorCityVM> GetStatExpiredInYearCerByOperatorCity(string Area = CommonConstants.SelectAll)
+        {
+
+            IQueryable<StatExpiredCerByOperatorCityVM> query = from certificate in DbContext.Certificates
+                                                                         join city in DbContext.Cities on certificate.CityID equals city.Id
+                                                                         where ((certificate.ExpiredDate < DateTime.Now) && (Area == CommonConstants.SelectAll || city.Area == Area))
+                                                                         group certificate by new { certificate.OperatorID, certificate.CityID } into ItemGroup
+                                                                         select new StatExpiredCerByOperatorCityVM()
+                                                                         {
+                                                                             CityID = ItemGroup.Key.CityID,
+                                                                             OperatorID = ItemGroup.Key.OperatorID,
+                                                                             ExpiredCertificates = ItemGroup.Where(x => x.ExpiredDate < DateTime.Now).Count()
+                                                                         };
+            return query;
+        }
+
+        
+
+        public IEnumerable<StatIssuedCerByOperatorAreaVM> GetStatExpiredInYearCerByOperatorArea(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                IQueryable<StatIssuedCerByOperatorAreaVM> query = from certificate in DbContext.Certificates
+                                                                  join city in DbContext.Cities on certificate.CityID equals city.Id
+                                                                  where ((certificate.ExpiredDate >= DateTime.Now) && (certificate.ExpiredDate.Year == DateTime.Now.Year) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                                  group certificate by new { Area = city.Area, OperatorID = certificate.OperatorID } into ItemGroup
+                                                                  select new StatIssuedCerByOperatorAreaVM()
+                                                                  {
+                                                                      Area = ItemGroup.Key.Area,
+                                                                      OperatorID = ItemGroup.Key.OperatorID,
+                                                                      IssuedCertificates = ItemGroup.Count()
+                                                                  };
+                return query;
+            }
+            else
+            {
+                IQueryable<StatIssuedCerByOperatorAreaVM> query = from certificate in DbContext.Certificates
+                                                                  join city in DbContext.Cities on certificate.CityID equals city.Id
+                                                                  where ((certificate.ExpiredDate.Year == DateTime.Now.Year) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                                  group certificate by new { Area = city.Area, OperatorID = certificate.OperatorID } into ItemGroup
+                                                                  select new StatIssuedCerByOperatorAreaVM()
+                                                                  {
+                                                                      Area = ItemGroup.Key.Area,
+                                                                      OperatorID = ItemGroup.Key.OperatorID,
+                                                                      IssuedCertificates = ItemGroup.Count()
+                                                                  };
+                return query;
+            }
+        }
+
+        public IEnumerable<StatExpiredCerByOperatorYearVM> GetStatExpiredCerByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                IQueryable<StatExpiredCerByOperatorYearVM> query = from certificate in DbContext.Certificates
                                                                    where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                   group certificate by new { Year = certificate.IssuedDate.Year.ToString(), OperatorID = certificate.OperatorID } into ItemGroup
-                                                                   select new IssuedStatCerByOperatorYearVM()
+                                                                   group certificate by new { Year = certificate.ExpiredDate.Year.ToString(), OperatorID = certificate.OperatorID } into ItemGroup
+                                                                   select new StatExpiredCerByOperatorYearVM()
                                                                    {
                                                                        Year = ItemGroup.Key.Year,
                                                                        OperatorID = ItemGroup.Key.OperatorID,
-                                                                       IssuedCertificates = ItemGroup.Count(_ => true)
+                                                                       ExpiredCertificates = ItemGroup.Count(_ => true)
                                                                    };
                 return query;
             }
             else
             {
-                IQueryable<IssuedStatCerByOperatorYearVM> query = from certificate in DbContext.Certificates
+                IQueryable<StatExpiredCerByOperatorYearVM> query = from certificate in DbContext.Certificates
                                                                    where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                   group certificate by new { Year = certificate.IssuedDate.Year.ToString(), OperatorID = certificate.OperatorID } into ItemGroup
-                                                                   select new IssuedStatCerByOperatorYearVM()
+                                                                   group certificate by new { Year = certificate.ExpiredDate.Year.ToString(), OperatorID = certificate.OperatorID } into ItemGroup
+                                                                   select new StatExpiredCerByOperatorYearVM()
                                                                    {
-                                                                       Year = ItemGroup.Key.Year.ToString(),
+                                                                       Year = ItemGroup.Key.Year,
                                                                        OperatorID = ItemGroup.Key.OperatorID,
-                                                                       IssuedCertificates = ItemGroup.Count(_ => true)
+                                                                       ExpiredCertificates = ItemGroup.Count(_ => true)
                                                                    };
                 return query;
             }
         }
 
-        public IEnumerable<IssuedStatCerByOperatorAreaVM> GetIssuedStatCerByOperatorArea(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        public IEnumerable<StatExpiredCerByAreaYearVM> GetStatExpiredCerByAreaYear(string area = CommonConstants.SelectAll, bool onlyIsValid = false)
         {
             if (onlyIsValid)
             {
-                IQueryable<IssuedStatCerByOperatorAreaVM> query = from certificate in DbContext.Certificates
-                                                                  join city in DbContext.Cities on certificate.CityID equals city.Id
-                                                                  where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new {Area = city.Area, OperatorID = certificate.OperatorID } into ItemGroup
-                                                                  select new IssuedStatCerByOperatorAreaVM()
-                                                                  {
-                                                                      Area = ItemGroup.Key.Area,
-                                                                      OperatorID = ItemGroup.Key.OperatorID,
-                                                                      IssuedCertificates = ItemGroup.Count(_ => true),
-                                                                  };
+                IQueryable<StatExpiredCerByAreaYearVM> query = from certificateArea in (from certificate in DbContext.Certificates
+                                                                                        join city in DbContext.Cities
+                                                                                        on certificate.CityID equals city.Id
+                                                                                        where ((certificate.ExpiredDate >= DateTime.Now) && (area == CommonConstants.SelectAll || city.Area == area))
+                                                                                        select new { certificate.OperatorID, certificate.ExpiredDate, city.Area })
+                                                               group certificateArea by new { Year = certificateArea.ExpiredDate.Year.ToString(), Area = certificateArea.Area } into ItemGroup
+                                                               select new StatExpiredCerByAreaYearVM()
+                                                               {
+                                                                   Year = ItemGroup.Key.Year,
+                                                                   Area = ItemGroup.Key.Area,
+                                                                   ExpiredCertificates = ItemGroup.Count(_ => true)
+                                                               };
                 return query;
             }
             else
             {
-                IQueryable<IssuedStatCerByOperatorAreaVM> query = from certificate in DbContext.Certificates
-                                                                  join city in DbContext.Cities on certificate.CityID equals city.Id
-                                                                  where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new { Area = city.Area, OperatorID = certificate.OperatorID } into ItemGroup
-                                                                  select new IssuedStatCerByOperatorAreaVM()
-                                                                  {
-                                                                      Area = ItemGroup.Key.Area,
-                                                                      OperatorID = ItemGroup.Key.OperatorID,
-                                                                      IssuedCertificates = ItemGroup.Count(_ => true),
-                                                                  };
-                return query;
-            }
-        }
-
-        public IEnumerable<IssuedStatCerByOperatorAreaVM> GetIssuedStatExpiredInYearCerByOperatorArea(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
-        {
-            if (onlyIsValid)
-            {
-                IQueryable<IssuedStatCerByOperatorAreaVM> query = from certificate in DbContext.Certificates
-                                                                  join city in DbContext.Cities on certificate.CityID equals city.Id
-                                                                  where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new { Area = city.Area, OperatorID = certificate.OperatorID } into ItemGroup
-                                                                  select new IssuedStatCerByOperatorAreaVM()
-                                                                  {
-                                                                      Area = ItemGroup.Key.Area,
-                                                                      OperatorID = ItemGroup.Key.OperatorID,
-                                                                      IssuedCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
-                                                                  };
-                return query;
-            }
-            else
-            {
-                IQueryable<IssuedStatCerByOperatorAreaVM> query = from certificate in DbContext.Certificates
-                                                                  join city in DbContext.Cities on certificate.CityID equals city.Id
-                                                                  where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new { Area = city.Area, OperatorID = certificate.OperatorID } into ItemGroup
-                                                                  select new IssuedStatCerByOperatorAreaVM()
-                                                                  {
-                                                                      Area = ItemGroup.Key.Area,
-                                                                      OperatorID = ItemGroup.Key.OperatorID,
-                                                                      IssuedCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
-                                                                  };
-                return query;
-            }
-        }
-
-        public IEnumerable<ExpiredStatCerByOperatorYearVM> GetExpiredStatCerByOperatorYear(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
-        {
-            if (onlyIsValid)
-            {
-                IQueryable<ExpiredStatCerByOperatorYearVM> query = from certificate in DbContext.Certificates
-                                                                    where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                    group certificate by new { certificate.ExpiredDate.Year, certificate.OperatorID } into ItemGroup
-                                                                    select new ExpiredStatCerByOperatorYearVM()
-                                                                    {
-                                                                        Year = ItemGroup.Key.Year.ToString(),
-                                                                        OperatorID = ItemGroup.Key.OperatorID,
-                                                                        ExpiredInYearCertificates = ItemGroup.Count()
-                                                                    };
-                return query;
-            }
-            else
-            {
-                IQueryable<ExpiredStatCerByOperatorYearVM> query = from certificate in DbContext.Certificates
-                                                                    where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                    group certificate by new { certificate.ExpiredDate.Year, certificate.OperatorID } into ItemGroup
-                                                                    select new ExpiredStatCerByOperatorYearVM()
-                                                                    {
-                                                                        Year = ItemGroup.Key.Year.ToString(),
-                                                                        OperatorID = ItemGroup.Key.OperatorID,
-                                                                        ExpiredInYearCertificates = ItemGroup.Count()
-                                                                    };
+                IQueryable<StatExpiredCerByAreaYearVM> query = from certificateArea in (from certificate in DbContext.Certificates
+                                                                                        join city in DbContext.Cities
+                                                                                        on certificate.CityID equals city.Id
+                                                                                        where ((area == CommonConstants.SelectAll || city.Area == area))
+                                                                                        select new { certificate.OperatorID, certificate.ExpiredDate, city.Area })
+                                                               group certificateArea by new { Year = certificateArea.ExpiredDate.Year.ToString(), Area = certificateArea.Area } into ItemGroup
+                                                               select new StatExpiredCerByAreaYearVM()
+                                                               {
+                                                                   Year = ItemGroup.Key.Year,
+                                                                   Area = ItemGroup.Key.Area,
+                                                                   ExpiredCertificates = ItemGroup.Count(_ => true)
+                                                               };
                 return query;
             }
         }
@@ -278,83 +395,184 @@ namespace BTS.Data.Repository
             if (onlyIsValid)
             {
                 IQueryable<StatCerVM> query = from certificate in DbContext.Certificates
-                                               where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                               group certificate by new { certificate.CityID } into ItemGroup
-                                               select new StatCerVM()
-                                               {
-                                                   CityID = ItemGroup.Key.ToString(),
-                                                   ValidCertificates = ItemGroup.Count()
-                                               };
+                                              where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                              group certificate by new { certificate.CityID } into ItemGroup
+                                              select new StatCerVM()
+                                              {
+                                                  CityID = ItemGroup.Key.ToString(),
+                                                  ValidCertificates = ItemGroup.Count()
+                                              };
                 return query;
             }
             else
             {
                 IQueryable<StatCerVM> query = from certificate in DbContext.Certificates
-                                               where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                               group certificate by new { certificate.CityID } into ItemGroup
-                                               select new StatCerVM()
-                                               {
-                                                   CityID = ItemGroup.Key.ToString(),
-                                                   ValidCertificates = ItemGroup.Count()
-                                               };
+                                              where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                              group certificate by new { certificate.CityID } into ItemGroup
+                                              select new StatCerVM()
+                                              {
+                                                  CityID = ItemGroup.Key.ToString(),
+                                                  ValidCertificates = ItemGroup.Count()
+                                              };
                 return query;
             }
         }
 
+        public IEnumerable<StatCoupleCerByOperatorVM> GetStatCoupleCerByOperator(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                IQueryable<StatCoupleCerByOperatorVM> query = from certificate in DbContext.Certificates
+                                                              where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                              group certificate by certificate.OperatorID into ItemGroup
+                                                              select new StatCoupleCerByOperatorVM()
+                                                              {
+                                                                  OperatorID = ItemGroup.Key.ToString(),
+                                                                  ValidCertificates = ItemGroup.Count(),
+                                                                  ExpiredInYearCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
+                                                              };
+                return query;
+            }
+            else
+            {
+                IQueryable<StatCoupleCerByOperatorVM> query = from certificate in DbContext.Certificates
+                                                              where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                              group certificate by certificate.OperatorID into ItemGroup
+                                                              select new StatCoupleCerByOperatorVM()
+                                                              {
+                                                                  OperatorID = ItemGroup.Key.ToString(),
+                                                                  ValidCertificates = ItemGroup.Count(),
+                                                                  ExpiredInYearCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
+                                                              };
+                return query;
+            }
+        }
+
+        public IEnumerable<StatCoupleCerByAreaVM> GetStatCoupleCerByArea(string area = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                IQueryable<StatCoupleCerByAreaVM> query =
+                    from certificateArea in (from certificate in DbContext.Certificates
+                                             join city in DbContext.Cities
+                                             on certificate.CityID equals city.Id
+                                             where ((certificate.ExpiredDate >= DateTime.Now) && (area == CommonConstants.SelectAll || city.Area == area))
+                                             select new { certificate.OperatorID, certificate.ExpiredDate, city.Area })
+                    group certificateArea by new { certificateArea.Area } into ItemGroup
+                    select new StatCoupleCerByAreaVM()
+                    {
+                        Area = ItemGroup.Key.Area.ToString(),
+                        ValidCertificates = ItemGroup.Count(),
+                        ExpiredInYearCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
+                    };
+                return query;
+            }
+            else
+            {
+                IQueryable<StatCoupleCerByAreaVM> query =
+                    from certificateArea in (from certificate in DbContext.Certificates
+                                             join city in DbContext.Cities
+                                             on certificate.CityID equals city.Id
+                                             where ((area == CommonConstants.SelectAll || city.Area == area))
+                                             select new { certificate.OperatorID, certificate.ExpiredDate, city.Area })
+                    group certificateArea by new { certificateArea.Area } into ItemGroup
+                    select new StatCoupleCerByAreaVM()
+                    {
+                        Area = ItemGroup.Key.Area.ToString(),
+                        ValidCertificates = ItemGroup.Count(),
+                        ExpiredInYearCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
+                    };
+                return query;
+            }
+        }
+        
         public IEnumerable<StatCerByOperatorVM> GetStatCerByOperator(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
         {
             if (onlyIsValid)
             {
                 IQueryable<StatCerByOperatorVM> query = from certificate in DbContext.Certificates
-                                                         where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                         group certificate by certificate.OperatorID into ItemGroup
-                                                         select new StatCerByOperatorVM()
-                                                         {
-                                                             OperatorID = ItemGroup.Key.ToString(),
-                                                             ValidCertificates = ItemGroup.Count(),
-                                                             ExpiredInYearCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
-                                                         };
+                                                        where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                        group certificate by certificate.OperatorID into ItemGroup
+                                                        select new StatCerByOperatorVM()
+                                                        {
+                                                            ValidCertificates = ItemGroup.Count(),
+                                                            OperatorID = ItemGroup.Key.ToString(),
+                                                        };
                 return query;
             }
             else
             {
                 IQueryable<StatCerByOperatorVM> query = from certificate in DbContext.Certificates
-                                                         where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                         group certificate by certificate.OperatorID into ItemGroup
-                                                         select new StatCerByOperatorVM()
-                                                         {
-                                                             OperatorID = ItemGroup.Key.ToString(),
-                                                             ValidCertificates = ItemGroup.Count(),
-                                                             ExpiredInYearCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
-                                                         };
+                                                        where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                                        group certificate by certificate.OperatorID into ItemGroup
+                                                        select new StatCerByOperatorVM()
+                                                        {
+                                                            ValidCertificates = ItemGroup.Count(),
+                                                            OperatorID = ItemGroup.Key.ToString(),
+                                                        };
                 return query;
             }
         }
 
+        public IEnumerable<StatCerByAreaVM> GetStatCerByArea(string area = CommonConstants.SelectAll, bool onlyIsValid = false)
+        {
+            if (onlyIsValid)
+            {
+                IQueryable<StatCerByAreaVM> query =
+                    from certificateArea in (from certificate in DbContext.Certificates
+                                             join city in DbContext.Cities
+                                             on certificate.CityID equals city.Id
+                                             where ((certificate.ExpiredDate >= DateTime.Now) && (area == CommonConstants.SelectAll || city.Area == area))
+                                             select new { certificate.OperatorID, certificate.ExpiredDate, city.Area })
+                    group certificateArea by new { certificateArea.Area } into ItemGroup
+                    select new StatCerByAreaVM()
+                    {
+                        Area = ItemGroup.Key.Area.ToString(),
+                        ValidCertificates = ItemGroup.Count()
+                    };
+                return query;
+            }
+            else
+            {
+                IQueryable<StatCerByAreaVM> query =
+                    from certificateArea in (from certificate in DbContext.Certificates
+                                             join city in DbContext.Cities
+                                             on certificate.CityID equals city.Id
+                                             where ((area == CommonConstants.SelectAll || city.Area == area))
+                                             select new { certificate.OperatorID, certificate.ExpiredDate, city.Area })
+                    group certificateArea by new { certificateArea.Area } into ItemGroup
+                    select new StatCerByAreaVM()
+                    {
+                        Area = ItemGroup.Key.Area.ToString(),
+                        ValidCertificates = ItemGroup.Count()
+                    };
+                return query;
+            }
+        }
         public IEnumerable<StatCerVM> GetCerStatByLab(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll, bool onlyIsValid = false)
         {
             if (onlyIsValid)
             {
                 IQueryable<StatCerVM> query = from certificate in DbContext.Certificates
-                                               where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                               group certificate by new { certificate.LabID } into ItemGroup
-                                               select new StatCerVM()
-                                               {
-                                                   LabID = ItemGroup.Key.ToString(),
-                                                   ValidCertificates = ItemGroup.Count()
-                                               };
+                                              where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                              group certificate by new { certificate.LabID } into ItemGroup
+                                              select new StatCerVM()
+                                              {
+                                                  LabID = ItemGroup.Key.ToString(),
+                                                  ValidCertificates = ItemGroup.Count()
+                                              };
                 return query;
             }
             else
             {
                 IQueryable<StatCerVM> query = from certificate in DbContext.Certificates
-                                               where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                               group certificate by new { certificate.LabID } into ItemGroup
-                                               select new StatCerVM()
-                                               {
-                                                   LabID = ItemGroup.Key.ToString(),
-                                                   ValidCertificates = ItemGroup.Count()
-                                               };
+                                              where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
+                                              group certificate by new { certificate.LabID } into ItemGroup
+                                              select new StatCerVM()
+                                              {
+                                                  LabID = ItemGroup.Key.ToString(),
+                                                  ValidCertificates = ItemGroup.Count()
+                                              };
                 return query;
             }
         }
@@ -452,33 +670,55 @@ namespace BTS.Data.Repository
             return query1;
         }
 
-        public IEnumerable<IssuedStatCerByOperatorCityVM> GetIssuedStatCerByOperatorCity(bool onlyIsValid = false)
+        public IEnumerable<StatIssuedCerByOperatorCityVM> GetIssuedStatCerByOperatorCity(string Area = CommonConstants.SelectAll, bool onlyIsValid = false)
         {
             if (onlyIsValid)
             {
-                IQueryable<IssuedStatCerByOperatorCityVM> query = from certificate in DbContext.Certificates
-                                                                   where (certificate.ExpiredDate >= DateTime.Now)
-                                                                   group certificate by new { certificate.CityID, certificate.OperatorID } into ItemGroup
-                                                                   select new IssuedStatCerByOperatorCityVM()
-                                                                   {
-                                                                       CityID = ItemGroup.Key.CityID,
-                                                                       OperatorID = ItemGroup.Key.OperatorID,
-                                                                       IssuedCertificates = ItemGroup.Count()
-                                                                   };
+                IQueryable<StatIssuedCerByOperatorCityVM> query = from certificate in DbContext.Certificates
+                                                                  join city in DbContext.Cities
+                                                                  on certificate.CityID equals city.Id
+                                                                  where ((Area == CommonConstants.SelectAll || city.Area == Area) && certificate.ExpiredDate >= DateTime.Now)
+                                                                  group certificate by new { certificate.CityID, certificate.OperatorID } into ItemGroup
+                                                                  select new StatIssuedCerByOperatorCityVM()
+                                                                  {
+                                                                      CityID = ItemGroup.Key.CityID,
+                                                                      OperatorID = ItemGroup.Key.OperatorID,
+                                                                      IssuedCertificates = ItemGroup.Count()
+                                                                  };
                 return query;
             }
             else
             {
-                IQueryable<IssuedStatCerByOperatorCityVM> query = from certificate in DbContext.Certificates
-                                                                   group certificate by new { certificate.CityID, certificate.OperatorID } into ItemGroup
-                                                                   select new IssuedStatCerByOperatorCityVM()
-                                                                   {
-                                                                       CityID = ItemGroup.Key.CityID,
-                                                                       OperatorID = ItemGroup.Key.OperatorID,
-                                                                       IssuedCertificates = ItemGroup.Count()
-                                                                   };
+                IQueryable<StatIssuedCerByOperatorCityVM> query = from certificate in DbContext.Certificates
+                                                                  join city in DbContext.Cities
+                                                                  on certificate.CityID equals city.Id
+                                                                  where (Area == CommonConstants.SelectAll || city.Area == Area)
+                                                                  group certificate by new { certificate.CityID, certificate.OperatorID } into ItemGroup
+                                                                  select new StatIssuedCerByOperatorCityVM()
+                                                                  {
+                                                                      CityID = ItemGroup.Key.CityID,
+                                                                      OperatorID = ItemGroup.Key.OperatorID,
+                                                                      IssuedCertificates = ItemGroup.Count()
+                                                                  };
                 return query;
             }
+        }
+
+        public IEnumerable<StatIssuedCerByOperatorCityVM> GetStatInYearCerByOperatorCity(string Area = CommonConstants.SelectAll)
+        {
+
+            IQueryable<StatIssuedCerByOperatorCityVM> query = from certificate in DbContext.Certificates
+                                                              join city in DbContext.Cities
+                                                              on certificate.CityID equals city.Id
+                                                              where (Area == CommonConstants.SelectAll || city.Area == Area) && (certificate.IssuedDate.Year == DateTime.Now.Year)
+                                                              group certificate by new { certificate.CityID, certificate.OperatorID } into ItemGroup
+                                                              select new StatIssuedCerByOperatorCityVM()
+                                                              {
+                                                                  CityID = ItemGroup.Key.CityID,
+                                                                  OperatorID = ItemGroup.Key.OperatorID,
+                                                                  IssuedCertificates = ItemGroup.Count()
+                                                              };
+            return query;
         }
 
         //public IEnumerable<StatBtsInProcessVm> GetStatBtsInProcess()

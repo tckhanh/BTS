@@ -1,0 +1,187 @@
+﻿@using BTS.Common
+@{
+    ViewBag.Title = "Inspect";
+    Layout = "~/Views/Shared/Layouts_DataTable_Export_Map_PivotTable.cshtml";
+    IEnumerable<BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
+    IEnumerable<BTS.Web.Models.ProfileViewModel> profiles = ViewBag.profiles;
+    IEnumerable<BTS.Web.Models.CityViewModel> cities = ViewBag.cities;
+}
+
+@section headCSS{
+
+}
+
+@section footerJS{
+    <script src="~/Assets/client/js/controllers/addinController.js"></script>
+    <script src="~/Assets/client/js/common/myMap.js"></script>
+    <script src="~/Assets/client/js/controllers/inspectController.js"></script>
+
+    <script src="~/Assets/client/js/common/toExcel.js"></script>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    @*<section class="content-header">
+            <h1>
+                Data Tables
+                <small>advanced tables</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">Data tables</li>
+            </ol>
+        </section>*@
+
+    <!-- Main content -->
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <!-- SELECT2 EXAMPLE -->
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="BTS-title">THẨM ĐỊNH TRẠM GỐC BTS</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="clearfix"></div>
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="DateRange">
+                                        Khoảng thời gian<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                            
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="CertNunStart">
+                                        Giấy CNKĐ từ số:<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input class="form-control" type="text" id="CertNunStart" name="CertNunStart" value="" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="CertNunEnd">
+                                        Giấy CNKĐ đến số:<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input class="form-control" type="text" id="CertNunEnd" name="CertNunEnd" value="" style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
+                            
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <button class="btn btn-primary" type="reset">Bỏ lọc</button>
+                                        <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs nav-pills">
+            <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách GCNKĐ</a></li>
+            <li><a data-toggle="tab" href="#AddOrEditTab"> Thêm mới</a></li>
+            @if (User.IsInRole(CommonConstants.Info_CanViewMap_Role))
+            {
+                <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
+            }
+
+            @if (User.IsInRole(CommonConstants.Info_CanViewStatitics_Role))
+            {
+                <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
+            }
+        </ul>
+        <div class="tab-content">
+            <div id="homeTab" class="tab-pane fade in active">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="BTS-title">DANH SÁCH TRẠM GỐC BTS THẨM ĐỊNH DỰ KIẾN CẤP GIẤY CNKĐ</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
+                                {
+                                    <input type="button" class="btn btn-primary" onclick="ExportTableToExcel.tableToExcel('MyDataTable','Certificates','Certificates')" value="Xuất Excel">
+                                }
+                                @if (User.IsInRole(CommonConstants.Info_CanPrintCertificate_Role))
+                                {
+                                    <input type="button" class="btn btn-success" onclick="inspectController.printCertificate()" value="In Giấy CNKĐ">
+                                }
+                                <br/><br/>
+                                <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Stt</th>
+                                            <th>Số hồ sơ</th>
+                                            <th>Mã trạm gốc</th>
+                                            <th>Địa chỉ lắp đặt</th>
+                                            <th>Số KQ Đo KĐ </th>
+                                            <th>Đo phơi nhiễm</th>
+                                            <th>Giới hạn an toàn</th>
+                                            <th>Đơn vị dùng chung CSHT</th>
+                                            <th>Số GCN dự kiến</th>
+                                            @*<th>Thao tác</th>*@
+                                        </tr>
+                                    </thead>                                    
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </div>
+            <div id="AddOrEditTab" class="tab-pane fade"> </div>
+            <div id="mapTab" class="tab-pane fade">
+                <h3 class="BTS-title">VỊ TRÍ CÁC TRẠM BTS DỰ KIẾN CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                <div id="mapBTS" style="width: 100%; height: 500px;"></div>
+            </div>
+            <div id="pivotTableTab" class="tab-pane fade">
+                <h3 class="BTS-title">THỐNG KÊ SỐ LƯỢNG TRẠM BTS DỰ KIẾN CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH </h3>
+                <div id="pivotTable" style="width: 100%"></div>
+            </div>
+            <!-- /.row -->
+        </div>
+    </section>
+</div>

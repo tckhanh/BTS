@@ -286,7 +286,144 @@ namespace BTS.Web.Controllers
             Session["printCertificates"] = printCertificates;
             return View();
         }
-      
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PrintFromInspect()
+        {
+            int countItem;
+            string StrCertNunStart = Request.Form.GetValues("CertNunStart")?.FirstOrDefault();
+            string StrCertNunEnd = Request.Form.GetValues("CertNunEnd")?.FirstOrDefault();
+            int CertNumStart, CertNumEnd;
+            Int32.TryParse(StrCertNunStart, out CertNumStart);
+            Int32.TryParse(StrCertNunEnd, out CertNumEnd);
+            DateTime StartDate, EndDate;
+
+            if (!DateTime.TryParse(Request.Form.GetValues("StartDate").FirstOrDefault(), out StartDate))
+            {
+                Console.Write("Loi chuyen doi kieu");
+            }
+
+            if (!DateTime.TryParse(Request.Form.GetValues("EndDate").FirstOrDefault(), out EndDate))
+            {
+                Console.Write("Loi chuyen doi kieu");
+            }
+
+            // searching ...
+            IEnumerable<Certificate> DbItems;
+
+            if (StartDate != null && EndDate != null)
+            {
+                DbItems = _certificateService.getAll(out countItem, false, StartDate, EndDate, new string[] { "Operator" }).ToList();
+            }
+            else
+            {
+                DbItems = _certificateService.getAll(out countItem, false, new string[] { "Operator" }).ToList();
+            }
+
+            if (CertNumStart > 0)
+            {
+                DbItems = DbItems.Where(x => Int32.Parse(x.Id.Substring(1, 5)) >= CertNumStart);
+            }
+
+            if (CertNumEnd > 0)
+            {
+                DbItems = DbItems.Where(x => Int32.Parse(x.Id.Substring(1, 5)) <= CertNumEnd);
+            }
+
+            DbItems = DbItems.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+
+
+            //DbItems = DbItems.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
+
+            IEnumerable<PrintCertificateViewModel> printCertificates = Mapper.Map<List<PrintCertificateViewModel>>(DbItems);
+
+            foreach (var ItemVm in printCertificates)
+            {
+                string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
+                int SubBtsQuantityIndex;
+
+                ItemVm.OperatorName = ItemVm.Operator.Name?.ToUpper();
+                ItemVm.ApplicantName = _profileService.getByID(ItemVm.ProfileID, new string[] { "Applicant" }).Applicant.Name?.ToUpper();
+
+                SubBtsAntenHeights = ItemVm.SubBtsAntenHeights.Split(new char[] { ';' });
+                SubBtsAntenNums = ItemVm.SubBtsAntenNums.Split(new char[] { ';' });
+                SubBtsBands = ItemVm.SubBtsBands.Split(new char[] { ';' });
+                SubBtsCodes = ItemVm.SubBtsCodes.Split(new char[] { ';' });
+                SubBtsConfigurations = ItemVm.SubBtsConfigurations.Split(new char[] { ';' });
+                SubBtsEquipments = ItemVm.SubBtsEquipments.Split(new char[] { ';' });
+                SubBtsOperatorIDs = ItemVm.SubBtsOperatorIDs.Split(new char[] { ';' });
+                SubBtsPowerSums = ItemVm.SubBtsPowerSums.Split(new char[] { ';' });
+
+                SubBtsQuantityIndex = 0;
+                if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                {
+                    ItemVm.SubBtsAntenHeight1 = SubBtsAntenHeights[SubBtsQuantityIndex];
+                    ItemVm.SubBtsAntenNum1 = SubBtsAntenNums[SubBtsQuantityIndex];
+                    ItemVm.SubBtsBand1 = SubBtsBands[SubBtsQuantityIndex];
+                    ItemVm.SubBtsCode1 = SubBtsCodes[SubBtsQuantityIndex];
+                    ItemVm.SubBtsConfiguration1 = SubBtsConfigurations[SubBtsQuantityIndex];
+                    ItemVm.SubBtsEquipment1 = SubBtsEquipments[SubBtsQuantityIndex];
+                    ItemVm.SubBtsOperatorID1 = SubBtsOperatorIDs[SubBtsQuantityIndex];
+                    ItemVm.SubBtsPowerSum1 = SubBtsPowerSums[SubBtsQuantityIndex];
+
+                    SubBtsQuantityIndex++;
+                    if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                    {
+                        ItemVm.SubBtsAntenHeight2 = SubBtsAntenHeights[SubBtsQuantityIndex];
+                        ItemVm.SubBtsAntenNum2 = SubBtsAntenNums[SubBtsQuantityIndex];
+                        ItemVm.SubBtsBand2 = SubBtsBands[SubBtsQuantityIndex];
+                        ItemVm.SubBtsCode2 = SubBtsCodes[SubBtsQuantityIndex];
+                        ItemVm.SubBtsConfiguration2 = SubBtsConfigurations[SubBtsQuantityIndex];
+                        ItemVm.SubBtsEquipment2 = SubBtsEquipments[SubBtsQuantityIndex];
+                        ItemVm.SubBtsOperatorID2 = SubBtsOperatorIDs[SubBtsQuantityIndex];
+                        ItemVm.SubBtsPowerSum2 = SubBtsPowerSums[SubBtsQuantityIndex];
+
+                        SubBtsQuantityIndex++;
+                        if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                        {
+                            ItemVm.SubBtsAntenHeight3 = SubBtsAntenHeights[SubBtsQuantityIndex];
+                            ItemVm.SubBtsAntenNum3 = SubBtsAntenNums[SubBtsQuantityIndex];
+                            ItemVm.SubBtsBand3 = SubBtsBands[SubBtsQuantityIndex];
+                            ItemVm.SubBtsCode3 = SubBtsCodes[SubBtsQuantityIndex];
+                            ItemVm.SubBtsConfiguration3 = SubBtsConfigurations[SubBtsQuantityIndex];
+                            ItemVm.SubBtsEquipment3 = SubBtsEquipments[SubBtsQuantityIndex];
+                            ItemVm.SubBtsOperatorID3 = SubBtsOperatorIDs[SubBtsQuantityIndex];
+                            ItemVm.SubBtsPowerSum3 = SubBtsPowerSums[SubBtsQuantityIndex];
+
+                            SubBtsQuantityIndex++;
+                            if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                            {
+                                ItemVm.SubBtsAntenHeight4 = SubBtsAntenHeights[SubBtsQuantityIndex];
+                                ItemVm.SubBtsAntenNum4 = SubBtsAntenNums[SubBtsQuantityIndex];
+                                ItemVm.SubBtsBand4 = SubBtsBands[SubBtsQuantityIndex];
+                                ItemVm.SubBtsCode4 = SubBtsCodes[SubBtsQuantityIndex];
+                                ItemVm.SubBtsConfiguration4 = SubBtsConfigurations[SubBtsQuantityIndex];
+                                ItemVm.SubBtsEquipment4 = SubBtsEquipments[SubBtsQuantityIndex];
+                                ItemVm.SubBtsOperatorID4 = SubBtsOperatorIDs[SubBtsQuantityIndex];
+                                ItemVm.SubBtsPowerSum4 = SubBtsPowerSums[SubBtsQuantityIndex];
+
+                                SubBtsQuantityIndex++;
+                                if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                                {
+                                    ItemVm.SubBtsAntenHeight5 = SubBtsAntenHeights[SubBtsQuantityIndex];
+                                    ItemVm.SubBtsAntenNum5 = SubBtsAntenNums[SubBtsQuantityIndex];
+                                    ItemVm.SubBtsBand5 = SubBtsBands[SubBtsQuantityIndex];
+                                    ItemVm.SubBtsCode5 = SubBtsCodes[SubBtsQuantityIndex];
+                                    ItemVm.SubBtsConfiguration5 = SubBtsConfigurations[SubBtsQuantityIndex];
+                                    ItemVm.SubBtsEquipment5 = SubBtsEquipments[SubBtsQuantityIndex];
+                                    ItemVm.SubBtsOperatorID5 = SubBtsOperatorIDs[SubBtsQuantityIndex];
+                                    ItemVm.SubBtsPowerSum5 = SubBtsPowerSums[SubBtsQuantityIndex];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            Session["printCertificates"] = printCertificates;
+            return View();
+        }
+
         public ActionResult GetReport(string id = "", string Template = "GCNKD", string BtsNum = "")
         {
             IEnumerable<PrintCertificateViewModel> printCertificates = (IEnumerable<PrintCertificateViewModel>)Session["printCertificates"];

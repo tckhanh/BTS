@@ -1,4 +1,5 @@
-﻿var myChart = {
+﻿var myThreadNumbers = 0;
+var myChart = {
     chartColors: {
         red: 'rgb(255, 99, 132)',
         orange: 'rgb(255, 159, 64)',
@@ -106,6 +107,10 @@
         Yellow: 'rgb(255,255,0)',
         yellow_green: 'rgb(154,205,50)'
     },
+    token: function () {
+        var form = $('#__AjaxAntiForgeryForm');
+        return $('input[name="__RequestVerificationToken"]', form).val();
+    },
     init: function () {
     },
     registerEventDataTable: function () {
@@ -117,8 +122,168 @@
         $.ajax({
             url: strUrl,
             dataType: 'json',
-            data: {},
+            data: {
+                __RequestVerificationToken: myChart.token(),
+                Area: $('#SelArea').val()
+            },
             type: 'post',
+            beforeSend: function () {
+                ++myThreadNumbers;
+                $('html').addClass('waiting');
+            },
+            success: function (response) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status == "Success") {
+                    var barChartColumNames = response.chartData[0];
+
+                    var barChartLabels = response.chartData[1];
+
+                    var barChartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        showTooltips: true,
+                        tooltips: {
+                            mode: 'index',
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    //get the concerned dataset
+                                    var dataset = data.datasets[tooltipItem.datasetIndex];
+                                    //calculate the total of this data set
+                                    var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                                        return parseInt(previousValue) + parseInt(currentValue);
+                                    });
+                                    //get the current items value
+                                    var currentValue = parseInt(dataset.data[tooltipItem.index]);
+                                    //calculate the precentage based on the total and current item, also this does a rough rounding to give a whole number
+                                    var percentage = Math.floor(((currentValue / total) * 100) + 0.5)*2;
+
+                                    return data.labels[tooltipItem.index] + ":" + percentage + "%";
+                                }
+
+                                //label: function (item, data) {
+                                //    //console.log(item)
+                                //    var label = data.datasets[item.datasetIndex].label;
+                                //    label += '_' + data.labels[item.index];
+                                //    var value = data.datasets[item.datasetIndex].data[item.index];
+                                //    return label + ': ' + value;
+                                //}
+                            }
+                        },
+
+                        plugins: {
+                            labels: {
+                                // render 'label', 'value', 'percentage', 'image' or custom function, default is 'percentage'
+                                render: function (args) {
+                                    // args will be something like:
+                                    // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
+                                    return args.value;
+                                },
+
+                                fontColor: 'black',
+                                /* Adjust data label font size according to chart size */
+                                font: function (context) {
+                                    var width = context.chart.width;
+                                    var size = Math.round(width / 32);
+
+                                    return {
+                                        weight: 'bold',
+                                        size: size
+                                    };
+                                }
+                            },
+
+                            beforeDraw: function (c) {
+                                var chartHeight = c.chart.height;
+                                c.scales['y-axis-0'].options.ticks.fontSize = chartHeight * 6 / 100;
+                            }
+                        },
+
+                        title: {
+                            display: false,
+                            text: strTitle
+                        },
+                        hover: {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: strAx
+                                },
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: strAy
+                                },
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                    }
+
+                    var config = {
+                        type: 'bar',
+                        data: {
+                            labels: barChartLabels,
+                            datasets: []
+                        },
+                        options: barChartOptions,
+                    };
+
+                    var barChartCanvas = $(ChartId);
+                    var barChart = new Chart(barChartCanvas, config);
+                    var colorNames = Object.keys(myChart.chartColors);
+                    var firstColorIndex = myChart.randomize(colorNames.length);
+
+                    for (var i in response.chartData) {
+                        if (i > 1) {
+                            var colorName = colorNames[(firstColorIndex + i) % colorNames.length];
+                            var newColor = myChart.chartColors[colorName];
+                            var barChartValues = response.chartData[i];
+
+                            myChart.addDataSetBar(barChart, barChartColumNames[i - 1], firstColorIndex, barChartValues);
+                        }
+                    }
+                }
+                else {
+                    alert(response.message);
+                }
+                --myThreadNumbers;
+                if (myThreadNumbers == 0) {
+                    $('html').removeClass('waiting');
+                }
+            },
+            error: function (data) {
+                alert("Message: " + data.message);
+                $('html').removeClass('waiting');
+            }
+        });
+    },
+
+    loadBarGroupChart: function (strUrl, ChartId, strAx, strAy, strTitle) {
+        $.ajax({
+            url: strUrl,
+            dataType: 'json',
+            data: {
+                __RequestVerificationToken: myChart.token(),
+                Area: $('#SelArea').val()
+            },
+            type: 'post',
+            beforeSend: function () {
+                ++myThreadNumbers;
+                $('html').addClass('waiting');
+            },
             success: function (response) {
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
@@ -227,14 +392,17 @@
                             var newColor = myChart.chartColors[colorName];
                             var barChartValues = response.chartData[i];
 
-                            myChart.addDataSetBar(barChart, barChartColumNames[i - 1], newColor, barChartValues);
+                            myChart.addDataSetGroupBar(barChart, barChartColumNames[i - 1], newColor, barChartValues);
                         }
                     }
                 }
                 else {
                     alert(response.message);
                 }
-                $('html').removeClass('waiting');
+                --myThreadNumbers;
+                if (myThreadNumbers == 0) {
+                    $('html').removeClass('waiting');
+                }
             },
             error: function (data) {
                 alert("Message: " + data.message);
@@ -247,8 +415,15 @@
         $.ajax({
             url: strUrl,
             dataType: 'json',
-            data: {},
+            data: {
+                __RequestVerificationToken: myChart.token(),
+                Area: $('#SelArea').val()
+            },
             type: 'post',
+            beforeSend: function () {
+                ++myThreadNumbers;
+                $('html').addClass('waiting');
+            },
             success: function (response) {
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
@@ -348,7 +523,10 @@
                 else {
                     alert(response.message);
                 }
-                $('html').removeClass('waiting');
+                --myThreadNumbers;
+                if (myThreadNumbers == 0) {
+                    $('html').removeClass('waiting');
+                }
             },
             error: function (data) {
                 alert("Message: " + data.message);
@@ -361,8 +539,15 @@
         $.ajax({
             url: strUrl,
             dataType: 'json',
-            data: {},
+            data: {
+                __RequestVerificationToken: myChart.token(),
+                Area: $('#SelArea').val()
+            },
             type: 'post',
+            beforeSend: function () {
+                ++myThreadNumbers;
+                $('html').addClass('waiting');
+            },
             success: function (response) {
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
@@ -432,7 +617,10 @@
                 else {
                     alert(response.message);
                 }
-                $('html').removeClass('waiting');
+                --myThreadNumbers;
+                if (myThreadNumbers == 0) {
+                    $('html').removeClass('waiting');
+                }
             },
             error: function (data) {
                 alert("Message: " + data.message);
@@ -445,8 +633,15 @@
         $.ajax({
             url: strUrl,
             dataType: 'json',
-            data: {},
+            data: {
+                __RequestVerificationToken: myChart.token(),
+                Area: $('#SelArea').val()
+            },
             type: 'post',
+            beforeSend: function () {
+                ++myThreadNumbers;
+                $('html').addClass('waiting');
+            },
             success: function (response) {
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
@@ -545,14 +740,17 @@
                             var newColor = myChart.chartColors[colorName];
                             var barLineChartValues = response.chartData[i];
 
-                            myChart.addDataSetBarLine(barLineChart, barLineChartColumNames[i - 1], newColor, barLineChartValues);
+                            myChart.addDataSetGroupBarLine(barLineChart, barLineChartColumNames[i - 1], newColor, barLineChartValues);
                         }
                     }
                 }
                 else {
                     alert(response.message);
                 }
-                $('html').removeClass('waiting');
+                --myThreadNumbers;
+                if (myThreadNumbers == 0) {
+                    $('html').removeClass('waiting');
+                }
             },
             error: function (data) {
                 alert("Message: " + data.message);
@@ -565,8 +763,15 @@
         $.ajax({
             url: strUrl,
             dataType: 'json',
-            data: {},
+            data: {
+                __RequestVerificationToken: myChart.token(),
+                Area: $('#SelArea').val()
+            },
             type: 'post',
+            beforeSend: function () {
+                ++myThreadNumbers;
+                $('html').addClass('waiting');
+            },
             success: function (response) {
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
@@ -654,7 +859,10 @@
                 else {
                     alert(xhr.response.message);
                 }
-                $('html').removeClass('waiting');
+                --myThreadNumbers;
+                if (myThreadNumbers == 0) {
+                    $('html').removeClass('waiting');
+                }
             },
             error: function (data) {
                 alert("Message: " + data.message);
@@ -667,8 +875,15 @@
         $.ajax({
             url: strUrl,
             dataType: 'json',
-            data: {},
+            data: {
+                __RequestVerificationToken: myChart.token(),
+                Area: $('#SelArea').val()
+            },
             type: 'post',
+            beforeSend: function () {
+                ++myThreadNumbers;
+                $('html').addClass('waiting');
+            },
             success: function (response) {
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
@@ -758,7 +973,10 @@
                 else {
                     alert(xhr.response.message);
                 }
-                $('html').removeClass('waiting');
+                --myThreadNumbers;
+                if (myThreadNumbers == 0) {
+                    $('html').removeClass('waiting');
+                }
             },
             error: function (data) {
                 alert("Message: " + data.message);
@@ -807,7 +1025,24 @@
         chart.update();
     },
 
-    addDataSetBar: function (chart, label, color, data) {
+    addDataSetBar: function (chart, label, colorIndex, data) {
+        var newDataset = {
+            backgroundColor: [],
+            data: data,
+            label: label,
+        };
+        var colorNames = Object.keys(myChart.chartColors);
+        for (var index = 0; index < data.length; ++index) {
+            var colorName = colorNames[(colorIndex + index) % colorNames.length];
+            var newColor = myChart.chartColors[colorName];
+            newDataset.backgroundColor.push(newColor);
+        }
+
+        chart.data.datasets.push(newDataset);
+        chart.update();
+    },
+
+    addDataSetGroupBar: function (chart, label, color, data) {
         chart.data.datasets.push({
             type: 'bar',
             label: label,
@@ -817,7 +1052,7 @@
         chart.update();
     },
 
-    addDataSetBarLine: function (chart, label, color, data) {
+    addDataSetGroupBarLine: function (chart, label, color, data) {
         chart.data.datasets.push({
             type: 'bar',
             label: label,
