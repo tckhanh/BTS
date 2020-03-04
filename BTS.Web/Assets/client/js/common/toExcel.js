@@ -127,7 +127,7 @@ var ExportTableToExcel = {
         var textRange;
 
         if (!table.nodeType) {
-            var clonedTable = $("#" + table).clone(true);            
+            var clonedTable = $("#" + table).clone(true);
 
             clonedTable.find('[style*="display: none"]').remove();
             clonedTable.find('a').removeAttr("href");

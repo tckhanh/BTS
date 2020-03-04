@@ -1,0 +1,41 @@
+﻿@model BTS.Web.Models.LicenceViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "Add";
+    Layout = null;
+}
+
+    using (Html.BeginForm("Add", "Licence", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Licence"), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
+    {
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true)
+        <div class="col-md-10">
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.machineCode, new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.machineCode, new { @class = "form-control", disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.machineCode)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.key, new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.key, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.key)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","Licence")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                    <input type="submit" value="Lưu" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    }

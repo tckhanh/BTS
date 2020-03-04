@@ -130,7 +130,7 @@ namespace BTS.Data.Repository
         public IEnumerable<ReportTT18Cert> GetReportTT18CertByDate(DateTime fromDate, DateTime toDate)
         {
             IQueryable<Certificate> query1 = from certificate in DbContext.Certificates
-                                             where ((certificate.IssuedDate >= fromDate) && (certificate.IssuedDate >= fromDate))
+                                             where ((certificate.IssuedDate >= fromDate) && (certificate.IssuedDate <= toDate))
                                              select certificate;
 
             IQueryable<ReportTT18Cert> query2 = from certificate in query1

@@ -58,6 +58,7 @@
     <Compile Include="ApplicationRoleService.cs" />
     <Compile Include="BtsService.cs" />
     <Compile Include="ApplicationGroupService.cs" />
+    <Compile Include="LicenceService.cs" />
     <Compile Include="NoCertificateService.cs" />
     <Compile Include="CertificateService.cs" />
     <Compile Include="CityService.cs" />

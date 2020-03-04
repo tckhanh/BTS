@@ -26,7 +26,7 @@ namespace BTS.Web.Infrastructure.Extensions
             var claimsIdentity = identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
-                return claimsIdentity.FindFirst("ImagePath").Value;
+                return claimsIdentity.FindFirst("ImagePath")?.Value;
             }
             return null;
         }

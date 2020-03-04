@@ -129,7 +129,7 @@ namespace BTS.Web.Infrastructure.Extensions
             DataTable table = new DataTable();
             var rowName = ((MemberExpression)rowSelector.Body).Member.Name;
             table.Columns.Add(new DataColumn(rowName));
-            var columns = source.Select(columnSelector).Distinct();
+            var columns = source.Select(columnSelector).Distinct().OrderBy(x=> x.ToString());
 
             foreach (var column in columns)
                 table.Columns.Add(new DataColumn(column.ToString()));
@@ -143,7 +143,7 @@ namespace BTS.Web.Infrastructure.Extensions
                                      c => c,
                                      r => columnSelector(r),
                                      (c, columnGroup) => dataSelector(columnGroup))
-                             });
+                             }).OrderBy(x=> x.Key);
 
             foreach (var row in rows)
             {

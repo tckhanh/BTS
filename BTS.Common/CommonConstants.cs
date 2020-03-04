@@ -4,6 +4,7 @@
     {
         public const string SUPERADMIN_GROUP = "SUPERADMIN";
         public const string RECOVERY_GROUP = "RECOVERY";
+        public const string SECRET_PHASE = "tckhanh@vnta.gov.vn";
         public const string DIRECTOR_GROUP = "DIRECTOR";
         public const string VERTIFICATIONHEADER_GROUP = "HEADER";
         public const string VERTIFICATION_GROUP = "VERTIFICATION";

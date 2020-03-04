@@ -18,15 +18,20 @@ using BTS.Service;
 using static BTS.Web.Models.AccountViewModel;
 using BTS.Data.ApplicationModels;
 using BTS.Web.Infrastructure.Extensions;
+using SKGL;
+using BTS.Web.Infrastructure.Core;
+using AutoMapper;
 
 namespace BTS.Web.Controllers
 {
     public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
+        private ILicenceService _licenceService;
 
-        public AccountController(IErrorService errorService) : base(errorService)
+        public AccountController(IErrorService errorService, ILicenceService labService) : base(errorService)
         {
+            _licenceService = labService;
         }
 
         public ApplicationSignInManager SignInManager
@@ -45,7 +50,10 @@ namespace BTS.Web.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            if (checkLicence.isValid() == true)
+                return View();
+            else
+                return View("NoLicence");
         }
 
         [HttpPost]
@@ -100,6 +108,7 @@ namespace BTS.Web.Controllers
 
             return View(model);
         }
+
 
         public ActionResult Logout()
         {
@@ -292,5 +301,78 @@ namespace BTS.Web.Controllers
         }
 
         #endregion Helpers
+
+        [AllowAnonymous]
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult ViewAll()
+        {
+            return View(GetAll());
+        }
+
+        [AllowAnonymous]
+        private IEnumerable<LicenceViewModel> GetAll()
+        {
+            List<Licence> model = _licenceService.getAll().ToList();
+            List<LicenceViewModel> viewModel = new List<LicenceViewModel>();
+            foreach (var item in model)
+            {
+                viewModel.Add(checkLicence.GetLicenceInfo(item));
+            }
+            return viewModel;
+        }
+
+        [AllowAnonymous]
+        public ActionResult Add()
+        {
+            LicenceViewModel ItemVm = new LicenceViewModel();
+            return View(ItemVm);
+        }
+
+        [AllowAnonymous]
+        public ActionResult Detail(string id = "0")
+        {
+            LicenceViewModel ItemVm = new LicenceViewModel();
+            Licence DbItem = _licenceService.getByID(id);
+            if (DbItem != null)
+            {
+                ItemVm = Mapper.Map<LicenceViewModel>(DbItem);
+            }
+            return View(ItemVm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public ActionResult Add(LicenceViewModel Item)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Licence newItem = new Licence();
+                    newItem.UpdateLicence(Item);
+
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
+
+                    _licenceService.Add(newItem);
+                    _licenceService.Save();
+                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<LicenceViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

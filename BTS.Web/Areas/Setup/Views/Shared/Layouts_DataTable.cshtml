@@ -1,0 +1,33 @@
+﻿
+@{
+    Layout = "~/Areas/Setup/Views/Shared/Layouts.cshtml";
+}
+
+@section headCSS{
+    <!-- DataTables -->
+
+    <link href="~/Assets/libs/datatables/media/css/jquery.dataTables.min.css" rel="stylesheet" />
+    @*<link href="~/Assets/libs/datatables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@
+    <link href="~/Assets/libs/datatables-buttons/css/buttons.dataTables.css" rel="stylesheet" />
+    <link href="~/Assets/client/css/custom-DataTable.css" rel="stylesheet" />
+    @RenderSection("headCSS", required: false)
+}
+
+@section headerJS{
+    @RenderSection("headerJS", required: false)
+}
+
+@section footerJS{
+    <!-- DataTables -->
+    @*<script src="~/Assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>*@
+    @*<script src="~/Assets/libs/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>*@
+    <script src="~/Assets/libs/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/libs/datatables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Assets/libs/datatables-rowsgroup/dataTables.rowsGroup.js"></script>
+    <script src="~/Assets/libs/datatables-buttons/js/dataTables.buttons.js"></script>
+    <script src="~/Assets/libs/datatables-buttons/js/buttons.colVis.js"></script>
+
+    @RenderSection("footerJS", required: false)
+}
+
+@RenderBody()

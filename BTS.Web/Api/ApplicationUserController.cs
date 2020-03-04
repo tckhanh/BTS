@@ -22,7 +22,7 @@ namespace BTS.Web.Api
 {
     [Authorize]
     [RoutePrefix("api/applicationUser")]
-    public class ApplicationUserController : BaseController
+    public class ApplicationUserController : BaseApiController
     {
         private ApplicationUserManager _userManager;
         private IApplicationGroupService _appGroupService;

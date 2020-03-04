@@ -44,7 +44,7 @@ namespace BTS.Data
         public DbSet<ApplicationGroup> ApplicationGroups { set; get; }
         public DbSet<ApplicationRoleGroup> ApplicationRoleGroups { set; get; }
         public DbSet<ApplicationUserGroup> ApplicationUserGroups { set; get; }
-
+        public DbSet<Licence> Licences { set; get; }
         public BTSDbContext() : base("BTSConnection")
         {
             this.Configuration.LazyLoadingEnabled = false;

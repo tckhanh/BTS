@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BTS.Web.Controllers
+namespace BTS.Web.Areas.Setup.Controllers
 {
     public class RecoveryController : Controller
     {

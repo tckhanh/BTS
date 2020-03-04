@@ -21,13 +21,13 @@ using System.Web.Http.Results;
 
 namespace BTS.Web.Infrastructure.Core
 {
-    public class BaseController : ApiController
+    public class BaseApiController : ApiController
     {
         private IErrorService _errorService;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
 
-        public BaseController(IErrorService errorService)
+        public BaseApiController(IErrorService errorService)
         {
             _errorService = errorService;
         }

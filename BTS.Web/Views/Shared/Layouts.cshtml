@@ -95,21 +95,21 @@
 
     <div class="wrapper">
         <!--header-->
-        @{Html.RenderAction("Header", "Home");}
+        @{Html.RenderPartial("Header");}
         <!---->
         <!-- Left side column. contains the logo and sidebar -->
-        @{Html.RenderAction("LeftSidebar", "Home");}
+        @{Html.RenderPartial("LeftSidebar");}
         <!---->
         <!-- Content Wrapper. Contains page content -->
         @RenderBody()
         <!-- /.content-wrapper -->
         <!--footer-->
-        @{Html.RenderAction("Footer", "Home");}
+        @{Html.RenderPartial("Footer");}
         <!---->
         @if (User.IsInRole(CommonConstants.System_CanEdit_Role))
         {
             <!-- Control Sidebar -->
-            Html.RenderAction("RightSideBar", "Home");
+            Html.RenderPartial("RightSideBar");
             <!-- /.control-sidebar -->
             <!-- Add the sidebar's background. This div must be placed
              immediately after the control sidebar -->

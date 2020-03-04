@@ -216,5 +216,11 @@ namespace BTS.Web.Infrastructure.Extensions
             Item.FeeAnnounceDate = ItemVm.FeeAnnounceDate;
             Item.FeeReceiptDate = ItemVm.FeeReceiptDate;
         }
+
+        public static void UpdateLicence(this Licence Item, LicenceViewModel ItemVm)
+        {
+            Item.key = ItemVm.key;
+            Item.enable = ItemVm.enable;
+        }
     }
 }

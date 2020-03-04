@@ -213,7 +213,7 @@ namespace BTS.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.System_CanAdd_Role)]
-        public ActionResult Add(ApplicationGroupViewModel Item, string[] selectedRoleItems, params string[] selectedUserItems)
+        public async Task<ActionResult> Add(ApplicationGroupViewModel Item, string[] selectedRoleItems, params string[] selectedUserItems)
         {
             try
             {

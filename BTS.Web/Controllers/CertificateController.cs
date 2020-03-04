@@ -84,6 +84,12 @@ namespace BTS.Web.Controllers
                 Items = _certificateService.getAll(out countItem, false).ToList();
             }
 
+            if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
+            {
+                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
+            }
+
+
             if (IsExpired == "yes")
             {
                 Items = Items.Where(x => x.ExpiredDate < DateTime.Today).ToList();
@@ -98,9 +104,6 @@ namespace BTS.Web.Controllers
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }
 
-            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
-
-
             if (!(string.IsNullOrEmpty(OperatorID)))
             {
                 Items = Items.Where(x => x.OperatorID.Contains(OperatorID)).ToList();
@@ -111,10 +114,8 @@ namespace BTS.Web.Controllers
                 Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
-            {
-                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
-            }
+            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+
 
             //Items = Items.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 

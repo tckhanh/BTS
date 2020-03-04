@@ -1,0 +1,93 @@
+﻿@model BTS.Web.Models.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Login</title>
+
+    <!--Default CSS* -->
+    <!-- jquery-ui -->
+    <link href="~/Assets/libs/jquery-ui/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="~/Assets/libs/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Theme style -->
+    <link href="~/Assets/libs/adminLTE/dist/css/AdminLTE.css" rel="stylesheet" />
+    <!-- iCheck -->
+    <link href="~/Assets/libs/adminLTE/plugins/iCheck/square/blue.css" rel="stylesheet" />
+    <link href="~/Assets/client/css/custom-Site.css" rel="stylesheet" />
+</head>
+<body class="hold-transition login-page">
+    <div id="header-row" style="padding: 0px; overflow:hidden; height:100px; background: url(/AppFiles/Images/bannerVcc2.png) center repeat"></div>
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="#"><b>ĐĂNG NHẬP HỆ THỐNG</b></a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg"><b></b></p>
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { returnUrl = @ViewBag.ReturnUrl, enctype = "multipart/form-data", id = "__AjaxAntiForgeryForm" }))//data-resetUrl
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Tên đăng nhập", disabled = "disabled" })
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Mật khẩu", disabled = "disabled" })
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                @Html.CheckBoxFor(model => model.RememberMe, new { disabled = "disabled" })
+                                Nhớ mật khẩu?
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-4">
+                        <button type="submit" disabled="disabled" class="btn btn-success btn-block btn-flat">Đăng nhập</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            }
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <div>
+        <h1>Phần mềm đã hết hạn hoặc chưa có Licence</h1>
+        <h2>Xin Vui lòng liên hệ Trung tâm Kiểm định và Chứng nhận 2 - Cục Viễn thông để được cấp Licence Info</h2>
+    </div>
+    <!-- /.login-box -->
+    <!-- jQuery 3 -->
+    <script src="~/Assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="~/Assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="~/Assets/libs/adminLTE/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '10%' /* optional */
+            });
+        });
+    </script>
+</body>
+
+    </div>
+</body>
+</html>

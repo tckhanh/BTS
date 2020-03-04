@@ -1,0 +1,75 @@
+﻿@model BTS.Web.Models.LicenceViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "Detail";
+    Layout = null;
+}
+
+
+@using (Html.BeginForm("Detail", "LicenceInfo", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "LicenceInfo"), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+            <div class="col-md-10">                
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.machineCode, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.machineCode, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.machineCode)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.key, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextAreaFor(model => model.key, new { @class = "form-control", rows = "5", cols = "40", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.key)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.isValid, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.CheckBoxFor(model => model.isValid, new { disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.isValid)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ExpireDate, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.ExpireDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.ExpireDate)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DaysLeft, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.DaysLeft, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.DaysLeft)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.enable, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.CheckBoxFor(model => model.enable, new { disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.enable)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("Add", "LicenceInfo")',false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","LicenceInfo")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

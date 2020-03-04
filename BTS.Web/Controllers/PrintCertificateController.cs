@@ -165,6 +165,12 @@ namespace BTS.Web.Controllers
                 DbItems = _certificateService.getAll(out countItem, false, new string[] { "Operator" }).ToList();
             }
 
+            if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
+            {
+                DbItems = DbItems.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
+            }
+
+
             if (IsExpired == "yes")
             {
                 DbItems = DbItems.Where(x => x.ExpiredDate < DateTime.Today).ToList();
@@ -179,8 +185,6 @@ namespace BTS.Web.Controllers
                 DbItems = DbItems.Where(x => x.CityID == CityID).ToList();
             }
 
-            DbItems = DbItems.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
-
 
             if (!(string.IsNullOrEmpty(OperatorID)))
             {
@@ -192,11 +196,8 @@ namespace BTS.Web.Controllers
                 DbItems = DbItems.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
-            {
-                DbItems = DbItems.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
-            }
 
+            DbItems = DbItems.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
             //DbItems = DbItems.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 
             IEnumerable<PrintCertificateViewModel> printCertificates = Mapper.Map<List<PrintCertificateViewModel>>(DbItems);
