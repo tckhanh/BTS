@@ -13,6 +13,7 @@ namespace BTS.Data.ApplicationModels
 
         [Key]
         [Column(Order = 2)]
+        [StringLength(36)]
         public string GroupId { set; get; }
 
         [ForeignKey("UserId")]

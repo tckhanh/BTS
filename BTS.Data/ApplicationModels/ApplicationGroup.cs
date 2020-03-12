@@ -10,6 +10,7 @@ namespace BTS.Data.ApplicationModels
     public class ApplicationGroup : Auditable
     {
         [Key]
+        [StringLength(36)]
         public string Id { set; get; }
 
         [StringLength(250)]

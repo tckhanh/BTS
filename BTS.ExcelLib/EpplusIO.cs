@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -316,6 +317,62 @@ namespace BTS.ExcelLib
                                 excelPackage.Save();
                                 return true;
                             }
+                        }
+                    }
+                    return false;
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                string description = "";
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+
+                LogError(ex, description);
+                Trace.WriteLine(ex.ToString());
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                Trace.WriteLine(ex.ToString());
+                throw;
+            }
+        }
+
+        public bool UpdateDataInSheet(string fullFileName, string sheetName, DataTable dt)
+        {
+            // nếu đường dẫn null hoặc rỗng thì báo không hợp lệ và return hàm
+            if (string.IsNullOrEmpty(fullFileName))
+            {
+                return false;
+            }
+
+            try
+            {
+                using (ExcelPackage excelPackage = new ExcelPackage(new FileInfo(fullFileName)))
+                {
+                    // đặt tên người tạo file
+                    excelPackage.Workbook.Properties.Author = "VCC2";
+                    // đặt tiêu đề cho file
+                    excelPackage.Workbook.Properties.Title = "VCC2";
+                    var ms = new System.IO.MemoryStream();
+
+                    foreach (ExcelWorksheet _xlWorkSheet in excelPackage.Workbook.Worksheets)
+                    {
+                        if (_xlWorkSheet.Name == sheetName)
+                        {
+                            _xlWorkSheet.Cells["A1"].LoadFromDataTable(dt, true);                            
+                            excelPackage.Save();
+                            return true;
                         }
                     }
                     return false;

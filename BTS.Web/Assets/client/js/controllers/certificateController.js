@@ -83,9 +83,26 @@ var certificateController = {
         });
 
         $('#btnReset').off('click').on('click', function () {
-            $('#txtNameS').val('');
-            $('#ddlStatusS').val('');
-            certificateController.loadData(true);
+            $('#SelOperatorID').val('');
+            $('#SelCityID').val('');
+            $('#SelProfileID').val('');
+            $('#BtsCodeOrAddress').val('');
+            certificateController.endDate = new Date();
+            certificateController.startDate = new Date(certificateController.endDate.getFullYear() - 5, certificateController.endDate.getMonth(), certificateController.endDate.getDate());
+            
+            $('input[name="DateRange"]').daterangepicker(
+                {
+                    locale: {
+                        format: 'DD/MM/YYYY'
+                    },
+                    startDate: certificateController.startDate,
+                    endDate: certificateController.endDate
+                },
+                function (start, end, label) {
+                    //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
+                    certificateController.startDate = start;
+                    certificateController.endDate = end;
+                });
         });
     },
 

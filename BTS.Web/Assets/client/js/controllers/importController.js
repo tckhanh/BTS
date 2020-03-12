@@ -1,6 +1,7 @@
 ﻿$(function () {
     var importController = {
         init: function () {
+            importController.registerEvent();
             var bar = $('.progress-bar');
             $('#jqueryForm').ajaxForm({
                 clearForm: true,
@@ -81,6 +82,38 @@
         registerEventDataTable: function () {
         },
         registerEvent: function () {
+            $('#btnGetSampleFile').off('click').on('click', function () {
+                $.ajax({
+                    url: '/ImportData/GetSampleFile',
+                    data: {
+                        fileName: 'Khanh.xlsm'
+                    },
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status == "TimeOut") {
+                            $.notify(response.message, "warn");
+                            window.location.href = "/Account/Login"
+                        } else if (response.status == "Success") {
+                            $.notify(response.message, "info");
+                        }
+                        else {
+                            //bootbox.alert(response.message);
+                            $.notify(response.message, {
+                                className: "warn"
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        $.notify(err.message, {
+                            className: "error",
+                            clickToHide: true
+                        });
+                    }
+                });
+            });
+
             $('#FileDialog').change(function (sender) {
                 var fileName = sender.target.files[0].name;
                 var validExts = new Array(".xlsx", ".xls");

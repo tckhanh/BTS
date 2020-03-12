@@ -288,6 +288,8 @@
     <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Areas\Setup\Controllers\LicenceInfoController.cs" />
+    <Compile Include="Controllers\WardController.cs" />
+    <Compile Include="Controllers\DistrictController.cs" />
     <Compile Include="Controllers\LicenceController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\InspectController.cs" />
@@ -329,6 +331,7 @@
     <Compile Include="Infrastructure\Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
+    <Compile Include="Models\ApplicantTabVM.cs" />
     <Compile Include="Models\ApplicantViewModel.cs" />
     <Compile Include="Models\ApplicationGroupViewModel.cs" />
     <Compile Include="Models\ApplicationRoleGroupViewModel.cs" />
@@ -337,7 +340,13 @@
     <Compile Include="Models\ApplicationUserViewModel.cs" />
     <Compile Include="Models\AuditableViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
+    <Compile Include="Models\CityTabVM.cs" />
+    <Compile Include="Models\WardVM.cs" />
+    <Compile Include="Models\DistrictVM.cs" />
+    <Compile Include="Models\InCaseOfTabVM.cs" />
+    <Compile Include="Models\LabTabVM.cs" />
     <Compile Include="Models\LicenceViewModel.cs" />
+    <Compile Include="Models\OperatorTabVM.cs" />
     <Compile Include="Models\PrintCertificateViewModel.cs" />
     <Compile Include="Models\ReportTT18NoCertViewModel.cs" />
     <Compile Include="Models\ReportTT18CertViewModel.cs" />
@@ -347,7 +356,6 @@
     <Compile Include="Models\CertificateViewModel.cs" />
     <Compile Include="Models\CityViewModel.cs" />
     <Compile Include="Models\ContactDetailViewModel.cs" />
-    <Compile Include="Models\DistrictViewModel.cs" />
     <Compile Include="Models\ExternalLoginListViewModel.cs" />
     <Compile Include="Models\FeedbackViewModel.cs" />
     <Compile Include="Models\FooterViewModel.cs" />
@@ -13301,6 +13309,16 @@
     <Content Include="Views\Account\Detail.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\ViewAll.cshtml" />
+    <Content Include="Views\District\Add.cshtml" />
+    <Content Include="Views\District\Detail.cshtml" />
+    <Content Include="Views\District\Edit.cshtml" />
+    <Content Include="Views\District\Index.cshtml" />
+    <Content Include="Views\District\ViewAll.cshtml" />
+    <Content Include="Views\Ward\Add.cshtml" />
+    <Content Include="Views\Ward\Detail.cshtml" />
+    <Content Include="Views\Ward\Edit.cshtml" />
+    <Content Include="Views\Ward\Index.cshtml" />
+    <Content Include="Views\Ward\ViewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Common\BTS.Common.csproj">

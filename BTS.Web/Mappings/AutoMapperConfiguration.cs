@@ -29,17 +29,24 @@ namespace BTS.Web.Mappings
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<InCaseOf, InCaseOfViewModel>();
+                cfg.CreateMap<InCaseOf, InCaseOfTabVM>();
                 cfg.CreateMap<Lab, LabViewModel>();
+                cfg.CreateMap<Lab, LabTabVM>();
+                cfg.CreateMap<Operator, OperatorViewModel>();
+                cfg.CreateMap<Operator, OperatorTabVM>();
                 cfg.CreateMap<Applicant, ApplicantViewModel>();
+                cfg.CreateMap<Applicant, ApplicantTabVM>();
+                cfg.CreateMap<City, CityViewModel>();
+                cfg.CreateMap<City, CityTabVM>();
+                cfg.CreateMap<District, DistrictVM>();
+                cfg.CreateMap<Ward, WardVM>();
+
+                cfg.CreateMap<Model.Models.Profile, ProfileViewModel>();
                 cfg.CreateMap<Bts, BtsViewModel>();
                 cfg.CreateMap<Certificate, CertificateViewModel>();
                 cfg.CreateMap<Certificate, PrintCertificateViewModel>();                
                 cfg.CreateMap<NoCertificate, NoCertificateViewModel>();
-                cfg.CreateMap<City, CityViewModel>();
-                cfg.CreateMap<Operator, OperatorViewModel>();
-                cfg.CreateMap<Model.Models.Profile, ProfileViewModel>();
                 cfg.CreateMap<SubBtsInCert, SubBtsInCertViewModel>();
-
                 cfg.CreateMap<Footer, FooterViewModel>();
                 cfg.CreateMap<Slide, SlideViewModel>();
                 cfg.CreateMap<WebPage, PageViewModel>();

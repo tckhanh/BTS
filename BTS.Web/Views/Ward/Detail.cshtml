@@ -1,0 +1,68 @@
+﻿@model BTS.Web.Models.WardVM
+@using BTS.Common
+@{
+    ViewBag.Title = "Detail";
+    Layout = null;
+}
+
+  @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+{
+    using (Html.BeginForm("Detail", "Ward", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Ward"), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                <div class="col-md-10">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Id, new { @class = "form-control", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Id)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DistrictId, new { @class = "control-label col-md-3" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.DistrictId, Model.DistrictList, " Chọn lựa Tỉnh/Thành phố", new { @class = "form-control", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.DistrictId)
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+                            {
+                                <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("Add", "Ward")',false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                            }
+                            @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                            {
+                                <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("Edit", "Ward", new { id = @Model.Id })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
+                            }
+
+                            @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                            {
+                                <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "Ward", new { id = @Model.Id })')"><i class="fa fa-trash"></i> Xóa bỏ</a>
+                            }
+
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","Ward")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3 class="text-danger">Bạn chưa được cấp quyền để thực hiện chức năng này !!!</h3>
+}

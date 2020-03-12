@@ -22,6 +22,8 @@ namespace BTS.Data
         public DbSet<InCaseOf> InCaseOfs { get; set; }
         public DbSet<Lab> Labs { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<Ward> Wards { get; set; }
         public DbSet<Operator> Operators { get; set; }
         public DbSet<Applicant> Applicants { get; set; }
         public DbSet<Profile> Profiles { get; set; }

@@ -145,6 +145,7 @@
         public const string Sheet_City = "City";
         public const string Sheet_City_ID = "ID";
         public const string Sheet_City_Name = "Name";
+        public const string Sheet_City_Code = "Code";
         public const string Sheet_City_Area = "Area";
 
         public const string Sheet_Operator = "Operator";
@@ -223,8 +224,6 @@
         public const string Sheet_Certificate_OffsetHeight = "OffsetHeight";
         public const string Sheet_Certificate_TotalBtsNum = "TotalBtsNum";
         public const string Sheet_Certificate_CerBtsNum = "CerBtsNum";
-
-
 
         public const string Sheet_NoCertificate = "NoCertificate";
         public const string Sheet_NoCertificate_BtsCode = "BtsCode";

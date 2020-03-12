@@ -14,6 +14,7 @@ namespace BTS.Data.ApplicationModels
     {
         [Key]
         [Column(Order = 1)]
+        [StringLength(36)]
         public string GroupId { set; get; }
 
         [Column(Order = 2)]

@@ -134,6 +134,8 @@
     <Compile Include="Repository\ApplicationUserRepository.cs" />
     <Compile Include="Repository\ApplicationUserGroupRepository.cs" />
     <Compile Include="Repository\BtsRepository.cs" />
+    <Compile Include="Repository\WardRepository.cs" />
+    <Compile Include="Repository\DistrictRepository.cs" />
     <Compile Include="Repository\LicenceRepository.cs" />
     <Compile Include="Repository\NoCertificateRepository.cs" />
     <Compile Include="Repository\CertificateRepository.cs" />

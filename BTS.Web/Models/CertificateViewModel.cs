@@ -17,6 +17,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Mã số hồ sơ")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mã số hồ sơ")]
+        [StringLength(36, ErrorMessage = "Mã hồ sơ không quá 36 ký tự")]
         public string ProfileID { get; set; }
 
         [Display(Name = "Mã nhà mạng")]

@@ -1,5 +1,7 @@
-﻿using BTS.Common;
+﻿using AutoMapper;
+using BTS.Common;
 using BTS.Common.ViewModels;
+using BTS.Data;
 using BTS.ExcelLib;
 using BTS.Model.Models;
 using BTS.Service;
@@ -12,6 +14,7 @@ using System.Globalization;
 using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
+using Profile = BTS.Model.Models.Profile;
 
 namespace BTS.Web.Controllers
 {
@@ -53,7 +56,7 @@ namespace BTS.Web.Controllers
                 if (fileExtension == ".xls" || fileExtension == ".xlsx" || fileExtension == ".xlsm")
                 {
                     //string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + Request.Files["file"].FileName;
-                    string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + "InputData" + DateTime.Now.ToString("yyyymmssfff") + fileExtension;                    
+                    string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + "InputData" + DateTime.Now.ToString("yyyymmssfff") + fileExtension;
                     try
                     {
                         if (System.IO.File.Exists(fileLocation))
@@ -101,6 +104,75 @@ namespace BTS.Web.Controllers
                 }
             }
             return Json(new { status = CommonConstants.Status_Success, message = "Import Certificate Finished !" }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetSampleFile(string fileName)
+        {
+            string fileLocation = Server.MapPath("~/AppFiles/Samples/") + fileName;
+            int stt = 0;
+            DataTable dt;
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                IEnumerable<InCaseOfTabVM> inCaseOfTabVMs = Mapper.Map<IEnumerable<InCaseOfTabVM>>(_importService.GetInCaseOfs());
+                stt = 0;
+                foreach (var itemVm in inCaseOfTabVMs)
+                {
+                    stt++;
+                    itemVm.No = stt;
+                }
+                dt = inCaseOfTabVMs.ToDataTable();
+                _excelIO.UpdateDataInSheet(fileLocation, CommonConstants.Sheet_InCaseOf, dt);
+
+                IEnumerable<LabTabVM> labTabVMs = Mapper.Map<IEnumerable<LabTabVM>>(_importService.GetLabs());
+                stt = 0;
+                foreach (var itemVm in labTabVMs)
+                {
+                    stt++;
+                    itemVm.No = stt;
+                }
+                dt = labTabVMs.ToDataTable();
+                _excelIO.UpdateDataInSheet(fileLocation, CommonConstants.Sheet_Lab, dt);
+
+
+                IEnumerable<CityTabVM> CityTabVMs = Mapper.Map<IEnumerable<CityTabVM>>(_importService.GetCities());
+                stt = 0;
+                foreach (var itemVm in CityTabVMs)
+                {
+                    stt++;
+                    itemVm.No = stt;
+                }
+                dt = CityTabVMs.ToDataTable();
+                _excelIO.UpdateDataInSheet(fileLocation, CommonConstants.Sheet_City, dt);
+
+
+                IEnumerable<OperatorTabVM> operatorTabVMs = Mapper.Map<IEnumerable<OperatorTabVM>>(_importService.GetOperators());
+                stt = 0;
+                foreach (var itemVm in operatorTabVMs)
+                {
+                    stt++;
+                    itemVm.No = stt;
+                }
+                dt = operatorTabVMs.ToDataTable();
+                _excelIO.UpdateDataInSheet(fileLocation, CommonConstants.Sheet_Operator, dt);
+
+
+                IEnumerable<ApplicantTabVM> applicantTabVMs = Mapper.Map<IEnumerable<ApplicantTabVM>>(_importService.GetApplicants());
+                stt = 0;
+                foreach (var itemVm in applicantTabVMs)
+                {
+                    stt++;
+                    itemVm.No = stt;
+                }
+                dt = applicantTabVMs.ToDataTable();
+                _excelIO.UpdateDataInSheet(fileLocation, CommonConstants.Sheet_Applicant, dt);
+
+
+                return Json(new { status = CommonConstants.Status_Success, message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = "Lỗi lấy dữ liệu" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         private string ImportInCaseOf(string excelConnectionString)
@@ -161,7 +233,7 @@ namespace BTS.Web.Controllers
                     var Item = new City();
                     Item.Id = dt.Rows[i][CommonConstants.Sheet_City_ID]?.ToString();
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_City_Name]?.ToString().Trim();
-                    if (dt.Columns.Contains(CommonConstants.Sheet_City_Area)) 
+                    if (dt.Columns.Contains(CommonConstants.Sheet_City_Area))
                         Item.Area = dt.Rows[i][CommonConstants.Sheet_City_Area]?.ToString().Trim();
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;

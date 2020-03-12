@@ -9,6 +9,7 @@ namespace BTS.Web.Models
     public class ApplicationRoleGroupViewModel
     {
         [Display(Name = "Mã nhóm")]
+        [StringLength(36, ErrorMessage = "Mã nhóm không quá 36 ký tự")]
         public string GroupId { set; get; }
 
         [Display(Name = "Mã quyền")]

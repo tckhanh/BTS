@@ -20,6 +20,10 @@ namespace BTS.Web.Models
         [Unique(ErrorMessage = "Tên Tỉnh/Thành phố đã tồn tại rồi !!", TargetModelType = typeof(City), TargetPropertyName = "Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Mã số Tỉnh/Thành phố")]
+        [StringLength(5, ErrorMessage = "Mã số Tỉnh/Thành phố không quá 05 ký tự")]
+        public string Code { get; set; }
+
         [Display(Name = "Tên Khu vực")]        
         [StringLength(20, ErrorMessage = "Tên Tên Khu vực không quá 20 ký tự")]        
         public string Area { get; set; }
@@ -27,5 +31,7 @@ namespace BTS.Web.Models
         public virtual IEnumerable<BtsViewModel> BTSs { get; set; }
 
         public virtual IEnumerable<CertificateViewModel> Certificates { get; set; }
+
+        public virtual IEnumerable<DistrictVM> Districts { get; set; }
     }
 }

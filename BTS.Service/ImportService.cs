@@ -15,7 +15,12 @@ namespace BTS.Service
 {
     public interface IImportService
     {
-        
+        IEnumerable<InCaseOf> GetInCaseOfs();
+        IEnumerable<Lab> GetLabs();
+        IEnumerable<Operator> GetOperators();
+        IEnumerable<Applicant> GetApplicants();
+        IEnumerable<City> GetCities();
+
         Profile findProfile(string applicantID, string profileNum, DateTime profileDate);
 
         Profile getProfile(string Id);
@@ -105,6 +110,7 @@ namespace BTS.Service
         IEnumerable<Profile> findProfilestNoCertificate(string btsCode, string operatorID);
 
         IEnumerable<NoCertificate> findBtsNoCertificate(string btsCode, string operatorID);
+        
     }
 
     public class ImportService : IImportService
@@ -417,6 +423,31 @@ namespace BTS.Service
         public Applicant findApplicant(string ApplicantID)
         {
             return _applicantRepository.GetSingleById(ApplicantID);
+        }
+
+        public IEnumerable<City> GetCities()
+        {
+            return _cityRepository.GetAll().OrderBy(x=> x.Id);
+        }
+
+        public IEnumerable<InCaseOf> GetInCaseOfs()
+        {
+            return _inCaseOfRepository.GetAll().OrderBy(x => x.Id);
+        }
+
+        public IEnumerable<Lab> GetLabs()
+        {
+            return _labRepository.GetAll().OrderBy(x => x.Id);
+        }
+
+        public IEnumerable<Operator> GetOperators()
+        {
+            return _operatorRepository.GetAll().OrderBy(x => x.Id);
+        }
+
+        public IEnumerable<Applicant> GetApplicants()
+        {
+            return _applicantRepository.GetAll().OrderBy(x => x.Id);
         }
     }
 }

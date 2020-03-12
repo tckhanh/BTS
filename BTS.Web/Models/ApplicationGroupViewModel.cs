@@ -12,6 +12,7 @@ namespace BTS.Web.Models
     public class ApplicationGroupViewModel
     {
         [Display(Name = "Mã nhóm")]
+        [StringLength(36, ErrorMessage = "Mã nhóm không quá 36 ký tự")]
         public string Id { get; set; }
 
         [Display(Name = "Tên nhóm")]

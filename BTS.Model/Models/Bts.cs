@@ -13,8 +13,10 @@ namespace BTS.Model.Models
     public class Bts : Auditable
     {
         [Key]
+        [StringLength(36)]
         public string Id { get; set; }
 
+        [StringLength(36)]
         public string ProfileID { get; set; }
 
         [Required]

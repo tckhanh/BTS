@@ -103,6 +103,20 @@ namespace BTS.Web.Infrastructure.Extensions
             myCity.Area = cityVm.Area;
         }
 
+        public static void UpdateWard(this Ward myWard, WardVM wardVm)
+        {
+            myWard.Id = wardVm.Id;
+            myWard.Name = wardVm.Name;
+            myWard.DistrictId = wardVm.DistrictId;
+        }
+        
+        public static void UpdateDistrict(this District myDistrict, DistrictVM districtVm)
+        {
+            myDistrict.Id = districtVm.Id;
+            myDistrict.Name = districtVm.Name;
+            myDistrict.CityId = districtVm.CityId;
+        }
+
         public static void UpdateOperator(this Operator myoperator, OperatorViewModel operatorVm)
         {
             myoperator.Name = operatorVm.Name;

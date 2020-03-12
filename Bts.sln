@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTS.ExcelLib", "BTS.ExcelLi
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Software Protector", "Software Protector\Software Protector.vbproj", "{16BA9EE3-2E71-4D43-954B-6DFFE8471F65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SKGL", "SKGL 2.0.5.2\SKGL.csproj", "{3E42C239-69E0-4420-8133-898FA2CF135A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +91,14 @@ Global
 		{16BA9EE3-2E71-4D43-954B-6DFFE8471F65}.Release|Any CPU.ActiveCfg = Release|x86
 		{16BA9EE3-2E71-4D43-954B-6DFFE8471F65}.Release|x86.ActiveCfg = Release|x86
 		{16BA9EE3-2E71-4D43-954B-6DFFE8471F65}.Release|x86.Build.0 = Release|x86
+		{3E42C239-69E0-4420-8133-898FA2CF135A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E42C239-69E0-4420-8133-898FA2CF135A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E42C239-69E0-4420-8133-898FA2CF135A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3E42C239-69E0-4420-8133-898FA2CF135A}.Debug|x86.Build.0 = Debug|Any CPU
+		{3E42C239-69E0-4420-8133-898FA2CF135A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E42C239-69E0-4420-8133-898FA2CF135A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E42C239-69E0-4420-8133-898FA2CF135A}.Release|x86.ActiveCfg = Release|Any CPU
+		{3E42C239-69E0-4420-8133-898FA2CF135A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

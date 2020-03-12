@@ -16,6 +16,9 @@ namespace BTS.Model.Models
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
+        
+        [MaxLength(5)]
+        public string Code { get; set; }
 
         [MaxLength(20)]
         public string Area { get; set; }
@@ -23,6 +26,8 @@ namespace BTS.Model.Models
         public virtual IEnumerable<Bts> BTSs { get; set; }
 
         public virtual IEnumerable<Certificate> Certificates { get; set; }
+
+        public virtual IEnumerable<District> Districts { get; set; }
 
         public City()
         {

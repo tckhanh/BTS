@@ -37,7 +37,7 @@ namespace BTS.Web.Controllers
         public ActionResult Index()
         {
             IEnumerable<OperatorViewModel> operators = Mapper.Map<List<OperatorViewModel>>(_operatorService.getAll());
-            IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll());
+            IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll().OrderBy(x=> x.ApplyDate));
             IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll());
 
             cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
