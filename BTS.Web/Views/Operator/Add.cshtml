@@ -14,12 +14,19 @@
             <div class="form-horizontal">
                 @Html.ValidationSummary(true)
                 <div class="col-md-10">
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
                             @Html.TextBoxFor(model => model.Id, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Id)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RootId, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.RootId, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.RootId)
                         </div>
                     </div>
 

@@ -149,6 +149,7 @@
         public const string Sheet_City_Area = "Area";
 
         public const string Sheet_Operator = "Operator";
+        public const string Sheet_Operator_RootID = "RootID";
         public const string Sheet_Operator_ID = "ID";
         public const string Sheet_Operator_Name = "Name";
 
@@ -239,6 +240,25 @@
         public const string Sheet_NoCertificate_TotalBtsNum = "TotalBtsNum";
         public const string Sheet_NoCertificate_NoCerBtsNum = "NoCerBtsNum";
 
+        public const string Sheet_Area = "Area";
+        public const string Sheet_Area_WardId = "WardId";
+        public const string Sheet_Area_WardName = "WardName";
+        public const string Sheet_Area_DistrictId = "DistrictId";
+        public const string Sheet_Area_DistrictName = "DistrictName";
+        public const string Sheet_Area_CityID = "CityID";
+        public const string Sheet_Area_CityName = "CityName";
+
+        public const string Sheet_Equipment = "Equipment";
+        public const string Sheet_Equipment_Name = "Name";
+        public const string Sheet_Equipment_Band = "Band";
+        public const string Sheet_Equipment_Technology = "Technology";
+        public const string Sheet_Equipment_Tx = "Tx";        
+        public const string Sheet_Equipment_MobiFone = "MOBIFONE";
+        public const string Sheet_Equipment_Viettel = "VIETTEL";
+        public const string Sheet_Equipment_VinaPhone = "VINAPHONE";
+        public const string Sheet_Equipment_VNMobile = "VNMOBILE";
+        public const string Sheet_Equipment_Gtel = "GTEL";
+
         public const string Sheet_User = "User";
         public const string Sheet_User_FullName = "FullName";
         public const string Sheet_User_BirthDay = "BirthDay";
@@ -262,6 +282,10 @@
 
         public const string ImportCER = "ImportCER";
         public const string ImportBTS = "ImportBTS";
+        public const string ImportArea = "ImportArea";
+        public const string ImportDistrict = "ImportDistrict";
+        public const string ImportWard = "ImportWard";
+        public const string ImportEquipment = "ImportEquiment";
         public const string SelectAll = "ALL";
     }
 }

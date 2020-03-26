@@ -20,6 +20,8 @@ namespace BTS.Service
         IEnumerable<Operator> GetOperators();
         IEnumerable<Applicant> GetApplicants();
         IEnumerable<City> GetCities();
+        IEnumerable<AreaTab> GetAreaTabs();
+        IEnumerable<EquipmentTab> GetEquipmentTabs();
 
         Profile findProfile(string applicantID, string profileNum, DateTime profileDate);
 
@@ -54,9 +56,10 @@ namespace BTS.Service
         bool Add(Lab item);
 
         bool Add(City item);
-
+        bool Add(District item);
+        bool Add(Ward item);
+        bool Add(Equipment item);
         bool Add(Operator item);
-
         bool Add(Applicant item);
 
         bool Add(Profile item);
@@ -118,6 +121,9 @@ namespace BTS.Service
         private IInCaseOfRepository _inCaseOfRepository;
         private ILabRepository _labRepository;
         private ICityRepository _cityRepository;
+        private IDistrictRepository _districtRepository;
+        private IWardRepository _wardRepository;
+        private IEquipmentRepository _equipmentRepository;
         private IOperatorRepository _operatorRepository;
         private IApplicantRepository _applicantRepository;
         private IProfileRepository _profileRepository;
@@ -127,11 +133,14 @@ namespace BTS.Service
         private ISubBTSinCertRepository _subBTSinCertRepository;
         private IUnitOfWork _unitOfWork;
 
-        public ImportService(IInCaseOfRepository inCaseOfRepository, ILabRepository labRepository, ICityRepository cityRepository, IOperatorRepository operatorRepository, IApplicantRepository applicantRepository, IProfileRepository profileRepository, IBtsRepository btsRepository, ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository, ISubBTSinCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
+        public ImportService(IInCaseOfRepository inCaseOfRepository, ILabRepository labRepository, ICityRepository cityRepository, IDistrictRepository districtRepository, IWardRepository wardRepository, IEquipmentRepository equipmentRepository, IOperatorRepository operatorRepository, IApplicantRepository applicantRepository, IProfileRepository profileRepository, IBtsRepository btsRepository, ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository, ISubBTSinCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
         {
             _inCaseOfRepository = inCaseOfRepository;
             _labRepository = labRepository;
             _cityRepository = cityRepository;
+            _districtRepository = districtRepository;
+            _wardRepository = wardRepository;
+            _equipmentRepository = equipmentRepository;
             _operatorRepository = operatorRepository;
             _applicantRepository = applicantRepository;
             _profileRepository = profileRepository;
@@ -169,6 +178,36 @@ namespace BTS.Service
             {
                 item.CreatedDate = DateTime.Now;
                 _cityRepository.Add(item);
+            }
+            return true;
+        }
+
+        public bool Add(District item)
+        {
+            if (_districtRepository.GetSingleById(item.Id) == null && !_districtRepository.Exists(m => m.CityId.Trim().ToUpper() == item.CityId.ToUpper() && m.Name.Trim().ToUpper() == item.Name.ToUpper()))
+            {
+                item.CreatedDate = DateTime.Now;
+                _districtRepository.Add(item);
+            }
+            return true;
+        }
+
+        public bool Add(Ward item)
+        {
+            if (_wardRepository.GetSingleById(item.Id) == null && !_wardRepository.Exists(m => m.DistrictId.Trim().ToUpper() == item.DistrictId.ToUpper() && m.Name.Trim().ToUpper() == item.Name.ToUpper()))
+            {
+                item.CreatedDate = DateTime.Now;
+                _wardRepository.Add(item);
+            }
+            return true;
+        }
+
+        public bool Add(Equipment item)
+        {
+            if (!_equipmentRepository.Exists(m => m.OperatorRootID.Trim().ToUpper() == item.OperatorRootID.ToUpper() && m.Name.Trim().ToUpper() == item.Name.ToUpper() && m.Band.Trim().ToUpper() == item.Band.ToUpper() && m.Tx == item.Tx))
+            {
+                item.CreatedDate = DateTime.Now;
+                _equipmentRepository.Add(item);
             }
             return true;
         }
@@ -428,6 +467,18 @@ namespace BTS.Service
         public IEnumerable<City> GetCities()
         {
             return _cityRepository.GetAll().OrderBy(x=> x.Id);
+        }
+
+        public IEnumerable<AreaTab> GetAreaTabs()
+        {
+
+            return _wardRepository.GetAreaTabs();
+        }
+
+        public IEnumerable<EquipmentTab> GetEquipmentTabs()
+        {
+
+            return _equipmentRepository.GetEquipmentTabs();
         }
 
         public IEnumerable<InCaseOf> GetInCaseOfs()

@@ -16,7 +16,7 @@ namespace BTS.Service
 
         City Delete(string Id);
 
-        IEnumerable<City> getAll();
+        IEnumerable<City> getAll(string[] includes = null);
 
         IEnumerable<City> getAll(string keyword);
 
@@ -48,9 +48,9 @@ namespace BTS.Service
             return _cityRepository.Delete(Id);
         }
 
-        public IEnumerable<City> getAll()
+        public IEnumerable<City> getAll(string[] includes = null)
         {
-            return _cityRepository.GetAll();
+            return _cityRepository.GetAll(includes);
         }
 
         public IEnumerable<City> getAll(string keyword)

@@ -22,8 +22,13 @@ namespace BTS.Web.Models
         
         [Display(Name = "Mã số Quận/Huyện")]
         [StringLength(5, ErrorMessage = "Mã số Quận/Huyện không quá 05 ký tự")]
-        [MaxLength(5)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Mã Quận/Huyện")]
         public string DistrictId { get; set; }
+
+        public virtual DistrictVM District { get; set; }
+
+        [Display(Name = "Tên Quận/Huyện")]
+        public string DistrictName { get; set; }
 
         [Display(Name = "Thuộc Quận/Huyện")]
         public ICollection<SelectListItem> DistrictList { get; set; }

@@ -2,6 +2,7 @@
 using BTS.Model.Models;
 using BTS.Service;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Data;
 using System.Data.Entity.Infrastructure;
@@ -11,6 +12,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Services;
@@ -364,18 +366,39 @@ namespace BTS.ExcelLib
                     excelPackage.Workbook.Properties.Author = "VCC2";
                     // đặt tiêu đề cho file
                     excelPackage.Workbook.Properties.Title = "VCC2";
-                    var ms = new System.IO.MemoryStream();
 
-                    foreach (ExcelWorksheet _xlWorkSheet in excelPackage.Workbook.Worksheets)
+                    ExcelWorksheet _xlWorkSheet = excelPackage.Workbook.Worksheets.FirstOrDefault(x => x.Name == sheetName);
+                    if (_xlWorkSheet == null)
+                        _xlWorkSheet = excelPackage.Workbook.Worksheets.Add(sheetName);
+                    else
                     {
-                        if (_xlWorkSheet.Name == sheetName)
-                        {
-                            _xlWorkSheet.Cells["A1"].LoadFromDataTable(dt, true);                            
-                            excelPackage.Save();
-                            return true;
-                        }
+                        //_xlWorkSheet.Cells.Clear();
+                        DeleteColumns(_xlWorkSheet, 1, _xlWorkSheet.Dimension.End.Column);
                     }
-                    return false;
+                    _xlWorkSheet.Cells["A1"].LoadFromDataTable(dt, true);
+
+                    //Autofit with minimum size for the column.
+                    double minimumSize = 10;
+                    double maximumSize = 50;                    
+                    _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].AutoFitColumns(minimumSize, maximumSize);
+                    _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].Style.WrapText = true;
+                    _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].AutoFilter = true;                    
+
+                    //fill row 1 with striped orange background
+
+                    _xlWorkSheet.Cells[1, 1, 1, _xlWorkSheet.Dimension.End.Column].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    _xlWorkSheet.Cells[1, 1, 1, _xlWorkSheet.Dimension.End.Column].Style.Fill.BackgroundColor.SetColor(Color.LightGreen);
+                    _xlWorkSheet.Cells[1, 1, 1, _xlWorkSheet.Dimension.End.Column].Style.Font.Bold = true;
+                    _xlWorkSheet.Cells[1, 1, 1, _xlWorkSheet.Dimension.End.Column].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+
+                    excelPackage.Save();
+                    return true;
                 }
             }
             catch (DbEntityValidationException ex)
@@ -570,6 +593,14 @@ namespace BTS.ExcelLib
             dt.Rows.RemoveAt(0);
 
             return dt;
+        }
+
+        public void DeleteColumns(ExcelWorksheet wsSheet, int fromColumn, int toColumn)
+        {
+            for (int i = toColumn; i >= fromColumn; i--)
+            {
+                wsSheet.DeleteColumn(fromColumn);
+            }
         }
     }
 }

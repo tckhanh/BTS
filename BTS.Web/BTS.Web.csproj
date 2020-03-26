@@ -341,6 +341,9 @@
     <Compile Include="Models\AuditableViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
     <Compile Include="Models\CityTabVM.cs" />
+    <Compile Include="Models\AreaTabVM.cs" />
+    <Compile Include="Models\EquipmentTabVM.cs" />
+    <Compile Include="Models\EquipmentVM.cs" />
     <Compile Include="Models\WardVM.cs" />
     <Compile Include="Models\DistrictVM.cs" />
     <Compile Include="Models\InCaseOfTabVM.cs" />
@@ -13319,6 +13322,8 @@
     <Content Include="Views\Ward\Edit.cshtml" />
     <Content Include="Views\Ward\Index.cshtml" />
     <Content Include="Views\Ward\ViewAll.cshtml" />
+    <Content Include="Views\ImportData\Area.cshtml" />
+    <Content Include="Views\ImportData\Equipment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Common\BTS.Common.csproj">

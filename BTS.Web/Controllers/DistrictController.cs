@@ -36,7 +36,7 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<DistrictVM> GetAll()
         {
-            List<District> model = _DistrictService.getAll().ToList();
+            List<District> model = _DistrictService.getAll(new string[] { "City" }).OrderBy(x=> x.CityId + x.Name).ToList();
             return Mapper.Map<IEnumerable<DistrictVM>>(model);
         }
 
@@ -72,6 +72,7 @@ namespace BTS.Web.Controllers
             if (DbItem != null)
             {
                 ItemVm = Mapper.Map<DistrictVM>(DbItem);
+                ItemVm = FillInDistrictVM(ItemVm);
             }
             return View(ItemVm);
         }

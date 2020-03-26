@@ -15,8 +15,12 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DistrictId)
+                @Html.DisplayNameFor(model => model.District.Name)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.District.CityId)
+            </th>
+
             <th>Thao tác</th>
         </tr>
     </thead>
@@ -32,7 +36,10 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DistrictId)
+                @Html.DisplayFor(modelItem => item.District.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.District.CityId)
             </td>
 
             <td class="dt-body-center">

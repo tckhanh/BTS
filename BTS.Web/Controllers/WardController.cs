@@ -16,12 +16,12 @@ namespace BTS.Web.Controllers
     public class WardController : BaseController
     {
         private IWardService _WardService;
-        private IDistrictService _cityService;
+        private IDistrictService _districtService;
 
-        public WardController(IErrorService errorService, IWardService wardService, IDistrictService cityService) : base(errorService)
+        public WardController(IErrorService errorService, IWardService wardService, IDistrictService districtService) : base(errorService)
         {
             _WardService = wardService;
-            _cityService = cityService;
+            _districtService = districtService;
         }
 
         public ActionResult Index()
@@ -36,20 +36,20 @@ namespace BTS.Web.Controllers
 
         private IEnumerable<WardVM> GetAll()
         {
-            List<Ward> model = _WardService.getAll().ToList();
-            return Mapper.Map<IEnumerable<WardVM>>(model);
+            List<Ward> model = _WardService.getAll(new string[] { "District" }).OrderBy(x=> x.District.CityId + x.District.Name + x.Name).ToList();
+            return Mapper.Map<IEnumerable<WardVM>>(model);            
         }
 
         private WardVM FillInWardVM(WardVM ItemVm)
         {            
 
-            IEnumerable<District> cityList = _cityService.getAll().ToList();
-            foreach (District cityItem in cityList)
+            IEnumerable<District> districtList = _districtService.getAll().OrderBy(x=> x.CityId + x.Name).ToList();
+            foreach (District districtItem in districtList)
             {
                 SelectListItem listItem = new SelectListItem()
                 {
-                    Text = cityItem.Name,
-                    Value = cityItem.Id,
+                    Text = districtItem.CityId + "-" + districtItem.Name,
+                    Value = districtItem.Id,
                     Selected = false
                 };
                 ItemVm.DistrictList.Add(listItem);
@@ -72,6 +72,7 @@ namespace BTS.Web.Controllers
             if (DbItem != null)
             {
                 ItemVm = Mapper.Map<WardVM>(DbItem);
+                ItemVm = FillInWardVM(ItemVm);
             }
             return View(ItemVm);
         }

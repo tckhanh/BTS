@@ -16,7 +16,7 @@ namespace BTS.Service
 
         Ward Delete(string Id);
 
-        IEnumerable<Ward> getAll();
+        IEnumerable<Ward> getAll(string[] includes = null);
 
         IEnumerable<Ward> getAll(string keyword);
 
@@ -48,9 +48,9 @@ namespace BTS.Service
             return _districtRepository.Delete(Id);
         }
 
-        public IEnumerable<Ward> getAll()
+        public IEnumerable<Ward> getAll(string[] includes = null)
         {
-            return _districtRepository.GetAll();
+            return _districtRepository.GetAll(includes);
         }
 
         public IEnumerable<Ward> getAll(string keyword)

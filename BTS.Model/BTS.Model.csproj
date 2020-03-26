@@ -89,8 +89,11 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DefaultDateTimeValueAttribute.cs" />
     <Compile Include="Models\Applicant.cs" />
+    <Compile Include="Models\AreaTab.cs" />
     <Compile Include="Models\Bts.cs" />
     <Compile Include="Models\Certificate.cs" />
+    <Compile Include="Models\EquipmentTab.cs" />
+    <Compile Include="Models\Equipment.cs" />
     <Compile Include="Models\Ward.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Licence.cs" />

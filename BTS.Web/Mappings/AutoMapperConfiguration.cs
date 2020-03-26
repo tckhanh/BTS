@@ -40,6 +40,9 @@ namespace BTS.Web.Mappings
                 cfg.CreateMap<City, CityTabVM>();
                 cfg.CreateMap<District, DistrictVM>();
                 cfg.CreateMap<Ward, WardVM>();
+                cfg.CreateMap<AreaTab, AreaTabVM>();
+                cfg.CreateMap<Equipment, EquipmentVM>();
+                cfg.CreateMap<EquipmentTab, EquipmentTabVM>();
 
                 cfg.CreateMap<Model.Models.Profile, ProfileViewModel>();
                 cfg.CreateMap<Bts, BtsViewModel>();

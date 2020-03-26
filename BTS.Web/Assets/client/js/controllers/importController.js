@@ -83,6 +83,7 @@
         },
         registerEvent: function () {
             $('#btnGetSampleFile').off('click').on('click', function () {
+                var bar = $('.progress-bar');
                 $.ajax({
                     url: '/ImportData/GetSampleFile',
                     data: {
@@ -90,33 +91,54 @@
                     },
                     type: 'GET',
                     dataType: 'json',
+                    beforeSend: function () {
+                        $('html').addClass('waiting');
+                        bar.html('Bắt đầu thực hiện!');
+                        bar.addClass('active');
+                        $('#progressRow').show();
+                    },
+                    error: function (err) {
+                        console.log(err.message);
+                        $.notify(err.message, {
+                            className: "error",
+                            clickToHide: true
+                        });                        
+                        $('html').removeClass('waiting');
+                        bar.removeClass('active');
+                        $('#btnImport').prop('disabled', false);
+                        $('#btnReset').prop('disabled', false);
+                        $('#FileDialog').prop('disabled', false);
+                        $('#ImportAction').prop('disabled', false);
+                        $('#ImportAction').prop('disabled', false);
+                    },
                     success: function (response) {
                         if (response.status == "TimeOut") {
                             $.notify(response.message, "warn");
                             window.location.href = "/Account/Login"
                         } else if (response.status == "Success") {
                             $.notify(response.message, "info");
+                            bar.html('Đã thực hiện xong!');
+                            //$('#ImportAction option').eq(2).prop('selected', true)
                         }
                         else {
-                            //bootbox.alert(response.message);
-                            $.notify(response.message, {
-                                className: "warn"
-                            });
+                            bar.html('Lỗi trong quá trình thực hiện!');
+                            alert("Complete: " + response.message);
                         }
+                        $('html').removeClass('waiting');
+                        bar.removeClass('active');
+                        $('#btnImport').prop('disabled', false);
+                        $('#btnReset').prop('disabled', false);
+                        $('#FileDialog').prop('disabled', false);
+                        $('#ImportAction').prop('disabled', false);
+                        //$("#ImportAction").val("ImportBTS");
                     },
-                    error: function (err) {
-                        console.log(err);
-                        $.notify(err.message, {
-                            className: "error",
-                            clickToHide: true
-                        });
-                    }
                 });
             });
 
             $('#FileDialog').change(function (sender) {
+                var bar = $('.progress-bar');
                 var fileName = sender.target.files[0].name;
-                var validExts = new Array(".xlsx", ".xls");
+                var validExts = new Array(".xlsx", ".xlsm", ".xls");
                 var fileExt = fileName.substring(fileName.lastIndexOf('.'));
                 if (validExts.indexOf(fileExt) < 0) {
                     alert("Bạn chỉ được chọn các tập tin Excel " + validExts.toString() + " để nhập liệu");

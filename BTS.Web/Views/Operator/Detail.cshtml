@@ -13,12 +13,21 @@
         <div class="row">
             <div class="form-horizontal">
                 @Html.ValidationSummary(true)
+
                 <div class="col-md-10">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
                             @Html.TextBoxFor(model => model.Id, new { @class = "form-control", disabled = "disabled" })
                             @Html.ValidationMessageFor(model => model.Id)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RootId, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.RootId, new { @class = "form-control", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.RootId)
                         </div>
                     </div>
 
@@ -32,16 +41,16 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                              @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+                            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
                             {
                                 <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("Add", "Operator")',false)"><i class="fa fa-plus"></i> Thêm mới</a>
                             }
-                              @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                            @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                             {
                                 <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("Edit", "Operator", new { id = @Model.Id })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
                             }
 
-                              @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                            @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
                             {
                                 <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "Operator", new { id = @Model.Id })')"><i class="fa fa-trash"></i> Xóa bỏ</a>
                             }

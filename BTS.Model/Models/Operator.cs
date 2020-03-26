@@ -13,6 +13,10 @@ namespace BTS.Model.Models
         [StringLength(10)]
         public string Id { get; set; }
 
+        [StringLength(10)]
+        [Required]
+        public string RootId { get; set; }
+
         [StringLength(255)]
         public string Name { get; set; }
 

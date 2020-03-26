@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
@@ -106,6 +107,125 @@ namespace BTS.Web.Controllers
             return Json(new { status = CommonConstants.Status_Success, message = "Import Certificate Finished !" }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Area()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Area(HttpPostedFileBase file, string ImportAction, string InputType)
+        {
+            if (Request.Files["file"].ContentLength > 0)
+            {
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(Request.Files["file"].FileName);
+                string fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
+
+                if (fileExtension == ".xls" || fileExtension == ".xlsx" || fileExtension == ".xlsm")
+                {
+                    //string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + Request.Files["file"].FileName;
+                    string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + "Area" + DateTime.Now.ToString("yyyymmssfff") + fileExtension;
+                    try
+                    {
+                        if (System.IO.File.Exists(fileLocation))
+                            System.IO.File.Delete(fileLocation);
+
+                        Request.Files["file"].SaveAs(fileLocation);
+
+                        string[] columnNames = new string[] {
+                            CommonConstants.Sheet_Area_WardId,
+                            CommonConstants.Sheet_Area_DistrictId };
+                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+
+                        //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
+                        //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
+                        if (ImportAction == CommonConstants.ImportArea)
+                        {
+                            ExecuteDatabase(ImportDistrict, fileLocation);
+                            ExecuteDatabase(ImportWard, fileLocation);
+                        }
+                        else if (ImportAction == CommonConstants.ImportDistrict)
+                        {
+                            ExecuteDatabase(ImportDistrict, fileLocation);
+                        }
+                        else if (ImportAction == CommonConstants.ImportWard)
+                        {
+                            ExecuteDatabase(ImportWard, fileLocation);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // Base Controller đã ghi Log Error rồi
+                        return Json(new { status = CommonConstants.Status_Error, message = e.Message + "\n" + e.StackTrace }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            return Json(new { status = CommonConstants.Status_Success, message = "Import Certificate Finished !" }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Equipment()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Equipment(HttpPostedFileBase file, string ImportAction, string InputType)
+        {
+            if (Request.Files["file"].ContentLength > 0)
+            {
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(Request.Files["file"].FileName);
+                string fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
+
+                if (fileExtension == ".xls" || fileExtension == ".xlsx" || fileExtension == ".xlsm")
+                {
+                    //string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + Request.Files["file"].FileName;
+                    string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + "Equipment" + DateTime.Now.ToString("yyyymmssfff") + fileExtension;
+                    try
+                    {
+                        if (System.IO.File.Exists(fileLocation))
+                            System.IO.File.Delete(fileLocation);
+
+                        Request.Files["file"].SaveAs(fileLocation);
+
+                        string[] columnNames = new string[] {
+                            CommonConstants.Sheet_Equipment_Tx,
+                            CommonConstants.Sheet_Equipment_MobiFone,
+                            CommonConstants.Sheet_Equipment_Viettel,
+                            CommonConstants.Sheet_Equipment_VinaPhone,
+                            CommonConstants.Sheet_Equipment_VNMobile,
+                            CommonConstants.Sheet_Equipment_Gtel
+                        };
+                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+
+                        //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
+                        //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
+                        if (ImportAction == CommonConstants.Sheet_Equipment_MobiFone)
+                        {
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_MobiFone);
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_Viettel);
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_VinaPhone);
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_VNMobile);
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_Gtel);
+                        }
+                        else if (ImportAction == CommonConstants.ImportDistrict)
+                        {
+                            ExecuteDatabase(ImportDistrict, fileLocation);
+                        }
+                        else if (ImportAction == CommonConstants.ImportWard)
+                        {
+                            ExecuteDatabase(ImportWard, fileLocation);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // Base Controller đã ghi Log Error rồi
+                        return Json(new { status = CommonConstants.Status_Error, message = e.Message + "\n" + e.StackTrace }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            return Json(new { status = CommonConstants.Status_Success, message = "Import Certificate Finished !" }, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult GetSampleFile(string fileName)
         {
             string fileLocation = Server.MapPath("~/AppFiles/Samples/") + fileName;
@@ -166,6 +286,25 @@ namespace BTS.Web.Controllers
                 dt = applicantTabVMs.ToDataTable();
                 _excelIO.UpdateDataInSheet(fileLocation, CommonConstants.Sheet_Applicant, dt);
 
+                IEnumerable<AreaTabVM> AreaTabVMs = Mapper.Map<IEnumerable<AreaTabVM>>(_importService.GetAreaTabs());
+                stt = 0;
+                foreach (var itemVm in AreaTabVMs)
+                {
+                    stt++;
+                    itemVm.No = stt;
+                }
+                dt = AreaTabVMs.ToDataTable();
+                _excelIO.UpdateDataInSheet(fileLocation, CommonConstants.Sheet_Area, dt);
+
+                IEnumerable<EquipmentTabVM> EquipmentTabVMs = Mapper.Map<IEnumerable<EquipmentTabVM>>(_importService.GetEquipmentTabs());
+                stt = 0;
+                foreach (var itemVm in EquipmentTabVMs)
+                {
+                    stt++;
+                    itemVm.No = stt;
+                }
+                dt = EquipmentTabVMs.ToDataTable();
+                _excelIO.UpdateDataInSheet(fileLocation, CommonConstants.Sheet_Equipment, dt);
 
                 return Json(new { status = CommonConstants.Status_Success, message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
             }
@@ -246,6 +385,80 @@ namespace BTS.Web.Controllers
             return CommonConstants.Status_Success;
         }
 
+        private string ImportDistrict(string excelConnectionString)
+        {
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Area);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Area_DistrictId]?.ToString()))
+                {
+                    var Item = new District();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Area_DistrictId]?.ToString();
+                    Item.Name = dt.Rows[i][CommonConstants.Sheet_Area_DistrictName]?.ToString().Trim();
+                    Item.CityId = dt.Rows[i][CommonConstants.Sheet_Area_CityID]?.ToString().Trim();
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
+
+                    _importService.Add(Item);
+                    _importService.Save();
+                }
+            }
+
+            return CommonConstants.Status_Success;
+        }
+
+        private string ImportWard(string excelConnectionString)
+        {
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Area);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Area_WardId]?.ToString()))
+                {
+                    var Item = new Ward();
+                    Item.Id = dt.Rows[i][CommonConstants.Sheet_Area_WardId]?.ToString();
+                    Item.Name = dt.Rows[i][CommonConstants.Sheet_Area_WardName]?.ToString().Trim();
+                    Item.DistrictId = dt.Rows[i][CommonConstants.Sheet_Area_DistrictId]?.ToString().Trim();
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
+
+                    _importService.Add(Item);
+                    _importService.Save();
+                }
+            }
+
+            return CommonConstants.Status_Success;
+        }
+
+        private string ImportEquipment(string excelConnectionString, string OperatorRootID)
+        {
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Equipment);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Equipment_Name]?.ToString()))
+                {
+                    var Item = new Equipment();
+                    Item.Name = dt.Rows[i][CommonConstants.Sheet_Equipment_Name]?.ToString().Trim();
+                    Item.Band = dt.Rows[i][CommonConstants.Sheet_Equipment_Band]?.ToString().Trim();
+                    Item.Tx = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Equipment_Tx]?.ToString());
+                    Item.OperatorRootID = OperatorRootID;
+                    if (dt.Rows[i][OperatorRootID]?.ToString().Length > 0)
+                        Item.MaxPower = Double.Parse(dt.Rows[i][OperatorRootID]?.ToString());
+
+                    Item.CreatedBy = User.Identity.Name;
+                    Item.CreatedDate = DateTime.Now;
+                    if (Item.MaxPower != 0)
+                    {
+                        _importService.Add(Item);
+                        _importService.Save();
+                    }
+                }
+            }
+
+            return CommonConstants.Status_Success;
+        }
         private string ImportOperator(string excelConnectionString)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Operator);
@@ -255,6 +468,7 @@ namespace BTS.Web.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Operator_ID]?.ToString()))
                 {
                     var Item = new Operator();
+                    Item.RootId = dt.Rows[i][CommonConstants.Sheet_Operator_RootID]?.ToString();
                     Item.Id = dt.Rows[i][CommonConstants.Sheet_Operator_ID]?.ToString();
                     Item.Name = dt.Rows[i][CommonConstants.Sheet_Operator_Name]?.ToString().Trim();
                     Item.CreatedBy = User.Identity.Name;

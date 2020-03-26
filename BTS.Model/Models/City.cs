@@ -17,11 +17,11 @@ namespace BTS.Model.Models
         [MaxLength(50)]
         public string Name { get; set; }
         
-        [MaxLength(5)]
-        public string Code { get; set; }
-
         [MaxLength(20)]
         public string Area { get; set; }
+
+        [MaxLength(5)]
+        public string Code { get; set; }
 
         public virtual IEnumerable<Bts> BTSs { get; set; }
 

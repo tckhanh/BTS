@@ -67,7 +67,7 @@
                         <li><a href="/InCaseOf/"><i class="fa fa-circle-o"></i> Trường hợp Kiểm định</a></li>
                         <li><a href="/City/"><i class="fa fa-circle-o"></i> Tỉnh/ Thành phố</a></li>
                         <li><a href="/District/"><i class="fa fa-circle-o"></i> Quận/ Huyện</a></li>
-                        <li><a href="/District/"><i class="fa fa-circle-o"></i> Phường/ Xã</a></li>
+                        <li><a href="/Ward/"><i class="fa fa-circle-o"></i> Phường/ Xã</a></li>
                         <li><a href="/Lab/"><i class="fa fa-circle-o"></i> Đơn vị đo kiểm</a></li>
                         <li><a href="/Operator/"><i class="fa fa-circle-o"></i> Nhà mạng di động</a></li>
                         <li><a href="/Applicant/"><i class="fa fa-circle-o"></i> Đơn vị nộp hồ sơ</a></li>
@@ -92,7 +92,9 @@
                     <ul class="treeview-menu">
                         @if (User.IsInRole(CommonConstants.Data_CanImport_Role))
                         {
-                            <li><a href="/ImportData/"><i class="fa fa-circle-o"></i>Nhập liệu Hồ sơ KĐ</a></li>
+                            <li><a href="/ImportData/Index"><i class="fa fa-circle-o"></i>Nhập liệu Hồ sơ KĐ</a></li>
+                            <li><a href="/ImportData/Area"><i class="fa fa-circle-o"></i>Nhập Quận/Huyện Phường/Xã</a></li>
+                            <li><a href="/ImportData/Equipment"><i class="fa fa-circle-o"></i>Nhập Thiết bị</a></li>
                         }
                     </ul>
                 </li>

@@ -21,10 +21,12 @@ namespace BTS.Web.Models
         [StringLength(50, ErrorMessage = "Tên Quận/Huyện không quá 50 ký tự")]
         public string Name { get; set; }
         
-        [Display(Name = "Mã số Tỉnh/Thành phố")]
+        [Display(Name = "Mã Tỉnh/Thành phố")]
         [StringLength(3, ErrorMessage = "Mã số Tỉnh/Thành phố không quá 03 ký tự")]
-        [MaxLength(3)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Mã Tỉnh/Thành phố")]
         public string CityId { get; set; }
+
+        public virtual CityViewModel City { get; set; }
 
         public virtual IEnumerable<WardVM> Wards { get; set; }
 
