@@ -30,7 +30,7 @@
 
         public const string InputType_AddNew = "AddNew";
         public const string InputType_AddMore = "AddMore";
-        public const string InputType_DelAdd = "DelAdd";
+        public const string InputType_UpdateAdd = "UpdateAdd";        
 
         public const string SuperAdmin_Name = "Admin";
         public const string SuperAdmin_FullName = "Trần Công Khanh";

@@ -26,6 +26,10 @@ namespace BTS.Service
         Profile findProfile(string applicantID, string profileNum, DateTime profileDate);
 
         Profile getProfile(string Id);
+        District getDistrict(string Id);
+        Equipment getEquipment(int Id);
+        Equipment getEquipment(string Name, string Band, string OperatorRootID);
+        Ward getWard(string Id);
 
         Bts getBts(int Id);
 
@@ -41,7 +45,7 @@ namespace BTS.Service
 
         SubBtsInCert findSubBts(string certificateID, string btsCode, string operatorID);
 
-        Certificate getCertificate(string Id);
+        Certificate getCertificate(string Id);        
 
         IEnumerable<Certificate> getCertificatesByProfile(string profileID);
 
@@ -71,7 +75,9 @@ namespace BTS.Service
         bool Add(NoCertificate item);
 
         bool Add(SubBtsInCert item);
-
+        void Update(District item);
+        void Update(Equipment item);
+        void Update(Ward item);
         void Update(InCaseOf newInCaseOf);
 
         void Update(Profile newProfile);
@@ -300,6 +306,24 @@ namespace BTS.Service
             _inCaseOfRepository.Update(item);
         }
 
+        public void Update(District item)
+        {
+            item.UpdatedDate = DateTime.Now;
+            _districtRepository.Update(item);
+        }
+
+        public void Update(Equipment item)
+        {
+            item.UpdatedDate = DateTime.Now;
+            _equipmentRepository.Update(item);
+        }
+
+        public void Update(Ward item)
+        {
+            item.UpdatedDate = DateTime.Now;
+            _wardRepository.Update(item);
+        }
+
         public void Update(Certificate item)
         {
             item.UpdatedDate = DateTime.Now;
@@ -499,6 +523,26 @@ namespace BTS.Service
         public IEnumerable<Applicant> GetApplicants()
         {
             return _applicantRepository.GetAll().OrderBy(x => x.Id);
+        }
+
+        public District getDistrict(string Id)
+        {
+            return _districtRepository.GetSingleById(Id);
+        }
+
+        public Equipment getEquipment(int Id)
+        {
+            return _equipmentRepository.GetSingleById(Id);
+        }
+
+        public Equipment getEquipment(string Name, string Band, string OperatorRootID)
+        {
+            return _equipmentRepository.GetSingleByCondition(x=> x.Name.Trim().ToUpper() == Name.Trim().ToUpper() && x.Band.Trim().ToUpper() == Band.Trim().ToUpper() && x.OperatorRootID.Trim().ToUpper() == OperatorRootID.Trim().ToUpper()) ;
+        }
+
+        public Ward getWard(string Id)
+        {
+            return _wardRepository.GetSingleById(Id);
         }
     }
 }

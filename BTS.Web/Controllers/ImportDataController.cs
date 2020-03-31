@@ -141,16 +141,16 @@ namespace BTS.Web.Controllers
                         //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
                         if (ImportAction == CommonConstants.ImportArea)
                         {
-                            ExecuteDatabase(ImportDistrict, fileLocation);
-                            ExecuteDatabase(ImportWard, fileLocation);
+                            ExecuteDatabase(ImportDistrict, fileLocation, InputType);
+                            ExecuteDatabase(ImportWard, fileLocation, InputType);
                         }
                         else if (ImportAction == CommonConstants.ImportDistrict)
                         {
-                            ExecuteDatabase(ImportDistrict, fileLocation);
+                            ExecuteDatabase(ImportDistrict, fileLocation, InputType);
                         }
                         else if (ImportAction == CommonConstants.ImportWard)
                         {
-                            ExecuteDatabase(ImportWard, fileLocation);
+                            ExecuteDatabase(ImportWard, fileLocation, InputType);
                         }
                     }
                     catch (Exception e)
@@ -200,22 +200,18 @@ namespace BTS.Web.Controllers
 
                         //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
                         //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
-                        if (ImportAction == CommonConstants.Sheet_Equipment_MobiFone)
+                        if (ImportAction == CommonConstants.SelectAll)
                         {
-                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_MobiFone);
-                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_Viettel);
-                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_VinaPhone);
-                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_VNMobile);
-                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_Gtel);
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_MobiFone, InputType);
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_Viettel, InputType);
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_VinaPhone, InputType);
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_VNMobile, InputType);
+                            ExecuteDatabase(ImportEquipment, fileLocation, CommonConstants.Sheet_Equipment_Gtel, InputType);
                         }
-                        else if (ImportAction == CommonConstants.ImportDistrict)
+                        else
                         {
-                            ExecuteDatabase(ImportDistrict, fileLocation);
-                        }
-                        else if (ImportAction == CommonConstants.ImportWard)
-                        {
-                            ExecuteDatabase(ImportWard, fileLocation);
-                        }
+                            ExecuteDatabase(ImportEquipment, fileLocation, ImportAction, InputType);
+                        }                        
                     }
                     catch (Exception e)
                     {
@@ -385,7 +381,7 @@ namespace BTS.Web.Controllers
             return CommonConstants.Status_Success;
         }
 
-        private string ImportDistrict(string excelConnectionString)
+        private string ImportDistrict(string excelConnectionString, string InputType)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Area);
 
@@ -400,7 +396,22 @@ namespace BTS.Web.Controllers
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
 
-                    _importService.Add(Item);
+                    if (InputType == CommonConstants.InputType_AddNew || InputType == CommonConstants.InputType_AddMore)
+                    {
+                        _importService.Add(Item);
+                    }
+                    else if (InputType == CommonConstants.InputType_UpdateAdd)
+                    {
+                        District existedItem = _importService.getDistrict(Item.Id);
+                        if (existedItem == null)
+                        {
+                            _importService.Add(Item);
+                        }
+                        else
+                        {
+                            _importService.Update(Item);
+                        }
+                    }
                     _importService.Save();
                 }
             }
@@ -408,7 +419,7 @@ namespace BTS.Web.Controllers
             return CommonConstants.Status_Success;
         }
 
-        private string ImportWard(string excelConnectionString)
+        private string ImportWard(string excelConnectionString, string InputType)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Area);
 
@@ -423,7 +434,22 @@ namespace BTS.Web.Controllers
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
 
-                    _importService.Add(Item);
+                    if (InputType == CommonConstants.InputType_AddNew || InputType == CommonConstants.InputType_AddMore)
+                    {
+                        _importService.Add(Item);
+                    }
+                    else if (InputType == CommonConstants.InputType_UpdateAdd)
+                    {
+                        District existedItem = _importService.getDistrict(Item.Id);
+                        if (existedItem == null)
+                        {
+                            _importService.Add(Item);
+                        }
+                        else
+                        {
+                            _importService.Update(Item);
+                        }
+                    }
                     _importService.Save();
                 }
             }
@@ -431,7 +457,7 @@ namespace BTS.Web.Controllers
             return CommonConstants.Status_Success;
         }
 
-        private string ImportEquipment(string excelConnectionString, string OperatorRootID)
+        private string ImportEquipment(string excelConnectionString, string OperatorRootID, string InputType)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Equipment);
 
@@ -449,11 +475,28 @@ namespace BTS.Web.Controllers
 
                     Item.CreatedBy = User.Identity.Name;
                     Item.CreatedDate = DateTime.Now;
-                    if (Item.MaxPower != 0)
+
+                    if (InputType == CommonConstants.InputType_AddNew || InputType == CommonConstants.InputType_AddMore)
                     {
-                        _importService.Add(Item);
-                        _importService.Save();
+                        if (Item.MaxPower != 0)
+                        {
+                            _importService.Add(Item);
+                        }                        
                     }
+                    else if (InputType == CommonConstants.InputType_UpdateAdd)
+                    {
+                        Equipment existedItem = _importService.getEquipment(Item.Name, Item.Band, Item.OperatorRootID);
+                        if (existedItem == null)
+                        {
+                            _importService.Add(Item);
+                        }
+                        else
+                        {
+                            Item.Id = existedItem.Id;
+                            _importService.Update(Item);
+                        }
+                    }
+                    _importService.Save();
                 }
             }
 
@@ -673,18 +716,12 @@ namespace BTS.Web.Controllers
                     }
                 }
             }
-            if (InputType == CommonConstants.InputType_DelAdd || InputType == CommonConstants.InputType_AddNew)
+            if (InputType == CommonConstants.InputType_AddNew)
             {
                 if (InputType == CommonConstants.InputType_AddNew && _importService.findBtssByProfile(profileID).Count() > 0)
                 {
                     Profile dbPro = _importService.getProfile(profileID);
-                    return "Các trạm gốc BTS của hồ sơ kiểm định số " + dbPro.ProfileNum + " đã tôn tại rồi";
-                }
-
-                if (InputType == CommonConstants.InputType_DelAdd)
-                {
-                    _importService.RemoveBtsInProfile(profileID);
-                    _importService.Save();
+                    return "Các trạm gốc BTS của hồ sơ kiểm định số " + dbPro.ProfileNum + " đã tồn tại rồi";
                 }
 
                 // Them cac tram BTS cua Profile vao
@@ -745,307 +782,360 @@ namespace BTS.Web.Controllers
                 }
             }
 
+            if (InputType == CommonConstants.InputType_AddNew)
+            {
+                if (_importService.findCertsByProfile(profileID).Count() > 0)
+                {
+                    Profile dbPro = _importService.getProfile(profileID);
+                    return "Hồ sơ kiểm định số " + dbPro.ProfileNum + " đã có 1 số trạm BTS được cấp GCNKĐ rồi";
+                }
 
+                // Them cac Giấy CNKĐ cua Profile vao
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Certificate Item = FillInCertificate(profileID, operatorID, dt, i);
+                    if (!string.IsNullOrEmpty(Item.BtsCode?.ToString()))
+                    {
+                        Certificate existedItemID = _importService.getCertificate(Item.Id);
+                        if (existedItemID != null)
+                        {
+                            if (existedItemID.BtsCode != Item.BtsCode || existedItemID.ProfileID != Item.ProfileID)
+                                return "Lỗi: Giấy Chứng nhận kiểm định số " + Item.Id + " đã được cấp ở Hồ sơ số " + existedItemID.ProfileID + " rồi";
+                            else
+                            {
+                                // Số Giấy chứng nhận này đã được thêm vào lần cấp trước của hồ sơ rồi.
+                            }
+                        }
+                        else
+                        {
+                            // Thêm các Giấy chứng nhận mới khác của hồ sơ ở lần thứ N.
+                            Certificate existCertificate = _importService.findCertificate(Item.BtsCode, Item.ProfileID);
+                            if (existCertificate == null)
+                            {
+                                _importService.Add(Item);
+                                _importService.Save();
+
+                                Bts dbBts = _importService.findBts(profileID, Item.BtsCode);
+                                if (dbBts != null)
+                                {
+                                    _importService.Delete(dbBts);
+                                    _importService.Save();
+                                }
+                                RemoveSubBtsInCert(Item);
+                                AddSubBtsInCert(Item);
+                            }
+                            else
+                            {
+                                if (existCertificate.Id != Item.Id)
+                                    return "Lỗi: Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (Số: " + existCertificate.Id + ")";
+                                else
+                                {
+                                    // Số Giấy chứng nhận này đã được thêm vào bị trùng lập trong hồ sơ.
+                                    return "Lỗi: Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp trùng (Số Giấy CNKĐ: " + existCertificate.Id + ")";
+                                }
+                            }
+                        }
+
+                        //Certificate existedItemID = _importService.getCertificate(Item.Id);
+
+                        //if (existedItemID != null)
+                        //{
+                        //    if (existedItemID.BtsCode != Item.BtsCode || existedItemID.ProfileID != Item.ProfileID)
+                        //        return "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi";
+                        //    else
+                        //    {
+
+                        //    }
+                        //}
+
+                        //Certificate existCertificate = _importService.findCertificate(Item.BtsCode, Item.ProfileID);
+                        //if (existCertificate != null)
+                        //{
+                        //    return "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")";
+                        //}
+
+                        //_importService.Add(Item);
+                        //_importService.Save();
+
+                        //Bts dbBts = _importService.findBts(profileID, Item.BtsCode);
+                        //if (dbBts != null)
+                        //{
+                        //    _importService.Delete(dbBts);
+                        //    _importService.Save();
+                        //}
+
+                        //for (int j = 0; j < Item.SubBtsQuantity; j++)
+                        //{
+                        //    SubBtsInCert subBtsItem = new SubBtsInCert();
+                        //    subBtsItem.CertificateID = Item.Id;
+                        //    subBtsItem.BtsSerialNo = j + 1;
+                        //    subBtsItem.BtsCode = SubBtsCodes[j];
+                        //    subBtsItem.OperatorID = SubBtsOperatorIDs[j];
+                        //    subBtsItem.AntenHeight = SubBtsAntenHeights[j];
+                        //    subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
+                        //    subBtsItem.Band = SubBtsBands[j];
+                        //    subBtsItem.Configuration = SubBtsConfigurations[j];
+                        //    subBtsItem.Equipment = SubBtsEquipments[j];
+                        //    if (subBtsItem.Equipment.IndexOf(' ') >= 0)
+                        //    {
+                        //        subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                        //    }
+                        //    else
+                        //    {
+                        //        subBtsItem.Manufactory = SubBtsEquipments[j];
+                        //    }
+                        //    subBtsItem.PowerSum = SubBtsPowerSums[j];
+
+                        //    subBtsItem.CreatedBy = User.Identity.Name;
+                        //    subBtsItem.CreatedDate = DateTime.Now;
+
+
+                        //    _importService.Add(subBtsItem);
+                        //    _importService.Save();
+                        //}
+
+                    }
+                }
+
+            }
             if (InputType == CommonConstants.InputType_AddMore)
             {
                 // Them cac Giấy CNKĐ cua Profile vao
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString()))
+                    Certificate Item = FillInCertificate(profileID, operatorID, dt, i);
+                    if (!string.IsNullOrEmpty(Item.BtsCode?.ToString()))
                     {
-                        var Item = new Certificate();
-                        string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
-
-                        Item.ProfileID = profileID;
-                        Item.OperatorID = operatorID;
-                        Item.Id = dt.Rows[i][CommonConstants.Sheet_Certificate_CertificateNum]?.ToString();
-                        Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_Certificate_BtsCode]?.ToString();
-                        Item.Address = dt.Rows[i][CommonConstants.Sheet_Certificate_Address]?.ToString();
-                        Item.CityID = dt.Rows[i][CommonConstants.Sheet_Certificate_CityID]?.ToString();
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString().Length > 0)
-                            Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString());
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString().Length > 0)
-                            Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString());
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString().Length > 0)
-                            Item.InCaseOfID = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString());
-
-                        Item.LabID = dt.Rows[i][CommonConstants.Sheet_Certificate_LabID]?.ToString();
-
-                        Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportNo]?.ToString();
-                        Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportDate]?.ToString());
-                        Item.IssuedDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedDate]?.ToString());
-                        Item.ExpiredDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate]?.ToString());
-                        Item.IssuedPlace = CommonConstants.IssuePalce;
-                        Item.Signer = CommonConstants.Signer;
-                        Item.SubBtsQuantity = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity]?.ToString());
-
-                        Item.IsPoleOnGround = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString());
-
-                        Item.IsSafeLimit = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsSafeLimit]?.ToString());
-
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString().Length > 0)
-                            Item.SafeLimitHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString());
-
-                        Item.IsHouseIn100m = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsHouseIn100m]?.ToString());
-
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString().Length > 0)
-                            Item.MaxHeightIn100m = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString());
-
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxPowerSum]?.ToString().Length > 0)
-                            Item.MaxPowerSum = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxPowerSum]?.ToString());
-
-                        Item.IsMeasuringExposure = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsMeasuringExposure]?.ToString());
-
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString().Length > 0)
-                            Item.MinAntenHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString());
-
-                        Item.OffsetHeight = Item.MinAntenHeight - Item.MaxHeightIn100m;
-
-                        //if (dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString().Length > 0)
-                        //    Item.OffsetHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString());                    
-
-                        Item.SubBtsAntenHeights = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenHeights]?.ToString();
-                        SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
-
-                        Item.SubBtsAntenNums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenNums]?.ToString();
-                        SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
-
-                        Item.SharedAntens = dt.Rows[i][CommonConstants.Sheet_Certificate_SharedAntens]?.ToString();
-
-                        Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
-                        SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
-
-                        Item.SubBtsCodes = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsCodes]?.ToString();
-                        SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
-
-                        Item.SubBtsConfigurations = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsConfigurations]?.ToString();
-                        SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
-
-                        Item.SubBtsEquipments = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsEquipments]?.ToString();
-                        SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
-
-                        Item.SubBtsOperatorIDs = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsOperatorIDs]?.ToString();
-                        SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
-
-                        Item.SubBtsPowerSums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums]?.ToString();
-                        SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
-
-                        Item.CreatedBy = User.Identity.Name;
-                        Item.CreatedDate = DateTime.Now;
-
-                        if (_importService.getCertificate(Item.Id) != null)
+                        Certificate existedItemID = _importService.getCertificate(Item.Id);
+                        if (existedItemID != null)
                         {
-                            return "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi";
-                        }
-
-                        //Certificate existCertificate = _importService.findCertificate(Item.BtsCode, Item.ProfileID);
-                        if (_importService.findCertificate(Item.BtsCode, Item.ProfileID) != null)
-                        {
-                            return "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")";
-                        }
-
-                        _importService.Add(Item);
-                        _importService.Save();
-
-                        Bts dbBts = _importService.findBts(profileID, Item.BtsCode);
-                        if (dbBts != null)
-                        {
-                            _importService.Delete(dbBts);
-                            _importService.Save();
-                        }
-
-
-                        for (int j = 0; j < Item.SubBtsQuantity; j++)
-                        {
-                            SubBtsInCert subBtsItem = new SubBtsInCert();
-                            subBtsItem.CertificateID = Item.Id;
-                            subBtsItem.BtsSerialNo = j + 1;
-                            subBtsItem.BtsCode = SubBtsCodes[j];
-                            subBtsItem.OperatorID = SubBtsOperatorIDs[j];
-                            subBtsItem.AntenHeight = SubBtsAntenHeights[j];
-                            subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
-                            subBtsItem.Band = SubBtsBands[j];
-                            subBtsItem.Configuration = SubBtsConfigurations[j];
-                            subBtsItem.Equipment = SubBtsEquipments[j];
-                            if (subBtsItem.Equipment.IndexOf(' ') >= 0)
+                            if (existedItemID.BtsCode != Item.BtsCode || existedItemID.ProfileID != Item.ProfileID)
+                                return "Lỗi: Giấy Chứng nhận kiểm định số " + Item.Id + " đã được cấp ở Hồ sơ số " + existedItemID.ProfileID + " rồi";
+                            else
                             {
-                                subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                                // Số Giấy chứng nhận này đã được thêm vào lần cấp trước của hồ sơ rồi => Không thêm nữa.
+                            }
+                        }
+                        else
+                        {
+                            // Thêm các Giấy chứng nhận mới khác của hồ sơ ở lần thứ N.
+                            Certificate existCertificate = _importService.findCertificate(Item.BtsCode, Item.ProfileID);
+                            if (existCertificate == null)
+                            {
+                                _importService.Add(Item);
+                                _importService.Save();
+
+                                Bts dbBts = _importService.findBts(profileID, Item.BtsCode);
+                                if (dbBts != null)
+                                {
+                                    _importService.Delete(dbBts);
+                                    _importService.Save();
+                                }
+                                RemoveSubBtsInCert(Item);
+                                AddSubBtsInCert(Item);
                             }
                             else
                             {
-                                subBtsItem.Manufactory = SubBtsEquipments[j];
+                                if (existCertificate.Id != Item.Id)
+                                    return "Lỗi: Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (Số: " + existCertificate.Id + ")";
+                                else
+                                {
+                                    // Số Giấy chứng nhận này đã được thêm vào lần cấp trước của hồ sơ rồi=> Không thêm nữa..
+                                }
                             }
-                            subBtsItem.PowerSum = SubBtsPowerSums[j];
-
-                            subBtsItem.CreatedBy = User.Identity.Name;
-                            subBtsItem.CreatedDate = DateTime.Now;
-
-
-                            _importService.Add(subBtsItem);
-                            _importService.Save();
                         }
-
                     }
                 }
             }
-            if (InputType == CommonConstants.InputType_DelAdd || InputType == CommonConstants.InputType_AddNew)
+
+            if (InputType == CommonConstants.InputType_UpdateAdd)
             {
-                if (InputType == CommonConstants.InputType_AddNew && _importService.findCertsByProfile(profileID).Count() > 0)
-                {
-                    Profile dbPro = _importService.getProfile(profileID);
-                    return "Hồ sơ kiểm định số " + dbPro.ProfileNum + " đã có 1 số trạm BTS được cấp GCNKĐ rồi";
-                }
-
-                if (InputType == CommonConstants.InputType_DelAdd)
-                {
-                    _importService.RemoveCertsInProfile(profileID);
-                    _importService.Save();
-                }
-
                 // Them cac Giấy CNKĐ cua Profile vao
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString()))
+                    Certificate Item = FillInCertificate(profileID, operatorID, dt, i);
+                    if (!string.IsNullOrEmpty(Item.BtsCode?.ToString()))
                     {
-                        var Item = new Certificate();
-                        string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
-
-                        Item.ProfileID = profileID;
-                        Item.OperatorID = operatorID;
-                        Item.Id = dt.Rows[i][CommonConstants.Sheet_Certificate_CertificateNum]?.ToString();
-                        Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_Certificate_BtsCode]?.ToString();
-                        Item.Address = dt.Rows[i][CommonConstants.Sheet_Certificate_Address]?.ToString();
-                        Item.CityID = dt.Rows[i][CommonConstants.Sheet_Certificate_CityID]?.ToString();
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString().Length > 0)
-                            Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString());
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString().Length > 0)
-                            Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString());
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString().Length > 0)
-                            Item.InCaseOfID = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString());
-
-                        Item.LabID = dt.Rows[i][CommonConstants.Sheet_Certificate_LabID]?.ToString();
-
-                        Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportNo]?.ToString();
-                        Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportDate]?.ToString());
-                        Item.IssuedDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedDate]?.ToString());
-                        Item.ExpiredDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate]?.ToString());
-                        Item.IssuedPlace = CommonConstants.IssuePalce;
-                        Item.Signer = CommonConstants.Signer;
-                        Item.SubBtsQuantity = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity]?.ToString());
-
-                        Item.IsPoleOnGround = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString());
-
-                        Item.IsSafeLimit = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsSafeLimit]?.ToString());
-
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString().Length > 0)
-                            Item.SafeLimitHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString());
-
-                        Item.IsHouseIn100m = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsHouseIn100m]?.ToString());
-
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString().Length > 0)
-                            Item.MaxHeightIn100m = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString());
-
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxPowerSum]?.ToString().Length > 0)
-                            Item.MaxPowerSum = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxPowerSum]?.ToString());
-
-                        Item.IsMeasuringExposure = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsMeasuringExposure]?.ToString());
-
-                        if (dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString().Length > 0)
-                            Item.MinAntenHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString());
-
-                        Item.OffsetHeight = Item.MinAntenHeight - Item.MaxHeightIn100m;
-
-                        //if (dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString().Length > 0)
-                        //    Item.OffsetHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString());                    
-
-                        Item.SubBtsAntenHeights = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenHeights]?.ToString();
-                        SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
-
-                        Item.SubBtsAntenNums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenNums]?.ToString();
-                        SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
-
-                        Item.SharedAntens = dt.Rows[i][CommonConstants.Sheet_Certificate_SharedAntens]?.ToString();
-
-                        Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
-                        SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
-
-                        Item.SubBtsCodes = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsCodes]?.ToString();
-                        SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
-
-                        Item.SubBtsConfigurations = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsConfigurations]?.ToString();
-                        SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
-
-                        Item.SubBtsEquipments = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsEquipments]?.ToString();
-                        SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
-
-                        Item.SubBtsOperatorIDs = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsOperatorIDs]?.ToString();
-                        SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
-
-                        Item.SubBtsPowerSums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums]?.ToString();
-                        SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
-
-                        Item.CreatedBy = User.Identity.Name;
-                        Item.CreatedDate = DateTime.Now;
-
-                        if (_importService.getCertificate(Item.Id) != null)
+                        Certificate existedItemID = _importService.getCertificate(Item.Id);
+                        if (existedItemID != null)
                         {
-                            return "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi";
-                        }
-
-                        Certificate existCertificate = _importService.findCertificate(Item.BtsCode, Item.ProfileID);
-                        if (existCertificate != null)
-                        {
-                            return "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")";
-                        }
-
-                        _importService.Add(Item);
-                        _importService.Save();
-
-                        Bts dbBts = _importService.findBts(profileID, Item.BtsCode);
-                        if (dbBts != null)
-                        {
-                            _importService.Delete(dbBts);
-                            _importService.Save();
-                        }
-
-                        for (int j = 0; j < Item.SubBtsQuantity; j++)
-                        {
-                            SubBtsInCert subBtsItem = new SubBtsInCert();
-                            subBtsItem.CertificateID = Item.Id;
-                            subBtsItem.BtsSerialNo = j + 1;
-                            subBtsItem.BtsCode = SubBtsCodes[j];
-                            subBtsItem.OperatorID = SubBtsOperatorIDs[j];
-                            subBtsItem.AntenHeight = SubBtsAntenHeights[j];
-                            subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
-                            subBtsItem.Band = SubBtsBands[j];
-                            subBtsItem.Configuration = SubBtsConfigurations[j];
-                            subBtsItem.Equipment = SubBtsEquipments[j];
-                            if (subBtsItem.Equipment.IndexOf(' ') >= 0)
+                            if (existedItemID.BtsCode != Item.BtsCode || existedItemID.ProfileID != Item.ProfileID)
+                                return "Lỗi: Giấy Chứng nhận kiểm định số " + Item.Id + " đã được cấp ở Hồ sơ số " + existedItemID.ProfileID + " rồi";
+                            else
                             {
-                                subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                                // Số Giấy chứng nhận này đã được thêm vào lần cấp trước của hồ sơ rồi => Cập nhật lại
+                                _importService.Update(Item);
+                                _importService.Save();
+
+                                RemoveSubBtsInCert(Item);
+                                AddSubBtsInCert(Item);
+                            }
+                        }
+                        else
+                        {
+                            // Thêm các Giấy chứng nhận mới khác của hồ sơ ở lần thứ N.
+                            Certificate existCertificate = _importService.findCertificate(Item.BtsCode, Item.ProfileID);
+                            if (existCertificate == null)
+                            {
+                                _importService.Add(Item);
+                                _importService.Save();
+
+                                Bts dbBts = _importService.findBts(profileID, Item.BtsCode);
+                                if (dbBts != null)
+                                {
+                                    _importService.Delete(dbBts);
+                                    _importService.Save();
+                                }
+                                RemoveSubBtsInCert(Item);
+                                AddSubBtsInCert(Item);
                             }
                             else
                             {
-                                subBtsItem.Manufactory = SubBtsEquipments[j];
+                                if (existCertificate.Id != Item.Id)
+                                    return "Lỗi: Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (Số: " + existCertificate.Id + ")";
+                                else
+                                {
+                                    // Số Giấy chứng nhận này đã được thêm vào lần cấp trước của hồ sơ rồi => Cập nhật lại
+                                    _importService.Update(Item);
+                                    _importService.Save();
+
+                                    RemoveSubBtsInCert(Item);
+                                    AddSubBtsInCert(Item);
+                                }
                             }
-                            subBtsItem.PowerSum = SubBtsPowerSums[j];
-
-                            subBtsItem.CreatedBy = User.Identity.Name;
-                            subBtsItem.CreatedDate = DateTime.Now;
-
-
-                            _importService.Add(subBtsItem);
-                            _importService.Save();
                         }
-
                     }
                 }
-
             }
-
             return CommonConstants.Status_Success;
+        }
+
+        private bool RemoveSubBtsInCert(Certificate Item)
+        {
+            _importService.RemoveSubBtsInCert(Item.Id);
+            return true;
+        }
+
+        private bool AddSubBtsInCert (Certificate Item)
+        {
+            string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
+            SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
+            SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
+            SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
+            SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
+            SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
+            SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
+            SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
+            SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
+
+            for (int j = 0; j < Item.SubBtsQuantity; j++)
+            {
+                SubBtsInCert subBtsItem = new SubBtsInCert();
+                subBtsItem.CertificateID = Item.Id;
+                subBtsItem.BtsSerialNo = j + 1;
+                subBtsItem.BtsCode = SubBtsCodes[j];
+                subBtsItem.OperatorID = SubBtsOperatorIDs[j];
+                subBtsItem.AntenHeight = SubBtsAntenHeights[j];
+                subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
+                subBtsItem.Band = SubBtsBands[j];
+                subBtsItem.Configuration = SubBtsConfigurations[j];
+                subBtsItem.Equipment = SubBtsEquipments[j];
+                if (subBtsItem.Equipment.IndexOf(' ') >= 0)
+                {
+                    subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                }
+                else
+                {
+                    subBtsItem.Manufactory = SubBtsEquipments[j];
+                }
+                subBtsItem.PowerSum = SubBtsPowerSums[j];
+
+                subBtsItem.CreatedBy = User.Identity.Name;
+                subBtsItem.CreatedDate = DateTime.Now;
+
+
+                _importService.Add(subBtsItem);
+                _importService.Save();
+            }
+            return true;
+        }
+
+        private Certificate FillInCertificate(string profileID, string operatorID, DataTable dt, int i)
+        {
+            var Item = new Certificate();
+
+            Item.ProfileID = profileID;
+            Item.OperatorID = operatorID;
+            Item.Id = dt.Rows[i][CommonConstants.Sheet_Certificate_CertificateNum]?.ToString();
+            Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_Certificate_BtsCode]?.ToString();
+            Item.Address = dt.Rows[i][CommonConstants.Sheet_Certificate_Address]?.ToString();
+            Item.CityID = dt.Rows[i][CommonConstants.Sheet_Certificate_CityID]?.ToString();
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString().Length > 0)
+                Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString());
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString().Length > 0)
+                Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString());
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString().Length > 0)
+                Item.InCaseOfID = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString());
+
+            Item.LabID = dt.Rows[i][CommonConstants.Sheet_Certificate_LabID]?.ToString();
+
+            Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportNo]?.ToString();
+            Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportDate]?.ToString());
+            Item.IssuedDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedDate]?.ToString());
+            Item.ExpiredDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate]?.ToString());
+            Item.IssuedPlace = CommonConstants.IssuePalce;
+            Item.Signer = CommonConstants.Signer;
+            Item.SubBtsQuantity = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity]?.ToString());
+
+            Item.IsPoleOnGround = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString());
+
+            Item.IsSafeLimit = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsSafeLimit]?.ToString());
+
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString().Length > 0)
+                Item.SafeLimitHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString());
+
+            Item.IsHouseIn100m = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsHouseIn100m]?.ToString());
+
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString().Length > 0)
+                Item.MaxHeightIn100m = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString());
+
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxPowerSum]?.ToString().Length > 0)
+                Item.MaxPowerSum = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxPowerSum]?.ToString());
+
+            Item.IsMeasuringExposure = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsMeasuringExposure]?.ToString());
+
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString().Length > 0)
+                Item.MinAntenHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString());
+
+            Item.OffsetHeight = Item.MinAntenHeight - Item.MaxHeightIn100m;
+
+            //if (dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString().Length > 0)
+            //    Item.OffsetHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString());                    
+
+            Item.SubBtsAntenHeights = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenHeights]?.ToString();
+
+            Item.SubBtsAntenNums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenNums]?.ToString();
+
+            Item.SharedAntens = dt.Rows[i][CommonConstants.Sheet_Certificate_SharedAntens]?.ToString();
+
+            Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
+
+            Item.SubBtsCodes = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsCodes]?.ToString();
+
+            Item.SubBtsConfigurations = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsConfigurations]?.ToString();
+
+            Item.SubBtsEquipments = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsEquipments]?.ToString();
+
+            Item.SubBtsOperatorIDs = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsOperatorIDs]?.ToString();
+
+            Item.SubBtsPowerSums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums]?.ToString();
+
+            Item.CreatedBy = User.Identity.Name;
+            Item.CreatedDate = DateTime.Now;
+            return Item;
         }
 
         private string ImportNoCertificate(string excelConnectionString, string InputType, string proFileID)

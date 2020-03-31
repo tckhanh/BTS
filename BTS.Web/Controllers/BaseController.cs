@@ -321,6 +321,49 @@ namespace BTS.Web.Controllers
             }
         }
 
+        protected void ExecuteDatabase(Func<string, string, string, string> function, string fileLocation, string Group, string InputType)
+        {
+            string strReturn;
+            string description = "";
+            try
+            {
+                strReturn = function.Invoke(fileLocation, Group, InputType);
+                if (strReturn != CommonConstants.Status_Success)
+                {
+                    LogError(strReturn);
+                    throw new Exception(strReturn);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+                LogError(ex, description);
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            finally
+            {
+
+            }
+        }
         protected void ExecuteDatabaseAsyn(Func<string, Task<string>> function, string excelConnectionString)
         {
             Task<string> strReturn;
@@ -384,49 +427,6 @@ namespace BTS.Web.Controllers
                         description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
                     }
                 }
-                LogError(ex, description);
-                throw;
-            }
-            catch (DbUpdateException ex)
-            {
-                LogError(ex);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                throw;
-            }
-            finally
-            {
-            }
-        }
-
-        protected void ExecuteDatabase(Func<string, string, string, string> function, string excelConnectionString, string InputType, string strReturn)
-        {
-            string description = "";
-            try
-            {
-                strReturn = function.Invoke(excelConnectionString, InputType, strReturn);
-                if (strReturn != CommonConstants.Status_Success)
-                {
-                    LogError(strReturn);
-                    throw new Exception(strReturn);
-                }
-            }
-            catch (DbEntityValidationException ex)
-            {
-                foreach (var eve in ex.EntityValidationErrors)
-                {
-                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
-                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
-                    foreach (var ve in eve.ValidationErrors)
-                    {
-                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
-                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
-                    }
-                }
-
                 LogError(ex, description);
                 throw;
             }

@@ -51,11 +51,12 @@
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-6 col-sm-6 col-xs-12" for="ImportAction">
-                                        Chọn loại dữ liệu nhập<span class="required"></span>
+                                        Chọn dữ liệu nhà mạng nhập<span class="required"></span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select id="ImportAction" name="ImportAction" class="form-control" required="required">
-                                            <option selected="selected" value="@BTS.Common.CommonConstants.Sheet_Equipment_MobiFone">@BTS.Common.CommonConstants.Sheet_Equipment_MobiFone</option>
+                                            <option selected="selected" value="@BTS.Common.CommonConstants.SelectAll">Tất cả nhà mạng</option>
+                                            <option value="@BTS.Common.CommonConstants.Sheet_Equipment_MobiFone">@BTS.Common.CommonConstants.Sheet_Equipment_MobiFone</option>
                                             <option value="@BTS.Common.CommonConstants.Sheet_Equipment_VinaPhone">@BTS.Common.CommonConstants.Sheet_Equipment_VinaPhone</option>
                                             <option value="@BTS.Common.CommonConstants.Sheet_Equipment_Viettel">@BTS.Common.CommonConstants.Sheet_Equipment_Viettel</option>
                                             <option value="@BTS.Common.CommonConstants.Sheet_Equipment_VNMobile">@BTS.Common.CommonConstants.Sheet_Equipment_VNMobile</option>
@@ -102,12 +103,12 @@
 
                                         <div class="col-md-3 col-sm-3 col-xs-12">
                                             <input type="radio" id=@CommonConstants.InputType_AddMore name="InputType" value=@CommonConstants.InputType_AddMore>
-                                            <label for=@CommonConstants.InputType_AddMore>Thêm tiếp</label>
+                                            <label for=@CommonConstants.InputType_AddMore>Thêm bổ sung</label>
                                         </div>
 
                                         <div class="col-md-3 col-sm-3 col-xs-12">
-                                            <input type="radio" id=@CommonConstants.InputType_DelAdd name="InputType" value=@CommonConstants.InputType_DelAdd>
-                                            <label for=@CommonConstants.InputType_DelAdd>Xóa Thêm lại</label>
+                                            <input type="radio" id=@CommonConstants.InputType_UpdateAdd name="InputType" value=@CommonConstants.InputType_UpdateAdd>
+                                            <label for=@CommonConstants.InputType_UpdateAdd>Cập nhật và bổ sung</label>
                                         </div>
                                     </div>
                                 </div>
