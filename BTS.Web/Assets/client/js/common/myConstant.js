@@ -29,6 +29,15 @@
     Info_CanPrintCertificate_Role: "Info_CanPrintCertificate",
     Info_CanViewChart_Role: "Info_CanViewChart",
     Info_CanViewReport_Role: "Info_CanViewReport",
-    Info_CanViewStatitics_Role: "Info_CanViewStatitics"
+    Info_CanViewStatitics_Role: "Info_CanViewStatitics",
+
+    Action_View: "View",
+    Action_Add: "Add",
+    Action_Detail: "Detail",
+    Action_Edit: "Edit",
+    Action_Edit2: "Edit2",
+    Action_Reset: "Reset",
+    Action_ChangePassword: "ChangePassword",
+    Action_Delete: "Delete",
 };
 Object.freeze(myConstant);

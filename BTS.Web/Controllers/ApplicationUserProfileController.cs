@@ -77,7 +77,27 @@ namespace BTS.Web.Controllers
             List<ApplicationUser> model = UserManager.Users.Where(x => x.Id == id).ToList();
             return Mapper.Map<IEnumerable<ApplicationUserViewModel>>(model);
         }
-        
+
+        public ActionResult Add()
+        {
+            ApplicationUserViewModel applicationUserVM = new ApplicationUserViewModel();
+
+            List<ApplicationGroup> allGroup = _appGroupService.GetAll().ToList();
+
+            // load the roles/Roles for selection in the form:
+            foreach (ApplicationGroup groupItem in allGroup)
+            {
+                SelectListItem listItem = new SelectListItem()
+                {
+                    Text = groupItem.Description,
+                    Value = groupItem.Id,
+                    Selected = false
+                };
+                applicationUserVM.GroupList.Add(listItem);
+            }
+            return View(applicationUserVM);
+        }
+
         public async Task<ActionResult> Detail(string id = "")
         {
             ApplicationUserViewModel applicationUserVM = new ApplicationUserViewModel();

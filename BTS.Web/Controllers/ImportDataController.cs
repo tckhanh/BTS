@@ -624,7 +624,7 @@ namespace BTS.Web.Controllers
                 {
                     //int fee;
                     //int.TryParse(dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number, provider, out fee);
-                    Item.Fee = int.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number);
+                    Item.Fee = Int64.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number);
                 }
 
                 if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString().Length > 0)

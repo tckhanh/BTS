@@ -223,7 +223,7 @@
                             {
                                 <a class="btn btn-danger" onclick="commonController.Reset('@Url.Action("Reset", "ApplicationUserProfile", new { id = @Model.Id })')"><i class="fa fa-trash"></i> Đặt lại mật khẩu</a>
                             }
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Detail", "ApplicationUserProfile", new { id = @Model.Id })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Detail", "ApplicationUserProfile", new { id = @Model.Id })', 0,'Chi tiết' )"><i class="fa fa-close"></i> Hủy bỏ</a>
                         </div>
                     </div>
                 </div>

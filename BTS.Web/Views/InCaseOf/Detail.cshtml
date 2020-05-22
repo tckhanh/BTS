@@ -36,7 +36,7 @@
                         <div class="col-md-offset-2 col-md-10">
                             @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
                             {
-                                <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("Add", "InCaseOf")',false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                                <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("Add", "InCaseOf")', 1, 'Thêm mới')"><i class="fa fa-plus"></i> Thêm mới</a>
                             }
                             @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                             {
@@ -48,7 +48,7 @@
                                 <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "InCaseOf", new { id = @Model.Id })')"><i class="fa fa-trash"></i> Xóa bỏ</a>
                             }
 
-                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","InCaseOf")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","InCaseOf")', 0, 'Thêm mới')"><i class="fa fa-close"></i> Hủy bỏ</a>
                         </div>
                     </div>
                 </div>

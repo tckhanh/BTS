@@ -93,7 +93,9 @@
                         $.notify(response.message, "error");
                     }
                 },
-                error: function (response) { }
+                error: function (response) {
+                    $.notify(response.message, "error");
+                }
             }
             if ($(form).attr('enctype') == "multipart/form-data") {
                 ajaxConfig["contentType"] = false;

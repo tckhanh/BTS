@@ -29,7 +29,7 @@ namespace BTS.Model.Models
         [Column(TypeName = "date")]
         public DateTime ApplyDate { get; set; }
 
-        public int Fee { get; set; }
+        public long Fee { get; set; }
 
         [StringLength(30)]
         public string FeeAnnounceNum { get; set; }

@@ -154,33 +154,33 @@ namespace BTS.Web.Models
         public bool IsSafeLimit { get; set; }
 
         [Display(Name = "Độ cao giới hạn an toàn")]
-        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]        
-        //[Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Độ cao là số >= 0")]
+        [DisplayFormat(DataFormatString = "{#:n2}", ApplyFormatInEditMode = true)]
+        [Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Độ cao là số >= 0")]
         public double? SafeLimitHeight { get; set; }
 
         [Display(Name = "Có công trình trong phạm vi 100m")]
         public bool IsHouseIn100m { get; set; }
 
         [Display(Name = "Độ cao công trình cao nhất trong phạm vi 100m")]        
-        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]
-        //[Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Độ cao là số >= 0")]
+        [DisplayFormat(DataFormatString = "{#:n2}", ApplyFormatInEditMode = true)]
+        [Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Độ cao là số >= 0")]
         public double? MaxHeightIn100m { get; set; }
 
         [Display(Name = "Công suất phát lớn nhất của trạm")]
-        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]
-        //[Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Công suất phát lớn nhất là số >= 0")]
+        [DisplayFormat(DataFormatString = "{#:n2}", ApplyFormatInEditMode = true)]
+        [Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Công suất phát lớn nhất là số >= 0")]
         public double? MaxPowerSum { get; set; }
 
-        [Display(Name = "Có đo phơi nhiễm TER", AutoGenerateFilter = false)]
-        public bool IsMeasuringExposure;
+        [Display(Name = "Có đo phơi nhiễm TER")]
+        public bool IsMeasuringExposure { get; set; }
 
         [Display(Name = "Độ cao Anten thấp nhất")]
-        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]
-        //[Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Độ cao Anten thấp nhất là số >= 0")]
+        [DisplayFormat(DataFormatString = "{#:n2}", ApplyFormatInEditMode = true)]
+        [Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Độ cao Anten thấp nhất là số >= 0")]
         public double? MinAntenHeight { get; set; }
 
         [Display(Name = "Chênh lệch độ cao")]
-        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{#:n2}", ApplyFormatInEditMode = true)]
         public double? OffsetHeight { get; set; }
 
         [Display(Name = "Thuộc hồ sơ KĐ")]

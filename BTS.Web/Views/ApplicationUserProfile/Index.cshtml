@@ -9,6 +9,7 @@
 
 @section footerJS{
     <script src="~/Assets/client/js/controllers/applicationUserProfileController.js"></script>
+    <script src="~/Assets/client/js/controllers/commonController.js"></script>
 }
 <br />
 
@@ -47,7 +48,7 @@
                             <li class="active"><a data-toggle="tab" href="#secondTab">Chi tiết</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div id="firstTab" class="tab-pane fade in ">@Html.Action("ViewAll")</div>
+                            <div id="firstTab" class="tab-pane fade in">@Html.Action("ViewAll")</div>
                             <div id="secondTab" class="tab-pane fade in active">@Html.Action("Detail")</div>
                         </div>
                     </div>

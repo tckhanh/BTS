@@ -378,8 +378,10 @@ namespace BTS.ExcelLib
                     _xlWorkSheet.Cells["A1"].LoadFromDataTable(dt, true);
 
                     //Autofit with minimum size for the column.
-                    double minimumSize = 10;
-                    double maximumSize = 50;                    
+                    double minimumSize = 5;
+                    double maximumSize = 50;
+                    //_xlWorkSheet.Protection.AllowSelectLockedCells
+                    //_xlWorkSheet.Select("A1");
                     _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].AutoFitColumns(minimumSize, maximumSize);
                     _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].Style.WrapText = true;
                     _xlWorkSheet.Cells[_xlWorkSheet.Dimension.Address].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
@@ -600,7 +602,7 @@ namespace BTS.ExcelLib
             for (int i = toColumn; i >= fromColumn; i--)
             {
                 wsSheet.DeleteColumn(fromColumn);
-            }
+            }            
         }
     }
 }

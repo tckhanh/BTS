@@ -16,7 +16,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BTS.Web</RootNamespace>
     <AssemblyName>BTS.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -28,6 +28,7 @@
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.4</TypeScriptToolsVersion>
     <Use64BitIISExpress />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -178,6 +179,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
@@ -187,15 +189,12 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
@@ -237,6 +236,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -594,6 +594,8 @@
     <Content Include="Assets\client\js\common\myCulture.js" />
     <Content Include="Assets\client\js\common\myConstant.js" />
     <Content Include="Assets\client\js\common\toExcel.js" />
+    <Content Include="Assets\client\js\controllers\applicationUserController - Copy.js" />
+    <Content Include="Assets\client\js\controllers\applicationUserProfileController - Copy.js" />
     <Content Include="Assets\client\js\controllers\btsController - Copy %282%29.js" />
     <Content Include="Assets\client\js\controllers\btsController - Copy.js" />
     <Content Include="Assets\client\js\controllers\addinController.js" />
@@ -8979,18 +8981,162 @@
     <Content Include="Assets\libs\jquery-ui\ui\tabs.js" />
     <Content Include="Assets\libs\jquery-ui\ui\tooltip.js" />
     <Content Include="Assets\libs\jquery-ui\ui\widget.js" />
+    <Content Include="Assets\libs\jquery-validation-globalize\gulpfile.js" />
+    <Content Include="Assets\libs\jquery-validation-globalize\jquery.validate.globalize.js" />
+    <Content Include="Assets\libs\jquery-validation-globalize\jquery.validate.globalize.min.js" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\.bower.json" />
     <Content Include="Assets\libs\jquery-validation-unobtrusive\.gitignore" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\build.cmd" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\build.msbuild" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\CONTRIBUTING.md" />
     <Content Include="Assets\libs\jquery-validation-unobtrusive\gulpfile.js" />
     <Content Include="Assets\libs\jquery-validation-unobtrusive\LICENSE.txt" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\Microsoft.jQuery.Unobtrusive.Validation.nuspec" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\package-lock.json" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\package.json" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\README.md" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\run.ps1" />
     <Content Include="Assets\libs\jquery-validation-unobtrusive\src\jquery.validate.unobtrusive.js" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\test\webpacktest\src\index.js" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\version.props" />
+    <Content Include="Assets\libs\jquery-validation\.bower.json" />
+    <Content Include="Assets\libs\jquery-validation\bower.json" />
     <Content Include="Assets\libs\jquery-validation\build\release.js" />
+    <Content Include="Assets\libs\jquery-validation\changelog.md" />
+    <Content Include="Assets\libs\jquery-validation\CONTRIBUTING.md" />
     <Content Include="Assets\libs\jquery-validation\dist\additional-methods.js" />
     <Content Include="Assets\libs\jquery-validation\dist\additional-methods.min.js" />
     <Content Include="Assets\libs\jquery-validation\dist\jquery.validate.js" />
     <Content Include="Assets\libs\jquery-validation\dist\jquery.validate.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ar.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ar.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_az.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_az.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_bg.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_bg.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_bn_BD.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_bn_BD.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ca.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ca.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_cs.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_cs.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_da.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_da.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_de.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_de.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_el.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_el.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_es.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_es.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_es_AR.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_es_AR.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_es_PE.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_es_PE.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_et.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_et.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_eu.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_eu.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_fa.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_fa.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_fi.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_fi.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_fr.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_fr.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ge.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ge.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_gl.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_gl.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_he.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_he.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_hr.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_hr.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_hu.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_hu.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_hy_AM.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_hy_AM.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_id.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_id.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_is.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_is.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_it.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_it.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ja.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ja.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ka.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ka.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_kk.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_kk.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ko.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ko.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_lt.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_lt.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_lv.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_lv.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_mk.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_mk.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_my.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_my.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_nl.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_nl.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_no.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_no.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_pl.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_pl.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_pt_BR.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_pt_BR.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_pt_PT.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_pt_PT.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ro.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ro.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ru.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ru.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sd.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sd.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_si.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_si.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sk.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sk.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sl.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sl.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sr.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sr.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sr_lat.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sr_lat.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sv.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_sv.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_th.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_th.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_tj.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_tj.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_tr.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_tr.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_uk.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_uk.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ur.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_ur.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_vi.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_vi.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_zh.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_zh.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_zh_TW.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\messages_zh_TW.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_de.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_de.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_es_CL.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_es_CL.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_fi.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_fi.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_it.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_it.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_nl.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_nl.min.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_pt.js" />
+    <Content Include="Assets\libs\jquery-validation\dist\localization\methods_pt.min.js" />
     <Content Include="Assets\libs\jquery-validation\Gruntfile.js" />
+    <Content Include="Assets\libs\jquery-validation\LICENSE.md" />
+    <Content Include="Assets\libs\jquery-validation\package.json" />
+    <Content Include="Assets\libs\jquery-validation\README.md" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\abaRoutingNumber.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\accept.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\additional.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\alphanumeric.js" />
@@ -8998,6 +9144,8 @@
     <Content Include="Assets\libs\jquery-validation\src\additional\bankorgiroaccountNL.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\bic.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\cifES.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\cnhBR.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\cnpjBR.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\cpfBR.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\creditcard.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\creditcardtypes.js" />
@@ -9007,22 +9155,32 @@
     <Content Include="Assets\libs\jquery-validation\src\additional\dateNL.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\extension.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\giroaccountNL.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\greaterThan.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\greaterThanEqual.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\iban.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\integer.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\ipv4.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\ipv6.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\lessThan.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\lessThanEqual.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\lettersonly.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\letterswithbasicpunc.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\maxfiles.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\maxsize.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\maxsizetotal.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\mobileNL.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\mobileRU.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\mobileUK.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\netmask.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\nieES.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\nifES.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\nipPL.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\nisBR.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\notEqualTo.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\nowhitespace.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\pattern.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\phoneNL.js" />
+    <Content Include="Assets\libs\jquery-validation\src\additional\phonePL.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\phonesUK.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\phoneUK.js" />
     <Content Include="Assets\libs\jquery-validation\src\additional\phoneUS.js" />
@@ -9102,8 +9260,10 @@
     <Content Include="Assets\libs\jquery-validation\src\localization\methods_de.js" />
     <Content Include="Assets\libs\jquery-validation\src\localization\methods_es_CL.js" />
     <Content Include="Assets\libs\jquery-validation\src\localization\methods_fi.js" />
+    <Content Include="Assets\libs\jquery-validation\src\localization\methods_it.js" />
     <Content Include="Assets\libs\jquery-validation\src\localization\methods_nl.js" />
     <Content Include="Assets\libs\jquery-validation\src\localization\methods_pt.js" />
+    <Content Include="Assets\libs\jquery-validation\validation.jquery.json" />
     <Content Include="Assets\libs\jquery\AUTHORS.txt" />
     <Content Include="Assets\libs\jquery\dist\jquery.js" />
     <Content Include="Assets\libs\jquery\dist\jquery.min.js" />
@@ -11697,6 +11857,8 @@
     <Content Include="Assets\client\template\newuser.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery.contextMenu.css" />
+    <Content Include="Content\jquery.contextMenu.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -11776,6 +11938,28 @@
     <Content Include="Assets\libs\datatables-buttons\css\common.scss" />
     <Content Include="Assets\libs\datatables-buttons\css\mixins.scss" />
     <Content Include="AppFiles\Localization\vi_VI.json" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\.appveyor.yml" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\.gitattributes" />
+    <Content Include="Assets\libs\jquery-validation-unobtrusive\.vsts-pipelines\builds\ci-public.yml" />
+    <Content Include="Assets\libs\jquery-validation\dist\jquery-validation-sri.json" />
+    <Content Include="font\context-menu-icons.woff2" />
+    <Content Include="font\context-menu-icons.woff" />
+    <Content Include="font\context-menu-icons.ttf" />
+    <Content Include="font\context-menu-icons.eot" />
+    <Content Include="Content\jquery.contextMenu.min.css.map" />
+    <None Include="Scripts\jquery-3.5.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.5.1.js" />
+    <Content Include="Scripts\jquery-3.5.1.min.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
+    <Content Include="Scripts\jquery.contextMenu.js" />
+    <Content Include="Scripts\jquery.contextMenu.min.js" />
+    <Content Include="Scripts\jquery.contextMenu.min.js.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.ui.position.js" />
+    <Content Include="Scripts\jquery.ui.position.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Views\Account\Error.cshtml" />
     <Content Include="Views\HtmlPage1.html" />
     <Content Include="Web.config">
@@ -11929,7 +12113,6 @@
     <Folder Include="Assets\libs\moment\templates\" />
     <Folder Include="Assets\libs\ngBootbox\typings\angularjs\" />
     <Folder Include="Assets\libs\ngBootbox\typings\jquery\" />
-    <Folder Include="Scripts\" />
     <Folder Include="Views\Employee\" />
     <Folder Include="Views\User\" />
   </ItemGroup>
@@ -12963,24 +13146,6 @@
     <Content Include="Assets\libs\angular\LICENSE.md" />
     <Content Include="Assets\libs\angular\package.json" />
     <Content Include="Assets\libs\angular\README.md" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\.bower.json" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\build.cmd" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\build.msbuild" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\CONTRIBUTING.md" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\Microsoft.jQuery.Unobtrusive.Validation.nuspec" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\package-lock.json" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\package.json" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\README.md" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\run.ps1" />
-    <Content Include="Assets\libs\jquery-validation-unobtrusive\version.props" />
-    <Content Include="Assets\libs\jquery-validation\.bower.json" />
-    <Content Include="Assets\libs\jquery-validation\bower.json" />
-    <Content Include="Assets\libs\jquery-validation\changelog.md" />
-    <Content Include="Assets\libs\jquery-validation\CONTRIBUTING.md" />
-    <Content Include="Assets\libs\jquery-validation\LICENSE.md" />
-    <Content Include="Assets\libs\jquery-validation\package.json" />
-    <Content Include="Assets\libs\jquery-validation\README.md" />
-    <Content Include="Assets\libs\jquery-validation\validation.jquery.json" />
     <Content Include="Assets\libs\bootbox\.bower.json" />
     <Content Include="Assets\libs\bootbox\.jshintrc" />
     <Content Include="Assets\libs\bootbox\.npmignore" />
@@ -13249,6 +13414,11 @@
     <Content Include="Areas\Setup\Views\Shared\Layouts_DataTable.cshtml" />
     <Content Include="Areas\Setup\Views\Shared\Layouts.cshtml" />
     <Content Include="Areas\Setup\Views\Recovery\Index.cshtml" />
+    <Content Include="Assets\libs\jquery-validation-globalize\.bower.json" />
+    <Content Include="Assets\libs\jquery-validation-globalize\bower.json" />
+    <Content Include="Assets\libs\jquery-validation-globalize\LICENSE" />
+    <Content Include="Assets\libs\jquery-validation-globalize\package.json" />
+    <Content Include="Assets\libs\jquery-validation-globalize\README.md" />
     <None Include="Project_Readme.html" />
     <Content Include="Views\Shared\Layouts_.cshtml" />
     <Content Include="Views\Ho\Index.cshtml" />
@@ -13324,6 +13494,8 @@
     <Content Include="Views\Ward\ViewAll.cshtml" />
     <Content Include="Views\ImportData\Area.cshtml" />
     <Content Include="Views\ImportData\Equipment.cshtml" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.5.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BTS.Common\BTS.Common.csproj">

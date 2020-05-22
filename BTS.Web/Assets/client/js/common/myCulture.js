@@ -8,11 +8,17 @@
 
         //Tell the validator, for example,
         // that we want numbers parsed a certain way!
+
         $.validator.methods.number = function (value, element) {
-            if ($.global.parseFloat(value)) {
+
+            if (this.optional(element) || $.global.parseFloat(value)) {
                 return true;
             }
             return false;
+
+            //MVC 3 jQuery Validation / globalizing of number / decimal field
+            //return this.optional(element) || !isNaN(Globalize.parseFloat(value));
+            //return this.optional(element) || $.isNumeric(global.parseFloat(value));
         }
 
         //Fix the range to use globalized methods

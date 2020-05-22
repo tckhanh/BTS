@@ -4,7 +4,7 @@
 }
 
 @section headCSS{
-    <!-- Charts -->    
+    <!-- Charts -->
     <link href="~/Assets/libs/chart.js/dist/Chart.min.css" rel="stylesheet" />
     @RenderSection("headCSS", required: false)
 }
@@ -13,9 +13,10 @@
     @RenderSection("headerJS", required: false)
 }
 
-@section footerJS{    
+@section footerJS{
     <script src="~/Assets/libs/chart.js/dist/Chart.min.js"></script>
     <script src="~/Assets/libs/Chart.PieceLabel.js/build/chartjs-plugin-labels.min.js"></script>
+    @*<script src="~/Assets/libs/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js"></script>*@
     @RenderSection("footerJS", required: false)
 }
 

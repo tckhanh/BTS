@@ -77,7 +77,7 @@ namespace BTS.Web.Controllers
         }
 
 
-        public async Task<ActionResult> Add()
+        public ActionResult Add()
         {
             ApplicationUserViewModel applicationUserVM = new ApplicationUserViewModel();
 

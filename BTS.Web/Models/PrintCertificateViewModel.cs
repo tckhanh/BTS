@@ -116,16 +116,16 @@ namespace BTS.Web.Models
         public bool IsSafeLimit { get; set; }
 
         [Display(Name = "Độ cao giới hạn an toàn")]
-        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]        
+        [DisplayFormat(DataFormatString = "{#:N2}", ApplyFormatInEditMode = true)]        
         [Range(0, double.MaxValue, ErrorMessage = "Yêu cầu nhập Độ cao là số >= 0")]
-        public double SafeLimitHeight { get; set; }
+        public double? SafeLimitHeight { get; set; }
 
         [Display(Name = "Có công trình trong phạm vi 100m")]
         public bool IsHouseIn100m { get; set; }
 
         [Display(Name = "Chênh lệch độ cao")]
-        [DisplayFormat(DataFormatString = "{0:n5}", ApplyFormatInEditMode = true)]
-        public double OffsetHeight { get; set; }
+        [DisplayFormat(DataFormatString = "{#:N2}", ApplyFormatInEditMode = true)]
+        public double? OffsetHeight { get; set; }
 
         public virtual ProfileViewModel Profile { get; set; }
 

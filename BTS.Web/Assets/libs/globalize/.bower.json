@@ -21,14 +21,14 @@
     "requirejs-text": "2.0.10"
   },
   "homepage": "https://github.com/jquery/globalize",
-  "version": "1.4.2",
-  "_release": "1.4.2",
+  "version": "1.5.0",
+  "_release": "1.5.0",
   "_resolution": {
     "type": "version",
-    "tag": "1.4.2",
-    "commit": "19d6d78e1a1d5cfe81aabf944e2eab135bd74e0a"
+    "tag": "1.5.0",
+    "commit": "280534f5dbed0c60e2ef731165a72bf43fd517a8"
   },
   "_source": "https://github.com/jquery/globalize.git",
-  "_target": "~1.4.2",
+  "_target": "^1.0.0",
   "_originalSource": "globalize"
 }

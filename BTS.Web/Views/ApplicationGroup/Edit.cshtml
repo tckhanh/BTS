@@ -84,10 +84,10 @@
                         <div class="col-md-offset-2 col-md-10">
                             @if (User.IsInRole(CommonConstants.System_CanAdd_Role))
                             {
-                                <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("Add","ApplicationGroup")',false)"><i class="fa fa-plus"></i>Thêm mới</a>
+                                <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("Add","ApplicationGroup")', 1, 'Thêm mới')"><i class="fa fa-plus"></i>Thêm mới</a>
                             }
 
-                            <a class=" btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","ApplicationGroup")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class=" btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","ApplicationGroup")', 0, 'Thêm mới')"><i class="fa fa-close"></i> Hủy bỏ</a>
 
                             <input type="submit" value=" Luu" class="btn btn-primary" />
                         </div>

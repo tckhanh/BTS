@@ -31,12 +31,16 @@
                     else
                         bar.html('Đang thực hiện Upload File được: ' + percentComplete + '%');
                 },
-                error: function (data) {
-                    var r = jQuery.parseJSON(data.responseText);
-                    alert("Message: " + r.message);
-                    alert("StackTrace: " + r.StackTrace);
-                    alert("ExceptionType: " + r.ExceptionType);
+                error: function (request, status, error) {
+                    //var r = jQuery.parseJSON(request.responseText);
+                    //alert("Message: " + r.message);
+                    //alert("StackTrace: " + r.StackTrace);
+                    //alert("ExceptionType: " + r.ExceptionType);
+					var dom_nodes = $($.parseHTML(request.responseText));
+                    alert('Error: ' + dom_nodes[1].innerText);
+
                     $('html').removeClass('waiting');
+                    bar.html('Lỗi trong khi thực hiện!');
                     bar.removeClass('active');
                     $('#btnImport').prop('disabled', false);
                     $('#btnReset').prop('disabled', false);
@@ -87,7 +91,7 @@
                 $.ajax({
                     url: '/ImportData/GetSampleFile',
                     data: {
-                        fileName: 'Khanh.xlsm'
+                        fileName: 'Sample File.xlsm'
                     },
                     type: 'GET',
                     dataType: 'json',

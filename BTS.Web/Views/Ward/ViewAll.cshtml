@@ -28,37 +28,37 @@
 
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.District.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.District.CityId)
-            </td>
+            <tr data-id=@item.Id>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.District.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.District.CityId)
+                </td>
 
-            <td class="dt-body-center">
-                @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
-                {
-                    <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("Detail", "Ward", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
-                }
+                <td class="dt-body-center">
+                    @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+                    {
+                        <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("Detail", "Ward", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
+                    }
 
-                @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
-                {
-                    <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("Edit", "Ward", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
-                }
+                    @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                    {
+                        <a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("Edit", "Ward", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>
+                    }
 
-                @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
-                {
-                    <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "Ward", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
-                }
-            </td>
-        </tr>
-        }
-    </tbody>
+                    @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                    {
+                        <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "Ward", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
 </table>
