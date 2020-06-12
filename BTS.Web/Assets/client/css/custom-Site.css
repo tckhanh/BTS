@@ -1,10 +1,24 @@
 ﻿
+/* Optionally define a fixed width for menus */
+.ui-menu {
+    width: 220px;
+}
+.ui-menu-item:hover{
+    background-color:lightskyblue;
+} 
+
+    /* Allow to use <kbd> elements inside the title to define shortcut hints. */
+    .ui-menu kbd {
+        padding-left: 1em;
+        float: right;
+    }
+
 .nav-pills > li {
     background-color: powderblue;
     font-weight: bold;
 }
 
-.form-control{
+.form-control {
     font-size: 16px;
     background-color: lightgoldenrodyellow;
     color: black;

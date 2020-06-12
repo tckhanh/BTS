@@ -1,0 +1,109 @@
+﻿@model BTS.Web.Models.ApplicationRoleViewModel
+@using BTS.Common
+@{
+                /**/
+
+                ViewBag.Title = "AddOrEdit";
+                Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit", "ApplicationRole", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "ApplicationRole", new { id = "" }), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+            <div class="col-md-10">
+                @if (!string.IsNullOrEmpty(Model.Id))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Id))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserList, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @if (Model.UserList.Count == 0)
+                            {
+                                <div>
+                                    @Html.Label("Không có", new { @class = "control-label", disabled = "disabled" })
+                                </div>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.UserList)
+                                {
+                                    <div class="col-md-6">
+                                        <label class="control-label">
+                                            <input disabled type="checkbox" name="selectedUserItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                            @item.Text
+                                        </label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GroupList, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @if (Model.GroupList.Count == 0)
+                            {
+                                <div>
+                                    @Html.Label("Không có", new { @class = "control-label", disabled = "disabled" })
+                                </div>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.GroupList)
+                                {
+                                    <div class="col-md-6">
+                                        <input disabled type="checkbox" name="selectedGroupItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                        @Html.Label(item.Text, new { @class = "control-label", disabled = "disabled" })
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @if (!string.IsNullOrEmpty(Model.Id))
+                        {
+                            <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole",new { id = ""})', false)"><i class="fa fa-plus"></i> Thêm mới</a>
+                        }
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole", new { id = "", act = CommonConstants.Action_View })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+
+                        <input type="submit" value="Lưu" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

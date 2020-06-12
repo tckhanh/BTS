@@ -145,6 +145,44 @@
         });
     },
 
+    doContextAction: function (cmd, id, long, lat) {
+        switch (cmd) {
+            case myConstant.Action_Detail:
+                addinController.Detail(window.location.href + '/' + myConstant.Action_Detail + '/' + id);
+                break;
+            case myConstant.Action_Edit:
+                addinController.Edit(window.location.href + '/' + myConstant.Action_Edit + '/' + id);
+                break;
+            case myConstant.Action_Delete:
+                addinController.Delete(window.location.href + '/' + myConstant.Action_Delete + '/' + id);
+                break;
+            case myConstant.Action_Lock:
+                addinController.Lock(window.location.href + '/' + myConstant.Action_Lock + '/' + id);
+                break;
+            case myConstant.Action_Change:
+                addinController.Edit(window.location.href + '/' + myConstant.Action_Change + '/' + id);
+                break;
+            case myConstant.Action_Reset:
+                addinController.Reset(window.location.href + '/' + myConstant.Action_Reset + '/' + id);
+                break;
+            case myConstant.Action_ViewMap:
+                addinController.ViewMap(id, long, lat);
+                break;
+            case myConstant.Action_Print:
+                addinController.Print('http://' + window.location.host + '/PrintCertificate/Index/' + id);
+                break;
+        }
+    },
+
+    ViewMap: function (id, long, lat) {
+        var latLon = L.latLng(lat, long);
+        var bounds = latLon.toBounds(500); // 500 = metres
+        myMap.panTo(latLon).fitBounds(bounds);
+        myMap.setZoom(16);
+        $('ul.nav.nav-tabs a:eq(2)').tab('show');
+    },
+
+
     Edit: function (url) {
         $.ajax({
             type: 'GET',
@@ -201,6 +239,20 @@
             }
         });
     },
+
+    Print: function (url) {
+        //open a new window note:this is a popup so it may be blocked by your browser
+        //var newWindow = window.open(url, '_blank');
+        var newWindow = window.open(url, '_blank');
+        if (newWindow) {
+            //Browser has allowed it to be opened
+            newWindow.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
+    },
+
     Lock: function (url) {
         if (confirm('Bạn có chắc chắn muốn Khóa/ Mở khóa dữ liệu này không?') == true) {
             $.ajax({

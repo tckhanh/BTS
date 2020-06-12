@@ -38,6 +38,10 @@ namespace BTS.Service
 
         IEnumerable<Certificate> getCertificateByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
 
+        IEnumerable<Certificate> getCertificateByBtsCodeOrAddress(string btsCodeOrAddress);
+
+        IEnumerable<Certificate> getCertificateByCertificateNum(string CertificateNum);
+
         IEnumerable<Certificate> getCertificateByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
 
         IEnumerable<Certificate> getCertificateByCity(string cityID);
@@ -46,7 +50,7 @@ namespace BTS.Service
 
         IEnumerable<Certificate> getCertificateByOperator(string operatorID);
 
-        IEnumerable<Certificate> getCertificateProfile(string profileID);
+        IEnumerable<Certificate> getCertificateByProfile(string profileID);
 
         Certificate getByID(string Id, string[] includes = null);
 
@@ -200,6 +204,17 @@ namespace BTS.Service
             return _CertificateRepository.GetMulti(x => x.CityID == cityID);
         }
 
+        public IEnumerable<Certificate> getCertificateByCertificateNum(string CertificateNum)
+        {
+            return _CertificateRepository.GetMulti(x => x.Id.ToUpper().Contains(CertificateNum));
+        }
+
+
+        public IEnumerable<Certificate> getCertificateByBtsCodeOrAddress(string btsCodeOrAddress)
+        {
+            return _CertificateRepository.GetMulti(x => x.BtsCode.ToLower().Contains(btsCodeOrAddress) || x.Address.ToLower().Contains(btsCodeOrAddress));
+        }
+
         public IEnumerable<Certificate> getCertificateByOperator(string operatorID)
         {
             return _CertificateRepository.GetMulti(x => x.OperatorID == operatorID);
@@ -210,7 +225,7 @@ namespace BTS.Service
             return _CertificateRepository.GetIssueYears();
         }
 
-        public IEnumerable<Certificate> getCertificateProfile(string profileID)
+        public IEnumerable<Certificate> getCertificateByProfile(string profileID)
         {
             return _CertificateRepository.GetMulti(x => x.ProfileID == profileID);
         }

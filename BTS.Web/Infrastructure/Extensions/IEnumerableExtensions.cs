@@ -34,7 +34,8 @@ namespace BTS.Web.Infrastructure.Extensions
 
             foreach (var prop in properties)
             {
-                result.Columns.Add(prop.Name, prop.PropertyType);
+                //result.Columns.Add(prop.Name, prop.PropertyType);
+                result.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
             }
 
             result.EndInit();

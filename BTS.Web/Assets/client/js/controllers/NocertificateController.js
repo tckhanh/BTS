@@ -147,6 +147,12 @@ var noCertificateController = {
                     }
                 })
                 .dataTable({
+                    createdRow: function (row, data, dataIndex) {
+                        $(row).attr('data-id', data.Id);
+                        $(row).attr('data-long', data.Longtitude);
+                        $(row).attr('data-lat', data.Latitude);
+                        $(row).addClass('mainRow');
+                    },
                     dom: 'Bfrtip',
                     buttons: [
                         {
@@ -274,6 +280,12 @@ var noCertificateController = {
                     }
                 })
                 .dataTable({
+                    createdRow: function (row, data, dataIndex) {
+                        $(row).attr('data-id', data.Id);
+                        $(row).attr('data-long', data.Longtitude);
+                        $(row).attr('data-lat', data.Latitude);
+                        $(row).addClass('mainRow');
+                    },
                     "processing": true,
                     "info": true,
                     "selector": true,

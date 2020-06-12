@@ -49,9 +49,10 @@ namespace BTS.Web.Controllers
         // GET: Account
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+            LoginViewModel model = new LoginViewModel();
+            model.ReturnUrl = returnUrl;
             if (checkLicence.isValid() == true)
-                return View();
+                return View(model);
             else
                 return View("NoLicence");
         }
@@ -86,9 +87,9 @@ namespace BTS.Web.Controllers
 
                         loadLicense();
 
-                        if (Url.IsLocalUrl(returnUrl))
+                        if (Url.IsLocalUrl(model.ReturnUrl))
                         {
-                            return Redirect(returnUrl);
+                            return Redirect(model.ReturnUrl);
                         }
                         else
                         {

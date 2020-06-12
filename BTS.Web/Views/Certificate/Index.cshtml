@@ -13,6 +13,7 @@
 
 @section footerJS{
     <script src="~/Assets/client/js/controllers/addinController.js"></script>
+    <script src="~/Assets/client/js/controllers/contextMenuDataInfoController.js"></script>
     <script src="~/Assets/client/js/common/myMap.js"></script>
     <script src="~/Assets/client/js/controllers/certificateController.js"></script>
     <script src="~/Assets/client/js/common/toExcel.js"></script>
@@ -55,10 +56,10 @@
                             @Html.AntiForgeryToken()
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="DateRange">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DateRange">
                                         Khoảng thời gian<span class="required"></span>
                                     </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
                                         <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
                                     </div>
                                 </div>
@@ -66,10 +67,10 @@
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="OperatorID">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="OperatorID">
                                         Nhà mạng<span class="required"></span>
                                     </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
                                         <select id="SelOperatorID" name="SelOperatorID" class="form-control selectYear">
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in operators)
@@ -84,10 +85,10 @@
 
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="CityID">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CityID">
                                         Tỉnh/Thành phố<span class="required"></span>
                                     </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
                                         <select id="SelCityID" name="SelCityID" class="form-control">
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in cities)
@@ -101,15 +102,15 @@
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ProfileID">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ProfileID">
                                         Hồ sơ nộp<span class="required"></span>
                                     </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
                                         <select id="SelProfileID" name="SelProfileID" class="form-control selectYear">
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in profiles)
                                             {
-                                            <option value="@item.Id">@item.ApplyDate.Year _ @item.ApplicantID _ @item.ProfileNum _ @item.BtsQuantity BTS </option>
+                                                <option value="@item.Id">@item.ApplyDate.Year _ @item.ApplicantID _ @item.ProfileNum _ @item.BtsQuantity BTS </option>
                                             }
                                         </select>
                                     </div>
@@ -117,12 +118,23 @@
                                 <div class="ln_solid"></div>
                             </div>
 
-                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="BtsCodeOrAddress">
-                                        Mã trạm/Địa chỉ trạm <span class="required"></span>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
+                                        Số Giấy CNKĐ <span class="required"></span>
                                     </label>
-                                    <div class="col-md-10 col-sm-10 col-xs-12">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input id="CertificateNum" name="CertificateNum" class="form-control col-md-7 col-xs-12" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
+                                        Mã trạm/Địa chỉ<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
                                         <input id="BtsCodeOrAddress" name="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" type="text">
                                     </div>
                                 </div>
@@ -136,14 +148,14 @@
                                     <div class="col-md-10 col-sm-10 col-xs-12">
                                         <fieldset>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="radio" name="IsExpired" value="no" checked="checked" />
                                                 <label class="control-label">
+                                                    <input type="radio" name="IsExpired" value="no" checked="checked" />
                                                     Giấy CNKĐ còn hiệu lực
                                                 </label>
                                             </div>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="radio" name="IsExpired" value="yes" />
                                                 <label class="control-label">
+                                                    <input type="radio" name="IsExpired" value="yes" />
                                                     Giấy CNKĐ hết hiệu lực
                                                 </label>
                                             </div>
@@ -201,7 +213,7 @@
                                 {
                                     <input type="button" class="btn btn-success" onclick="certificateController.printCertificate()" value="In Giấy CNKĐ">
                                 }
-                                <br/><br/>
+                                <br /><br />
                                 <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">
                                     <thead>
                                         <tr>

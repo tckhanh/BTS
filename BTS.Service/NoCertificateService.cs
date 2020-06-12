@@ -23,9 +23,13 @@ namespace BTS.Service
 
         IEnumerable<NoCertificate> getAll(out int totalRow);
 
-        IEnumerable<NoCertificate> getNoCertificateProfile(string profileID);
+        IEnumerable<NoCertificate> getNoCertificateByProfile(string profileID);
 
         IEnumerable<NoCertificate> getNoCertificateByCity(string cityID);
+
+        IEnumerable<NoCertificate> getNoCertificateByOperator(string OperatorID);
+
+        IEnumerable<NoCertificate> getNoCertificateByBtsCodeOrAddress(string BtsCodeOrAddress);
 
         IEnumerable<ReportTT18NoCert> getReportTT18NoCert(out int totalRows, DateTime startDate, DateTime endDate);
 
@@ -86,7 +90,7 @@ namespace BTS.Service
             _NoCertificateRepository.Update(btsNoCertificate);
         }
 
-        public IEnumerable<NoCertificate> getNoCertificateProfile(string profileID)
+        public IEnumerable<NoCertificate> getNoCertificateByProfile(string profileID)
         {
             return _NoCertificateRepository.GetMulti(x => x.ProfileID == profileID);
         }
@@ -95,6 +99,17 @@ namespace BTS.Service
         {
             return _NoCertificateRepository.GetMulti(x => x.CityID == cityID);
         }
+
+        public IEnumerable<NoCertificate> getNoCertificateByOperator(string OperatorID)
+        {
+            return _NoCertificateRepository.GetMulti(x => x.OperatorID == OperatorID);
+        }
+
+        public IEnumerable<NoCertificate> getNoCertificateByBtsCodeOrAddress(string BtsCodeOrAddress)
+        {
+            return _NoCertificateRepository.GetMulti(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress));
+        }
+        
 
         public IEnumerable<ReportTT18NoCert> getReportTT18NoCert(out int totalRows, DateTime startDate, DateTime endDate)
         {

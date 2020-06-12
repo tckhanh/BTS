@@ -57,4 +57,5 @@ myMap.on('click', function (e) {
         }
     });
 });
+
 var myMarkerClusters = L.markerClusterGroup();

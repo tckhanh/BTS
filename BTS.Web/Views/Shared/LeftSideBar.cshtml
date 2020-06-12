@@ -78,58 +78,58 @@
                         <li><a href="/NoCertificate/"><i class="fa fa-circle-o"></i> Trạm BTS Không cấp Giấy CNKĐ</a></li>
                     </ul>
                 </li>
-            }
-            @if (User.IsInRole(CommonConstants.Data_CanImport_Role))
-            {
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-files-o"></i>
-                        <span>Cập nhật Hồ sơ KĐ</span>
-                        <span class="pull-right-container">
-                            <span class="label label-primary pull-right">3</span>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        @if (User.IsInRole(CommonConstants.Data_CanImport_Role))
-                        {
-                            <li><a href="/ImportData"><i class="fa fa-circle-o"></i>Nhập liệu Hồ sơ KĐ</a></li>
-                            @*<li><a href="/ImportData/Area"><i class="fa fa-circle-o"></i>Nhập Quận/Huyện Phường/Xã</a></li>
-                            <li><a href="/ImportData/Equipment"><i class="fa fa-circle-o"></i>Nhập Thiết bị</a></li>*@
-                        }
-                    </ul>
-                </li>
-            }
 
-            @if (User.IsInRole(CommonConstants.Data_CanViewReport_Role))
-            {
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-files-o"></i>
-                        <span>Tra cứu, báo cáo</span>
-                        <span class="pull-right-container">
-                            <span class="label label-primary pull-right">3</span>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="/Certificate/"><i class="fa fa-circle-o"></i>Tra cứu Giấy CNKĐ đã cấp</a></li>
-                        <li><a href="/NoCertificate/"><i class="fa fa-circle-o"></i>Tra cứu BTS Không cấp Giấy CNKĐ</a></li>
-                        @if (User.IsInRole(CommonConstants.Info_CanViewDetail_Role))
-                        {
-                            <li><a href="/Check/"><i class="fa fa-circle-o"></i>Kiểm tra tình trạng KĐ trạm BTS</a></li>
-                        }
-                        @if (User.IsInRole(CommonConstants.Data_CanViewReport_Role))
-                        {
-                            <li><a href="/Report/"><i class="fa fa-circle-o"></i>Báo cáo hàng tháng</a></li>
-                        }
-                        @if (User.IsInRole(CommonConstants.Data_CanViewStatitics_Role))
-                        {
-                            <li><a href="/Statistics/"><i class="fa fa-circle-o"></i>Báo cáo thống kê</a></li>
-                        }
+                if (User.IsInRole(CommonConstants.Data_CanImport_Role))
+                {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-files-o"></i>
+                            <span>Cập nhật Hồ sơ KĐ</span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right">3</span>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            if (User.IsInRole(CommonConstants.Data_CanImport_Role))
+                            {
+                                <li><a href="/ImportData"><i class="fa fa-circle-o"></i>Nhập liệu Hồ sơ KĐ</a></li>
+                                @*<li><a href="/ImportData/Area"><i class="fa fa-circle-o"></i>Nhập Quận/Huyện Phường/Xã</a></li>
+                                    <li><a href="/ImportData/Equipment"><i class="fa fa-circle-o"></i>Nhập Thiết bị</a></li>*@
+                            }
+                        </ul>
+                    </li>
+                }
 
-                    </ul>
-                </li>
+                if (User.IsInRole(CommonConstants.Data_CanViewReport_Role))
+                {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-files-o"></i>
+                            <span>Tra cứu, báo cáo</span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right">3</span>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/Certificate/"><i class="fa fa-circle-o"></i>Tra cứu Giấy CNKĐ đã cấp</a></li>
+                            <li><a href="/NoCertificate/"><i class="fa fa-circle-o"></i>Tra cứu BTS Không cấp Giấy CNKĐ</a></li>
+                            @if (User.IsInRole(CommonConstants.Info_CanViewDetail_Role))
+                            {
+                                <li><a href="/Check/"><i class="fa fa-circle-o"></i>Kiểm tra tình trạng KĐ trạm BTS</a></li>
+                            }
+                            @if (User.IsInRole(CommonConstants.Data_CanViewReport_Role))
+                            {
+                                <li><a href="/Report/"><i class="fa fa-circle-o"></i>Báo cáo hàng tháng</a></li>
+                            }
+                            @if (User.IsInRole(CommonConstants.Data_CanViewStatitics_Role))
+                            {
+                                <li><a href="/Statistics/"><i class="fa fa-circle-o"></i>Báo cáo thống kê</a></li>
+                            }
+
+                        </ul>
+                    </li>
+                }
             }
-
 
             @*<li class="treeview">
                     <a href="#">

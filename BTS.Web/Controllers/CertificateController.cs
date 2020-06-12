@@ -36,9 +36,9 @@ namespace BTS.Web.Controllers
         // GET: Certificate
         public ActionResult Index()
         {
-            IEnumerable<OperatorViewModel> operators = Mapper.Map<List<OperatorViewModel>>(_operatorService.getAll());
-            IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll().OrderBy(x=> x.ApplyDate));
-            IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll());
+            IEnumerable<OperatorViewModel> operators = Mapper.Map<List<OperatorViewModel>>(_operatorService.getAll()).ToList();
+            IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll().OrderByDescending(x => x.ApplyDate)).ToList();
+            IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll()).ToList();
 
             cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
 
@@ -58,6 +58,7 @@ namespace BTS.Web.Controllers
             string CityID = Request.Form.GetValues("CityID")?.FirstOrDefault();
             string OperatorID = Request.Form.GetValues("OperatorID")?.FirstOrDefault();
             string ProfileID = Request.Form.GetValues("ProfileID")?.FirstOrDefault();
+            string CertificateNum = Request.Form.GetValues("CertificateNum")?.FirstOrDefault().ToUpper();
             string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress")?.FirstOrDefault().ToLower();
             string IsExpired = Request.Form.GetValues("IsExpired")?.FirstOrDefault().ToLower();
             DateTime StartDate, EndDate;
@@ -75,13 +76,46 @@ namespace BTS.Web.Controllers
             // searching ...
             IEnumerable<Certificate> Items;
 
-            if (StartDate != null && EndDate != null)
+
+            if (!(string.IsNullOrEmpty(CertificateNum)))
+            {
+                Items = _certificateService.getCertificateByCertificateNum(CertificateNum).ToList();
+            }
+            else if (!(string.IsNullOrEmpty(CityID)))
+            {
+                Items = _certificateService.getCertificateByCity(CityID).ToList();
+            }
+            else if (!(string.IsNullOrEmpty(OperatorID)))
+            {
+                Items = _certificateService.getCertificateByOperator(OperatorID).ToList();
+            }
+            else if (!(string.IsNullOrEmpty(ProfileID)))
+            {
+                Items = _certificateService.getCertificateByProfile(ProfileID).ToList();
+            }
+            else if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
+            {
+                Items = _certificateService.getCertificateByBtsCodeOrAddress(BtsCodeOrAddress).ToList();
+            }
+            else if (StartDate != null && EndDate != null)
             {
                 Items = _certificateService.getAll(out countItem, false, StartDate, EndDate).ToList();
             }
             else
             {
                 Items = _certificateService.getAll(out countItem, false).ToList();
+            }
+
+
+            if (StartDate != null && EndDate != null)
+            {
+                Items = Items.Where(x => x.IssuedDate >= StartDate && x.IssuedDate <= EndDate).ToList();
+            }
+
+
+            if (!(string.IsNullOrEmpty(CertificateNum)))
+            {
+                Items = Items.Where(x => x.Id.Contains(CertificateNum)).ToList();
             }
 
             if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))

@@ -54,7 +54,12 @@ namespace BTS.Web.Infrastructure.Extensions
                 if (filterContext.HttpContext.Request.IsAuthenticated)
                 {
                     filterContext.Controller.TempData["error"] = "Bạn Không được cấp quyền để thực hiện chức năng này";
-                    //filterContext.Result = new RedirectResult(HttpContext.Current.Request.UrlReferrer.ToString());
+                    if (HttpContext.Current.Request.UrlReferrer != null)
+                        filterContext.Result = new RedirectResult(HttpContext.Current.Request.UrlReferrer.ToString());
+                    else
+                    {
+                        filterContext.Result = new RedirectResult("/");
+                    }
                 }
                 else
                 {

@@ -38,16 +38,13 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td class="dt-body-center">
-                    @if (User.IsInRole(CommonConstants.Data_CanLock_Role))
+                    @if (item.Locked)
                     {
-                        if (item.Locked)
-                        {
-                            <a class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Mở khóa"><i class="fa fa-lock fa-lg"></i> </a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Khóa"><i class="fa fa-unlock fa-lg"></i></a>
-                        }
+                        <div data-toggle="tooltip" data-placement="top" title="Mở khóa"><i class="fa fa-lock fa-lg"></i> </div>
+                    }
+                    else
+                    {
+                        <div data-toggle="tooltip" data-placement="top" title="Khóa"><i class="fa fa-unlock fa-lg"></i></div>
                     }
                 </td>
                 <td class="dt-body-center">
@@ -56,12 +53,12 @@
                     {
                         <a class="btn btn-success btn-sm" onclick="commonController.Edit('@Url.Action("Edit", "ApplicationUserProfile", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Sửa đổi"><i class="fa fa-pencil fa-lg"></i></a>
                     }
-                    @if (User.IsInRole(CommonConstants.Data_CanReset_Role))
+                    @if (User.IsInRole(CommonConstants.System_CanReset_Role))
                     {
                         <a class="btn btn-warning btn-sm" onclick="commonController.Reset('@Url.Action("Reset", "ApplicationUserProfile", new { id = @item.Id })')" data-toggle="tooltip" data-placement="top" title="Đặt lại mật khẩu"><i class="fa fa-gear fa-lg"></i></a>
                     }
                 </td>
             </tr>
-            }
-        </tbody>
+        }
+    </tbody>
 </table>

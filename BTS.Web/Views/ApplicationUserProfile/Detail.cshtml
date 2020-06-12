@@ -5,7 +5,7 @@
     Layout = null;
 }
 
-@if (User.IsInRole(CommonConstants.System_CanViewDetail_Role))
+@if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
 {
     using (Html.BeginForm("Detail", "ApplicationUserProfile", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Detail", "ApplicationUserProfile", new { id = @Model.Id }), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
     {

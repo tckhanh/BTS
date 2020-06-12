@@ -23,10 +23,11 @@
         public const string Action_Add = "Add";
         public const string Action_Detail = "Detail";
         public const string Action_Edit = "Edit";
-        public const string Action_Edit2 = "Edit2";
-        public const string Action_Reset = "Reset";
-        public const string Action_ChangePassword = "ChangePassword";
         public const string Action_Delete = "Delete";
+        public const string Action_Lock = "Lock";
+        public const string Action_Reset = "Reset";
+        public const string Action_ViewMap = "ViewMap";
+        public const string Action_Print = "Print";
 
         public const string InputType_AddNew = "AddNew";
         public const string InputType_AddMore = "AddMore";

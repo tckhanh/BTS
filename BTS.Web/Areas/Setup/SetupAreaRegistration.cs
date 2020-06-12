@@ -2,22 +2,23 @@
 
 namespace BTS.Web.Areas.Setup
 {
-    public class SetupAreaRegistration : AreaRegistration 
+    public class SetupAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "Setup";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
                 "Setup_default",
                 "Setup/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { controller = "ApplicationUser", action = "Index", id = UrlParameter.Optional },                
+                new[] { "BTS.Web.Areas.Setup.Controllers" }
             );
         }
     }

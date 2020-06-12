@@ -81,6 +81,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EPPlusExtensions.cs" />
     <Compile Include="EpplusIO.cs" />
     <Compile Include="ExcelIO.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

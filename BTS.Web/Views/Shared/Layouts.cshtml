@@ -15,6 +15,7 @@
     <!--Default CSS* -->
     <!-- jquery-ui -->
     <link href="~/Assets/libs/jquery-ui/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="~/Assets/libs/bootstrap/dist/css/bootstrap.min.css">
     <!-- bootstrap wysihtml5 - text editor -->
@@ -86,7 +87,7 @@
 
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-collapse sidebar-mini">
     <div>
         <input type="hidden" id="success" value="@TempData["success"]" />
         <input type="hidden" id="info" value="@TempData["info"]" />
@@ -127,12 +128,11 @@
     <!-- FastClick -->
     <script src="~/Assets/libs/fastclick/lib/fastclick.js"></script>
     <script src="~/Assets/libs/notifyjs/dist/notify.js"></script>
-    <script src="~/Assets/libs/toastr/toastr.min.js"></script>
-    <script src="~/Assets/shared/message.js"></script>
+    <script src="~/Assets/client/js/common/message.js"></script>    
     <!-- AdminLTE App -->
     <script src="~/Assets/libs/adminLTE/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="~/Assets/libs/adminLTE/dist/js/demo.js"></script>
+    @*<script src="~/Assets/libs/adminLTE/dist/js/demo.js"></script>*@
 
     <!-- page script -->
     @RenderSection("footerJS", required: false)

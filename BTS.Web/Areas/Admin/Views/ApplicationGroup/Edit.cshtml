@@ -1,0 +1,103 @@
+﻿@model BTS.Web.Models.ApplicationGroupViewModel
+@using BTS.Common
+@{
+    ViewBag.Title = "Edit";
+    Layout = null;    
+    IEnumerable<BTS.Web.Models.ApplicationRoleViewModel> Roles = ViewBag.Roles;
+}
+@if (User.IsInRole(CommonConstants.System_CanEdit_Role))
+{
+    using (Html.BeginForm("Edit", "ApplicationGroup", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "ApplicationGroup"), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-3" })
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-3" })
+                        <div class="col-md-7">
+                            @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Description)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RoleList, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @if (Model.RoleList.Count == 0)
+                            {
+                                <div>
+                                    @Html.Label("Không có", new { @class = "control-label", disabled = "disabled" })
+                                </div>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.RoleList)
+                                {
+                                    <div class="col-md-6">
+                                        <label class="control-label">
+                                            <input type="checkbox" name="selectedRoleItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                            @item.Text
+                                        </label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserList, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @if (Model.UserList.Count == 0)
+                            {
+                                <div>
+                                    @Html.Label("Không có", new { @class = "control-label", disabled = "disabled" })
+                                </div>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.UserList)
+                                {
+                                    <div class="col-md-6">
+                                        <label class="control-label">
+                                            <input type="checkbox" name="selectedUserItems" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                            @item.Text
+                                        </label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @if (User.IsInRole(CommonConstants.System_CanAdd_Role))
+                            {
+                                <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("Add","ApplicationGroup")', 1, 'Thêm mới')"><i class="fa fa-plus"></i>Thêm mới</a>
+                            }
+
+                            <a class=" btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","ApplicationGroup")', 0, 'Thêm mới')"><i class="fa fa-close"></i> Hủy bỏ</a>
+
+                            <input type="submit" value=" Luu" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3 class="text-danger">Bạn chưa được cấp quyền để thực hiện chức năng này !!!</h3>
+}

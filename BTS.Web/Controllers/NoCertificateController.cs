@@ -36,7 +36,7 @@ namespace BTS.Web.Controllers
         public ActionResult Index()
         {
             IEnumerable<OperatorViewModel> operators = Mapper.Map<List<OperatorViewModel>>(_operatorService.getAll().ToList());
-            IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll().ToList());
+            IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll().OrderByDescending(x => x.ApplyDate)).ToList();
             IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll().ToList());
 
             cities = cities.Where(x => getCityIDsScope().ToString().Split(new char[] { ';' }).Contains(x.Id));
@@ -72,7 +72,23 @@ namespace BTS.Web.Controllers
             // searching ...
             IEnumerable<NoCertificate> Items;
 
-            if (StartDate != null && EndDate != null)
+            if (!(string.IsNullOrEmpty(CityID)))
+            {
+                Items = _noCertificateService.getNoCertificateByCity(CityID).ToList();
+            }
+            else if (!(string.IsNullOrEmpty(OperatorID)))
+            {
+                Items = _noCertificateService.getNoCertificateByOperator(OperatorID).ToList();
+            }
+            else if (!(string.IsNullOrEmpty(ProfileID)))
+            {
+                Items = _noCertificateService.getNoCertificateByProfile(ProfileID).ToList();
+            }
+            else if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
+            {
+                Items = _noCertificateService.getNoCertificateByBtsCodeOrAddress(BtsCodeOrAddress).ToList();
+            }
+            else if (StartDate != null && EndDate != null)
             {
                 Items = _noCertificateService.getAll(out countItem, false, StartDate, EndDate).ToList();
             }
@@ -81,12 +97,17 @@ namespace BTS.Web.Controllers
                 Items = _noCertificateService.getAll(out countItem).ToList();
             }
 
+
+            if (StartDate != null && EndDate != null)
+            {
+                Items = Items.Where(x => x.TestReportDate >= StartDate && x.TestReportDate <= EndDate).ToList();
+            }            
+
             if (!(string.IsNullOrEmpty(CityID)))
             {
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }
             Items = Items.Where(x => getCityIDsScope().ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
-
 
             if (!(string.IsNullOrEmpty(OperatorID)))
             {

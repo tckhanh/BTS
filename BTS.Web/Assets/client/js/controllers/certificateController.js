@@ -43,24 +43,7 @@ var certificateController = {
                 row.child(certificateController.format(row.data())).show();
                 tr.addClass('shown');
             }
-        });
-
-        $("#MyDataTable").contextmenu({
-            delegate: "tbody > tr",
-            menu: [
-                { title: "Copy", cmd: "copy", uiIcon: "ui-icon-copy" },
-                { title: "----" },
-                {
-                    title: "More", children: [
-                        { title: "Sub 1", cmd: "sub1" },
-                        { title: "Sub 2", cmd: "sub1" }
-                    ]
-                }
-            ],
-            select: function (event, ui) {
-                alert("select " + ui.cmd + " on " + ui.target.text());
-            }
-        });
+        });        
     },
     registerEvent: function () {
         $('#btnSearch').off('click').on('click', function () {
@@ -220,6 +203,12 @@ var certificateController = {
                     }
                 })
                 .dataTable({
+                    createdRow: function (row, data, dataIndex) {
+                        $(row).attr('data-id', data.Id);
+                        $(row).attr('data-long', data.Longtitude);
+                        $(row).attr('data-lat', data.Latitude);
+                        $(row).addClass('mainRow');
+                    },
                     order: [[3, "desc"]],
                     columnDefs: [{
                         orderable: false,
@@ -268,6 +257,7 @@ var certificateController = {
                             d.ProfileID = $('#SelProfileID').val().trim();
                             d.StartDate = certificateController.startDate.toISOString();
                             d.EndDate = certificateController.endDate.toISOString();
+                            d.CertificateNum = $('#CertificateNum').val().trim();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
                             d.IsExpired = $('input[name=IsExpired]:checked').val();
                             d.__RequestVerificationToken = certificateController.token();
@@ -371,6 +361,12 @@ var certificateController = {
                     }
                 })
                 .dataTable({
+                    createdRow: function (row, data, dataIndex) {
+                        $(row).attr('data-id', data.Id);
+                        $(row).attr('data-long', data.Longtitude);
+                        $(row).attr('data-lat', data.Latitude);
+                        $(row).addClass('mainRow');
+                    },
                     order: [[3, "desc"]],
                     columnDefs: [{
                         orderable: false,
@@ -396,6 +392,7 @@ var certificateController = {
                             d.ProfileID = $('#SelProfileID').val().trim();
                             d.StartDate = certificateController.startDate.toISOString();
                             d.EndDate = certificateController.endDate.toISOString();
+                            d.CertificateNum = $('#CertificateNum').val().trim();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
                             d.IsExpired = $('input[name=IsExpired]:checked').val();
                             d.__RequestVerificationToken = certificateController.token();

@@ -25,6 +25,12 @@
     <link href="~/Assets/client/css/custom-Site.css" rel="stylesheet" />
 </head>
 <body class="hold-transition login-page">
+    <div>
+        <input type="hidden" id="success" value="@TempData["success"]" />
+        <input type="hidden" id="info" value="@TempData["info"]" />
+        <input type="hidden" id="warning" value="@TempData["warning"]" />
+        <input type="hidden" id="error" value="@TempData["error"]" />
+    </div>
     <div id="header-row" style="padding: 0px; overflow:hidden; height:100px; background: url(/AppFiles/Images/bannerVcc2.png) center repeat"></div>
     <div class="login-box">
         <div class="login-logo">
@@ -37,6 +43,7 @@
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary()
+                @Html.HiddenFor(model => model.ReturnUrl);
                 <div class="form-group has-feedback">
                     @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Tên đăng nhập" })
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -83,9 +90,11 @@
     <script src="~/Assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="~/Assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-
     <!-- iCheck -->
     <script src="~/Assets/libs/adminLTE/plugins/iCheck/icheck.min.js"></script>
+
+    <script src="~/Assets/client/js/common/notify.min.js"></script>
+    <script src="~/Assets/client/js/common/message.js"></script>
     <script>
         $(function () {
             $('input').iCheck({

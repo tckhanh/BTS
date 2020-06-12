@@ -275,6 +275,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ApplicationGroupController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ApplicationRoleController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ApplicationUserController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
     <Compile Include="Areas\Setup\SetupAreaRegistration.cs" />
     <Compile Include="Common\Encryptor.cs" />
     <Compile Include="Common\HasCredentialAttribute.cs" />
@@ -282,10 +287,11 @@
     <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ApplicationGroupController.cs" />
+    <Compile Include="Controllers\ApplicationRoleController.cs" />
+    <Compile Include="Controllers\ApplicationUserController.cs" />
     <Compile Include="Controllers\ApplicationUserProfileController.cs" />
     <Compile Include="Controllers\BtsController.cs" />
-    <Compile Include="Controllers\ApplicationRoleController.cs" />
-    <Compile Include="Controllers\ApplicationGroupController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Areas\Setup\Controllers\LicenceInfoController.cs" />
     <Compile Include="Controllers\WardController.cs" />
@@ -313,7 +319,6 @@
     <Compile Include="Controllers\OperatorController_v1.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\PivotTableController.cs" />
-    <Compile Include="Controllers\ApplicationUserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -589,6 +594,7 @@
     <Content Include="Assets\client\Images\Tree\report.gif" />
     <Content Include="Assets\client\css\printCertificate.css" />
     <Content Include="Assets\client\js\common\maxibox.js" />
+    <Content Include="Assets\client\js\common\message.js" />
     <Content Include="Assets\client\js\common\myMap.js" />
     <Content Include="Assets\client\js\common\myCulture2.js" />
     <Content Include="Assets\client\js\common\myCulture.js" />
@@ -602,6 +608,9 @@
     <Content Include="Assets\client\js\controllers\applicationUserController.js" />
     <Content Include="Assets\client\js\common\dtree.js" />
     <Content Include="Assets\client\js\common\myChart.js" />
+    <Content Include="Assets\client\js\controllers\contextMenuDataInfoController.js" />
+    <Content Include="Assets\client\js\controllers\contextMenuSysController.js" />
+    <Content Include="Assets\client\js\controllers\contextMenuDataController.js" />
     <Content Include="Assets\client\js\controllers\statisticsController.js" />
     <Content Include="Assets\client\js\controllers\inspectController.js" />
     <Content Include="Assets\client\js\controllers\homeController - Copy.js" />
@@ -11821,7 +11830,6 @@
     <Content Include="Assets\client\css\site.css" />
     <Content Include="Assets\client\css\style.css" />
     <Content Include="Assets\client\js\common.js" />
-    <Content Include="Assets\shared\message.js" />
     <Content Include="Assets\libs\notifyjs\dist\notify.min.js" />
     <Content Include="Assets\client\js\controllers\applicationUserProfileController.js" />
     <Content Include="Assets\client\js\controllers\reportController.js" />
@@ -11947,6 +11955,34 @@
     <Content Include="font\context-menu-icons.ttf" />
     <Content Include="font\context-menu-icons.eot" />
     <Content Include="Content\jquery.contextMenu.min.css.map" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\ApplicationGroup\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationGroup\AddOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationGroup\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationGroup\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationGroup\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationGroup\ViewAll.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationRole\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationRole\AddOrEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationRole\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationRole\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationRole\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationRole\ViewAll.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationUser\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationUser\AddOrEdit - Bak.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationUser\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationUser\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationUser\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationUser\Reset.cshtml" />
+    <Content Include="Areas\Admin\Views\ApplicationUser\ViewAll.cshtml" />
+    <Content Include="Areas\Admin\Views\Base\Error.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Layouts.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Header.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Footer.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Layouts_DataTable.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\Layouts_DataTable_Export.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\LeftSideBar.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\RightSideBar.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />
@@ -12089,6 +12125,7 @@
     <Folder Include="app\shared\footer\" />
     <Folder Include="app\shared\navigation\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Setup\Models\" />
     <Folder Include="Assets\admin\js\" />
     <Folder Include="Assets\client\font-awesome-4.6.3\" />
@@ -12113,6 +12150,7 @@
     <Folder Include="Assets\libs\moment\templates\" />
     <Folder Include="Assets\libs\ngBootbox\typings\angularjs\" />
     <Folder Include="Assets\libs\ngBootbox\typings\jquery\" />
+    <Folder Include="Assets\shared\" />
     <Folder Include="Views\Employee\" />
     <Folder Include="Views\User\" />
   </ItemGroup>

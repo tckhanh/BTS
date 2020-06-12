@@ -31,13 +31,26 @@
     Info_CanViewReport_Role: "Info_CanViewReport",
     Info_CanViewStatitics_Role: "Info_CanViewStatitics",
 
+    System_CanView_Role: "System_CanView",
+    System_CanViewDetail_Role: "System_CanViewDetail",
+    System_CanViewChart_Role: "System_CanViewChart",
+    System_CanViewStatitics_Role: "System_CanViewStatitics",
+    System_CanAdd_Role: "System_CanAdd",
+    System_CanImport_Role: "System_CanImport",
+    System_CanExport_Role: "System_CanExport",
+    System_CanEdit_Role: "System_CanEdit",
+    System_CanReset_Role: "System_CanReset",
+    System_CanLock_Role: "System_CanLock",
+    System_CanDelete_Role: "System_CanDelete",
+
     Action_View: "View",
     Action_Add: "Add",
     Action_Detail: "Detail",
     Action_Edit: "Edit",
-    Action_Edit2: "Edit2",
-    Action_Reset: "Reset",
-    Action_ChangePassword: "ChangePassword",
     Action_Delete: "Delete",
+    Action_Lock: "Lock",
+    Action_Reset: "Reset",
+    Action_ViewMap: "ViewMap",
+    Action_Print: "Print"
 };
 Object.freeze(myConstant);
