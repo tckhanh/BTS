@@ -10,13 +10,13 @@ namespace BTS.Model.Models
     public class Profile : Auditable
     {
         [Key]
-        [StringLength(36)]
+        [MaxLength(36)]
         public string Id { get; set; }
 
-        [StringLength(50)]
+        [MaxLength(50)]
         public string ApplicantID { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string ProfileNum { get; set; }
 
         [Column(TypeName = "date")]
@@ -31,7 +31,7 @@ namespace BTS.Model.Models
 
         public long Fee { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string FeeAnnounceNum { get; set; }
 
         [Column(TypeName = "date")]

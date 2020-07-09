@@ -1,6 +1,6 @@
 ﻿using BTS.Data.ApplicationModels;
-using BTS.Model.Models;
 using BTS.Web.Models;
+using BTS.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BTS.Web.Controllers
+namespace BTS.Web.Areas.Intranet.Controllers
 {
     [AuthorizeRoles(CommonConstants.Data_CanImport_Role)]
     public class ImportUserController : BaseController

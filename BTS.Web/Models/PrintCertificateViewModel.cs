@@ -127,6 +127,24 @@ namespace BTS.Web.Models
         [DisplayFormat(DataFormatString = "{#:N2}", ApplyFormatInEditMode = true)]
         public double? OffsetHeight { get; set; }
 
+        [Display(Name = "Tên đơn vị kiểm định")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập tên đơn vị kiểm định")]
+        [StringLength(50, ErrorMessage = "Tên đơn vị kiểm định không quá 50 ký tự")]
+        public string VerifyUnit { get; set; }
+
+        [Display(Name = "Tên chức danh người ký")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập tên chức danh người ký")]
+        [StringLength(50, ErrorMessage = "Tên chức danh người ký không quá 50 ký tự")]
+        public string SignerRole { get; set; }
+
+        [Display(Name = "Tên chức danh người ký thay")]
+        [StringLength(50, ErrorMessage = "Tên chức danh người ký thay không quá 50 ký tự")]
+        public string SignerSubRole { get; set; }
+
+        [StringLength(50, ErrorMessage = "Tên File ảnh chữ ký")]
+        [Display(Name = "Tên File ảnh chữ ký")]
+        public string SignatureFileName { get; set; }
+
         public virtual ProfileViewModel Profile { get; set; }
 
         public virtual OperatorViewModel Operator { get; set; }
@@ -135,6 +153,8 @@ namespace BTS.Web.Models
 
         public string OperatorName { get; set; }
 
+        public int FrontSubBtsQuantity { get; set; }
+        public int BackSubBtsQuantity { get; set; }
         public string SubBtsCode1 { get; set; }
         public string SubBtsOperatorID1 { get; set; }        
         public string SubBtsEquipment1 { get; set; }
@@ -179,6 +199,75 @@ namespace BTS.Web.Models
         public string SubBtsPowerSum5 { get; set; }
         public string SubBtsBand5 { get; set; }
         public string SubBtsAntenHeight5 { get; set; }
+
+        public string SubBtsCode6 { get; set; }
+        public string SubBtsOperatorID6 { get; set; }
+        public string SubBtsEquipment6 { get; set; }
+        public string SubBtsAntenNum6 { get; set; }
+        public string SubBtsConfiguration6 { get; set; }
+        public string SubBtsPowerSum6 { get; set; }
+        public string SubBtsBand6 { get; set; }
+        public string SubBtsAntenHeight6 { get; set; }
+
+        public string BackSubBtsCode1 { get; set; }
+        public string BackSubBtsOperatorID1 { get; set; }
+        public string BackSubBtsOperatorName1 { get; set; }
+        public string BackSubBtsEquipment1 { get; set; }
+        public string BackSubBtsAntenNum1 { get; set; }
+        public string BackSubBtsConfiguration1 { get; set; }
+        public string BackSubBtsPowerSum1 { get; set; }
+        public string BackSubBtsBand1 { get; set; }
+        public string BackSubBtsAntenHeight1 { get; set; }
+
+        public string BackSubBtsCode2 { get; set; }
+        public string BackSubBtsOperatorID2 { get; set; }
+        public string BackSubBtsOperatorName2 { get; set; }
+        public string BackSubBtsEquipment2 { get; set; }
+        public string BackSubBtsAntenNum2 { get; set; }
+        public string BackSubBtsConfiguration2 { get; set; }
+        public string BackSubBtsPowerSum2 { get; set; }
+        public string BackSubBtsBand2 { get; set; }
+        public string BackSubBtsAntenHeight2 { get; set; }
+
+        public string BackSubBtsCode3 { get; set; }
+        public string BackSubBtsOperatorID3 { get; set; }
+        public string BackSubBtsOperatorName3 { get; set; }
+        public string BackSubBtsEquipment3 { get; set; }
+        public string BackSubBtsAntenNum3 { get; set; }
+        public string BackSubBtsConfiguration3 { get; set; }
+        public string BackSubBtsPowerSum3 { get; set; }
+        public string BackSubBtsBand3 { get; set; }
+        public string BackSubBtsAntenHeight3 { get; set; }
+
+        public string BackSubBtsCode4 { get; set; }
+        public string BackSubBtsOperatorID4 { get; set; }
+        public string BackSubBtsOperatorName4 { get; set; }
+        public string BackSubBtsEquipment4 { get; set; }
+        public string BackSubBtsAntenNum4 { get; set; }
+        public string BackSubBtsConfiguration4 { get; set; }
+        public string BackSubBtsPowerSum4 { get; set; }
+        public string BackSubBtsBand4 { get; set; }
+        public string BackSubBtsAntenHeight4 { get; set; }
+
+        public string BackSubBtsCode5 { get; set; }
+        public string BackSubBtsOperatorID5 { get; set; }
+        public string BackSubBtsOperatorName5 { get; set; }
+        public string BackSubBtsEquipment5 { get; set; }
+        public string BackSubBtsAntenNum5 { get; set; }
+        public string BackSubBtsConfiguration5 { get; set; }
+        public string BackSubBtsPowerSum5 { get; set; }
+        public string BackSubBtsBand5 { get; set; }
+        public string BackSubBtsAntenHeight5 { get; set; }
+
+        public string BackSubBtsCode6 { get; set; }
+        public string BackSubBtsOperatorID6 { get; set; }
+        public string BackSubBtsOperatorName6 { get; set; }
+        public string BackSubBtsEquipment6 { get; set; }
+        public string BackSubBtsAntenNum6 { get; set; }
+        public string BackSubBtsConfiguration6 { get; set; }
+        public string BackSubBtsPowerSum6 { get; set; }
+        public string BackSubBtsBand6 { get; set; }
+        public string BackSubBtsAntenHeight6 { get; set; }
 
         public PrintCertificateViewModel()
         {

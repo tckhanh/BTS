@@ -11,10 +11,10 @@ namespace BTS.Model.Models
         [Key]
         public string ID { set; get; }
 
-        [StringLength(250)]
+        [MaxLength(250)]
         public string Name { set; get; }
 
-        [StringLength(250)]
+        [MaxLength(250)]
         public string Description { set; get; }
 
         public virtual IEnumerable<ApplicationRoleGroup> ApplicationRoles { get; set; }

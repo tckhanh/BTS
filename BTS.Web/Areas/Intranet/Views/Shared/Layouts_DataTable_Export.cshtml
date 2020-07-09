@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = "~/Views/Shared/Layouts_DataTable.cshtml";
+}
+
+@section headCSS{
+    <!-- DataTables -->
+    <link href="~/Assets/libs/datatables-buttons/css/buttons.dataTables.css" rel="stylesheet" />    
+    @RenderSection("headCSS", required: false)
+}
+
+@section headerJS{
+    @RenderSection("headerJS", required: false)
+}
+
+
+@section footerJS{
+    <!-- DataTables -->
+
+    <script src="~/Assets/libs/jszip/dist/jszip.min.js"></script>
+    <script src="~/Assets/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="~/Assets/libs/pdfmake/build/vfs_fonts.js"></script>
+
+    <script src="~/Assets/libs/datatables-buttons/js/buttons.flash.js"></script>
+    <script src="~/Assets/libs/datatables-buttons/js/buttons.html5.js"></script>
+    <script src="~/Assets/libs/datatables-buttons/js/buttons.print.js"></script>
+
+    @RenderSection("footerJS", required: false)
+}
+
+@RenderBody()

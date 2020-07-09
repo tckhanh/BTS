@@ -19,7 +19,7 @@ namespace BTS.Model.Models
 
         public string Description { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string Controller { get; set; }
 
         public string StackTrace { get; set; }

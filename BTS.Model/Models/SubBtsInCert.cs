@@ -11,35 +11,35 @@ namespace BTS.Model.Models
         [Key]
         public string Id { get; set; }
 
-        [StringLength(16)]
+        [MaxLength(16)]
         public string CertificateID { get; set; }
 
         public int BtsSerialNo { get; set; }
 
-        [StringLength(50)]
+        [MaxLength(50)]
         public string BtsCode { get; set; }
 
-        [StringLength(10)]
+        [MaxLength(10)]
         public string OperatorID { get; set; }
 
-        [StringLength(50)]
+        [MaxLength(50)]
         public string Manufactory { get; set; }
 
-        [StringLength(50)]
+        [MaxLength(50)]
         public string Equipment { get; set; }
 
         public int AntenNum { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string Configuration { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string PowerSum { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string Band { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string AntenHeight { get; set; }
 
         [ForeignKey("CertificateID")]

@@ -11,18 +11,17 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BTS.Common;
-using BTS.Model.Models;
 using BTS.Web.App_Start;
 using BTS.Web.Models;
 using BTS.Service;
-using static BTS.Web.Models.AccountViewModel;
 using BTS.Data.ApplicationModels;
 using BTS.Web.Infrastructure.Extensions;
 using SKGL;
 using BTS.Web.Infrastructure.Core;
 using AutoMapper;
+using BTS.Model.Models;
 
-namespace BTS.Web.Controllers
+namespace BTS.Web.Areas.Intranet.Controllers
 {
     public class AccountController : BaseController
     {
@@ -93,7 +92,7 @@ namespace BTS.Web.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Home", new { Area = "Intranet" });
                         }
                     }
                     else

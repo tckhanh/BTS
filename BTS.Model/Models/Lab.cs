@@ -13,20 +13,20 @@ namespace BTS.Model.Models
     public class Lab : Auditable
     {
         [Key]
-        [StringLength(20)]
+        [MaxLength(20)]
         public string Id { get; set; }
 
         [Required]
-        [StringLength(255)]
+        [MaxLength(255)]
         public string Name { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string Address { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string Phone { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string Fax { get; set; }
 
         public virtual IEnumerable<Certificate> Certificates { get; set; }

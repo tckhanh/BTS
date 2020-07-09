@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
 {
-    public class AdminController : BaseController
+    public class AdminController : WebBaseController
     {
         public AdminController(IErrorService errorService) : base(errorService)
         {

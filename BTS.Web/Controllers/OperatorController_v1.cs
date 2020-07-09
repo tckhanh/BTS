@@ -13,7 +13,7 @@ using BTS.Common;
 
 namespace BTS.Web.Controllers
 {
-    public class OperatorController_v1 : BaseController
+    public class OperatorController_v1 : WebBaseController
     {
         private IOperatorService _operatorService;
 

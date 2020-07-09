@@ -13,7 +13,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BTS.Web.Controllers
+namespace BTS.Web.Areas.Intranet.Controllers
 {
     [AuthorizeRoles(CommonConstants.Info_CanPrintCertificate_Role)]
     public class PrintCertificateController : BaseController
@@ -34,8 +34,8 @@ namespace BTS.Web.Controllers
         public ActionResult Index(string id = "", string Template = "GCNKD", string BtsNum = "")
         {
             PrintCertificateViewModel ItemVm = new PrintCertificateViewModel();
-            string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
-            int SubBtsQuantityIndex;
+            string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;            
+            int FrontSubBtsQuantity, BackSubBtsQuantity;
             IEnumerable<PrintCertificateViewModel> printCertificates = new List<PrintCertificateViewModel>();
 
             if (!string.IsNullOrEmpty(id) && id !="undefined")
@@ -59,70 +59,159 @@ namespace BTS.Web.Controllers
                     SubBtsOperatorIDs = ItemVm.SubBtsOperatorIDs.Split(new char[] { ';' });
                     SubBtsPowerSums = ItemVm.SubBtsPowerSums.Split(new char[] { ';' });
 
-                    SubBtsQuantityIndex = 0;
-                    if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                    FrontSubBtsQuantity = 0;
+                    BackSubBtsQuantity = 0;
+                    for (int i = 0; i < ItemVm.SubBtsQuantity; i++)
                     {
-                        ItemVm.SubBtsAntenHeight1 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                        ItemVm.SubBtsAntenNum1 = SubBtsAntenNums[SubBtsQuantityIndex];
-                        ItemVm.SubBtsBand1 = SubBtsBands[SubBtsQuantityIndex];
-                        ItemVm.SubBtsCode1 = SubBtsCodes[SubBtsQuantityIndex];
-                        ItemVm.SubBtsConfiguration1 = SubBtsConfigurations[SubBtsQuantityIndex];
-                        ItemVm.SubBtsEquipment1 = SubBtsEquipments[SubBtsQuantityIndex];
-                        ItemVm.SubBtsOperatorID1 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                        ItemVm.SubBtsPowerSum1 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                        SubBtsQuantityIndex++;
-                        if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                        if (ItemVm.OperatorID == SubBtsOperatorIDs[i])
                         {
-                            ItemVm.SubBtsAntenHeight2 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                            ItemVm.SubBtsAntenNum2 = SubBtsAntenNums[SubBtsQuantityIndex];
-                            ItemVm.SubBtsBand2 = SubBtsBands[SubBtsQuantityIndex];
-                            ItemVm.SubBtsCode2 = SubBtsCodes[SubBtsQuantityIndex];
-                            ItemVm.SubBtsConfiguration2 = SubBtsConfigurations[SubBtsQuantityIndex];
-                            ItemVm.SubBtsEquipment2 = SubBtsEquipments[SubBtsQuantityIndex];
-                            ItemVm.SubBtsOperatorID2 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                            ItemVm.SubBtsPowerSum2 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                            SubBtsQuantityIndex++;
-                            if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                            FrontSubBtsQuantity++;
+                            switch (FrontSubBtsQuantity)
                             {
-                                ItemVm.SubBtsAntenHeight3 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                                ItemVm.SubBtsAntenNum3 = SubBtsAntenNums[SubBtsQuantityIndex];
-                                ItemVm.SubBtsBand3 = SubBtsBands[SubBtsQuantityIndex];
-                                ItemVm.SubBtsCode3 = SubBtsCodes[SubBtsQuantityIndex];
-                                ItemVm.SubBtsConfiguration3 = SubBtsConfigurations[SubBtsQuantityIndex];
-                                ItemVm.SubBtsEquipment3 = SubBtsEquipments[SubBtsQuantityIndex];
-                                ItemVm.SubBtsOperatorID3 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                                ItemVm.SubBtsPowerSum3 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                                SubBtsQuantityIndex++;
-                                if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
-                                {
-                                    ItemVm.SubBtsAntenHeight4 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsAntenNum4 = SubBtsAntenNums[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsBand4 = SubBtsBands[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsCode4 = SubBtsCodes[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsConfiguration4 = SubBtsConfigurations[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsEquipment4 = SubBtsEquipments[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsOperatorID4 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsPowerSum4 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                                    SubBtsQuantityIndex++;
-                                    if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
-                                    {
-                                        ItemVm.SubBtsAntenHeight5 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                                        ItemVm.SubBtsAntenNum5 = SubBtsAntenNums[SubBtsQuantityIndex];
-                                        ItemVm.SubBtsBand5 = SubBtsBands[SubBtsQuantityIndex];
-                                        ItemVm.SubBtsCode5 = SubBtsCodes[SubBtsQuantityIndex];
-                                        ItemVm.SubBtsConfiguration5 = SubBtsConfigurations[SubBtsQuantityIndex];
-                                        ItemVm.SubBtsEquipment5 = SubBtsEquipments[SubBtsQuantityIndex];
-                                        ItemVm.SubBtsOperatorID5 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                                        ItemVm.SubBtsPowerSum5 = SubBtsPowerSums[SubBtsQuantityIndex];
-                                    }
-                                }
+                                case 1:
+                                    ItemVm.SubBtsAntenHeight1 = SubBtsAntenHeights[i];
+                                    ItemVm.SubBtsAntenNum1 = SubBtsAntenNums[i];
+                                    ItemVm.SubBtsBand1 = SubBtsBands[i];
+                                    ItemVm.SubBtsCode1 = SubBtsCodes[i];
+                                    ItemVm.SubBtsConfiguration1 = SubBtsConfigurations[i];
+                                    ItemVm.SubBtsEquipment1 = SubBtsEquipments[i];
+                                    ItemVm.SubBtsOperatorID1 = SubBtsOperatorIDs[i];
+                                    ItemVm.SubBtsPowerSum1 = SubBtsPowerSums[i];
+                                    break;
+                                case 2:
+                                    ItemVm.SubBtsAntenHeight2 = SubBtsAntenHeights[i];
+                                    ItemVm.SubBtsAntenNum2 = SubBtsAntenNums[i];
+                                    ItemVm.SubBtsBand2 = SubBtsBands[i];
+                                    ItemVm.SubBtsCode2 = SubBtsCodes[i];
+                                    ItemVm.SubBtsConfiguration2 = SubBtsConfigurations[i];
+                                    ItemVm.SubBtsEquipment2 = SubBtsEquipments[i];
+                                    ItemVm.SubBtsOperatorID2 = SubBtsOperatorIDs[i];
+                                    ItemVm.SubBtsPowerSum2 = SubBtsPowerSums[i];
+                                    break;
+                                case 3:
+                                    ItemVm.SubBtsAntenHeight3 = SubBtsAntenHeights[i];
+                                    ItemVm.SubBtsAntenNum3 = SubBtsAntenNums[i];
+                                    ItemVm.SubBtsBand3 = SubBtsBands[i];
+                                    ItemVm.SubBtsCode3 = SubBtsCodes[i];
+                                    ItemVm.SubBtsConfiguration3 = SubBtsConfigurations[i];
+                                    ItemVm.SubBtsEquipment3 = SubBtsEquipments[i];
+                                    ItemVm.SubBtsOperatorID3 = SubBtsOperatorIDs[i];
+                                    ItemVm.SubBtsPowerSum3 = SubBtsPowerSums[i];
+                                    break;
+                                case 4:
+                                    ItemVm.SubBtsAntenHeight4 = SubBtsAntenHeights[i];
+                                    ItemVm.SubBtsAntenNum4 = SubBtsAntenNums[i];
+                                    ItemVm.SubBtsBand4 = SubBtsBands[i];
+                                    ItemVm.SubBtsCode4 = SubBtsCodes[i];
+                                    ItemVm.SubBtsConfiguration4 = SubBtsConfigurations[i];
+                                    ItemVm.SubBtsEquipment4 = SubBtsEquipments[i];
+                                    ItemVm.SubBtsOperatorID4 = SubBtsOperatorIDs[i];
+                                    ItemVm.SubBtsPowerSum4 = SubBtsPowerSums[i];
+                                    break;
+                                case 5:
+                                    ItemVm.SubBtsAntenHeight5 = SubBtsAntenHeights[i];
+                                    ItemVm.SubBtsAntenNum5 = SubBtsAntenNums[i];
+                                    ItemVm.SubBtsBand5 = SubBtsBands[i];
+                                    ItemVm.SubBtsCode5 = SubBtsCodes[i];
+                                    ItemVm.SubBtsConfiguration5 = SubBtsConfigurations[i];
+                                    ItemVm.SubBtsEquipment5 = SubBtsEquipments[i];
+                                    ItemVm.SubBtsOperatorID5 = SubBtsOperatorIDs[i];
+                                    ItemVm.SubBtsPowerSum5 = SubBtsPowerSums[i];
+                                    break;
+                                case 6:
+                                    ItemVm.SubBtsAntenHeight6 = SubBtsAntenHeights[i];
+                                    ItemVm.SubBtsAntenNum6 = SubBtsAntenNums[i];
+                                    ItemVm.SubBtsBand6 = SubBtsBands[i];
+                                    ItemVm.SubBtsCode6 = SubBtsCodes[i];
+                                    ItemVm.SubBtsConfiguration6 = SubBtsConfigurations[i];
+                                    ItemVm.SubBtsEquipment6 = SubBtsEquipments[i];
+                                    ItemVm.SubBtsOperatorID6 = SubBtsOperatorIDs[i];
+                                    ItemVm.SubBtsPowerSum6 = SubBtsPowerSums[i];
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            BackSubBtsQuantity++;
+                            string SubBtsOperatorName = ((Operator)_operatorService.getByID(SubBtsOperatorIDs[i])).Name;
+                            switch (BackSubBtsQuantity)
+                            {
+                                case 1:
+                                    ItemVm.BackSubBtsAntenHeight1 = SubBtsAntenHeights[i];
+                                    ItemVm.BackSubBtsAntenNum1 = SubBtsAntenNums[i];
+                                    ItemVm.BackSubBtsBand1 = SubBtsBands[i];
+                                    ItemVm.BackSubBtsCode1 = SubBtsCodes[i];
+                                    ItemVm.BackSubBtsConfiguration1 = SubBtsConfigurations[i];
+                                    ItemVm.BackSubBtsEquipment1 = SubBtsEquipments[i];
+                                    ItemVm.BackSubBtsOperatorID1 = SubBtsOperatorIDs[i];
+                                    ItemVm.BackSubBtsOperatorName1 = SubBtsOperatorName;
+                                    ItemVm.BackSubBtsPowerSum1 = SubBtsPowerSums[i];
+                                    break;
+                                case 2:
+                                    ItemVm.BackSubBtsAntenHeight2 = SubBtsAntenHeights[i];
+                                    ItemVm.BackSubBtsAntenNum2 = SubBtsAntenNums[i];
+                                    ItemVm.BackSubBtsBand2 = SubBtsBands[i];
+                                    ItemVm.BackSubBtsCode2 = SubBtsCodes[i];
+                                    ItemVm.BackSubBtsConfiguration2 = SubBtsConfigurations[i];
+                                    ItemVm.BackSubBtsEquipment2 = SubBtsEquipments[i];
+                                    ItemVm.BackSubBtsOperatorID2 = SubBtsOperatorIDs[i];
+                                    ItemVm.BackSubBtsOperatorName2 = SubBtsOperatorName;
+                                    ItemVm.BackSubBtsPowerSum2 = SubBtsPowerSums[i];
+                                    break;
+                                case 3:
+                                    ItemVm.BackSubBtsAntenHeight3 = SubBtsAntenHeights[i];
+                                    ItemVm.BackSubBtsAntenNum3 = SubBtsAntenNums[i];
+                                    ItemVm.BackSubBtsBand3 = SubBtsBands[i];
+                                    ItemVm.BackSubBtsCode3 = SubBtsCodes[i];
+                                    ItemVm.BackSubBtsConfiguration3 = SubBtsConfigurations[i];
+                                    ItemVm.BackSubBtsEquipment3 = SubBtsEquipments[i];
+                                    ItemVm.BackSubBtsOperatorID3 = SubBtsOperatorIDs[i];
+                                    ItemVm.BackSubBtsOperatorName3 = SubBtsOperatorName;
+                                    ItemVm.BackSubBtsPowerSum3 = SubBtsPowerSums[i];
+                                    break;
+                                case 4:
+                                    ItemVm.BackSubBtsAntenHeight4 = SubBtsAntenHeights[i];
+                                    ItemVm.BackSubBtsAntenNum4 = SubBtsAntenNums[i];
+                                    ItemVm.BackSubBtsBand4 = SubBtsBands[i];
+                                    ItemVm.BackSubBtsCode4 = SubBtsCodes[i];
+                                    ItemVm.BackSubBtsConfiguration4 = SubBtsConfigurations[i];
+                                    ItemVm.BackSubBtsEquipment4 = SubBtsEquipments[i];
+                                    ItemVm.BackSubBtsOperatorID4 = SubBtsOperatorIDs[i];
+                                    ItemVm.BackSubBtsOperatorName4 = SubBtsOperatorName;
+                                    ItemVm.BackSubBtsPowerSum4 = SubBtsPowerSums[i];
+                                    break;
+                                case 5:
+                                    ItemVm.BackSubBtsAntenHeight5 = SubBtsAntenHeights[i];
+                                    ItemVm.BackSubBtsAntenNum5 = SubBtsAntenNums[i];
+                                    ItemVm.BackSubBtsBand5 = SubBtsBands[i];
+                                    ItemVm.BackSubBtsCode5 = SubBtsCodes[i];
+                                    ItemVm.BackSubBtsConfiguration5 = SubBtsConfigurations[i];
+                                    ItemVm.BackSubBtsEquipment5 = SubBtsEquipments[i];
+                                    ItemVm.BackSubBtsOperatorID5 = SubBtsOperatorIDs[i];
+                                    ItemVm.BackSubBtsOperatorName5 = SubBtsOperatorName;
+                                    ItemVm.BackSubBtsPowerSum5 = SubBtsPowerSums[i];
+                                    break;
+                                case 6:
+                                    ItemVm.BackSubBtsAntenHeight6 = SubBtsAntenHeights[i];
+                                    ItemVm.BackSubBtsAntenNum6 = SubBtsAntenNums[i];
+                                    ItemVm.BackSubBtsBand6 = SubBtsBands[i];
+                                    ItemVm.BackSubBtsCode6 = SubBtsCodes[i];
+                                    ItemVm.BackSubBtsConfiguration6 = SubBtsConfigurations[i];
+                                    ItemVm.BackSubBtsEquipment6 = SubBtsEquipments[i];
+                                    ItemVm.BackSubBtsOperatorID6 = SubBtsOperatorIDs[i];
+                                    ItemVm.BackSubBtsOperatorName6 = SubBtsOperatorName;
+                                    ItemVm.BackSubBtsPowerSum6 = SubBtsPowerSums[i];
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                     }
+                    ItemVm.FrontSubBtsQuantity = FrontSubBtsQuantity;
+                    ItemVm.BackSubBtsQuantity = BackSubBtsQuantity;
+                    
                     printCertificates = printCertificates.Add(ItemVm);
                 }
                 Session["printCertificates"] = printCertificates;
@@ -139,9 +228,13 @@ namespace BTS.Web.Controllers
             string CityID = Request.Form.GetValues("CityID")?.FirstOrDefault();
             string OperatorID = Request.Form.GetValues("OperatorID")?.FirstOrDefault();
             string ProfileID = Request.Form.GetValues("ProfileID")?.FirstOrDefault();
+            string CertificateNum = Request.Form.GetValues("CertificateNum")?.FirstOrDefault().ToUpper();
             string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress")?.FirstOrDefault().ToLower();
             string IsExpired = Request.Form.GetValues("IsExpired")?.FirstOrDefault().ToLower();
             DateTime StartDate, EndDate;
+
+            string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
+            int FrontSubBtsQuantity, BackSubBtsQuantity;
 
             if (!DateTime.TryParse(Request.Form.GetValues("StartDate")?.FirstOrDefault(), out StartDate))
             {
@@ -154,61 +247,64 @@ namespace BTS.Web.Controllers
             }
 
             // searching ...
-            IEnumerable<Certificate> DbItems;
+            IEnumerable<Certificate> Items;
 
             if (StartDate != null && EndDate != null)
             {
-                DbItems = _certificateService.getAll(out countItem, false, StartDate, EndDate, new string[] { "Operator" }).ToList();
+                Items = _certificateService.getAll(out countItem, false, StartDate, EndDate, new string[] { "Operator" }).ToList();
             }
             else
             {
-                DbItems = _certificateService.getAll(out countItem, false, new string[] { "Operator" }).ToList();
+                Items = _certificateService.getAll(out countItem, false, new string[] { "Operator" }).ToList();
+            }
+
+            if (!(string.IsNullOrEmpty(CertificateNum)))
+            {
+                Items = Items.Where(x => x.Id.Contains(CertificateNum)).ToList();
             }
 
             if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
             {
-                DbItems = DbItems.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
+                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
 
 
             if (IsExpired == "yes")
             {
-                DbItems = DbItems.Where(x => x.ExpiredDate < DateTime.Today).ToList();
+                Items = Items.Where(x => x.ExpiredDate < DateTime.Today).ToList();
             }
             else
             {
-                DbItems = DbItems.Where(x => x.ExpiredDate >= DateTime.Today).ToList();
+                Items = Items.Where(x => x.ExpiredDate >= DateTime.Today).ToList();
             }
 
             if (!(string.IsNullOrEmpty(CityID)))
             {
-                DbItems = DbItems.Where(x => x.CityID == CityID).ToList();
+                Items = Items.Where(x => x.CityID == CityID).ToList();
             }
 
 
             if (!(string.IsNullOrEmpty(OperatorID)))
             {
-                DbItems = DbItems.Where(x => x.OperatorID.Contains(OperatorID)).ToList();
+                Items = Items.Where(x => x.OperatorID.Contains(OperatorID)).ToList();
             }
 
             if (!(string.IsNullOrEmpty(ProfileID)))
             {
-                DbItems = DbItems.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
+                Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
 
 
-            DbItems = DbItems.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
             //DbItems = DbItems.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 
-            IEnumerable<PrintCertificateViewModel> printCertificates = Mapper.Map<List<PrintCertificateViewModel>>(DbItems);
+            IEnumerable<PrintCertificateViewModel> printCertificates = Mapper.Map<List<PrintCertificateViewModel>>(Items);
 
             foreach (var ItemVm in printCertificates)
             {
-                string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
-                int SubBtsQuantityIndex;
-
                 ItemVm.OperatorName = ItemVm.Operator.Name?.ToUpper();
                 ItemVm.ApplicantName = _profileService.getByID(ItemVm.ProfileID, new string[] { "Applicant" }).Applicant.Name?.ToUpper();
+                ItemVm.SignatureFileName = Server.MapPath("~/Content/ReportTemplates/" + ItemVm.Signer.ToUnsignString() + ".jpg");
 
                 SubBtsAntenHeights = ItemVm.SubBtsAntenHeights.Split(new char[] { ';' });
                 SubBtsAntenNums = ItemVm.SubBtsAntenNums.Split(new char[] { ';' });
@@ -219,70 +315,158 @@ namespace BTS.Web.Controllers
                 SubBtsOperatorIDs = ItemVm.SubBtsOperatorIDs.Split(new char[] { ';' });
                 SubBtsPowerSums = ItemVm.SubBtsPowerSums.Split(new char[] { ';' });
 
-                SubBtsQuantityIndex = 0;
-                if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                FrontSubBtsQuantity = 0;
+                BackSubBtsQuantity = 0;
+                for (int i = 0; i < ItemVm.SubBtsQuantity; i++)
                 {
-                    ItemVm.SubBtsAntenHeight1 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                    ItemVm.SubBtsAntenNum1 = SubBtsAntenNums[SubBtsQuantityIndex];
-                    ItemVm.SubBtsBand1 = SubBtsBands[SubBtsQuantityIndex];
-                    ItemVm.SubBtsCode1 = SubBtsCodes[SubBtsQuantityIndex];
-                    ItemVm.SubBtsConfiguration1 = SubBtsConfigurations[SubBtsQuantityIndex];
-                    ItemVm.SubBtsEquipment1 = SubBtsEquipments[SubBtsQuantityIndex];
-                    ItemVm.SubBtsOperatorID1 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                    ItemVm.SubBtsPowerSum1 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                    SubBtsQuantityIndex++;
-                    if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                    if (ItemVm.OperatorID == SubBtsOperatorIDs[i])
                     {
-                        ItemVm.SubBtsAntenHeight2 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                        ItemVm.SubBtsAntenNum2 = SubBtsAntenNums[SubBtsQuantityIndex];
-                        ItemVm.SubBtsBand2 = SubBtsBands[SubBtsQuantityIndex];
-                        ItemVm.SubBtsCode2 = SubBtsCodes[SubBtsQuantityIndex];
-                        ItemVm.SubBtsConfiguration2 = SubBtsConfigurations[SubBtsQuantityIndex];
-                        ItemVm.SubBtsEquipment2 = SubBtsEquipments[SubBtsQuantityIndex];
-                        ItemVm.SubBtsOperatorID2 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                        ItemVm.SubBtsPowerSum2 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                        SubBtsQuantityIndex++;
-                        if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                        FrontSubBtsQuantity++;
+                        switch (FrontSubBtsQuantity)
                         {
-                            ItemVm.SubBtsAntenHeight3 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                            ItemVm.SubBtsAntenNum3 = SubBtsAntenNums[SubBtsQuantityIndex];
-                            ItemVm.SubBtsBand3 = SubBtsBands[SubBtsQuantityIndex];
-                            ItemVm.SubBtsCode3 = SubBtsCodes[SubBtsQuantityIndex];
-                            ItemVm.SubBtsConfiguration3 = SubBtsConfigurations[SubBtsQuantityIndex];
-                            ItemVm.SubBtsEquipment3 = SubBtsEquipments[SubBtsQuantityIndex];
-                            ItemVm.SubBtsOperatorID3 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                            ItemVm.SubBtsPowerSum3 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                            SubBtsQuantityIndex++;
-                            if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
-                            {
-                                ItemVm.SubBtsAntenHeight4 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                                ItemVm.SubBtsAntenNum4 = SubBtsAntenNums[SubBtsQuantityIndex];
-                                ItemVm.SubBtsBand4 = SubBtsBands[SubBtsQuantityIndex];
-                                ItemVm.SubBtsCode4 = SubBtsCodes[SubBtsQuantityIndex];
-                                ItemVm.SubBtsConfiguration4 = SubBtsConfigurations[SubBtsQuantityIndex];
-                                ItemVm.SubBtsEquipment4 = SubBtsEquipments[SubBtsQuantityIndex];
-                                ItemVm.SubBtsOperatorID4 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                                ItemVm.SubBtsPowerSum4 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                                SubBtsQuantityIndex++;
-                                if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
-                                {
-                                    ItemVm.SubBtsAntenHeight5 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsAntenNum5 = SubBtsAntenNums[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsBand5 = SubBtsBands[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsCode5 = SubBtsCodes[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsConfiguration5 = SubBtsConfigurations[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsEquipment5 = SubBtsEquipments[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsOperatorID5 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsPowerSum5 = SubBtsPowerSums[SubBtsQuantityIndex];
-                                }
-                            }
+                            case 1:
+                                ItemVm.SubBtsAntenHeight1 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum1 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand1 = SubBtsBands[i];
+                                ItemVm.SubBtsCode1 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration1 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment1 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID1 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum1 = SubBtsPowerSums[i];
+                                break;
+                            case 2:
+                                ItemVm.SubBtsAntenHeight2 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum2 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand2 = SubBtsBands[i];
+                                ItemVm.SubBtsCode2 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration2 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment2 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID2 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum2 = SubBtsPowerSums[i];
+                                break;
+                            case 3:
+                                ItemVm.SubBtsAntenHeight3 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum3 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand3 = SubBtsBands[i];
+                                ItemVm.SubBtsCode3 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration3 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment3 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID3 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum3 = SubBtsPowerSums[i];
+                                break;
+                            case 4:
+                                ItemVm.SubBtsAntenHeight4 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum4 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand4 = SubBtsBands[i];
+                                ItemVm.SubBtsCode4 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration4 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment4 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID4 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum4 = SubBtsPowerSums[i];
+                                break;
+                            case 5:
+                                ItemVm.SubBtsAntenHeight5 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum5 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand5 = SubBtsBands[i];
+                                ItemVm.SubBtsCode5 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration5 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment5 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID5 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum5 = SubBtsPowerSums[i];
+                                break;
+                            case 6:
+                                ItemVm.SubBtsAntenHeight6 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum6 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand6 = SubBtsBands[i];
+                                ItemVm.SubBtsCode6 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration6 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment6 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID6 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum6 = SubBtsPowerSums[i];
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        BackSubBtsQuantity++;
+                        string SubBtsOperatorName = ((Operator)_operatorService.getByID(SubBtsOperatorIDs[i])).Name;
+                        switch (BackSubBtsQuantity)
+                        {
+                            case 1:
+                                ItemVm.BackSubBtsAntenHeight1 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum1 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand1 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode1 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration1 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment1 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID1 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName1 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum1 = SubBtsPowerSums[i];
+                                break;
+                            case 2:
+                                ItemVm.BackSubBtsAntenHeight2 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum2 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand2 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode2 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration2 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment2 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID2 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName2 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum2 = SubBtsPowerSums[i];
+                                break;
+                            case 3:
+                                ItemVm.BackSubBtsAntenHeight3 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum3 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand3 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode3 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration3 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment3 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID3 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName3 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum3 = SubBtsPowerSums[i];
+                                break;
+                            case 4:
+                                ItemVm.BackSubBtsAntenHeight4 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum4 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand4 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode4 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration4 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment4 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID4 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName4 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum4 = SubBtsPowerSums[i];
+                                break;
+                            case 5:
+                                ItemVm.BackSubBtsAntenHeight5 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum5 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand5 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode5 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration5 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment5 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID5 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName5 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum5 = SubBtsPowerSums[i];
+                                break;
+                            case 6:
+                                ItemVm.BackSubBtsAntenHeight6 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum6 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand6 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode6 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration6 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment6 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID6 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName6 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum6 = SubBtsPowerSums[i];
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }
+                ItemVm.FrontSubBtsQuantity = FrontSubBtsQuantity;
+                ItemVm.BackSubBtsQuantity = BackSubBtsQuantity;
             }
             Session["printCertificates"] = printCertificates;
             return View();
@@ -299,6 +483,9 @@ namespace BTS.Web.Controllers
             Int32.TryParse(StrCertNunStart, out CertNumStart);
             Int32.TryParse(StrCertNunEnd, out CertNumEnd);
             DateTime StartDate, EndDate;
+
+            string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
+            int FrontSubBtsQuantity, BackSubBtsQuantity;
 
             if (!DateTime.TryParse(Request.Form.GetValues("StartDate").FirstOrDefault(), out StartDate))
             {
@@ -341,9 +528,6 @@ namespace BTS.Web.Controllers
 
             foreach (var ItemVm in printCertificates)
             {
-                string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
-                int SubBtsQuantityIndex;
-
                 ItemVm.OperatorName = ItemVm.Operator.Name?.ToUpper();
                 ItemVm.ApplicantName = _profileService.getByID(ItemVm.ProfileID, new string[] { "Applicant" }).Applicant.Name?.ToUpper();
 
@@ -356,70 +540,159 @@ namespace BTS.Web.Controllers
                 SubBtsOperatorIDs = ItemVm.SubBtsOperatorIDs.Split(new char[] { ';' });
                 SubBtsPowerSums = ItemVm.SubBtsPowerSums.Split(new char[] { ';' });
 
-                SubBtsQuantityIndex = 0;
-                if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+
+                FrontSubBtsQuantity = 0;
+                BackSubBtsQuantity = 0;
+                for (int i = 0; i < ItemVm.SubBtsQuantity; i++)
                 {
-                    ItemVm.SubBtsAntenHeight1 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                    ItemVm.SubBtsAntenNum1 = SubBtsAntenNums[SubBtsQuantityIndex];
-                    ItemVm.SubBtsBand1 = SubBtsBands[SubBtsQuantityIndex];
-                    ItemVm.SubBtsCode1 = SubBtsCodes[SubBtsQuantityIndex];
-                    ItemVm.SubBtsConfiguration1 = SubBtsConfigurations[SubBtsQuantityIndex];
-                    ItemVm.SubBtsEquipment1 = SubBtsEquipments[SubBtsQuantityIndex];
-                    ItemVm.SubBtsOperatorID1 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                    ItemVm.SubBtsPowerSum1 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                    SubBtsQuantityIndex++;
-                    if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                    if (ItemVm.OperatorID == SubBtsOperatorIDs[i])
                     {
-                        ItemVm.SubBtsAntenHeight2 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                        ItemVm.SubBtsAntenNum2 = SubBtsAntenNums[SubBtsQuantityIndex];
-                        ItemVm.SubBtsBand2 = SubBtsBands[SubBtsQuantityIndex];
-                        ItemVm.SubBtsCode2 = SubBtsCodes[SubBtsQuantityIndex];
-                        ItemVm.SubBtsConfiguration2 = SubBtsConfigurations[SubBtsQuantityIndex];
-                        ItemVm.SubBtsEquipment2 = SubBtsEquipments[SubBtsQuantityIndex];
-                        ItemVm.SubBtsOperatorID2 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                        ItemVm.SubBtsPowerSum2 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                        SubBtsQuantityIndex++;
-                        if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
+                        FrontSubBtsQuantity++;
+                        switch (FrontSubBtsQuantity)
                         {
-                            ItemVm.SubBtsAntenHeight3 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                            ItemVm.SubBtsAntenNum3 = SubBtsAntenNums[SubBtsQuantityIndex];
-                            ItemVm.SubBtsBand3 = SubBtsBands[SubBtsQuantityIndex];
-                            ItemVm.SubBtsCode3 = SubBtsCodes[SubBtsQuantityIndex];
-                            ItemVm.SubBtsConfiguration3 = SubBtsConfigurations[SubBtsQuantityIndex];
-                            ItemVm.SubBtsEquipment3 = SubBtsEquipments[SubBtsQuantityIndex];
-                            ItemVm.SubBtsOperatorID3 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                            ItemVm.SubBtsPowerSum3 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                            SubBtsQuantityIndex++;
-                            if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
-                            {
-                                ItemVm.SubBtsAntenHeight4 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                                ItemVm.SubBtsAntenNum4 = SubBtsAntenNums[SubBtsQuantityIndex];
-                                ItemVm.SubBtsBand4 = SubBtsBands[SubBtsQuantityIndex];
-                                ItemVm.SubBtsCode4 = SubBtsCodes[SubBtsQuantityIndex];
-                                ItemVm.SubBtsConfiguration4 = SubBtsConfigurations[SubBtsQuantityIndex];
-                                ItemVm.SubBtsEquipment4 = SubBtsEquipments[SubBtsQuantityIndex];
-                                ItemVm.SubBtsOperatorID4 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                                ItemVm.SubBtsPowerSum4 = SubBtsPowerSums[SubBtsQuantityIndex];
-
-                                SubBtsQuantityIndex++;
-                                if (ItemVm.SubBtsQuantity > SubBtsQuantityIndex)
-                                {
-                                    ItemVm.SubBtsAntenHeight5 = SubBtsAntenHeights[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsAntenNum5 = SubBtsAntenNums[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsBand5 = SubBtsBands[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsCode5 = SubBtsCodes[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsConfiguration5 = SubBtsConfigurations[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsEquipment5 = SubBtsEquipments[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsOperatorID5 = SubBtsOperatorIDs[SubBtsQuantityIndex];
-                                    ItemVm.SubBtsPowerSum5 = SubBtsPowerSums[SubBtsQuantityIndex];
-                                }
-                            }
+                            case 1:
+                                ItemVm.SubBtsAntenHeight1 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum1 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand1 = SubBtsBands[i];
+                                ItemVm.SubBtsCode1 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration1 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment1 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID1 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum1 = SubBtsPowerSums[i];
+                                break;
+                            case 2:
+                                ItemVm.SubBtsAntenHeight2 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum2 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand2 = SubBtsBands[i];
+                                ItemVm.SubBtsCode2 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration2 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment2 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID2 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum2 = SubBtsPowerSums[i];
+                                break;
+                            case 3:
+                                ItemVm.SubBtsAntenHeight3 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum3 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand3 = SubBtsBands[i];
+                                ItemVm.SubBtsCode3 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration3 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment3 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID3 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum3 = SubBtsPowerSums[i];
+                                break;
+                            case 4:
+                                ItemVm.SubBtsAntenHeight4 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum4 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand4 = SubBtsBands[i];
+                                ItemVm.SubBtsCode4 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration4 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment4 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID4 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum4 = SubBtsPowerSums[i];
+                                break;
+                            case 5:
+                                ItemVm.SubBtsAntenHeight5 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum5 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand5 = SubBtsBands[i];
+                                ItemVm.SubBtsCode5 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration5 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment5 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID5 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum5 = SubBtsPowerSums[i];
+                                break;
+                            case 6:
+                                ItemVm.SubBtsAntenHeight6 = SubBtsAntenHeights[i];
+                                ItemVm.SubBtsAntenNum6 = SubBtsAntenNums[i];
+                                ItemVm.SubBtsBand6 = SubBtsBands[i];
+                                ItemVm.SubBtsCode6 = SubBtsCodes[i];
+                                ItemVm.SubBtsConfiguration6 = SubBtsConfigurations[i];
+                                ItemVm.SubBtsEquipment6 = SubBtsEquipments[i];
+                                ItemVm.SubBtsOperatorID6 = SubBtsOperatorIDs[i];
+                                ItemVm.SubBtsPowerSum6 = SubBtsPowerSums[i];
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        BackSubBtsQuantity++;
+                        string SubBtsOperatorName = ((Operator)_operatorService.getByID(SubBtsOperatorIDs[i])).Name;
+                        switch (BackSubBtsQuantity)
+                        {
+                            case 1:
+                                ItemVm.BackSubBtsAntenHeight1 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum1 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand1 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode1 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration1 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment1 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID1 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName1 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum1 = SubBtsPowerSums[i];
+                                break;
+                            case 2:
+                                ItemVm.BackSubBtsAntenHeight2 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum2 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand2 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode2 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration2 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment2 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID2 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName2 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum2 = SubBtsPowerSums[i];
+                                break;
+                            case 3:
+                                ItemVm.BackSubBtsAntenHeight3 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum3 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand3 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode3 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration3 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment3 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID3 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName3 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum3 = SubBtsPowerSums[i];
+                                break;
+                            case 4:
+                                ItemVm.BackSubBtsAntenHeight4 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum4 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand4 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode4 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration4 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment4 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID4 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName4 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum4 = SubBtsPowerSums[i];
+                                break;
+                            case 5:
+                                ItemVm.BackSubBtsAntenHeight5 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum5 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand5 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode5 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration5 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment5 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID5 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName5 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum5 = SubBtsPowerSums[i];
+                                break;
+                            case 6:
+                                ItemVm.BackSubBtsAntenHeight6 = SubBtsAntenHeights[i];
+                                ItemVm.BackSubBtsAntenNum6 = SubBtsAntenNums[i];
+                                ItemVm.BackSubBtsBand6 = SubBtsBands[i];
+                                ItemVm.BackSubBtsCode6 = SubBtsCodes[i];
+                                ItemVm.BackSubBtsConfiguration6 = SubBtsConfigurations[i];
+                                ItemVm.BackSubBtsEquipment6 = SubBtsEquipments[i];
+                                ItemVm.BackSubBtsOperatorID6 = SubBtsOperatorIDs[i];
+                                ItemVm.BackSubBtsOperatorName6 = SubBtsOperatorName;
+                                ItemVm.BackSubBtsPowerSum6 = SubBtsPowerSums[i];
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }
+                ItemVm.FrontSubBtsQuantity = FrontSubBtsQuantity;
+                ItemVm.BackSubBtsQuantity = BackSubBtsQuantity;
             }
             Session["printCertificates"] = printCertificates;
             return View();
@@ -430,10 +703,10 @@ namespace BTS.Web.Controllers
             IEnumerable<PrintCertificateViewModel> printCertificates = (IEnumerable<PrintCertificateViewModel>)Session["printCertificates"];
             if (string.IsNullOrEmpty(BtsNum) && printCertificates != null)
             {
-                int[] BtsNums = new int[5];
+                int[] BtsNums = new int[6];
                 foreach (var item in printCertificates)
                 {
-                    BtsNums[item.SubBtsQuantity - 1]++;
+                    BtsNums[item.FrontSubBtsQuantity - 1]++;
                 }
 
                 for (int i = 0; i < BtsNums.Length; i++)
@@ -455,10 +728,10 @@ namespace BTS.Web.Controllers
 
         public ActionResult ViewerEvent()
         {
-            //var TempData1 = StiMvcViewer.GetRequestParams();
-            //var TempData2 = StiMvcViewer.GetFormValues();
-            //var TempData3 = StiMvcViewer.GetRouteValues();
-            //var TempData4 = StiMvcViewer.ViewerEventResult();
+            var TempData1 = StiMvcViewer.GetRequestParams();
+            var TempData2 = StiMvcViewer.GetFormValues();
+            var TempData3 = StiMvcViewer.GetRouteValues();
+            var TempData4 = StiMvcViewer.ViewerEventResult();
             return StiMvcViewer.ViewerEventResult();
         }
     }

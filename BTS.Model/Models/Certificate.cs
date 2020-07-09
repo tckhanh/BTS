@@ -10,26 +10,26 @@ namespace BTS.Model.Models
     public class Certificate : Auditable
     {
         [Key]
-        [StringLength(16)]
+        [MaxLength(16)]
         public string Id { get; set; }
 
-        [StringLength(36)]
+        [MaxLength(36)]
         public string ProfileID { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [MaxLength(10)]
         public string OperatorID { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [MaxLength(100)]
         public string BtsCode { get; set; }
 
         [Required]
-        [StringLength(255)]
+        [MaxLength(255)]
         public string Address { get; set; }
 
         [Required]
-        [StringLength(3)]
+        [MaxLength(3)]
         public string CityID { get; set; }
 
         public double? Longtitude { get; set; }
@@ -38,10 +38,10 @@ namespace BTS.Model.Models
 
         public int InCaseOfID { get; set; }
 
-        [StringLength(20)]
+        [MaxLength(20)]
         public string LabID { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string TestReportNo { get; set; }
 
         [Column(TypeName = "date")]
@@ -53,48 +53,48 @@ namespace BTS.Model.Models
         [Column(TypeName = "date")]
         public DateTime ExpiredDate { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         [Required]
         public string IssuedPlace { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         [Required]
         public string Signer { get; set; }
 
         public int SubBtsQuantity { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         [Required]
         public string SubBtsCodes { get; set; }
 
-        [StringLength(150)]
+        [MaxLength(150)]
         [Required]
         public string SubBtsOperatorIDs { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         [Required]
         public string SubBtsEquipments { get; set; }
 
-        [StringLength(150)]
+        [MaxLength(150)]
         [Required]
         public string SubBtsAntenNums { get; set; }
 
-        [StringLength(50)]
+        [MaxLength(50)]
         public string SharedAntens { get; set; }
 
-        [StringLength(150)]
+        [MaxLength(150)]
         [Required]
         public string SubBtsConfigurations { get; set; }
 
-        [StringLength(150)]
+        [MaxLength(150)]
         [Required]
         public string SubBtsPowerSums { get; set; }
 
-        [StringLength(150)]
+        [MaxLength(150)]
         [Required]
         public string SubBtsBands { get; set; }
 
-        [StringLength(150)]
+        [MaxLength(150)]
         [Required]
         public string SubBtsAntenHeights { get; set; }
 
@@ -125,6 +125,18 @@ namespace BTS.Model.Models
         public double? MinAntenHeight { get; set; }
 
         public double? OffsetHeight { get; set; }
+
+        [MaxLength(50)]
+        [Required]
+        public string VerifyUnit { get; set; }
+
+        [MaxLength(50)]
+        [Required]
+        public string SignerRole { get; set; }
+
+        [MaxLength(50)]
+        public string SignerSubRole { get; set; }
+
 
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }

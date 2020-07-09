@@ -81,7 +81,7 @@
                 "CityIDsScope": "@(((ClaimsIdentity)User.Identity).FindFirst("CityIDsScope")?.Value)"
             }
         };
-        var myArrayRoles = AppGlobal.LoginUser.roles.split(';');
+        var myArrayRoles = AppGlobal.LoginUser.roles?.split(';');
     </script>
     @RenderSection("headerJS", required: false)
 
@@ -94,7 +94,7 @@
         <input type="hidden" id="warning" value="@TempData["warning"]" />
         <input type="hidden" id="error" value="@TempData["error"]" />
     </div>
-
+    <div id="header-row" style="padding: 0px; overflow:hidden; height:100px; background: url(/AppFiles/Images/bannerVcc2.png) center repeat"></div>
     <div class="wrapper">
         <!--header-->
         @{Html.RenderPartial("Header");}
@@ -128,7 +128,7 @@
     <!-- FastClick -->
     <script src="~/Assets/libs/fastclick/lib/fastclick.js"></script>
     <script src="~/Assets/libs/notifyjs/dist/notify.js"></script>
-    <script src="~/Assets/client/js/common/message.js"></script>    
+    <script src="~/Assets/client/js/common/message.js"></script>
     <!-- AdminLTE App -->
     <script src="~/Assets/libs/adminLTE/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->

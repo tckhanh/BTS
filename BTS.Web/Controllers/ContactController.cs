@@ -14,7 +14,7 @@ using BTS.Web.Models;
 
 namespace BTS.Web.Controllers
 {
-    public class ContactController : BaseController
+    public class ContactController : WebBaseController
     {
         private IContactDetailService _contactDetailService;
         private IFeedbackService _feedbackService;

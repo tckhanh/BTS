@@ -10,14 +10,14 @@ namespace BTS.Model.Models
     public class Operator : Auditable
     {
         [Key]
-        [StringLength(10)]
+        [MaxLength(10)]
         public string Id { get; set; }
 
-        [StringLength(10)]
+        [MaxLength(10)]
         [Required]
         public string RootId { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string Name { get; set; }
 
         public virtual IEnumerable<Applicant> Applicants { get; set; }

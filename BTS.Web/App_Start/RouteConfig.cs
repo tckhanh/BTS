@@ -15,9 +15,16 @@ namespace BTS.Web
             routes.MapRoute(
                  name: "Home",
                  url: "trang-chu.html",
-                 defaults: new { controller = "Certificate", action = "Index", id = UrlParameter.Optional },
+                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                  namespaces: new string[] { "BTS.Web.Controllers" }
                 );
+
+            routes.MapRoute(
+                name: "Login",
+                url: "dang-nhap.html",
+                defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional },
+                namespaces: new string[] { "BTS.Web.Controllers" }
+            );
 
             routes.MapRoute(
                  name: "PivotTable",
@@ -45,12 +52,7 @@ namespace BTS.Web
                   defaults: new { controller = "Product", action = "Search", id = UrlParameter.Optional },
                   namespaces: new string[] { "BTS.Web.Controllers" }
               );
-            routes.MapRoute(
-                 name: "Login",
-                 url: "dang-nhap.html",
-                 defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional },
-                 namespaces: new string[] { "BTS.Web.Controllers" }
-             );
+           
             routes.MapRoute(
                name: "Register",
                url: "dang-ky.html",

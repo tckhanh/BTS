@@ -80,14 +80,14 @@ namespace BTS.Web.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ExpiredDate { get; set; }
 
-        [StringLength(30, ErrorMessage = "Nơi cấp không quá 30 ký tự")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Nơi cấp")]
-        [Display(Name = "Nơi cấp")]
+        [StringLength(30, ErrorMessage = "Nơi cấp giấy CNKĐ không quá 30 ký tự")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Nơi cấp giấy CNKĐ")]
+        [Display(Name = "Nơi cấp giấy CNKĐ")]
         public string IssuedPlace { get; set; }
 
-        [StringLength(30, ErrorMessage = "Tên Người ký không quá 30 ký tự")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Người ký tên")]
-        [Display(Name = "Người ký tên")]
+        [StringLength(30, ErrorMessage = "Họ tên người ký GCNKĐ không quá 30 ký tự")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Họ tên người ký GCNKĐ")]
+        [Display(Name = "Họ tên người ký")]
         public string Signer { get; set; }
 
         [Display(Name = "Số BTS tại trạm")]
@@ -182,6 +182,20 @@ namespace BTS.Web.Models
         [Display(Name = "Chênh lệch độ cao")]
         [DisplayFormat(DataFormatString = "{#:n2}", ApplyFormatInEditMode = true)]
         public double? OffsetHeight { get; set; }
+
+        [Display(Name = "Tên đơn vị kiểm định")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập tên đơn vị kiểm định")]
+        [StringLength(50, ErrorMessage = "Tên đơn vị kiểm định không quá 50 ký tự")]
+        public string VerifyUnit { get; set; }
+
+        [Display(Name = "Tên chức danh người ký")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập tên chức danh người ký")]
+        [StringLength(50, ErrorMessage = "Tên chức danh người ký không quá 50 ký tự")]
+        public string SignerRole { get; set; }
+
+        [Display(Name = "Tên chức danh người ký thay")]
+        [StringLength(50, ErrorMessage = "Tên chức danh người ký thay không quá 50 ký tự")]
+        public string SignerSubRole { get; set; }
 
         [Display(Name = "Thuộc hồ sơ KĐ")]
         public ICollection<SelectListItem> ProfileList { get; set; }

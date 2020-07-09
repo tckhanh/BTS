@@ -27,10 +27,10 @@ namespace BTS.Model.Models
 
         public string Content { set; get; }
 
-        [StringLength(256)]
+        [MaxLength(256)]
         public string MetaKeyword { set; get; }
 
-        [StringLength(256)]
+        [MaxLength(256)]
         public string MetaDescription { set; get; }
 
         public bool Status { set; get; }

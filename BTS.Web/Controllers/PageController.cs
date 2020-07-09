@@ -10,7 +10,7 @@ using BTS.Web.Models;
 
 namespace BTS.Web.Controllers
 {
-    public class PageController : BaseController
+    public class PageController : WebBaseController
     {
         private IPageService _pageService;
 

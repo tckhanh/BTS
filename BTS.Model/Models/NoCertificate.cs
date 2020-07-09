@@ -15,23 +15,23 @@ namespace BTS.Model.Models
         [Key]
         public string Id { get; set; }
 
-        [StringLength(36)]
+        [MaxLength(36)]
         public string ProfileID { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [MaxLength(10)]
         public string OperatorID { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [MaxLength(100)]
         public string BtsCode { get; set; }
 
         [Required]
-        [StringLength(255)]
+        [MaxLength(255)]
         public string Address { get; set; }
 
         [Required]
-        [StringLength(3)]
+        [MaxLength(3)]
         public string CityID { get; set; }
 
         public double? Longtitude { get; set; }
@@ -40,16 +40,16 @@ namespace BTS.Model.Models
 
         public int InCaseOfID { get; set; }
 
-        [StringLength(20)]
+        [MaxLength(20)]
         public string LabID { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string TestReportNo { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime TestReportDate { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         [Required]
         public string ReasonNoCertificate { get; set; }
 

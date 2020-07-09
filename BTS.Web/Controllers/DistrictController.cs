@@ -9,8 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
-namespace BTS.Web.Controllers
+namespace BTS.Web.Areas.Intranet.Controllers
 {
     [AuthorizeRoles(CommonConstants.Data_CanView_Role)]
     public class DistrictController : BaseController

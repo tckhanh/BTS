@@ -17,19 +17,19 @@ namespace BTS.Model.Models
 
 
         [Required]
-        [StringLength(10)]
+        [MaxLength(10)]
         public string OperatorID { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [MaxLength(100)]
         public string BtsCode { get; set; }
 
         [Required]
-        [StringLength(255)]
+        [MaxLength(255)]
         public string Address { get; set; }
 
         [Required]
-        [StringLength(3)]
+        [MaxLength(3)]
         public string CityID { get; set; }
 
         public double? Longtitude { get; set; }
@@ -40,42 +40,42 @@ namespace BTS.Model.Models
 
         // SubBtsInCert Field
 
-        [StringLength(50)]
+        [MaxLength(50)]
         public string SubBtsCode { get; set; }
 
-        [StringLength(10)]
+        [MaxLength(10)]
         public string SubOperatorID { get; set; }
 
-        [StringLength(50)]
+        [MaxLength(50)]
         public string Manufactory { get; set; }
 
-        [StringLength(50)]
+        [MaxLength(50)]
         public string Equipment { get; set; }
 
         public int? AntenNum { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string Configuration { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string PowerSum { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string Band { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string AntenHeight { get; set; }
 
-        [StringLength(20)]
+        [MaxLength(20)]
         public string LabID { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string TestReportNo { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime TestReportDate { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         [Required]
         public string ReasonNoCertificate { get; set; }
 

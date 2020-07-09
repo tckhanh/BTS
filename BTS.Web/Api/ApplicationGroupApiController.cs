@@ -2,7 +2,6 @@
 using BTS.Model.Models;
 using BTS.Service;
 using BTS.Web.App_Start;
-using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +10,11 @@ using System.Web;
 using System.Web.Mvc;
 using BTS.Web.Infrastructure.Extensions;
 using BTS.Data.ApplicationModels;
+using BTS.Web.Models;
 
 namespace BTS.Web.Controllers
 {
-    public class ApplicationGroupApiController : BaseController
+    public class ApplicationGroupApiController : WebBaseController
     {
         private IApplicationGroupService _appGroupService;
         //private ApplicationUserManager _userManager;

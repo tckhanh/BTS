@@ -224,6 +224,12 @@
         public const string Sheet_Certificate_IsMeasuringExposure = "IsMeasuringExposure";
         public const string Sheet_Certificate_MinAntenHeight = "MinAntenHeight";
         public const string Sheet_Certificate_OffsetHeight = "OffsetHeight";
+        public const string Sheet_Certificate_VerifyUnit = "VerifyUnit";
+        public const string Sheet_Certificate_Place = "Place";
+        public const string Sheet_Certificate_SignerRole = "SignerRole";
+        public const string Sheet_Certificate_SignerSubRole = "SignerSubRole";
+        public const string Sheet_Certificate_SignerName = "SignerName";
+
         public const string Sheet_Certificate_TotalBtsNum = "TotalBtsNum";
         public const string Sheet_Certificate_CerBtsNum = "CerBtsNum";
 

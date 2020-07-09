@@ -6,7 +6,7 @@ namespace BTS.Model.Models
 {
     public class ApplicationRole : IdentityRole
     {
-        [StringLength(250)]
+        [MaxLength(250)]
         public string Description { set; get; }
 
         public ApplicationRole()

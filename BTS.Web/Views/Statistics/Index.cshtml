@@ -57,15 +57,16 @@
             </div>
 
             <ul class="nav nav-tabs nav-pills">
-                <li class="active"><a data-toggle="tab" href="#generalTab">Tổng thể</a></li>
+                <li class="active"><a data-toggle="tab" href="#Tab1">Toàn quốc</a></li>
+                <li><a data-toggle="tab" href="#Tab2">Khu vực</a></li>
                 @if (User.IsInRole(CommonConstants.Info_CanViewStatitics_Role))
                 {
-                    <li><a data-toggle="tab" href="#areaTab">Chi tiết</a></li>
+                    <li><a data-toggle="tab" href="#Tab3">Tỉnh/Thành</a></li>
                 }
             </ul>
 
             <div class="tab-content">
-                <div id="generalTab" class="tab-pane fade in active">
+                <div id="Tab1" class="tab-pane fade in active">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="box box-info">
@@ -81,7 +82,7 @@
                                 </div>
                                 <div class="box-body">
                                     <div class="chart">
-                                        <canvas id="generalTab-chart_StatCoupleCerByArea" style="height:300px"></canvas>
+                                        <canvas id="Tab1-chart_StatCoupleCerByOperator" style="height:300px"></canvas>
                                     </div>
                                 </div>
                                 <!-- /.box-body -->
@@ -103,7 +104,7 @@
                                 </div>
                                 <div class="box-body">
                                     <div class="chart">
-                                        <canvas id="generalTab-chart_StatCerByAreaYear" style="height:300px"></canvas>
+                                        <canvas id="Tab1-chart_StatCerByOperatorYear" style="height:300px"></canvas>
                                     </div>
                                 </div>
                                 <!-- /.box-body -->
@@ -126,7 +127,7 @@
                                 </div>
                                 <div class="box-body">
                                     <div class="chart">
-                                        <canvas id="generalTab-chart_StatCerByArea" style="height:300px"></canvas>
+                                        <canvas id="Tab1-chart_StatCerByOperator" style="height:300px"></canvas>
                                     </div>
                                 </div>
                                 <!-- /.box-body -->
@@ -137,7 +138,7 @@
                         <div class="col-md-6">
                             <div class="box box-info">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Số Giấy CNKĐ đã hết hạn</h3>
+                                    <h3 class="box-title">Số Giấy CNKĐ hết hạn theo năm</h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
                                         <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -148,7 +149,7 @@
                                 </div>
                                 <div class="box-body">
                                     <div class="chart">
-                                        <canvas id="generalTab-chart_StatExpiredCerByAreaYear" style="height:300px"></canvas>
+                                        <canvas id="Tab1-chart_StatExpiredCerByOperatorYear" style="height:300px"></canvas>
                                     </div>
                                 </div>
                                 <!-- /.box-body -->
@@ -172,7 +173,7 @@
                                 </div>
                                 <div class="box-body">
                                     <div class="chart">
-                                        <canvas id="generalTab-chart_StatBtsByAreaBand" style="height:300px"></canvas>
+                                        <canvas id="Tab1-chart_StatBtsByOperatorBand" style="height:300px"></canvas>
                                     </div>
                                 </div>
                                 <!-- /.box-body -->
@@ -195,7 +196,148 @@
                                 </div>
                                 <div class="box-body">
                                     <div class="chart">
-                                        <canvas id="generalTab-chart_StatBtsByAreaManufactory" style="height:300px"></canvas>
+                                        <canvas id="Tab1-chart_StatBtsByOperatorManufactory" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (RIGHT) -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <div id="Tab2" class="tab-pane fade">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Giấy CNKĐ Còn hiệu lực/ gần hết hạn trong năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatCoupleCerByArea" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Số Giấy CNKĐ đã cấp hàng năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatCerByAreaYear" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (RIGHT) -->
+
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Giấy CNKĐ Còn hiệu lực</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatCerByArea" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Số Giấy CNKĐ đã hết hạn</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatExpiredCerByAreaYear" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+
+                        <div class="col-md-6">
+                            <!-- PIE CHART -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Thống kê Trạm gốc BTS theo Band</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatBtsByAreaBand" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+                        <div class="col-md-6">
+                            <!-- PIE CHART -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Thống kê Trạm gốc BTS theo NSX</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatBtsByAreaManufactory" style="height:300px"></canvas>
                                     </div>
                                 </div>
                                 <!-- /.box-body -->
@@ -205,7 +347,7 @@
                         <!-- /.col (RIGHT) -->
                     </div>
                 </div>
-                <div id="areaTab" class="tab-pane fade">
+                <div id="Tab3" class="tab-pane fade">
                     <h3 class="BTS-title">THỐNG KÊ CHI TIẾT THEO KHU VỰC TỈNH/ THÀNH PHỐ</h3>
 
                     <div class="clearfix"></div>
@@ -254,7 +396,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="chart">
-                                    <canvas id="areaTab-chart_StatCerByOperatorCity" style="height:300px"></canvas>
+                                    <canvas id="Tab3-chart_StatCerByOperatorCity" style="height:300px"></canvas>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -277,7 +419,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="chart">
-                                    <canvas id="areaTab-chart_StatNearExpiredInYearCerByOperatorCity" style="height:300px"></canvas>
+                                    <canvas id="Tab3-chart_StatNearExpiredInYearCerByOperatorCity" style="height:300px"></canvas>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -299,7 +441,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="chart">
-                                    <canvas id="areaTab-chart_StatInYearCerByOperatorCity" style="height:300px"></canvas>
+                                    <canvas id="Tab3-chart_StatInYearCerByOperatorCity" style="height:300px"></canvas>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -322,7 +464,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="chart">
-                                    <canvas id="areaTab-chart_StatExpiredCerByOperatorCity" style="height:300px"></canvas>
+                                    <canvas id="Tab3-chart_StatExpiredCerByOperatorCity" style="height:300px"></canvas>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -346,7 +488,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="chart">
-                                    <canvas id="areaTab-chart_StatBtsByBandCity" style="height:300px"></canvas>
+                                    <canvas id="Tab3-chart_StatBtsByBandCity" style="height:300px"></canvas>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -369,7 +511,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="chart">
-                                    <canvas id="areaTab-chart_StatBtsByOperatorCity" style="height:300px"></canvas>
+                                    <canvas id="Tab3-chart_StatBtsByOperatorCity" style="height:300px"></canvas>
                                 </div>
                             </div>
                             <!-- /.box-body -->

@@ -157,9 +157,11 @@ var myChart = {
                                     //get the current items value
                                     var currentValue = parseInt(dataset.data[tooltipItem.index]);
                                     //calculate the precentage based on the total and current item, also this does a rough rounding to give a whole number
-                                    var percentage = Math.floor(((currentValue / total) * 100) + 0.5) * 2;
+                                    // var percentage = Math.floor(((currentValue / total) * 100) + 0.5) * 2;
+                                    var percent = (currentValue / total) * 200;
+                                    percent = percent.toFixed(2); // make a nice string
 
-                                    return data.labels[tooltipItem.index] + ":" + percentage + "%";
+                                    return data.labels[tooltipItem.index] + ":" + $.number(percent, 2, ',', '.') + "%";
                                 }
 
                                 //label: function (item, data) {
@@ -178,7 +180,7 @@ var myChart = {
                                 render: function (args) {
                                     // args will be something like:
                                     // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
-                                    return $.number(args.value, 0);
+                                    return $.number(args.value, 0, ',', '.');
                                 },
 
                                 fontColor: 'black',
@@ -306,7 +308,8 @@ var myChart = {
                                     }, 0);
                                     var percent = 2 * parseInt(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]) / sum * 100;
                                     percent = percent.toFixed(2); // make a nice string
-                                    return data.datasets[tooltipItem.datasetIndex].label + ': ' + percent + '%';
+
+                                    return data.datasets[tooltipItem.datasetIndex].label + ': ' + $.number(percent, 2, ',', '.') + '%';
                                     //return data.datasets[tooltipItem.datasetIndex].label + "-" + data.labels[tooltipItem.index] + ":" + percentage + "%";
                                 }
                             }
@@ -318,7 +321,7 @@ var myChart = {
                                 render: function (args) {
                                     // args will be something like:
                                     // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
-                                    return $.number(args.value, 0);
+                                    return $.number(args.value, 0, ',', '.');
                                 },
 
                                 fontColor: 'black',
@@ -458,7 +461,8 @@ var myChart = {
                                     }, 0);
                                     var percent = parseInt(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]) / sum * 100;
                                     percent = percent.toFixed(2); // make a nice string
-                                    return data.datasets[tooltipItem.datasetIndex].label + ': ' + percent + '% (' + $.number(sum, 0, ', ', '.') + ')';
+
+                                    return data.datasets[tooltipItem.datasetIndex].label + ': ' + $.number(percent, 2, ',', '.') + '% (' + $.number(sum, 0, ',', '.') + ')';
                                     //return data.datasets[tooltipItem.datasetIndex].label + "-" + data.labels[tooltipItem.index] + ":" + percentage + "%";
                                 }
                             }
@@ -579,6 +583,17 @@ var myChart = {
                         tooltips: {
                             mode: 'index',
                             intersect: false,
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += $.number(tooltipItem.yLabel, 0, ',', '.');
+                                    return label;
+                                }
+                            }
                         },
                         hover: {
                             mode: 'nearest',
@@ -681,9 +696,11 @@ var myChart = {
                                     //get the current items value
                                     var currentValue = dataset.data[tooltipItem.index];
                                     //calculate the precentage based on the total and current item, also this does a rough rounding to give a whole number
-                                    var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                                    // var percent = Math.floor(((currentValue / total) * 100) + 0.5);
+                                    var percent = (currentValue / total) * 100;
+                                    percent = percent.toFixed(2); // make a nice string
 
-                                    return data.datasets[tooltipItem.datasetIndex].label + "-" + data.labels[tooltipItem.index] + ":" + percentage + "%";
+                                    return data.datasets[tooltipItem.datasetIndex].label + "-" + data.labels[tooltipItem.index] + ":" + $.number(percent, 2, ',', '.') + "%";
                                 }
 
                                 //label: function (item, data) {
@@ -701,7 +718,7 @@ var myChart = {
                                 render: function (args) {
                                     // args will be something like:
                                     // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
-                                    return $.number(args.value, 0);
+                                    return $.number(args.value, 0, ',', '.');
                                 }
                             }
                         },
@@ -815,14 +832,16 @@ var myChart = {
                                             var label = data.datasets[tooltipItem.datasetIndex].label;
                                             label += '_' + data.labels[tooltipItem.index];
                                             var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                                            return label + ': ' + $.number(value, 0) + '/ ' + $.number(total, 0);
+                                            return label + ': ' + $.number(value, 0, ',', '.') + '/ ' + $.number(total, 0, ',', '.');
                                         } else {
                                             //get the current items value
                                             var currentValue = parseInt(dataset.data[tooltipItem.index]);
                                             //calculate the precentage based on the total and current item, also this does a rough rounding to give a whole number
-                                            var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                                            // var percent = Math.floor(((currentValue / total) * 100) + 0.5);
+                                            var percent = (currentValue / total) * 100;
+                                            percent = percent.toFixed(2); // make a nice string
 
-                                            return data.datasets[tooltipItem.datasetIndex].label + "-" + data.labels[tooltipItem.index] + ":" + percentage + "% (" + $.number(total, 0, ',', '.') + ")";
+                                            return data.datasets[tooltipItem.datasetIndex].label + "-" + data.labels[tooltipItem.index] + ":" + $.number(percent, 2, ',', '.') + "% (" + $.number(total, 0, ',', '.') + ")";
                                         }
                                     }
 
@@ -843,9 +862,9 @@ var myChart = {
                                         // args will be something like:
                                         // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
                                         if (IsPercent == true) {
-                                            return args.percentage + '%';
+                                            return $.number(args.percentage, 2, ',', '.') + '%';
                                         } else {
-                                            return $.number(args.value, 0);
+                                            return $.number(args.value, 0, ',', '.');
                                         }
                                     },
                                     // font color, can be color array for each data or function for dynamic color, default is defaultFontColor
@@ -1003,9 +1022,11 @@ var myChart = {
                                         //get the current items value
                                         var currentValue = parseInt(dataset.data[tooltipItem.index]);
                                         //calculate the precentage based on the total and current item, also this does a rough rounding to give a whole number
-                                        var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                                        // var percent = Math.floor(((currentValue / total) * 100) + 0.5);
+                                        var percent = (currentValue / total) * 100;
+                                        percent = percent.toFixed(2); // make a nice string
 
-                                        return data.datasets[tooltipItem.datasetIndex].label + "-" + data.labels[tooltipItem.index] + ":" + percentage + "% (" + $.number(total, 0, ',', '.') + ")";
+                                        return data.datasets[tooltipItem.datasetIndex].label + "-" + data.labels[tooltipItem.index] + ":" + $.number(percent, 2, ',', '.') + "% (" + $.number(total, 0, ',', '.') + ")";
                                     }
 
                                     //label: function (item, data) {
@@ -1023,7 +1044,7 @@ var myChart = {
                                     render: function (args) {
                                         // args will be something like:
                                         // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
-                                        return $.number(args.value, 0);
+                                        return $.number(args.value, 0, ',', '.');
                                     },
                                     fontColor: function (args) {
                                         var rgbStr = args.dataset.backgroundColor[args.index]

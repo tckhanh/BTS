@@ -13,26 +13,26 @@ namespace BTS.Model.Models
     public class Bts : Auditable
     {
         [Key]
-        [StringLength(36)]
+        [MaxLength(36)]
         public string Id { get; set; }
 
-        [StringLength(36)]
+        [MaxLength(36)]
         public string ProfileID { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [MaxLength(10)]
         public string OperatorID { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [MaxLength(50)]
         public string BtsCode { get; set; }
 
         [Required]
-        [StringLength(255)]
+        [MaxLength(255)]
         public string Address { get; set; }
 
         [Required]
-        [StringLength(3)]
+        [MaxLength(3)]
         public string CityID { get; set; }
 
         public double? Longtitude { get; set; }
@@ -41,16 +41,16 @@ namespace BTS.Model.Models
 
         public int InCaseOfID { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string LastOwnCertificateIDs { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string LastNoOwnCertificateIDs { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string ProfilesInProcess { get; set; }
 
-        [StringLength(255)]
+        [MaxLength(255)]
         public string ReasonsNoCertificate { get; set; }
 
         [ForeignKey("ProfileID")]

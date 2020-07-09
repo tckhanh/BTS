@@ -15,15 +15,15 @@ namespace BTS.Model.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { set; get; }
 
-        [StringLength(100)]
+        [MaxLength(100)]
         public string Name { get; set; }
 
         public int Tx { get; set; }
 
-        [StringLength(30)]
+        [MaxLength(30)]
         public string Band { get; set; }
 
-        [StringLength(10)]
+        [MaxLength(10)]
         public string OperatorRootID { get; set; }
 
         public double MaxPower { get; set; }

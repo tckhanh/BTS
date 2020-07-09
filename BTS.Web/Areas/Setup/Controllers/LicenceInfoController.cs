@@ -2,6 +2,7 @@
 using BTS.Common;
 using BTS.Model.Models;
 using BTS.Service;
+using BTS.Web.Areas.Intranet.Controllers;
 using BTS.Web.Controllers;
 using BTS.Web.Infrastructure.Core;
 using BTS.Web.Infrastructure.Extensions;

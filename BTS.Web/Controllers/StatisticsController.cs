@@ -18,7 +18,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
-namespace BTS.Web.Controllers
+namespace BTS.Web.Areas.Intranet.Controllers
 {
     [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
     public class StatisticsController : BaseController
@@ -56,14 +56,14 @@ namespace BTS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StatCoupleCerByArea()
+        public ActionResult StatCoupleCerByOperator()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<StatCoupleCerByAreaVM> ByArea = _stattisticService.GetStatCoupleCerByArea();
-                DataTable pivotTable = ByArea.ToDataTable();
-                
+                IEnumerable<StatCoupleCerByOperatorVM> ByOperator = _stattisticService.GetStatCoupleCerByOperator();
+
+                DataTable pivotTable = ByOperator.ToDataTable();
                 List<String> ColumnNames = new List<string>();
                 foreach (DataColumn col in pivotTable.Columns)
                 {
@@ -82,7 +82,7 @@ namespace BTS.Web.Controllers
                 return Json(new
                 {
                     status = CommonConstants.Status_Success,
-                    message = "StatCoupleCerByArea Finished !",
+                    message = "StatCoupleCerByOperator Finished !",
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -142,6 +142,364 @@ namespace BTS.Web.Controllers
             }
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StatCerByOperator()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<StatCerByOperatorVM> ByOperator = _stattisticService.GetStatCerByOperator();
+
+                DataTable pivotTable = ByOperator.ToDataTable();
+
+                DataRow dr = pivotTable.NewRow();
+                dr["OperatorID"] = "TOTAL";
+
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    if (col.ColumnName == "ValidCertificates")
+                    {
+                        long total = 0;
+                        foreach (DataRow row in pivotTable.Rows)
+                        {
+                            total += Convert.ToInt32(row[col.ColumnName].ToString());
+                        }
+                        dr[col.ColumnName] = total;   // or set it to some other value
+                    }
+                }
+                pivotTable.Rows.Add(dr);
+
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatCerByOperator Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StatExpiredCerByOperatorYear()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<StatExpiredCerByOperatorYearVM> ByOperatorYear = _stattisticService.GetStatExpiredCerByOperatorYear().ToList();
+
+                DataTable pivotTable = ByOperatorYear.ToPivotTable(item => item.OperatorID, item => item.Year, items => items.Any() ? items.Sum(item => item.ExpiredCertificates) : 0);
+
+                pivotTable.Columns.Add("TOTAL", typeof(System.Int32));
+
+                foreach (DataRow row in pivotTable.Rows)
+                {
+                    long total = 0;
+                    foreach (DataColumn col in pivotTable.Columns)
+                    {
+                        if (col.ColumnName != "Year" && col.ColumnName != "TOTAL")
+                            total += Convert.ToInt32(row[col.ColumnName].ToString());
+                    }
+                    row["TOTAL"] = total;   // or set it to some other value
+                }
+
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatExpiredInYearCerByOperator Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StatCerByOperatorYear()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<StatIssuedCerByOperatorYearVM> ByOperatorYear = _stattisticService.GetIssuedStatCerByOperatorYear();
+                DataTable pivotTable = ByOperatorYear.ToPivotTable(item => item.OperatorID, item => item.Year, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
+
+                pivotTable.Columns.Add("TOTAL", typeof(System.Int32));
+
+                foreach (DataRow row in pivotTable.Rows)
+                {
+                    long total = 0;
+                    foreach (DataColumn col in pivotTable.Columns)
+                    {
+                        if (col.ColumnName != "Year" && col.ColumnName != "TOTAL")
+                            total += Convert.ToInt32(row[col.ColumnName].ToString());
+                    }
+                    row["TOTAL"] = total;   // or set it to some other value
+                }
+
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatCerByOperatorYear Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StatBtsByOperatorBand()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<StatBtsByOperatorBandVM> ByBand = _stattisticService.GetStatBtsByOperatorBand();
+
+                DataTable pivotTable = ByBand.ToPivotTable(item => item.OperatorID, item => item.Band, items => items.Any() ? items.Sum(item => item.Btss) : 0);
+
+                //DataTable pivotTable = ByBand.ToDataTable();
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatBtsByBand Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StatBtsByOperatorManufactory()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<StatBtsByOperatorManufactoryVM> ByManufactory = _stattisticService.GetStatBtsByOperatorManufactory();
+
+                DataTable pivotTable = ByManufactory.ToPivotTable(item => item.OperatorID, item => item.Manufactory, items => items.Any() ? items.Sum(item => item.Btss) : 0);
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatBtsByManufactory Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StatBtsByOperatorEquipment()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<StatBtsByEquipmentVM> ByEquipment = _stattisticService.GetStatBtsByEquipment();
+
+                DataTable pivotTable = ByEquipment.ToDataTable();
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatBtsByEquipment Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StatCoupleCerByArea()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<StatCoupleCerByAreaVM> ByArea = _stattisticService.GetStatCoupleCerByArea();
+                DataTable pivotTable = ByArea.ToDataTable();
+                
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatCoupleCerByArea Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
