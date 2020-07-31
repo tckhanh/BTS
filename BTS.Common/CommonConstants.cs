@@ -225,10 +225,12 @@
         public const string Sheet_Certificate_MinAntenHeight = "MinAntenHeight";
         public const string Sheet_Certificate_OffsetHeight = "OffsetHeight";
         public const string Sheet_Certificate_VerifyUnit = "VerifyUnit";
-        public const string Sheet_Certificate_Place = "Place";
+        public const string Sheet_Certificate_IssuedPlace = "IssuedPlace";
         public const string Sheet_Certificate_SignerRole = "SignerRole";
         public const string Sheet_Certificate_SignerSubRole = "SignerSubRole";
-        public const string Sheet_Certificate_SignerName = "SignerName";
+        public const string Sheet_Certificate_Signer = "Signer";
+        public const string Sheet_Certificate_Verifier1 = "Verifier1";
+        public const string Sheet_Certificate_Verifier2 = "Verifier2";
 
         public const string Sheet_Certificate_TotalBtsNum = "TotalBtsNum";
         public const string Sheet_Certificate_CerBtsNum = "CerBtsNum";
@@ -286,6 +288,10 @@
 
         public const string IssuePalce = "Tp. Hồ Chí Minh";
         public const string Signer = "Trần Công Khanh";
+        public const string SignerRole = "KT. GIÁM ĐỐC";
+        public const string SignerSubRole = "PHÓ GIÁM ĐỐC";
+        public const string VerifyUnit = "TRUNG TÂM KIỂM ĐỊNH VÀ CHỨNG NHẬN 2";
+
 
         public const string ImportCER = "ImportCER";
         public const string ImportBTS = "ImportBTS";

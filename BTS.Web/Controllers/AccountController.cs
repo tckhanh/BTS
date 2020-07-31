@@ -21,7 +21,7 @@ using BTS.Web.Infrastructure.Core;
 using AutoMapper;
 using BTS.Model.Models;
 
-namespace BTS.Web.Areas.Intranet.Controllers
+namespace BTS.Web.Areas.Controllers
 {
     public class AccountController : BaseController
     {
@@ -92,7 +92,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home", new { Area = "Intranet" });
+                            return RedirectToAction("Index", "Statistics");
                         }
                     }
                     else

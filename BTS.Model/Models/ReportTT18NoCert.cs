@@ -17,7 +17,7 @@ namespace BTS.Model.Models
 
 
         [Required]
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string OperatorID { get; set; }
 
         [Required]
@@ -43,7 +43,7 @@ namespace BTS.Model.Models
         [MaxLength(50)]
         public string SubBtsCode { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string SubOperatorID { get; set; }
 
         [MaxLength(50)]

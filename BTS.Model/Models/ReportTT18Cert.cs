@@ -15,7 +15,7 @@ namespace BTS.Model.Models
         public string CertificateId { get; set; }
 
         [Required]
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string OperatorID { get; set; }
 
         public int BtsSerialNo { get; set; }
@@ -43,7 +43,7 @@ namespace BTS.Model.Models
         [MaxLength(50)]
         public string SubBtsCode { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string SubOperatorID { get; set; }
 
         [MaxLength(50)]

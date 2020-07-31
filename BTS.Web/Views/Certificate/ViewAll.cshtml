@@ -30,7 +30,7 @@
                 @Html.DisplayNameFor(model => model.LastNoOwnCertificateIDs)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReasonsCertificate)
+                @Html.DisplayNameFor(model => model.ReasonsNoCertificate)
             </th>
             <th>Thao tác</th>
         </tr>
@@ -63,7 +63,7 @@
                     @Html.DisplayFor(modelItem => item.LastNoOwnCertificateIDs)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ReasonsCertificate)
+                    @Html.DisplayFor(modelItem => item.ReasonsNoCertificate)
                 </td>
 
                 <td>
@@ -85,7 +85,7 @@
             </tr>
             }
         </tbody>
-    <tfoot>
+    @*<tfoot>
         <tr>
             <td>
                 @Html.DisplayNameFor(model => model.OperatorID)
@@ -97,5 +97,5 @@
                 @Html.DisplayNameFor(model => model.CityID)
             </td>
         </tr>
-    </tfoot>
+    </tfoot>*@
 </table>

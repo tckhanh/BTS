@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace BTS.Web.Controllers
 {
+    //[Authorize]
     public class HomeController : WebBaseController
     {
         private ICertificateService _certificateService;

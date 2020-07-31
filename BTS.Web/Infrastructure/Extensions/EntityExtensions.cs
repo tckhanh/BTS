@@ -65,6 +65,13 @@ namespace BTS.Web.Infrastructure.Extensions
             certificate.ExpiredDate = btsCertificateVm.ExpiredDate;
             certificate.Signer = btsCertificateVm.Signer;
             certificate.OperatorID = btsCertificateVm.OperatorID;
+
+            certificate.VerifyUnit = btsCertificateVm.VerifyUnit;
+            certificate.SignerRole = btsCertificateVm.SignerRole;
+            certificate.SignerSubRole = btsCertificateVm.SignerSubRole;
+            certificate.Verifier1 = btsCertificateVm.Verifier1;
+            certificate.Verifier2 = btsCertificateVm.Verifier2;
+
         }
 
         public static void UpdateNoCertificate(this NoCertificate noCertificate, NoCertificateViewModel btsCertificateVm)

@@ -312,7 +312,6 @@
                             </div>
                         </div>
                         <div class="ln_solid"></div>
-                        <div class="ln_solid"></div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
@@ -348,8 +347,18 @@
                         <div class="ln_solid"></div>
                     </div>
                 </div>
-                
+
                 <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.VerifyUnit, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.VerifyUnit, new { @class = "form-control", disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.VerifyUnit)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
                             @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
@@ -360,25 +369,15 @@
                         </div>
                         <div class="ln_solid"></div>
                     </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
                             @Html.LabelFor(model => model.IssuedDate, new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
                                 @Html.EditorFor(model => model.IssuedDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                                 @Html.ValidationMessageFor(model => model.IssuedDate)
-                            </div>
-                        </div>
-                        <div class="ln_solid"></div>
-                    </div>
-                </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Signer, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                @Html.TextBoxFor(model => model.Signer, new { @class = "form-control", disabled = "disabled" })
-                                @Html.ValidationMessageFor(model => model.Signer)
                             </div>
                         </div>
                         <div class="ln_solid"></div>
@@ -398,6 +397,16 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
+                            @Html.LabelFor(model => model.Signer, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Signer, new { @class = "form-control", disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.Signer)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
                             @Html.LabelFor(model => model.IssuedPlace, new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
                                 @Html.TextBoxFor(model => model.IssuedPlace, new { @class = "form-control", disabled = "disabled" })
@@ -406,11 +415,53 @@
                         </div>
                         <div class="ln_solid"></div>
                     </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SignerRole, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.SignerRole, new { @class = "form-control", disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.SignerRole)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SignerSubRole, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.SignerSubRole, new { @class = "form-control", disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.SignerSubRole)
+                            </div>
+                        </div>
                         <div class="ln_solid"></div>
                     </div>
                 </div>
 
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Verifier1, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Verifier1, new { @class = "form-control", disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.Verifier1)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Verifier2, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Verifier2, new { @class = "form-control", disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.Verifier2)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">

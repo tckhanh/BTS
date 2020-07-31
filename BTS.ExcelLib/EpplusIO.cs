@@ -89,14 +89,33 @@ namespace BTS.ExcelLib
                     {
                         if (xlWorkSheet.Name == sheetName)
                         {
-                            foreach (var firstRowCell in xlWorkSheet.Cells[1, 1, 1, xlWorkSheet.Dimension.End.Column])
+                            int lastColumn = 1;
+                            if (hasHeader) {                                
+                                for (int i = 1; i <= xlWorkSheet.Dimension.End.Column; i++)
+                                {
+                                    if (xlWorkSheet.Cells[1, i].Value.ToString().Trim() != "")
+                                    {
+                                        lastColumn = i;
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                lastColumn = xlWorkSheet.Dimension.End.Column;
+                            }
+
+                            foreach (var firstRowCell in xlWorkSheet.Cells[1, 1, 1, lastColumn])
                             {
                                 tbl.Columns.Add(hasHeader ? firstRowCell.Text : string.Format("Column {0}", firstRowCell.Start.Column));
                             }
                             var startRow = hasHeader ? 2 : 1;
                             for (int rowNum = startRow; rowNum <= xlWorkSheet.Dimension.End.Row; rowNum++)
                             {
-                                var wsRow = xlWorkSheet.Cells[rowNum, 1, rowNum, xlWorkSheet.Dimension.End.Column];
+                                var wsRow = xlWorkSheet.Cells[rowNum, 1, rowNum, lastColumn];
                                 DataRow row = tbl.Rows.Add();
                                 foreach (var cell in wsRow)
                                 {

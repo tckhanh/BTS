@@ -15,7 +15,7 @@ using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BTS.Web.Areas.Intranet.Controllers
+namespace BTS.Web.Areas.Controllers
 {
     public class CheckController : BaseController
     {

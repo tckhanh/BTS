@@ -17,7 +17,7 @@ namespace BTS.Model.Models
         public string ProfileID { get; set; }
 
         [Required]
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string OperatorID { get; set; }
 
         [Required]
@@ -57,7 +57,7 @@ namespace BTS.Model.Models
         [Required]
         public string IssuedPlace { get; set; }
 
-        [MaxLength(30)]
+        [MaxLength(50)]
         [Required]
         public string Signer { get; set; }
 
@@ -110,17 +110,7 @@ namespace BTS.Model.Models
 
         public double? MaxPowerSum { get; set; }
 
-        public bool IsMeasuringExposure = false;
-
-        public bool GetIsMeasuringExposure()
-        {
-            return IsMeasuringExposure;
-        }
-
-        public void SetIsMeasuringExposure(bool value)
-        {
-            IsMeasuringExposure = value;
-        }
+        public bool IsMeasuringExposure { get; set; }       
 
         public double? MinAntenHeight { get; set; }
 
@@ -136,6 +126,12 @@ namespace BTS.Model.Models
 
         [MaxLength(50)]
         public string SignerSubRole { get; set; }
+
+        [MaxLength(50)]
+        public string Verifier1 { get; set; }
+
+        [MaxLength(50)]
+        public string Verifier2 { get; set; }
 
 
         [ForeignKey("ProfileID")]

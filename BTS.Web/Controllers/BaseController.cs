@@ -22,7 +22,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace BTS.Web.Areas.Intranet.Controllers
+namespace BTS.Web.Areas.Controllers
 {
     public class BaseController : Controller
     {

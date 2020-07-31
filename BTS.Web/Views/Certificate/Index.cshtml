@@ -16,6 +16,7 @@
     <script src="~/Assets/client/js/controllers/contextMenuDataInfoController.js"></script>
     <script src="~/Assets/client/js/common/myMap.js"></script>
     <script src="~/Assets/client/js/controllers/certificateController.js"></script>
+    <script src="~/Assets/client/js/controllers/printCertificateController.js"></script>
     <script src="~/Assets/client/js/common/toExcel.js"></script>
 }
 
@@ -184,7 +185,9 @@
 
         <ul class="nav nav-tabs nav-pills">
             <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách GCNKĐ</a></li>
+
             <li><a data-toggle="tab" href="#AddOrEditTab"> Thêm mới</a></li>
+
             @if (User.IsInRole(CommonConstants.Info_CanViewMap_Role))
             {
                 <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
@@ -228,13 +231,13 @@
                                             <th>Thao tác</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <td></td>
-                                            <td>Nhà mạng</td>
-                                            <td>Tỉnh</td>
-                                        </tr>
-                                    </tfoot>
+                                    @*<tfoot>
+                                            <tr>
+                                                <td></td>
+                                                <td>Nhà mạng</td>
+                                                <td>Tỉnh</td>
+                                            </tr>
+                                        </tfoot>*@
                                 </table>
                             </div>
                             <!-- /.box-body -->
@@ -244,7 +247,9 @@
                     <!-- /.col -->
                 </div>
             </div>
+            
             <div id="AddOrEditTab" class="tab-pane fade">@Html.Action("Add")</div>
+
             <div id="mapTab" class="tab-pane fade">
                 <h3 class="BTS-title">VỊ TRÍ CÁC TRẠM BTS ĐÃ ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
                 <div id="mapBTS" style="width: 100%; height: 500px;"></div>

@@ -7,7 +7,7 @@
 
 @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
 {
-    using (Html.BeginForm("Add", "Certificate", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return addinController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Certificate") }))//data-resetUrl
+    using (Html.BeginForm("Add", "Home", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return addinController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Home") }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -24,8 +24,8 @@
                                 @Html.ValidationMessageFor(model => model.ProfileID)
                             </div>
                             @*<div class="col-md-1">
-                                    <a href="/Profile/" class="btn btn-primary">...</a>
-                                </div>*@
+                        <a href="/Profile/" class="btn btn-primary">...</a>
+                    </div>*@
                         </div>
                         <div class="ln_solid"></div>
                     </div>
@@ -352,20 +352,22 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
+                            @Html.LabelFor(model => model.VerifyUnit, new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
-                                @Html.TextBoxFor(model => model.Id, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Id)
+                                @Html.TextBoxFor(model => model.VerifyUnit, new { @class = "form-control", disabled = "disabled" })
+                                @Html.HiddenFor(model => model.VerifyUnit)
+                                @Html.ValidationMessageFor(model => model.VerifyUnit)
                             </div>
                         </div>
                         <div class="ln_solid"></div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.IssuedDate, new { @class = "control-label col-md-3" })
+                            @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
-                                @Html.EditorFor(model => model.IssuedDate, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.IssuedDate)
+                                @Html.TextBoxFor(model => model.Id, new { @class = "form-control", disabled = "disabled" })
+                                @Html.HiddenFor(model => model.Id)
+                                @Html.ValidationMessageFor(model => model.Id)
                             </div>
                         </div>
                         <div class="ln_solid"></div>
@@ -375,10 +377,10 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Signer, new { @class = "control-label col-md-3" })
+                            @Html.LabelFor(model => model.IssuedDate, new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
-                                @Html.TextBoxFor(model => model.Signer, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.Signer)
+                                @Html.EditorFor(model => model.IssuedDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.IssuedDate)
                             </div>
                         </div>
                         <div class="ln_solid"></div>
@@ -398,6 +400,16 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
+                            @Html.LabelFor(model => model.Signer, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Signer, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Signer)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
                             @Html.LabelFor(model => model.IssuedPlace, new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
                                 @Html.TextBoxFor(model => model.IssuedPlace, new { @class = "form-control" })
@@ -406,7 +418,50 @@
                         </div>
                         <div class="ln_solid"></div>
                     </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SignerRole, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.SignerRole, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SignerRole)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SignerSubRole, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.SignerSubRole, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.SignerSubRole)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Verifier1, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Verifier1, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Verifier1)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Verifier2, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.Verifier2, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Verifier2)
+                            </div>
+                        </div>
                         <div class="ln_solid"></div>
                     </div>
                 </div>
@@ -414,7 +469,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <a class="btn btn-info" onclick="addinController.refreshAddNewTab('@Url.Action("Add","Certificate")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="addinController.refreshAddNewTab('@Url.Action("Add","Home")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
                             <input type="submit" value="Lưu" class="btn btn-primary" />
                         </div>
                     </div>

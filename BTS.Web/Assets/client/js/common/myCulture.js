@@ -11,7 +11,7 @@
 
         $.validator.methods.number = function (value, element) {
 
-            if (this.optional(element) || $.global.parseFloat(value)) {
+            if (this.optional(element) || $.global.parseFloat(value) || value == 0) {
                 return true;
             }
             return false;

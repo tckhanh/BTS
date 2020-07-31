@@ -9,7 +9,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Mã nhà mạng")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mã nhà mạng")]
-        [StringLength(10, ErrorMessage = "Mã nhà mạng không quá 10 ký tự")]
+        [StringLength(20, ErrorMessage = "Mã nhà mạng không quá 10 ký tự")]
         public string OperatorID { get; set; }
 
         [Display(Name = "Mã trạm BTS")]
@@ -43,7 +43,7 @@ namespace BTS.Web.Models
         public string SubBtsCode { get; set; }
 
         [Display(Name = "Mã nhà mạng")]
-        [StringLength(10, ErrorMessage = "Mã nhà mạng không quá 10 ký tự")]
+        [StringLength(20, ErrorMessage = "Mã nhà mạng không quá 10 ký tự")]
         public string SubOperatorID { get; set; }
 
         [Display(Name = "Hãng sản xuất")]

@@ -18,9 +18,9 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
-namespace BTS.Web.Areas.Intranet.Controllers
-{
-    [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
+namespace BTS.Web.Areas.Controllers
+{    
+    [Authorize]
     public class StatisticsController : BaseController
     {
         //IProductCategoryService _productCategoryService;
@@ -457,6 +457,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatCoupleCerByArea()
@@ -501,6 +502,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatCerByArea()
@@ -563,7 +565,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
-
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatExpiredCerByAreaYear()
@@ -623,6 +625,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
         }
 
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatCerByAreaYear()
@@ -681,6 +684,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatBtsByAreaBand()
@@ -727,6 +731,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatBtsByAreaManufactory()
@@ -770,7 +775,8 @@ namespace BTS.Web.Areas.Intranet.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
-              
+
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatBtsInProcessArea()
@@ -815,6 +821,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatCerByOperatorArea()
@@ -873,7 +880,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
-
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatNearExpiredInYearCerByOperatorCity(string Area)
@@ -933,6 +940,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatExpiredCerByOperatorCity(string Area)
@@ -992,6 +1000,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatExpiredCerByOperatorYearArea()
@@ -1051,6 +1060,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
         }
 
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatCerByOperatorYearArea()
@@ -1109,6 +1119,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatBtsByOperatorBandArea()
@@ -1155,6 +1166,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatBtsByOperatorManufactoryArea()
@@ -1199,6 +1211,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatBtsByOperatorEquipmentArea()
@@ -1243,6 +1256,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatCerByOperatorCity(string Area)
@@ -1290,6 +1304,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatInYearCerByOperatorCity(string Area)
@@ -1337,6 +1352,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatBtsByBandCity(string Area)
@@ -1384,6 +1400,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatBtsByOperatorArea()
@@ -1442,6 +1459,7 @@ namespace BTS.Web.Areas.Intranet.Controllers
             }
         }
 
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult StatBtsByOperatorCity(string Area)

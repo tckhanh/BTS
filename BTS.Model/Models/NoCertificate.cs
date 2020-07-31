@@ -19,7 +19,7 @@ namespace BTS.Model.Models
         public string ProfileID { get; set; }
 
         [Required]
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string OperatorID { get; set; }
 
         [Required]

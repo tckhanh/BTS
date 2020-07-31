@@ -1,6 +1,6 @@
 ﻿@using BTS.Common
 @{
-    ViewBag.Title = "Certificate";
+    ViewBag.Title = "Home";
     Layout = "~/Views/Shared/Layouts_DataTable_Export_Map_PivotTable.cshtml";
     IEnumerable<BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
     IEnumerable<BTS.Web.Models.ProfileViewModel> profiles = ViewBag.profiles;
@@ -85,17 +85,6 @@
 
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
-                                        Số Giấy CNKĐ <span class="required"></span>
-                                    </label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <input id="CertificateNum" name="CertificateNum" class="form-control col-md-7 col-xs-12" type="text">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CityID">
                                         Tỉnh/Thành phố<span class="required"></span>
                                     </label>
@@ -111,8 +100,34 @@
                                 </div>
                                 <div class="ln_solid"></div>
                             </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ProfileID">
+                                        Hồ sơ nộp<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <select id="SelProfileID" name="SelProfileID" class="form-control selectYear">
+                                            <option value="" selected="selected">Tất cả</option>
+                                            @foreach (var item in profiles)
+                                            {
+                                                <option value="@item.Id">@item.ApplyDate.Year _ @item.ApplicantID _ @item.ProfileNum _ @item.BtsQuantity BTS </option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="ln_solid"></div>
+                            </div>
 
-                            <div class="clearfix"></div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
+                                        Số Giấy CNKĐ <span class="required"></span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input id="CertificateNum" name="CertificateNum" class="form-control col-md-7 col-xs-12" type="text">
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
@@ -132,29 +147,26 @@
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IsNotExpired">
                                         Loại Giấy CNKĐ<span class="required"></span>
                                     </label>
-                                    <div class="col-md-3 col-sm-3 col-xs-12">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
                                         <fieldset>
                                             <label class="control-label">
                                                 <input type="radio" name="IsExpired" value="no" checked="checked" />
-                                                Giấy CNKĐ còn hiệu lực
+                                                Còn hiệu lực
                                             </label>
                                         </fieldset>
                                     </div>
+                                    <div class="col-md-5 col-sm-5 col-xs-12">
+                                        <div class="form-group">
+                                            <fieldset>
+                                                <label class="control-label">
+                                                    <input type="radio" name="IsExpired" value="yes" />
+                                                    Hết hiệu lực
+                                                </label>
+                                            </fieldset>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="ln_solid"></div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <fieldset>
-                                        <label class="control-label">
-                                            <input type="radio" name="IsExpired" value="yes" />
-                                            Giấy CNKĐ hết hiệu lực
-                                        </label>
-                                    </fieldset>
-                                </div>
                             </div>
 
                             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -177,7 +189,9 @@
 
         <ul class="nav nav-tabs nav-pills">
             <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách GCNKĐ</a></li>
+
             <li><a data-toggle="tab" href="#AddOrEditTab"> Thêm mới</a></li>
+
             @if (User.IsInRole(CommonConstants.Info_CanViewMap_Role))
             {
                 <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
@@ -204,7 +218,7 @@
                                 }
                                 @if (User.IsInRole(CommonConstants.Info_CanPrintCertificate_Role))
                                 {
-                                    <input type="button" class="btn btn-success" onclick="certificateController.printCertificate()" value="In Giấy CNKĐ">
+                                    <input type="button" class="btn btn-success" onclick="HomeController.printCertificate()" value="In Giấy CNKĐ">
                                 }
                                 <br /><br />
                                 <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">
@@ -221,13 +235,13 @@
                                             <th>Thao tác</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
+                                    @*<tfoot>
                                         <tr>
                                             <td></td>
                                             <td>Nhà mạng</td>
                                             <td>Tỉnh</td>
                                         </tr>
-                                    </tfoot>
+                                    </tfoot>*@
                                 </table>
                             </div>
                             <!-- /.box-body -->
@@ -237,7 +251,9 @@
                     <!-- /.col -->
                 </div>
             </div>
+
             <div id="AddOrEditTab" class="tab-pane fade">@Html.Action("Add")</div>
+                
             <div id="mapTab" class="tab-pane fade">
                 <h3 class="BTS-title">VỊ TRÍ CÁC TRẠM BTS ĐÃ ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
                 <div id="mapBTS" style="width: 100%; height: 500px;"></div>

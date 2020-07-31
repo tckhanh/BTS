@@ -17,7 +17,7 @@ using System.Web.Mvc;
 using BTS.Web.Models;
 using static BTS.Web.Models.AccountViewModel;
 
-namespace BTS.Web.Areas.Intranet.Controllers
+namespace BTS.Web.Areas.Controllers
 {
     [AuthorizeRoles]
     public class ApplicationUserProfileController : BaseController

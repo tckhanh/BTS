@@ -23,7 +23,7 @@ namespace BTS.Model.Models
         [MaxLength(30)]
         public string Band { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string OperatorRootID { get; set; }
 
         public double MaxPower { get; set; }

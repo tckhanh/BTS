@@ -30,16 +30,18 @@ var homeController = {
         });
 
         $('#MyDataTable tbody').on('click', 'td.details-control', function () {
-            var tr = $(this).closest('tr');
-            var row = table.row(tr);
+            if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
 
-            if (row.child.isShown()) {
-                row.child.hide();
-                tr.removeClass('shown');
-            }
-            else {
-                row.child(homeController.format(row.data())).show();
-                tr.addClass('shown');
+                if (row.child.isShown()) {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    row.child(homeController.format(row.data())).show();
+                    tr.addClass('shown');
+                }
             }
         });
     },
@@ -144,6 +146,8 @@ var homeController = {
     },
 
     loadData: function () {
+        $('#SelProfileID').attr('disabled', myNotAuthenticated);
+
         homeController.startDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
         homeController.endDate = new Date();
 
@@ -162,7 +166,7 @@ var homeController = {
             });
 
         //$.ajax({
-        //    url: 'Certificate/GetUserRoles',
+        //    url: 'Home/GetUserRoles',
         //    dataType: 'json',
         //    data: {},
         //    type: 'post',
@@ -251,6 +255,7 @@ var homeController = {
                         "data": function (d) {
                             d.CityID = $('#SelCityID').val().trim();
                             d.OperatorID = $('#SelOperatorID').val().trim();
+                            d.ProfileID = $('#SelProfileID').val().trim();
                             d.StartDate = homeController.startDate.toISOString();
                             d.EndDate = homeController.endDate.toISOString();
                             d.CertificateNum = $('#CertificateNum').val().trim();
@@ -303,13 +308,13 @@ var homeController = {
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 var htmlLink = "";
                                 if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
-                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Home/Detail/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanEdit_Role, myArrayRoles) > -1) {
-                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Home/Edit/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanDelete_Role, myArrayRoles) > -1) {
-                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Certificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
+                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Home/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
                                 }
                                 $(nTd).html(htmlLink);
                             }
@@ -385,6 +390,7 @@ var homeController = {
                         "data": function (d) {
                             d.CityID = $('#SelCityID').val().trim();
                             d.OperatorID = $('#SelOperatorID').val().trim();
+                            d.ProfileID = $('#SelProfileID').val().trim();
                             d.StartDate = homeController.startDate.toISOString();
                             d.EndDate = homeController.endDate.toISOString();
                             d.CertificateNum = $('#CertificateNum').val().trim();
@@ -437,13 +443,13 @@ var homeController = {
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 var htmlLink = "";
                                 if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
-                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Home/Detail/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanEdit_Role, myArrayRoles) > -1) {
-                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Certificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Home/Edit/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanDelete_Role, myArrayRoles) > -1) {
-                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Certificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
+                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Home/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
                                 }
                                 $(nTd).html(htmlLink);
                             }

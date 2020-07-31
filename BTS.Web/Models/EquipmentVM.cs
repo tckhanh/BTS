@@ -24,7 +24,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Thuộc mã nhà mạng")]
         [Required(ErrorMessage = "Yêu cầu nhập Mã nhà mạng")]
-        [MaxLength(10, ErrorMessage = "Mã nhà mạng tối đa 10 ký tự")]
+        [MaxLength(20, ErrorMessage = "Mã nhà mạng tối đa 10 ký tự")]
         public string OperatorRootID { get; set; }
 
         [Display(Name = "Công suất máy phát (W)")]

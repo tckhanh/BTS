@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace BTS.Web.Areas.Intranet.Controllers
+namespace BTS.Web.Areas.Controllers
 {
     [AuthorizeRoles(CommonConstants.Data_CanView_Role)]
     public class WardController : BaseController

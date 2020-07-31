@@ -17,7 +17,7 @@ using System.Web;
 using System.Web.Mvc;
 using Profile = BTS.Model.Models.Profile;
 
-namespace BTS.Web.Areas.Intranet.Controllers
+namespace BTS.Web.Areas.Controllers
 {
     [AuthorizeRoles(CommonConstants.Data_CanImport_Role)]
     public class ImportDataController : BaseController
@@ -1086,13 +1086,13 @@ namespace BTS.Web.Areas.Intranet.Controllers
             Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportDate]?.ToString());
             Item.IssuedDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedDate]?.ToString());
             Item.ExpiredDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate]?.ToString());
-            Item.IssuedPlace = CommonConstants.IssuePalce;
-            Item.Signer = CommonConstants.Signer;
             Item.SubBtsQuantity = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity]?.ToString());
 
-            Item.IsPoleOnGround = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString());
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString().Length > 0)
+                Item.IsPoleOnGround = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString());
 
-            Item.IsSafeLimit = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsSafeLimit]?.ToString());
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_IsSafeLimit]?.ToString().Length > 0)
+                Item.IsSafeLimit = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsSafeLimit]?.ToString());
 
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString().Length > 0)
                 Item.SafeLimitHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString());
@@ -1132,6 +1132,23 @@ namespace BTS.Web.Areas.Intranet.Controllers
             Item.SubBtsOperatorIDs = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsOperatorIDs]?.ToString();
 
             Item.SubBtsPowerSums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums]?.ToString();
+
+            Item.VerifyUnit = CommonConstants.VerifyUnit;
+            Item.IssuedPlace = CommonConstants.IssuePalce;
+            Item.Signer = CommonConstants.Signer;
+            Item.SignerRole = CommonConstants.SignerRole;
+            Item.SignerSubRole = CommonConstants.SignerSubRole;
+
+
+            // Bo sung them cho data 2020
+
+            //Item.VerifyUnit = dt.Rows[i][CommonConstants.Sheet_Certificate_VerifyUnit]?.ToString();
+            //Item.IssuedPlace = dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedPlace]?.ToString();
+            //Item.Signer = dt.Rows[i][CommonConstants.Sheet_Certificate_Signer]?.ToString();            
+            //Item.SignerRole = dt.Rows[i][CommonConstants.Sheet_Certificate_SignerRole]?.ToString();
+            //Item.SignerSubRole = dt.Rows[i][CommonConstants.Sheet_Certificate_SignerSubRole]?.ToString();
+            //Item.Verifier1 = dt.Rows[i][CommonConstants.Sheet_Certificate_Verifier1]?.ToString();
+            //Item.Verifier2 = dt.Rows[i][CommonConstants.Sheet_Certificate_Verifier2]?.ToString();
 
             Item.CreatedBy = User.Identity.Name;
             Item.CreatedDate = DateTime.Now;

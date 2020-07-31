@@ -82,6 +82,10 @@
             }
         };
         var myArrayRoles = AppGlobal.LoginUser.roles?.split(';');
+        var myNotAuthenticated = true;
+        if ("@(User.Identity.IsAuthenticated)" == "True") {
+            myNotAuthenticated = false;
+        }
     </script>
     @RenderSection("headerJS", required: false)
 

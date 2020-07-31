@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using static BTS.Web.Models.AccountViewModel;
 
-namespace BTS.Web.Areas.Intranet.Controllers
+namespace BTS.Web.Areas.Controllers
 {
     [AuthorizeRoles(CommonConstants.System_CanView_Role)]
     public class ApplicationUserController : BaseController

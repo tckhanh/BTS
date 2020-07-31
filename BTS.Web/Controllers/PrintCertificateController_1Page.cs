@@ -13,7 +13,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BTS.Web.Areas.Intranet.Controllers
+namespace BTS.Web.Areas.Controllers
 {
     [AuthorizeRoles(CommonConstants.Info_CanPrintCertificate_Role)]
     public class PrintCertificateController_1Page : BaseController

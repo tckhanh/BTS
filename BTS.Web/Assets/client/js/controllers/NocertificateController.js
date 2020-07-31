@@ -225,10 +225,10 @@ var noCertificateController = {
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 var htmlLink = "";
                                 if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {                                    
-                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/NoCertificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/NoCertificate/Detail/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanEdit_Role, myArrayRoles) > -1) {
-                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/NoCertificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/NoCertificate/Edit/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanDelete_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/NoCertificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';                                    
@@ -335,10 +335,10 @@ var noCertificateController = {
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 var htmlLink = "";
                                 if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
-                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/NoCertificate/AddOrEdit/' + oData.Id + '?act=Detail\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/NoCertificate/Detail/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanEdit_Role, myArrayRoles) > -1) {
-                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/NoCertificate/AddOrEdit/' + oData.Id + '?act=Edit\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/NoCertificate/Edit/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanDelete_Role, myArrayRoles) > -1) {
                                     htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/NoCertificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';                                    

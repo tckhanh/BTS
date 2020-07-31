@@ -22,7 +22,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Mã nhà mạng")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập mã nhà mạng")]
-        [StringLength(10, ErrorMessage = "Mã nhà mạng không quá 10 ký tự")]
+        [StringLength(20, ErrorMessage = "Mã nhà mạng không quá 10 ký tự")]
         public string OperatorID { get; set; }
 
         [Display(Name = "Mã trạm BTS")]
@@ -85,7 +85,7 @@ namespace BTS.Web.Models
         [Display(Name = "Nơi cấp giấy CNKĐ")]
         public string IssuedPlace { get; set; }
 
-        [StringLength(30, ErrorMessage = "Họ tên người ký GCNKĐ không quá 30 ký tự")]
+        [StringLength(50, ErrorMessage = "Họ tên người ký GCNKĐ không quá 50 ký tự")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Họ tên người ký GCNKĐ")]
         [Display(Name = "Họ tên người ký")]
         public string Signer { get; set; }
@@ -196,6 +196,14 @@ namespace BTS.Web.Models
         [Display(Name = "Tên chức danh người ký thay")]
         [StringLength(50, ErrorMessage = "Tên chức danh người ký thay không quá 50 ký tự")]
         public string SignerSubRole { get; set; }
+
+        [Display(Name = "Chuyên viên Kiểm định 1")]
+        [StringLength(50, ErrorMessage = "Tên Chuyên viên Kiểm định 1 không quá 50 ký tự")]
+        public string Verifier1 { get; set; }
+
+        [Display(Name = "Chuyên viên Kiểm định 2")]
+        [StringLength(50, ErrorMessage = "Tên Chuyên viên Kiểm định 2 không quá 50 ký tự")]
+        public string Verifier2 { get; set; }
 
         [Display(Name = "Thuộc hồ sơ KĐ")]
         public ICollection<SelectListItem> ProfileList { get; set; }

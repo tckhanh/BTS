@@ -19,7 +19,7 @@ namespace BTS.Model.Models
         [MaxLength(50)]
         public string BtsCode { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string OperatorID { get; set; }
 
         [MaxLength(50)]
