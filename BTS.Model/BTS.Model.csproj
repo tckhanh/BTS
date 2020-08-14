@@ -90,6 +90,7 @@
     <Compile Include="Extensions\DefaultDateTimeValueAttribute.cs" />
     <Compile Include="Models\Applicant.cs" />
     <Compile Include="Models\AreaTab.cs" />
+    <Compile Include="Models\Audit.cs" />
     <Compile Include="Models\Bts.cs" />
     <Compile Include="Models\Certificate.cs" />
     <Compile Include="Models\EquipmentTab.cs" />

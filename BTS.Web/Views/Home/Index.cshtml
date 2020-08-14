@@ -16,6 +16,7 @@
     <script src="~/Assets/client/js/controllers/contextMenuDataInfoController.js"></script>
     <script src="~/Assets/client/js/common/myMap.js"></script>
     <script src="~/Assets/client/js/controllers/homeController.js"></script>
+	<script src="~/Assets/client/js/controllers/printCertificateController.js"></script>
     <script src="~/Assets/client/js/common/toExcel.js"></script>
 }
 
@@ -63,6 +64,7 @@
                                         <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
                                     </div>
                                 </div>
+                                <div class="ln_solid"></div>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
@@ -79,9 +81,8 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="ln_solid"></div>
                             </div>
-
-                            <div class="clearfix"></div>
 
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
@@ -218,7 +219,7 @@
                                 }
                                 @if (User.IsInRole(CommonConstants.Info_CanPrintCertificate_Role))
                                 {
-                                    <input type="button" class="btn btn-success" onclick="HomeController.printCertificate()" value="In Giấy CNKĐ">
+                                    <input type="button" class="btn btn-success" onclick="homeController.printCertificate()" value="In Giấy CNKĐ">
                                 }
                                 <br /><br />
                                 <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">

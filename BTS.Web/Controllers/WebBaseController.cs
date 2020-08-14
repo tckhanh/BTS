@@ -534,7 +534,7 @@ namespace BTS.Web.Controllers
             Thread.CurrentThread.CurrentCulture = new CultureInfo(ddlCulture);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(ddlCulture);
 
-            Session[CommonConstants.CurrentCulture] = ddlCulture;
+            Session[CommonConstants.CULTURE_SESSION] = ddlCulture;
             return Redirect(returnUrl);
         }
 

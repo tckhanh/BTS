@@ -9,10 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace BTS.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class HomeController : WebBaseController
     {
         private ICertificateService _certificateService;

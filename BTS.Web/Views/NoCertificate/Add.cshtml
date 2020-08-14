@@ -7,7 +7,7 @@
 
 @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
 {
-    using (Html.BeginForm("Add", "NoCertificate", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return addinController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Certificate") }))//data-resetUrl
+    using (Html.BeginForm("Add", "NoCertificate", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return addinController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "NoCertificate") }))//data-resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">

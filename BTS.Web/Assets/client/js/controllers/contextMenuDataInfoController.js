@@ -50,7 +50,7 @@
                     title: "Xem trên bản đồ", cmd: myConstant.Action_ViewMap, uiIcon: " ui-icon-circle-zoomin",
                     disabled: function (event, ui) {
                         // return `true` to disable, `"hide"` to remove entry:
-                        if (typeof certificateController !== 'undefined' || typeof noCertificateController !== 'undefined') {
+                        if (typeof homeController !== 'undefined' || typeof certificateController !== 'undefined' || typeof noCertificateController !== 'undefined') {
                             if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
                                 return false;
                             else
@@ -64,7 +64,7 @@
                     title: "In Giấy CNKĐ", cmd: myConstant.Action_Print, uiIcon: "ui-icon-print",
                     disabled: function (event, ui) {
                         // return `true` to disable, `"hide"` to remove entry:
-                        if (typeof certificateController !== 'undefined') {
+                        if (typeof homeController !== 'undefined' || typeof certificateController !== 'undefined' ) {
                             if ($.inArray(myConstant.Info_CanPrintCertificate_Role, myArrayRoles) > -1)
                                 return false;
                             else
@@ -112,7 +112,7 @@
                 // Optionally return false, to prevent opening the menu now
             },
             select: function (event, ui) {
-                $('#MyDataTable tbody tr').on('click', addinController.doContextAction(ui.cmd, ui.target.parent().data('id'), ui.target.parent().data('long'), ui.target.parent().data('lat')));
+                $('#MyDataTable tbody tr').on('click', addinController.doContextAction(ui.cmd, ui.target.closest('tr').data('id'), ui.target.parent().data('long'), ui.target.parent().data('lat')));
                 //var m = "clicked: " + ui.target.text();
                 //window.console && console.log(m) || alert(m);
                 return true;

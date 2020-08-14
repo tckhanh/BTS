@@ -185,6 +185,7 @@
       <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -325,12 +326,15 @@
     <Compile Include="Infrastructure\Core\PaginationSet.cs" />
     <Compile Include="Infrastructure\Core\WriteLog.cs" />
     <Compile Include="Infrastructure\Extensions\AttributeExtensions.cs" />
-    <Compile Include="Infrastructure\Extensions\AuthorizeRolesAttribute.cs" />
-    <Compile Include="Infrastructure\Extensions\ClaimsToRazorParser.cs" />
+    <Compile Include="Infrastructure\Extensions\HelperExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\DataTableExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\EntityExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\IdentityExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Infrastructure\Helpers\AppStateHelpers.cs" />
+    <Compile Include="Infrastructure\Helpers\AuditHelpers.cs" />
+    <Compile Include="Infrastructure\Helpers\RequestHelpers.cs" />
+    <Compile Include="Infrastructure\Helpers\SessionStateHelpers.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Models\ApplicantTabVM.cs" />
@@ -590,6 +594,7 @@
     <Content Include="Assets\client\Images\Tree\plusbottom.gif" />
     <Content Include="Assets\client\Images\Tree\report.gif" />
     <Content Include="Assets\client\css\printCertificate.css" />
+    <Content Include="Assets\client\js\common\mainWindow.js" />
     <Content Include="Assets\client\js\common\maxibox.js" />
     <Content Include="Assets\client\js\common\message.js" />
     <Content Include="Assets\client\js\common\myMap.js" />

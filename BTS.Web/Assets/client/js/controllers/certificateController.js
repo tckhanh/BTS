@@ -282,7 +282,8 @@ var certificateController = {
                             "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 if ($.inArray(myConstant.Info_CanPrintCertificate_Role, myArrayRoles) > -1) {
-                                    $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
+                                    $(nTd).html("<a href='javascript:certificateController.printCertificate(\"" + oData.Id + "\")'>" + oData.Id + "</a>");
+                                    //$(nTd).html("<a target='_blank' href='/PrintCertificate/Print/" + oData.Id + "'>" + oData.Id + "</a>");
                                 } else {
                                     $(nTd).html(oData.Id);
                                 }
@@ -417,7 +418,8 @@ var certificateController = {
                             "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 if ($.inArray(myConstant.Info_CanPrintCertificate_Role, myArrayRoles) > -1) {
-                                    $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
+                                    $(nTd).html("<a href='javascript:certificateController.printCertificate(\"" + oData.Id + "\")'>" + oData.Id + "</a>");
+                                    //$(nTd).html("<a target='_blank' href='/PrintCertificate/Print/" + oData.Id + "'>" + oData.Id + "</a>");
                                 } else {
                                     $(nTd).html(oData.Id);
                                 }
@@ -567,9 +569,12 @@ var certificateController = {
             }, true);
     },
 
-    printCertificate: function () {
+    printCertificate: function (CertificateNum) {
         var form = $("#__AjaxAntiForgeryForm")[0];
         var dataForm = new FormData(form);
+        if (CertificateNum != null) {
+            dataForm.set('CertificateNum', CertificateNum);
+        }
         dataForm.append('StartDate', certificateController.startDate.toISOString());
         dataForm.append('EndDate', certificateController.endDate.toISOString());
         dataForm.append('action', 'GetReport');

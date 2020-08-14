@@ -4,8 +4,6 @@ using BTS.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BTS.Service
 {
@@ -21,36 +19,36 @@ namespace BTS.Service
 
         void DeleteSubBTSinCert(string Id);
 
-        IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate, DateTime startDate, DateTime endDate, string[] includes = null);        
+        IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate, DateTime startDate, DateTime endDate, string[] includes = null);
         IEnumerable<Certificate> getAll(out int totalRow, bool onlyValidCertificate, string[] includes = null);
         IEnumerable<ReportTT18Cert> getReportTT18Cert(out int totalRows, DateTime startDate, DateTime endDate);
         Certificate findCertificate(string BtsCode, string ProfileID);
 
         IEnumerable<Certificate> getByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
 
-        IEnumerable<Certificate> getByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<Certificate> getByCity(string cityID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10);
 
-        IEnumerable<Certificate> getByOperator(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<Certificate> getByOperator(string cityID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10);
 
-        IEnumerable<Certificate> getCertificateByYear(int year, int page, out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<Certificate> getCertificateByYear(int year, int page, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10);
 
-        IEnumerable<Certificate> getCertificateByYear(int year);
+        IEnumerable<Certificate> getCertificateByYear(int year, string[] includes = null);
 
-        IEnumerable<Certificate> getCertificateByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<Certificate> getCertificateByBTSCode(string btsCode, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10);
 
-        IEnumerable<Certificate> getCertificateByBtsCodeOrAddress(string btsCodeOrAddress);
+        IEnumerable<Certificate> getCertificateByBtsCodeOrAddress(string btsCodeOrAddress, string[] includes = null);
 
-        IEnumerable<Certificate> getCertificateByCertificateNum(string CertificateNum);
+        IEnumerable<Certificate> getCertificateByCertificateNum(string CertificateNum, string[] includes = null);
 
-        IEnumerable<Certificate> getCertificateByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<Certificate> getCertificateByCity(string cityID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10);
 
-        IEnumerable<Certificate> getCertificateByCity(string cityID);
+        IEnumerable<Certificate> getCertificateByCity(string cityID, string[] includes = null);
 
-        IEnumerable<Certificate> getCertificateByOperator(string operatorID, out int totalRow, int pageIndex = 1, int pageSize = 10);
+        IEnumerable<Certificate> getCertificateByOperator(string operatorID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10);
 
-        IEnumerable<Certificate> getCertificateByOperator(string operatorID);
+        IEnumerable<Certificate> getCertificateByOperator(string operatorID, string[] includes = null);
 
-        IEnumerable<Certificate> getCertificateByProfile(string profileID);
+        IEnumerable<Certificate> getCertificateByProfile(string profileID, string[] includes = null);
 
         Certificate getByID(string Id, string[] includes = null);
 
@@ -100,7 +98,7 @@ namespace BTS.Service
         public IEnumerable<ReportTT18Cert> getReportTT18Cert(out int totalRows, DateTime startDate, DateTime endDate)
         {
             IEnumerable<ReportTT18Cert> result;
-            result = _CertificateRepository.GetReportTT18CertByDate(startDate, endDate);        
+            result = _CertificateRepository.GetReportTT18CertByDate(startDate, endDate);
             totalRows = result.Count();
             return result;
         }
@@ -147,9 +145,9 @@ namespace BTS.Service
             return _CertificateRepository.GetMultiPagingByBtsCode(btsCode, out totalRow, pageIndex, pageSize, false);
         }
 
-        public IEnumerable<Certificate> getByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10)
+        public IEnumerable<Certificate> getByCity(string cityID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10)
         {
-            return _CertificateRepository.GetMultiPaging(x => x.CityID == cityID, out totalRow, pageIndex, pageSize);
+            return _CertificateRepository.GetMultiPaging(x => x.CityID == cityID, out totalRow, includes, pageIndex, pageSize);
         }
 
         public Certificate getByID(string Id, string[] includes = null)
@@ -157,31 +155,31 @@ namespace BTS.Service
             return _CertificateRepository.GetSingleByCondition(x => x.Id == Id, includes);
         }
 
-        public IEnumerable<Certificate> getByOperator(string operatorID, out int totalRow, int pageIndex = 1, int pageSize = 10)
+        public IEnumerable<Certificate> getByOperator(string operatorID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10)
         {
-            return _CertificateRepository.GetMultiPaging(x => x.OperatorID == operatorID, out totalRow, pageIndex, pageSize);
+            return _CertificateRepository.GetMultiPaging(x => x.OperatorID == operatorID, out totalRow, includes, pageIndex, pageSize);
         }
 
-        public IEnumerable<Certificate> getCertificateByYear(int year, int page, out int totalRow, int pageIndex = 1, int pageSize = 10)
+        public IEnumerable<Certificate> getCertificateByYear(int year, int page, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10)
         {
-            return _CertificateRepository.GetMultiPaging(x => x.IssuedDate != null && Convert.ToDateTime(x.IssuedDate).Year == year, out totalRow, pageIndex, pageSize);
+            return _CertificateRepository.GetMultiPaging(x => x.IssuedDate != null && Convert.ToDateTime(x.IssuedDate).Year == year, out totalRow,includes, pageIndex, pageSize);
         }
 
-        public IEnumerable<Certificate> getCertificateByBTSCode(string btsCode, out int totalRow, int pageIndex = 1, int pageSize = 10)
+        public IEnumerable<Certificate> getCertificateByBTSCode(string btsCode, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10)
         {
             var query = _CertificateRepository.GetMultiByBtsCode(btsCode, true);
             totalRow = query.Count();
             return query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
         }
 
-        public IEnumerable<Certificate> getCertificateByCity(string cityID, out int totalRow, int pageIndex = 1, int pageSize = 10)
+        public IEnumerable<Certificate> getCertificateByCity(string cityID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10)
         {
-            return _CertificateRepository.GetMultiPaging(x => x.CityID == cityID, out totalRow, pageIndex, pageSize);
+            return _CertificateRepository.GetMultiPaging(x => x.CityID == cityID, out totalRow, includes, pageIndex, pageSize);
         }
 
-        public IEnumerable<Certificate> getCertificateByOperator(string operatorID, out int totalRow, int pageIndex = 1, int pageSize = 10)
+        public IEnumerable<Certificate> getCertificateByOperator(string operatorID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10)
         {
-            return _CertificateRepository.GetMultiPaging(x => x.OperatorID == operatorID, out totalRow, pageIndex, pageSize);
+            return _CertificateRepository.GetMultiPaging(x => x.OperatorID == operatorID, out totalRow, includes, pageIndex, pageSize);
         }
 
         public void SaveChanges()
@@ -194,30 +192,30 @@ namespace BTS.Service
             _CertificateRepository.Update(btsCertificate);
         }
 
-        public IEnumerable<Certificate> getCertificateByYear(int year)
+        public IEnumerable<Certificate> getCertificateByYear(int year, string[] includes = null)
         {
-            return _CertificateRepository.GetMulti(x => x.IssuedDate != null && Convert.ToDateTime(x.IssuedDate).Year == year);
+            return _CertificateRepository.GetMulti(x => x.IssuedDate != null && Convert.ToDateTime(x.IssuedDate).Year == year, includes);
         }
 
-        public IEnumerable<Certificate> getCertificateByCity(string cityID)
+        public IEnumerable<Certificate> getCertificateByCity(string cityID, string[] includes = null)
         {
-            return _CertificateRepository.GetMulti(x => x.CityID == cityID);
+            return _CertificateRepository.GetMulti(x => x.CityID == cityID, includes);
         }
 
-        public IEnumerable<Certificate> getCertificateByCertificateNum(string CertificateNum)
+        public IEnumerable<Certificate> getCertificateByCertificateNum(string CertificateNum, string[] includes = null)
         {
-            return _CertificateRepository.GetMulti(x => x.Id.ToUpper().Contains(CertificateNum));
+            return _CertificateRepository.GetMulti(x => x.Id.ToUpper().Contains(CertificateNum), includes);
         }
 
 
-        public IEnumerable<Certificate> getCertificateByBtsCodeOrAddress(string btsCodeOrAddress)
+        public IEnumerable<Certificate> getCertificateByBtsCodeOrAddress(string btsCodeOrAddress, string[] includes = null)
         {
-            return _CertificateRepository.GetMulti(x => x.BtsCode.ToLower().Contains(btsCodeOrAddress) || x.Address.ToLower().Contains(btsCodeOrAddress));
+            return _CertificateRepository.GetMulti(x => x.BtsCode.ToLower().Contains(btsCodeOrAddress) || x.Address.ToLower().Contains(btsCodeOrAddress), includes);
         }
 
-        public IEnumerable<Certificate> getCertificateByOperator(string operatorID)
+        public IEnumerable<Certificate> getCertificateByOperator(string operatorID, string[] includes = null)
         {
-            return _CertificateRepository.GetMulti(x => x.OperatorID == operatorID);
+            return _CertificateRepository.GetMulti(x => x.OperatorID == operatorID, includes);
         }
 
         public IEnumerable<string> getIssueYears()
@@ -225,9 +223,9 @@ namespace BTS.Service
             return _CertificateRepository.GetIssueYears();
         }
 
-        public IEnumerable<Certificate> getCertificateByProfile(string profileID)
+        public IEnumerable<Certificate> getCertificateByProfile(string profileID, string[] includes = null)
         {
-            return _CertificateRepository.GetMulti(x => x.ProfileID == profileID);
+            return _CertificateRepository.GetMulti(x => x.ProfileID == profileID, includes);
         }
 
         public List<SubBtsInCert> getDetailByID(string CertId)

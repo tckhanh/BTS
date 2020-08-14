@@ -38,7 +38,7 @@ namespace BTS.Web.Common
         }
         private List<string> GetCredentialByLoggedInUser(string userName)
         {
-            var credentials = (List<string>)HttpContext.Current.Session[CommonConstants.SESSION_CREDENTIALS];
+            var credentials = (List<string>)HttpContext.Current.Session[CommonConstants.CREDENTIALS_SESSION];
             return credentials;
         }
     }

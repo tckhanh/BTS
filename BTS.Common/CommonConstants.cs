@@ -113,9 +113,9 @@
         public const string Info_CanViewStatitics_Description = "Xem thống kê thông tin";
 
         public static string USER_SESSION = "USER_SESSION";
-        public static string SESSION_CREDENTIALS = "SESSION_CREDENTIALS";
-        public static string CartSession = "CartSession";
-        public static string CurrentCulture = "MyCulture";
+        public static string CREDENTIALS_SESSION = "CREDENTIALS_SESSION";
+        public static string CART_SESSION = "CART_SESSION";
+        public static string CULTURE_SESSION = "CULTURE_SESSION";
 
         public const string Status_Error = "Error";
         public const string Status_TimeOut = "TimeOut";

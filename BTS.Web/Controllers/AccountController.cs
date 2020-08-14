@@ -20,6 +20,8 @@ using SKGL;
 using BTS.Web.Infrastructure.Core;
 using AutoMapper;
 using BTS.Model.Models;
+using static BTS.Web.Infrastructure.Helpers.SessionStateHelpers;
+using BTS.Web.Infrastructure.Helpers;
 
 namespace BTS.Web.Areas.Controllers
 {
@@ -78,12 +80,13 @@ namespace BTS.Web.Areas.Controllers
                         identity.AddClaim(new Claim("ImagePath", user.ImagePath ?? ""));
 
                         // Session["CityIDsScope"] = user.CityIDsScope ?? "";
-                        Session["ImagePath"] = user.ImagePath ?? "";
+                        Session["ImagePath"] = user.ImagePath ?? "";                        
 
                         AuthenticationProperties props = new AuthenticationProperties();
                         props.IsPersistent = model.RememberMe;
                         authenticationManager.SignIn(props, identity);
 
+                        AuditHelpers.Log(0, identity.Name);
                         loadLicense();
 
                         if (Url.IsLocalUrl(model.ReturnUrl))
@@ -109,11 +112,20 @@ namespace BTS.Web.Areas.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult SignOut()
+        {
+            IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
+            authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session.Abandon();
+            return RedirectToAction("Index", "Home");
+        }
 
         public ActionResult Logout()
         {
             IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
             authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session.Abandon();
             return RedirectToAction("Index", "Home");
         }
 

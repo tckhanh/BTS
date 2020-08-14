@@ -5,11 +5,11 @@
 }
 
 @section headCSS{
-    
+
 }
 
 @section footerJS{
-    
+
     <script src="~/Assets/client/js/controllers/importController.js"></script>
 }
 
@@ -93,19 +93,21 @@
                                     </label>
                                     <div class="col-md-9 col-sm-9 col-xs-12">
                                         <div class="col-md-3 col-sm-3 col-xs-12">
-                                            <input type="radio" id = @CommonConstants.InputType_AddNew  name="InputType" value=@CommonConstants.InputType_AddNew checked>
-                                            <label for=@CommonConstants.InputType_AddNew>Thêm HS lần đầu</label>
+                                            <input type="radio" id=@CommonConstants.InputType_AddNew name="InputType" value=@CommonConstants.InputType_AddNew checked>
+                                            <label for=@CommonConstants.InputType_AddNew>Thêm Giấy CNKĐ lần đầu</label>
                                         </div>
 
                                         <div class="col-md-3 col-sm-3 col-xs-12">
                                             <input type="radio" id=@CommonConstants.InputType_AddMore name="InputType" value=@CommonConstants.InputType_AddMore>
-                                            <label for=@CommonConstants.InputType_AddMore>Bổ sung HS lần 2,3,...</label>
+                                            <label for=@CommonConstants.InputType_AddMore>Bổ sung Giấy CNKĐ lần 2,3,...</label>
                                         </div>
-
-                                        <div class="col-md-3 col-sm-3 col-xs-12">
-                                            <input type="radio" id=@CommonConstants.InputType_UpdateAdd name="InputType" value=@CommonConstants.InputType_UpdateAdd>
-                                            <label for=@CommonConstants.InputType_UpdateAdd>Cập nhật và bổ sung HS</label>
-                                        </div>
+                                        @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                                        {
+                                            <div class="col-md-3 col-sm-3 col-xs-12">
+                                                <input type="radio" id=@CommonConstants.InputType_UpdateAdd name="InputType" value=@CommonConstants.InputType_UpdateAdd>
+                                                <label for=@CommonConstants.InputType_UpdateAdd>Cập nhật và bổ sung Giấy CNKĐ</label>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>

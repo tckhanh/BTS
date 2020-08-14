@@ -105,12 +105,12 @@
     <Compile Include="ApplicationModels\SmsService.cs" />
     <Compile Include="BTSDbContext.cs" />
     <Compile Include="InitDatabase.cs" />
-    <Compile Include="InfraError\ErrorDbFactory.cs" />
-    <Compile Include="InfraError\ErrorDisposable.cs" />
-    <Compile Include="InfraError\ErrorRepositoryBase.cs" />
-    <Compile Include="InfraError\ErrorUnitOfWork.cs" />
-    <Compile Include="InfraError\IErrorDbFactory.cs" />
-    <Compile Include="InfraError\IErrorUnitOfWork.cs" />
+    <Compile Include="Logs\LogDbFactory.cs" />
+    <Compile Include="Logs\LogDisposable.cs" />
+    <Compile Include="Logs\LogRepositoryBase.cs" />
+    <Compile Include="Logs\LogUnitOfWork.cs" />
+    <Compile Include="Logs\ILogDbFactory.cs" />
+    <Compile Include="Logs\ILogUnitOfWork.cs" />
     <Compile Include="Infrastructure\DbFactory.cs" />
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\Extensions\Linq.cs" />
@@ -134,6 +134,7 @@
     <Compile Include="Repository\ApplicationUserRepository.cs" />
     <Compile Include="Repository\ApplicationUserGroupRepository.cs" />
     <Compile Include="Repository\BtsRepository.cs" />
+    <Compile Include="Repository\AuditRepository.cs" />
     <Compile Include="Repository\EquipmentRepository.cs" />
     <Compile Include="Repository\WardRepository.cs" />
     <Compile Include="Repository\DistrictRepository.cs" />

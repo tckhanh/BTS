@@ -1,0 +1,2677 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="0" />
+    <DataSources isList="true" count="1">
+      <Certificates Ref="2" type="DataTableSource" isKey="true">
+        <Alias>Certificates</Alias>
+        <Columns isList="true" count="112">
+          <value>Id,System.String</value>
+          <value>Address,System.String</value>
+          <value>BtsCode,System.String</value>
+          <value>ApplicantName,System.String</value>
+          <value>OperatorName,System.String</value>
+          <value>SubBtsQuantity,System.Int32</value>
+          <value>SubBtsEquipments,System.String</value>
+          <value>SubBtsEquipment1,System.String</value>
+          <value>SubBtsEquipment2,System.String</value>
+          <value>SubBtsEquipment3,System.String</value>
+          <value>SubBtsEquipment4,System.String</value>
+          <value>SubBtsEquipment5,System.String</value>
+          <value>SubBtsEquipment6,System.String</value>
+          <value>SubBtsAntenNums,System.String</value>
+          <value>SubBtsAntenNum1,System.String</value>
+          <value>SubBtsAntenNum2,System.String</value>
+          <value>SubBtsAntenNum3,System.String</value>
+          <value>SubBtsAntenNum4,System.String</value>
+          <value>SubBtsAntenNum5,System.String</value>
+          <value>SubBtsAntenNum6,System.String</value>
+          <value>SubBtsConfigurations,System.String</value>
+          <value>SubBtsConfiguration1,System.String</value>
+          <value>SubBtsConfiguration2,System.String</value>
+          <value>SubBtsConfiguration3,System.String</value>
+          <value>SubBtsConfiguration4,System.String</value>
+          <value>SubBtsConfiguration5,System.String</value>
+          <value>SubBtsConfiguration6,System.String</value>
+          <value>SubBtsPowerSums,System.String</value>
+          <value>SubBtsPowerSum1,System.String</value>
+          <value>SubBtsPowerSum2,System.String</value>
+          <value>SubBtsPowerSum3,System.String</value>
+          <value>SubBtsPowerSum4,System.String</value>
+          <value>SubBtsPowerSum5,System.String</value>
+          <value>SubBtsPowerSum6,System.String</value>
+          <value>SubBtsBands,System.String</value>
+          <value>SubBtsBand1,System.String</value>
+          <value>SubBtsBand2,System.String</value>
+          <value>SubBtsBand3,System.String</value>
+          <value>SubBtsBand4,System.String</value>
+          <value>SubBtsBand5,System.String</value>
+          <value>SubBtsBand6,System.String</value>
+          <value>SubBtsAntenHeights,System.String</value>
+          <value>SubBtsAntenHeight1,System.String</value>
+          <value>SubBtsAntenHeight2,System.String</value>
+          <value>SubBtsAntenHeight3,System.String</value>
+          <value>SubBtsAntenHeight4,System.String</value>
+          <value>SubBtsAntenHeight5,System.String</value>
+          <value>SubBtsAntenHeight6,System.String</value>
+          <value>IsHouseIn100m,System.Boolean</value>
+          <value>IsSafeLimit,System.Boolean</value>
+          <value>OffsetHeight,System.Double</value>
+          <value>SafeLimitHeight,System.Double</value>
+          <value>IssuedPlace,System.String</value>
+          <value>IssuedDate,System.DateTime</value>
+          <value>ExpiredDate,System.DateTime</value>
+          <value>VerifyUnit,System.String</value>
+          <value>SignerRole,System.String</value>
+          <value>SignerSubRole,System.String</value>
+          <value>Signer,System.String</value>
+          <value>FrontSubBtsQuantity,System.Int32</value>
+          <value>BackSubBtsQuantity,System.Int32</value>
+          <value>BackSubBtsOperatorName1,System.String</value>
+          <value>BackSubBtsOperatorName2,System.String</value>
+          <value>BackSubBtsOperatorName3,System.String</value>
+          <value>BackSubBtsOperatorName4,System.String</value>
+          <value>BackSubBtsOperatorName5,System.String</value>
+          <value>BackSubBtsOperatorName6,System.String</value>
+          <value>BackSubBtsEquipment1,System.String</value>
+          <value>BackSubBtsEquipment2,System.String</value>
+          <value>BackSubBtsEquipment3,System.String</value>
+          <value>BackSubBtsEquipment4,System.String</value>
+          <value>BackSubBtsEquipment5,System.String</value>
+          <value>BackSubBtsEquipment6,System.String</value>
+          <value>BackSubBtsAntenNum1,System.String</value>
+          <value>BackSubBtsAntenNum2,System.String</value>
+          <value>BackSubBtsAntenNum3,System.String</value>
+          <value>BackSubBtsAntenNum4,System.String</value>
+          <value>BackSubBtsAntenNum5,System.String</value>
+          <value>BackSubBtsAntenNum6,System.String</value>
+          <value>BackSubBtsConfiguration1,System.String</value>
+          <value>BackSubBtsConfiguration2,System.String</value>
+          <value>BackSubBtsConfiguration3,System.String</value>
+          <value>BackSubBtsConfiguration4,System.String</value>
+          <value>BackSubBtsConfiguration5,System.String</value>
+          <value>BackSubBtsConfiguration6,System.String</value>
+          <value>BackSubBtsPowerSum1,System.String</value>
+          <value>BackSubBtsPowerSum2,System.String</value>
+          <value>BackSubBtsPowerSum3,System.String</value>
+          <value>BackSubBtsPowerSum4,System.String</value>
+          <value>BackSubBtsPowerSum5,System.String</value>
+          <value>BackSubBtsPowerSum6,System.String</value>
+          <value>BackSubBtsBand1,System.String</value>
+          <value>BackSubBtsBand2,System.String</value>
+          <value>BackSubBtsBand3,System.String</value>
+          <value>BackSubBtsBand4,System.String</value>
+          <value>BackSubBtsBand5,System.String</value>
+          <value>BackSubBtsBand6,System.String</value>
+          <value>BackSubBtsAntenHeight1,System.String</value>
+          <value>BackSubBtsAntenHeight2,System.String</value>
+          <value>BackSubBtsAntenHeight3,System.String</value>
+          <value>BackSubBtsAntenHeight4,System.String</value>
+          <value>BackSubBtsAntenHeight5,System.String</value>
+          <value>BackSubBtsAntenHeight6,System.String</value>
+          <value>BackSubBtsCode1,System.String</value>
+          <value>BackSubBtsCode2,System.String</value>
+          <value>BackSubBtsCode3,System.String</value>
+          <value>BackSubBtsCode4,System.String</value>
+          <value>BackSubBtsCode5,System.String</value>
+          <value>BackSubBtsCode6,System.String</value>
+          <value>SignatureFileName,System.String</value>
+          <value>SubSignFileName,System.String</value>
+          <value>StrIssuedDate,System.String</value>
+        </Columns>
+        <Dictionary isRef="1" />
+        <Key>6c7ff314bf764e88aa68cac514a2f519</Key>
+        <Name>Certificates</Name>
+        <NameInSource>DataSet</NameInSource>
+      </Certificates>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Resources isList="true" count="0" />
+    <Variables isList="true" count="9">
+      <value>,NoBuildingIn100m,NoBuildingIn100m,NoBuildingIn100m,System.String,Trong_x0020_khoảng_x0020_cách_x0020_100_x0020_m_x0020_tính_x0020_từ_x0020_điểm_x0020_bất_x0020_kỳ_x0020_nào_x0020_thuộc_x0020_chân_x0020_cột_x0020_anten_x0020_của_x0020_trạm_x0020_gốc_x0020_không_x0020_có_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_trong_x0020_đó_x0020_có_x0020_người_x0020_sinh_x0020_sống_x002C__x0020_làm_x0020_việc.,False,False,False,False</value>
+      <value>,BuildingIn100m,BuildingIn100m,BuildingIn100m,System.String,Trong_x0020_khoảng_x0020_cách_x0020_100_x0020_m_x0020_tính_x0020_từ_x0020_điểm_x0020_bất_x0020_kỳ_x0020_nào_x0020_thuộc_x0020_chân_x0020_cột_x0020_anten_x0020_của_x0020_trạm_x0020_gốc_x0020_có_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_trong_x0020_đó_x0020_có_x0020_người_x0020_sinh_x0020_sống_x002C__x0020_làm_x0020_việc_x0020_và_x0020_có_x0020_độ_x0020_cao_x0020_mép_x0020_dưới_x0020_thấp_x0020_nhất_x0020_của_x0020_các_x0020_anten_x0020__x005B_xxx_x005D__x0020_độ_x0020_cao_x0020_tính_x0020_tới_x0020_nóc_x002C__x0020_mặt_x0020_bằng_x0020_cao_x0020_nhất_x0020_của_x0020_các_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_này_x0020_là_x0020__x005B_yyy_x005D__x0020_m.,False,False,False,False</value>
+      <value>,BuildingIn100mEqual,BuildingIn100mEqual,,System.String,Trong_x0020_khoảng_x0020_cách_x0020_100_x0020_m_x0020_tính_x0020_từ_x0020_điểm_x0020_bất_x0020_kỳ_x0020_nào_x0020_thuộc_x0020_chân_x0020_cột_x0020_anten_x0020_của_x0020_trạm_x0020_gốc_x0020_có_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_trong_x0020_đó_x0020_có_x0020_người_x0020_sinh_x0020_sống_x002C__x0020_làm_x0020_việc_x0020_và_x0020_có_x0020_độ_x0020_cao_x0020_mép_x0020_dưới_x0020_thấp_x0020_nhất_x0020_của_x0020_các_x0020_anten_x0020_bằng_x0020_độ_x0020_cao_x0020_tính_x0020_tới_x0020_nóc_x002C__x0020_mặt_x0020_bằng_x0020_cao_x0020_nhất_x0020_của_x0020_các_x0020_công_x0020_trình_x0020_xây_x0020_dựng.,False,False,False,False</value>
+      <value>,GHAT,GHAT,GHAT,System.String,Giới_x0020_hạn_x0020_an_x0020_toàn:_x0020_từ_x0020_độ_x0020_cao_x0020__x005B_zzz_x005D__x0020_m_x0020_so_x0020_với_x0020_mặt_x0020_đất_x0020_trở_x0020_lên_x002C__x0020_trạm_x0020_gốc_x0020_điện_x0020_thoại_x0020_di_x0020_động_x0020_mặt_x0020_đất_x0020_công_x0020_cộng_x0020_không_x0020_phải_x0020_kiểm_x0020_định_x0020_lại_x0020_khi_x0020_có_x0020_thay_x0020_đổi_x0020_một_x0020_số_x0020_thông_x0020_số_x0020_kỹ_x0020_thuật_x0020_theo_x0020_quy_x0020_định.,False,False,False,False</value>
+      <value>,Conclusion,Conclusion,Conclusion,System.String,Trạm_x0020_gốc_x0020_điện_x0020_thoại_x0020_di_x0020_động_x0020_mặt_x0020_đất_x0020_công_x0020_cộng_x0020_này_x0020_có_x0020_mức_x0020_an_x0020_toàn_x0020_phơi_x0020_nhiễm_x0020_trường_x0020_điện_x0020_từ_x0020_tuân_x0020_thủ_x0020_quy_x0020_chuẩn_x0020_kỹ_x0020_thuật_x0020_trên.,False,False,False,False</value>
+      <value>,Lower,Lower,,System.String,thấp_x0020_hơn,False,False,False,False</value>
+      <value>,Higher,Higher,,System.String,cao_x0020_hơn,False,False,False,False</value>
+      <value>,Equal,Equal,,System.String,cao_x0020_bằng,False,False,False,False</value>
+      <value>,IsTemplate,IsTemplate,,System.Boolean,false,False,False,False,False</value>
+    </Variables>
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Key>f5974d120db84bfb87a196bd95d208ba</Key>
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="3" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="1">
+        <DataBand1 Ref="4" type="DataBand" isKey="true">
+          <BeginRenderEvent>if (IsTemplate == true){
+	Image1.File = Certificates.SignatureFileName;
+	Image2.File = Certificates.SubSignFileName;
+	Image3.File = Certificates.SubSignFileName;
+}
+if (Certificates.BackSubBtsQuantity &lt; 1){
+ 	DataBand1.Height = 10.5;
+}
+else {
+	DataBand1.Height = 20;
+}
+</BeginRenderEvent>
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <CanGrow>False</CanGrow>
+          <ClientRectangle>0,0.2,7.47,20</ClientRectangle>
+          <Components isList="true" count="126">
+            <Text1 Ref="5" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.48,0.2,2.15,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,13,Bold</Font>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text1</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.VerifyUnit}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text1>
+            <Text2 Ref="6" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.35,0.2,3.7,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,13,Bold</Font>
+              <Guid>81349bd1d892482398f2adb53d9f19b8</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text2</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM 
+Độc lập – Tự do – Hạnh phúc</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text2>
+            <Text3 Ref="7" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.15,0.95,5.3,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,14,Bold</Font>
+              <Guid>6d9e08779a0742f9b5b1d435f5c099ea</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text3</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>GIẤY CHỨNG NHẬN KIỂM ĐỊNH
+TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text3>
+            <Text4 Ref="8" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.85,1.45,0.3,0.25</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,14,Bold</Font>
+              <Guid>a348804d17344ce7b3662d1be059d099</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text4</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Số:</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text4>
+            <Text5 Ref="9" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.25,1.75,5.3,0.25</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,14,Bold</Font>
+              <Guid>f58cf92d31544927a358592035ef9ea8</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text5</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>{Certificates.VerifyUnit}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text5>
+            <Text6 Ref="10" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,2.35,7.45,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>bc0ce43508414005803131ebb5491312</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text6</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text6>
+            <Text7 Ref="11" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,2.65,2.45,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5,Bold</Font>
+              <Guid>79697ce2db314a0bb926b30d0ccc7db3</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text7</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Địa điểm lắp đặt</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text7>
+            <Text8 Ref="12" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,2.65,5,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>9f616ebf422b4dfa83042febc28924d7</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text8</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.Address}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text8>
+            <Text9 Ref="13" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,3.15,2.45,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5,Bold</Font>
+              <Guid>906492faebab4d9eb036be543196d59f</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text9</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Mã trạm gốc</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text9>
+            <Text10 Ref="14" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,3.15,5,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>c3e6f6c8372247368a34f9d2b3c5642e</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text10</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BtsCode}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text10>
+            <Text11 Ref="15" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,3.45,2.45,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5,Bold</Font>
+              <Guid>39513ce1d22c41378a2bcd6ad45346da</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text11</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Doanh nghiệp đề nghị kiểm định</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text11>
+            <Text12 Ref="16" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,3.45,5,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>654e529496074e40916988e49ff348e3</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text12</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.ApplicantName}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text12>
+            <Text13 Ref="17" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,3.95,2.45,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5,Bold</Font>
+              <Guid>6b1832a286a64bd09b3c691093d22b7c</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text13</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Doanh nghiệp cung cấp dịch vụ</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text13>
+            <Text14 Ref="18" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,3.95,5,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>4162851f122049ababb8b3cf504b338f</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text14</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.OperatorName}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text14>
+            <Text15 Ref="19" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,4.4,7.45,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5,Bold</Font>
+              <Guid>af991e35b9aa436fa13e77903e9cafed</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,0,0,0</Margins>
+              <Name>Text15</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Thông số kỹ thuật cơ bản tại thời điểm đo kiểm định</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text15>
+            <Text16 Ref="20" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,4.7,2.45,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>a78677fc764447ba85190cbaa9bb7884</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>15,0,0,0</Margins>
+              <Name>Text16</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Chủng loại thiết bị phát</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text16>
+            <Text17 Ref="21" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,4.7,1.25,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>39211f0d635942e08bbe9ab11d8ae38f</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text17</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsEquipment1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text17>
+            <Text18 Ref="22" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,5.2,2.45,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>677f247f386e41a19263ae57d679e90d</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>15,0,0,0</Margins>
+              <Name>Text18</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Số anten phát</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text18>
+            <Text19 Ref="23" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,5.2,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>785dfd5914a54ed48ab0ded291506972</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text19</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsAntenNum1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text19>
+            <Text20 Ref="24" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,5.5,2.45,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>923d339e45164a608442fc71d4bd951b</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>15,0,0,0</Margins>
+              <Name>Text20</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Số máy phát, thu-phát</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text20>
+            <Text21 Ref="25" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,5.5,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>b99af538c3fd4d9996d6a18af1a013e1</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text21</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsConfiguration1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text21>
+            <Text22 Ref="26" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,5.8,2.45,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>39ac7288c00440f09bf1c42ecd334072</Guid>
+              <HideZeros>True</HideZeros>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>15,0,0,0</Margins>
+              <Name>Text22</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Tổng công suất phát từng anten</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text22>
+            <Text23 Ref="27" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,5.8,1.25,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>590ae21c49994dc69338ef00c021f71d</Guid>
+              <HideZeros>True</HideZeros>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text23</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsPowerSum1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text23>
+            <Text24 Ref="28" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,6.3,2.45,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>7730da63e5d8475bb5277f08fabc3058</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>15,0,0,0</Margins>
+              <Name>Text24</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Băng tần hoạt động</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text24>
+            <Text25 Ref="29" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,6.3,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>fc5051f40e9643978fd690ecc7624e83</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text25</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsBand1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text25>
+            <Text26 Ref="30" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,6.6,2.45,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11.5</Font>
+              <Guid>ffdc3daab9e2444ea37b47d0297ea12f</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>15,0,0,0</Margins>
+              <Name>Text26</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Độ cao từng anten (tính từ mặt đất đến mép thấp nhất của anten)</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text26>
+            <Text27 Ref="31" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.45,6.6,1.25,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>44b4c7ad185a4a95a2662e776b70096c</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text27</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsAntenHeight1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text27>
+            <Text28 Ref="32" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,7.05,7.45,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>a3cf25d085014bf889d520df00beee4d</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text28</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Được kiểm định phù hợp quy chuẩn kỹ thuật: QCVN 8:2010/BTTTT.</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text28>
+            <Text57 Ref="33" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0,7.3,7.45,0.7</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12</Font>
+              <Guid>e53f47ab99cf47cbbb2aba122b33d910</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text57</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>{Certificates.IsHouseIn100m == true ? Certificates.OffsetHeight == 0 ? BuildingIn100mEqual : Replace(Certificates.OffsetHeight &lt; 0 ? Replace(BuildingIn100m,"[xxx]",Lower) : Replace(BuildingIn100m,"[xxx]",Higher),"[yyy]", Abs(Certificates.OffsetHeight)) : NoBuildingIn100m}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text57>
+            <Text58 Ref="34" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanShrink>True</CanShrink>
+              <ClientRectangle>0,7.95,7.45,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>cb33ad16c1964ed5bda7b0aadceba196</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text58</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.IsSafeLimit == true ? Replace(GHAT, "[zzz]",Certificates.SafeLimitHeight) : ""}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text58>
+            <Text29 Ref="35" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.1,8.75,1.15,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>208c538628f94d3e87009f898e93f0d4</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>5,3,0,0</Margins>
+              <Name>Text29</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>Nơi cấp</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text29>
+            <Text30 Ref="36" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.1,9,1.15,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>1f4a697f574a423fa006dd26ead68dff</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>5,3,0,0</Margins>
+              <Name>Text30</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>Ngày cấp</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text30>
+            <Text31 Ref="37" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.1,9.25,1.15,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>a7a62edfa09b438cb3cfa96d4f8e51a9</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>5,3,0,0</Margins>
+              <Name>Text31</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>Có giá trị đến</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text31>
+            <Text32 Ref="38" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.25,8.75,0.15,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>28a43724ed04442aab05a2625f36aa6b</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text32</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>:</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text32>
+            <Text33 Ref="39" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.25,9,0.15,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>40c76552e90b425aa040e9be377fe6cb</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text33</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>:</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text33>
+            <Text34 Ref="40" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.25,9.25,0.15,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>30a47150590c4416a8d9bfa22911a199</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text34</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>:</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text34>
+            <Text35 Ref="41" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,8.75,1.5,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12</Font>
+              <Guid>8e3cfb196b2740a695d19caab61b76d8</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text35</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>{Certificates.IssuedPlace}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text35>
+            <Text36 Ref="42" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,9,1.5,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12</Font>
+              <Guid>7d096263cd644d94a18f04d65ce0f559</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text36</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>{Certificates.IssuedDate}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="43" type="DateFormat" isKey="true" />
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text36>
+            <Text37 Ref="44" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,9.25,1.5,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12</Font>
+              <Guid>94abb7a398a54537806b44bdfcbbecaa</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text37</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>{Certificates.ExpiredDate}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextFormat Ref="45" type="DateFormat" isKey="true" />
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text37>
+            <Text38 Ref="46" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.85,8.65,1.55,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>5838c2daf55645c692a807b0d50f189c</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,3,0,0</Margins>
+              <Name>Text38</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>{Certificates.SignerRole}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text38>
+            <Text39 Ref="47" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.85,9.9,1.55,0.25</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>7da699850fad43c4b88ac47d6a326ae7</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,3,0,0</Margins>
+              <Name>Text39</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>{Certificates.Signer}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text39>
+            <Text41 Ref="48" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.15,1.45,2,0.25</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,14,Bold</Font>
+              <Guid>6cd9fc3435a04d33ab4d06edd5e7b25e</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text41</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>{Certificates.Id}</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text41>
+            <Shape1 Ref="49" type="Shape" isKey="true">
+              <BorderColor>Black</BorderColor>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.7,0.6,1.7,0.1</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Name>Shape1</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShapeType Ref="50" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
+            </Shape1>
+            <Shape2 Ref="51" type="Shape" isKey="true">
+              <BorderColor>Black</BorderColor>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.1,0.6,2.2,0.1</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Guid>507d3a9530ea478e93307dcd63a16ce4</Guid>
+              <Name>Shape2</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShapeType Ref="52" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
+            </Shape2>
+            <Image1 Ref="53" type="Image" isKey="true">
+              <AspectRatio>True</AspectRatio>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.9,9.1,1.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <MultipleFactor>0.4</MultipleFactor>
+              <Name>Image1</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <VertAlignment>Center</VertAlignment>
+            </Image1>
+            <Text42 Ref="54" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,4.7,1.25,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>13ae546521344e62be76133773907b46</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text42</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsEquipment2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text42>
+            <Text43 Ref="55" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,5.2,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>4aa7143299414e07a6506f6be5604c53</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text43</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsAntenNum2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text43>
+            <Text44 Ref="56" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,5.5,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>5b74583008c74317800f8867015eefb4</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text44</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsConfiguration2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text44>
+            <Text45 Ref="57" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,5.8,1.25,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>42fda7f01aa04935882da44becf7c473</Guid>
+              <HideZeros>True</HideZeros>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text45</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsPowerSum2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text45>
+            <Text46 Ref="58" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,6.3,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>2e9afc3fbf87433aadc773d7e5899d11</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text46</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsBand2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text46>
+            <Text47 Ref="59" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,6.6,1.25,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>94a83e0d015b4aa9a719c8e16d480622</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text47</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsAntenHeight2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text47>
+            <Text48 Ref="60" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.95,4.7,1.25,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>906578e7d32e46ba8a5459040b41e1b3</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text48</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsEquipment3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text48>
+            <Text49 Ref="61" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.95,5.2,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>8fa48ce8cd3f440796541a1634e887aa</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text49</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsAntenNum3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text49>
+            <Text50 Ref="62" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.95,5.5,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>b48b1d483b8841afacf7a8bca14830b6</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text50</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsConfiguration3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text50>
+            <Text51 Ref="63" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.95,5.8,1.25,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>e85e41657f744cb1a81bc8942d6d4fb9</Guid>
+              <HideZeros>True</HideZeros>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text51</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsPowerSum3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text51>
+            <Text52 Ref="64" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.95,6.3,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>d2c7369bb0214c28a9971ffd9bad3feb</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text52</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsBand3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text52>
+            <Text53 Ref="65" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.95,6.6,1.25,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>f25c1ecfcf3c4f4e8ca0cce3f6875812</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text53</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsAntenHeight3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text53>
+            <Text54 Ref="66" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,4.7,1.25,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>7d35f5da6a6a4a4e9a2b8829cb294fc3</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text54</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsEquipment4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text54>
+            <Text55 Ref="67" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,5.2,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>4e1239d418b64da4ad6ffe722bf66f74</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text55</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsAntenNum4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text55>
+            <Text56 Ref="68" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,5.5,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>5e69c5d1e6b44e9e9e84b5d8e7af30ef</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text56</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsConfiguration4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text56>
+            <Text59 Ref="69" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,5.8,1.25,0.5</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>98db8648f87344ec96421a11e293b810</Guid>
+              <HideZeros>True</HideZeros>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text59</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsPowerSum4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text59>
+            <Text60 Ref="70" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,6.3,1.25,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>7b816342ab4941c7a69d2e25a30b1e57</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text60</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsBand4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text60>
+            <Text61 Ref="71" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,6.6,1.25,0.45</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,11</Font>
+              <Guid>be7336f1946745368ebbc1e7308e3a52</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>3,3,0,0</Margins>
+              <Name>Text61</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.SubBtsAntenHeight4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text61>
+            <Image2 Ref="72" type="Image" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.62,8.2,0.3,0.3</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.IsSafeLimit,EqualTo,false,,Boolean,Red,Transparent,Arial_x002C_8,False,False,,,None</value>
+              </Conditions>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <MultipleFactor>0.4</MultipleFactor>
+              <Name>Image2</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <VertAlignment>Center</VertAlignment>
+            </Image2>
+            <Text62 Ref="73" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.25,2,5.3,0.25</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,14,Bold</Font>
+              <Guid>ddf7911758a34318aeec8d062fc4ebe6</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text62</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>CHỨNG NHẬN</Text>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text62>
+            <Text63 Ref="74" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.85,8.85,1.55,0.2</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Bold</Font>
+              <Guid>d3b7f2d5b1f745bca6cbdbd85812be48</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>5,3,0,0</Margins>
+              <Name>Text63</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>{Certificates.SignerSubRole}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text63>
+            <Text76 Ref="75" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,12,1.2,1.1</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10,Bold</Font>
+              <Guid>db1e05630494422c87609acff16d75dd</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text76</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>DOANH NGHIỆP CUNG CẤP DỊCH VỤ</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text76>
+            <Text77 Ref="76" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,12,0.7,1.1</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10,Bold</Font>
+              <Guid>42953c32a87b4d7fb25df1e75b47f921</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text77</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Mã trạm gốc</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text77>
+            <Text78 Ref="77" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.1,12.3,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10,Bold</Font>
+              <Guid>165a0132bd524288816e33371d2789ee</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text78</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Chủng loại thiết bị phát</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text78>
+            <Text79 Ref="78" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.2,12.3,0.5,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10,Bold</Font>
+              <Guid>c4be23d49536407eb728e66841015e3d</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text79</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Số anten phát</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text79>
+            <Text80 Ref="79" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,12.3,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10,Bold</Font>
+              <Guid>8df29902f2094c1fadfd7d842cc3489f</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text80</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Số máy phát, thu-phát</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text80>
+            <Text81 Ref="80" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.4,12.3,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10,Bold</Font>
+              <Guid>45d2ac1b7e3d4a0c89201972dc2f0e73</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text81</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Tổng công suất phát từng anten</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text81>
+            <Text82 Ref="81" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.5,12.3,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10,Bold</Font>
+              <Guid>63906ddb3b234cb193df0e6083b483e3</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text82</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Băng tần hoạt động</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text82>
+            <Text83 Ref="82" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,12.3,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10,Bold</Font>
+              <Guid>46a07a7124bf4ff38b610433fae5bc64</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text83</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Độ cao từng anten (tính từ mặt đất đến mép thấp nhất của anten)</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text83>
+            <Text133 Ref="83" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.1,12,5.2,0.3</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10,Bold</Font>
+              <Guid>adfa872d1eed4b028dc0694c2801f818</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text133</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Độ cao từng anten (tính từ mặt đất đến mép thấp nhất của anten)</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text133>
+            <Text85 Ref="84" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,13.1,1.2,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>c93f48f37309481fb31af3df8f8e123d</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text85</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsOperatorName1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text85>
+            <Text86 Ref="85" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,13.1,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>ea0033a777e44b1f97e58903db4e330e</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text86</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsCode1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text86>
+            <Text87 Ref="86" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.1,13.1,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>4e39813441b34e9db80a750a62595859</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text87</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsEquipment1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text87>
+            <Text88 Ref="87" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.2,13.1,0.5,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>a406b195074c40708413df5afbc41778</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text88</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenNum1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text88>
+            <Text89 Ref="88" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,13.1,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>35109e0961894c959afceea64babd02a</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text89</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsConfiguration1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text89>
+            <Text90 Ref="89" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.4,13.1,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>90170dfa4ac541e5a66b130e101a4be7</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text90</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsPowerSum1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text90>
+            <Text91 Ref="90" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.5,13.1,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>9589034d92f64afbb1393f58b8f43d4d</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text91</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsBand1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text91>
+            <Text92 Ref="91" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,13.1,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>208c9e6658b84d80aab53a7dcbf19181</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text92</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenHeight1}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text92>
+            <Text93 Ref="92" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,13.9,1.2,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>cae872cf68424cefae451b6abeee674c</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text93</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsOperatorName2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text93>
+            <Text94 Ref="93" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,13.9,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>3e7e157fd6b847acb80f60773fa39269</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text94</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsCode2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text94>
+            <Text95 Ref="94" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.1,13.9,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>8d5447fc440c4f27a114281d87a12892</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text95</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsEquipment2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text95>
+            <Text96 Ref="95" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.2,13.9,0.5,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>825149cc68f8455095b26277d34c30bd</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text96</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenNum2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text96>
+            <Text97 Ref="96" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,13.9,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>da515cd205f047e6855a4d75e13c5845</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text97</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsConfiguration2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text97>
+            <Text98 Ref="97" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.4,13.9,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>433a46c7897a4c45ae79b3abf4bdae7e</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text98</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsPowerSum2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text98>
+            <Text99 Ref="98" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.5,13.9,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>94a92e656e4c4d8993b5d7b1fdb7e6a3</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text99</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsBand2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text99>
+            <Text100 Ref="99" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,13.9,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>4a463143896e403487aab77db3945cf2</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text100</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenHeight2}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text100>
+            <Text101 Ref="100" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,14.7,1.2,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>60992e9feea646ddb1ae50ee662b5a15</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text101</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsOperatorName3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text101>
+            <Text102 Ref="101" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,14.7,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>0abbdf19019047cb9d3d53e1196a6982</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text102</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsCode3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text102>
+            <Text103 Ref="102" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.1,14.7,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>3a1560b566564bb9a808c195dcaabc81</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text103</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsEquipment3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text103>
+            <Text104 Ref="103" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.2,14.7,0.5,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>338aed6e0a62462b9928ad982cb6adc9</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text104</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenNum3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text104>
+            <Text105 Ref="104" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,14.7,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>6dd77aa5d0f3471cbe56cbd7212da81e</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text105</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsConfiguration3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text105>
+            <Text106 Ref="105" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.4,14.7,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>2445ac3ec004444892ae127196bf10b7</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text106</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsPowerSum3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text106>
+            <Text107 Ref="106" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.5,14.7,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>ee4d02b34f6a41f1b7c859a11b685ae6</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text107</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsBand3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text107>
+            <Text108 Ref="107" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,14.7,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>fd664d9fd2b440418486fec6b09226bd</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text108</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenHeight3}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text108>
+            <Text109 Ref="108" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,15.5,1.2,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>2b64a97db23d4d089b4a211b891ba401</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text109</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsOperatorName4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text109>
+            <Text110 Ref="109" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,15.5,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>e2a60007353b47ad9c34437085caa1c2</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text110</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsCode4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text110>
+            <Text111 Ref="110" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.1,15.5,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>47a6e4cd7b2943e9a5312da46c34849b</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text111</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsEquipment4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text111>
+            <Text112 Ref="111" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.2,15.5,0.5,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>7e0adab886f247c7815c9539e566bf66</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text112</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenNum4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text112>
+            <Text113 Ref="112" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,15.5,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>690c907c3e5247769a47ab2eae086e3d</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text113</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsConfiguration4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text113>
+            <Text114 Ref="113" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.4,15.5,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>b98e7b429a8f49918269478f32a6aeb7</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text114</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsPowerSum4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text114>
+            <Text115 Ref="114" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.5,15.5,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>4b3812a5367e464f9c48f51f3df35300</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text115</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsBand4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text115>
+            <Text116 Ref="115" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,15.5,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>d7774d937d4d4e0a81582814e6c57ad9</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text116</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenHeight4}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text116>
+            <Text117 Ref="116" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,16.3,1.2,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>285145baa7f14124937c9bbb8054009b</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text117</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsOperatorName5}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text117>
+            <Text118 Ref="117" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,16.3,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>0c72e9803f674c6da59a34c5ddbc8e92</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text118</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsCode5}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text118>
+            <Text119 Ref="118" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.1,16.3,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>3939289c7a724f1ebc07b69c4aeeb3f8</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text119</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsEquipment5}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text119>
+            <Text120 Ref="119" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.2,16.3,0.5,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>2542549678c64440bf1ba1463857f361</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text120</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenNum5}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text120>
+            <Text121 Ref="120" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,16.3,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>ee0e73899bdd404e9ef8cf5b441cf347</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text121</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsConfiguration5}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text121>
+            <Text122 Ref="121" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.4,16.3,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>15e5387ecd394f9a82665f16bb7d295a</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text122</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsPowerSum5}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text122>
+            <Text123 Ref="122" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.5,16.3,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>31a395f25c7748449542e820c5d81566</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text123</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsBand5}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text123>
+            <Text124 Ref="123" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,16.3,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>c839ad6b661049ca80cbe831198cb016</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text124</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenHeight5}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text124>
+            <Text125 Ref="124" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,17.1,1.2,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>50c19f196c79435a91e7f626d9b8f5e3</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text125</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsOperatorName6}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text125>
+            <Text126 Ref="125" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.4,17.1,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>139cae8f93d94d5c9360bf74003da7ff</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text126</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsCode6}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text126>
+            <Text127 Ref="126" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>2.1,17.1,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>28790de14cb74c4698e486b3c9a92af8</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text127</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsEquipment6}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text127>
+            <Text128 Ref="127" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.2,17.1,0.5,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>a4d63264fb4041de9d5528e228fc05e9</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text128</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenNum6}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text128>
+            <Text129 Ref="128" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>3.7,17.1,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>15198598acbf42e4bbd5bb7b31cca712</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text129</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsConfiguration6}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text129>
+            <Text130 Ref="129" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.4,17.1,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>022bc1fe931147f490d54dc7c0c9175a</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text130</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsPowerSum6}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text130>
+            <Text131 Ref="130" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>5.5,17.1,0.7,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>07c4ab4eeaa544ff8768826026d39cc7</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text131</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsBand6}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text131>
+            <Text132 Ref="131" type="Text" isKey="true">
+              <Border>All;Black;1;Solid;False;4;Black</Border>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>6.2,17.1,1.1,0.8</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,10</Font>
+              <Guid>c106c6a9a9ef4cc090b02f2b881882c4</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text132</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShrinkFontToFit>True</ShrinkFontToFit>
+              <Text>{Certificates.BackSubBtsAntenHeight6}</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>DataColumn</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text132>
+            <Text134 Ref="132" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>0.2,11.6,7.1,0.3</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
+              </Conditions>
+              <Font>Times New Roman,14</Font>
+              <Guid>34dd71bf4bf04101939f9280c2492728</Guid>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text134</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Text>Thông tin về trạm gốc của doanh nghiệp khác lắp đặt tại cùng vị trí</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Text134>
+            <Image3 Ref="133" type="Image" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.3,7.5,0.3,0.3</ClientRectangle>
+              <Conditions isList="true" count="1">
+                <value>Certificates.IsSafeLimit,EqualTo,true,,Boolean,Red,Transparent,Arial_x002C_8,False,False,,,None</value>
+              </Conditions>
+              <Guid>3a046dcfb3d046b7b6bd5b073e47d52d</Guid>
+              <Margins>0,0,0,0</Margins>
+              <MultipleFactor>0.4</MultipleFactor>
+              <Name>Image3</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <VertAlignment>Center</VertAlignment>
+            </Image3>
+            <Text135 Ref="134" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.4,8.45,2.5,0.25</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12</Font>
+              <Guid>d9010d0ea2ad4ccca27c489dd492b500</Guid>
+              <HorAlignment>Center</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text135</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <TextBrush>Black</TextBrush>
+              <Type>Expression</Type>
+            </Text135>
+          </Components>
+          <Conditions isList="true" count="0" />
+          <DataRelationName isNull="true" />
+          <DataSourceName>Certificates</DataSourceName>
+          <Filters isList="true" count="1">
+            <value>FrontSubBtsQuantity,EqualTo,_x0034_,,Numeric</value>
+          </Filters>
+          <Name>DataBand1</Name>
+          <NewPageAfter>True</NewPageAfter>
+          <Page isRef="3" />
+          <Parent isRef="3" />
+          <RenderingEvent>if (IsTemplate == true){
+	Image1.File = Certificates.SignatureFileName;
+	Image2.File = Certificates.SubSignFileName;
+	Image3.File = Certificates.SubSignFileName;
+}
+if (Certificates.BackSubBtsQuantity &lt; 1){
+ 	DataBand1.Height = 10.5;
+}
+else {
+	DataBand1.Height = 20;
+}
+</RenderingEvent>
+          <Sort isList="true" count="0" />
+        </DataBand1>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Guid>7a2dabcb72f74dbc990570d13f7e2fbb</Guid>
+      <Margins>0.4,0.4,0.4,0.4</Margins>
+      <Name>Page1</Name>
+      <PageHeight>11.69</PageHeight>
+      <PageWidth>8.27</PageWidth>
+      <PaperSize>A4</PaperSize>
+      <Report isRef="0" />
+      <Watermark Ref="135" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+        <Font>Arial,100</Font>
+        <ImageMultipleFactor>0.5</ImageMultipleFactor>
+        <ImageStretch>True</ImageStretch>
+        <TextBrush>EmptyBrush</TextBrush>
+      </Watermark>
+    </Page1>
+  </Pages>
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>8/5/2020 4:11:32 PM</ReportChanged>
+  <ReportCreated>11/8/2019 2:14:55 PM</ReportCreated>
+  <ReportFile>E:\Projects\BTS\BTS.Web\Content\ReportTemplates-TT08-2020-NoDate\GCNKD_4BTS.mrt</ReportFile>
+  <ReportGuid>f6f045d9ba544b8688ab83cc93104b35</ReportGuid>
+  <ReportName>Report</ReportName>
+  <ReportUnit>Inches</ReportUnit>
+  <ReportVersion>2019.3.4.0</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="0" />
+</StiSerializer>

@@ -141,9 +141,23 @@ namespace BTS.Web.Models
         [StringLength(50, ErrorMessage = "Tên chức danh người ký thay không quá 50 ký tự")]
         public string SignerSubRole { get; set; }
 
-        [StringLength(50, ErrorMessage = "Tên File ảnh chữ ký")]
+        [Display(Name = "Chuyên viên Kiểm định 1")]
+        [StringLength(50, ErrorMessage = "Tên Chuyên viên Kiểm định 1 không quá 50 ký tự")]
+        public string Verifier1 { get; set; }
+
+        [Display(Name = "Chuyên viên Kiểm định 2")]
+        [StringLength(50, ErrorMessage = "Tên Chuyên viên Kiểm định 2 không quá 50 ký tự")]
+        public string Verifier2 { get; set; }
+
         [Display(Name = "Tên File ảnh chữ ký")]
         public string SignatureFileName { get; set; }
+
+        [Display(Name = "Tên File ảnh chữ ký nháy")]
+        public string SubSignFileName { get; set; }
+
+        [Display(Name = "Ngày cấp Giấy CNKĐ")]
+        public string StrIssuedDate { get; set; }
+        
 
         public virtual ProfileViewModel Profile { get; set; }
 

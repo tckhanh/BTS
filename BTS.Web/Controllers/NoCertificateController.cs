@@ -9,10 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace BTS.Web.Areas.Controllers
 {
     [AuthorizeRoles(CommonConstants.Data_CanView_Role)]
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class NoCertificateController : BaseController
     {
         private INoCertificateService _noCertificateService;

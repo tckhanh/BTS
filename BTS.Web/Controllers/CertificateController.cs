@@ -9,10 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.SessionState;
 
 namespace BTS.Web.Areas.Controllers
 {
     [AuthorizeRoles(CommonConstants.Data_CanView_Role)]
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class CertificateController : BaseController
     {
         private ICertificateService _certificateService;
@@ -149,7 +151,6 @@ namespace BTS.Web.Areas.Controllers
             }
 
             Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
-
 
             //Items = Items.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 

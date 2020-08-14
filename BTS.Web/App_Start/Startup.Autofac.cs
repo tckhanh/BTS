@@ -13,7 +13,7 @@ using Microsoft.AspNet.Identity;
 using BTS.Model.Models;
 using System.Web;
 using Microsoft.Owin.Security.DataProtection;
-using BTS.Data.InfraError;
+using BTS.Data.Logs;
 using BTS.Data.ApplicationModels;
 
 namespace BTS.Web.App_Start
@@ -31,8 +31,8 @@ namespace BTS.Web.App_Start
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<DbFactory>().As<IDbFactory>().InstancePerRequest();
-            builder.RegisterType<ErrorUnitOfWork>().As<IErrorUnitOfWork>().InstancePerRequest();
-            builder.RegisterType<ErrorDbFactory>().As<IErrorDbFactory>().InstancePerRequest();
+            builder.RegisterType<LogUnitOfWork>().As<ILogUnitOfWork>().InstancePerRequest();
+            builder.RegisterType<LogDbFactory>().As<ILogDbFactory>().InstancePerRequest();
 
             builder.RegisterType<BTSDbContext>().AsSelf().InstancePerRequest();
 

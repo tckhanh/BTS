@@ -128,7 +128,7 @@
     <Relations isList="true" count="0" />
     <Report isRef="0" />
     <Resources isList="true" count="0" />
-    <Variables isList="true" count="7">
+    <Variables isList="true" count="8">
       <value>,NoBuildingIn100m,NoBuildingIn100m,NoBuildingIn100m,System.String,Trong_x0020_khoảng_x0020_cách_x0020_100_x0020_m_x0020_tính_x0020_từ_x0020_điểm_x0020_bất_x0020_kỳ_x0020_nào_x0020_thuộc_x0020_chân_x0020_cột_x0020_anten_x0020_của_x0020_trạm_x0020_gốc_x0020_không_x0020_có_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_trong_x0020_đó_x0020_có_x0020_người_x0020_sinh_x0020_sống_x002C__x0020_làm_x0020_việc.,False,False,False,False</value>
       <value>,BuildingIn100m,BuildingIn100m,BuildingIn100m,System.String,Trong_x0020_khoảng_x0020_cách_x0020_100_x0020_m_x0020_tính_x0020_từ_x0020_điểm_x0020_bất_x0020_kỳ_x0020_nào_x0020_thuộc_x0020_chân_x0020_cột_x0020_anten_x0020_của_x0020_trạm_x0020_gốc_x0020_có_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_trong_x0020_đó_x0020_có_x0020_người_x0020_sinh_x0020_sống_x002C__x0020_làm_x0020_việc_x0020_và_x0020_có_x0020_độ_x0020_cao_x0020_mép_x0020_dưới_x0020_thấp_x0020_nhất_x0020_của_x0020_các_x0020_anten_x0020__x005B_xxx_x005D__x0020_độ_x0020_cao_x0020_tính_x0020_tới_x0020_nóc_x002C__x0020_mặt_x0020_bằng_x0020_cao_x0020_nhất_x0020_của_x0020_các_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_này_x0020_là_x0020__x005B_yyy_x005D__x0020_m.,False,False,False,False</value>
       <value>,GHAT,GHAT,GHAT,System.String,Giới_x0020_hạn_x0020_an_x0020_toàn:_x0020_là_x0020_khoảng_x0020_chiều_x0020_cao_x0020_trên_x0020_cột_x0020_anten_x0020_tính_x0020_từ_x0020_điểm_x0020_có_x0020_độ_x0020_cao_x0020__x005B_zzz_x005D__x0020_m_x0020_so_x0020_với_x0020_mặt_x0020_đất_x0020_trở_x0020_lên.,False,False,False,False</value>
@@ -136,6 +136,7 @@
       <value>,Lower,Lower,,System.String,thấp_x0020_hơn,False,False,False,False</value>
       <value>,Higher,Higher,,System.String,cao_x0020_hơn,False,False,False,False</value>
       <value>,Equal,Equal,,System.String,cao_x0020_bằng,False,False,False,False</value>
+      <value>,IsTemplate,IsTemplate,,System.Boolean,false,False,False,False,False</value>
     </Variables>
   </Dictionary>
   <EngineVersion>EngineV2</EngineVersion>
@@ -148,16 +149,22 @@
       <Brush>Transparent</Brush>
       <Components isList="true" count="1">
         <DataBand1 Ref="4" type="DataBand" isKey="true">
-          <BeginRenderEvent>if (Certificates.BackSubBtsQuantity &lt; 1){
+          <BeginRenderEvent>if (IsTemplate == true){
+	Image1.File = Certificates.SignatureFileName;
+	Image2.File = Certificates.SubSignFileName;
+}
+if (Certificates.BackSubBtsQuantity &lt; 1){
  	DataBand1.Height = 10.5;
 }
 else {
 	DataBand1.Height = 20;
-}</BeginRenderEvent>
+}
+</BeginRenderEvent>
           <Brush>Transparent</Brush>
           <BusinessObjectGuid isNull="true" />
+          <CanGrow>False</CanGrow>
           <ClientRectangle>0,0.2,7.47,20</ClientRectangle>
-          <Components isList="true" count="105">
+          <Components isList="true" count="107">
             <Text1 Ref="5" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>0.48,0.2,2.15,0.45</ClientRectangle>
@@ -692,6 +699,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Name>Text58</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
               <ShrinkFontToFit>True</ShrinkFontToFit>
               <Text>{Certificates.IsSafeLimit == true ? Replace(GHAT, "[zzz]",Certificates.SafeLimitHeight) : ""}</Text>
               <TextBrush>Black</TextBrush>
@@ -865,7 +873,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
             </Text37>
             <Text38 Ref="46" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4.75,8.65,1.65,0.2</ClientRectangle>
+              <ClientRectangle>4.85,8.65,1.55,0.2</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Times New Roman,12,Bold</Font>
               <Guid>5838c2daf55645c692a807b0d50f189c</Guid>
@@ -883,7 +891,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
             </Text38>
             <Text39 Ref="47" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4.75,9.9,1.65,0.25</ClientRectangle>
+              <ClientRectangle>4.85,9.9,1.55,0.25</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Times New Roman,12,Bold</Font>
               <Guid>7da699850fad43c4b88ac47d6a326ae7</Guid>
@@ -899,26 +907,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text39>
-            <Text40 Ref="48" type="Text" isKey="true">
-              <Brush>Transparent</Brush>
-              <CanGrow>True</CanGrow>
-              <ClientRectangle>0,8,7.45,0.4</ClientRectangle>
-              <Conditions isList="true" count="0" />
-              <Font>Times New Roman,12,Italic</Font>
-              <Guid>d12f073edc2a4dbf83b4135ada683682</Guid>
-              <HorAlignment>Width</HorAlignment>
-              <Margins>0,0,0,0</Margins>
-              <Name>Text40</Name>
-              <Page isRef="3" />
-              <Parent isRef="4" />
-              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
-              <Text>Trạm gốc điện thoại di động mặt đất công cộng này có mức an toàn phơi nhiễm trường điện từ tuân thủ quy chuẩn kỹ thuật trên.</Text>
-              <TextBrush>Black</TextBrush>
-              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
-              <Type>Expression</Type>
-              <VertAlignment>Bottom</VertAlignment>
-            </Text40>
-            <Text41 Ref="49" type="Text" isKey="true">
+            <Text41 Ref="48" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>3.15,1.45,2,0.25</ClientRectangle>
               <Conditions isList="true" count="0" />
@@ -933,7 +922,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text41>
-            <Shape1 Ref="50" type="Shape" isKey="true">
+            <Shape1 Ref="49" type="Shape" isKey="true">
               <BorderColor>Black</BorderColor>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.7,0.6,1.7,0.1</ClientRectangle>
@@ -941,9 +930,9 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Name>Shape1</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
-              <ShapeType Ref="51" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
+              <ShapeType Ref="50" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
             </Shape1>
-            <Shape2 Ref="52" type="Shape" isKey="true">
+            <Shape2 Ref="51" type="Shape" isKey="true">
               <BorderColor>Black</BorderColor>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.1,0.6,2.2,0.1</ClientRectangle>
@@ -952,14 +941,38 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Name>Shape2</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
-              <ShapeType Ref="53" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
+              <ShapeType Ref="52" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
             </Shape2>
-            <Text42 Ref="54" type="Text" isKey="true">
+            <Image1 Ref="53" type="Image" isKey="true">
+              <AspectRatio>True</AspectRatio>
+              <Brush>Transparent</Brush>
+              <ClientRectangle>4.9,9.1,1.6,0.8</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <MultipleFactor>0.4</MultipleFactor>
+              <Name>Image1</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <VertAlignment>Center</VertAlignment>
+            </Image1>
+            <Image2 Ref="54" type="Image" isKey="true">
+              <Brush>Transparent</Brush>
+              <ClientRectangle>1.42,8.05,0.3,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <MultipleFactor>0.4</MultipleFactor>
+              <Name>Image2</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <VertAlignment>Center</VertAlignment>
+            </Image2>
+            <Text42 Ref="55" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>1.25,2,5.3,0.25</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Times New Roman,14,Bold</Font>
-              <Guid>093544168c6e457cab9c6c52d87092e3</Guid>
+              <Guid>1bd660a877be414d8e887619b97d95eb</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
               <Name>Text42</Name>
@@ -970,12 +983,12 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text42>
-            <Text43 Ref="55" type="Text" isKey="true">
+            <Text43 Ref="56" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>4.75,8.85,1.65,0.2</ClientRectangle>
+              <ClientRectangle>4.85,8.85,1.55,0.2</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Times New Roman,12,Bold</Font>
-              <Guid>c06fae74a98443e19bda2e4e0cc0517c</Guid>
+              <Guid>6d45b2fe764e4c9989f470aa3c830119</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>5,3,0,0</Margins>
               <Name>Text43</Name>
@@ -988,7 +1001,26 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text43>
-            <Text44 Ref="56" type="Text" isKey="true">
+            <Text40 Ref="57" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanShrink>True</CanShrink>
+              <ClientRectangle>0,8,7.45,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Italic</Font>
+              <Guid>55120f9b8c3b4013bd151c63a4a18ddf</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text40</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>Trạm gốc điện thoại di động mặt đất công cộng này có mức an toàn phơi nhiễm trường điện từ tuân thủ quy chuẩn kỹ thuật trên.</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Bottom</VertAlignment>
+            </Text40>
+            <Text76 Ref="58" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,12,1.2,1.1</ClientRectangle>
@@ -996,10 +1028,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10,Bold</Font>
-              <Guid>e2740c87bfb344a6b18524debd79ab7b</Guid>
+              <Guid>7929ac633ad04ba0a4f396fdcdd2a14c</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text44</Name>
+              <Name>Text76</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>DOANH NGHIỆP CUNG CẤP DỊCH VỤ</Text>
@@ -1007,8 +1039,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text44>
-            <Text44 Ref="57" type="Text" isKey="true">
+            </Text76>
+            <Text77 Ref="59" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,12,0.7,1.1</ClientRectangle>
@@ -1016,10 +1048,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10,Bold</Font>
-              <Guid>382ab9cafd2a45409c3aa0009e285ca5</Guid>
+              <Guid>5c9bbc2a7c7441d8b3ac6366c13a365b</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text44</Name>
+              <Name>Text77</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>Mã trạm gốc</Text>
@@ -1027,8 +1059,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text44>
-            <Text45 Ref="58" type="Text" isKey="true">
+            </Text77>
+            <Text78 Ref="60" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,12.3,1.1,0.8</ClientRectangle>
@@ -1036,10 +1068,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10,Bold</Font>
-              <Guid>2361f98efef143ecb1367bbdf3baf5b6</Guid>
+              <Guid>169796db029745f3a4e0f9867b663f52</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text45</Name>
+              <Name>Text78</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>Chủng loại thiết bị phát</Text>
@@ -1047,8 +1079,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text45>
-            <Text46 Ref="59" type="Text" isKey="true">
+            </Text78>
+            <Text79 Ref="61" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,12.3,0.5,0.8</ClientRectangle>
@@ -1056,10 +1088,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10,Bold</Font>
-              <Guid>f9a87fc56ec048de9a901265094437c0</Guid>
+              <Guid>fdb9ddb0b8304089a0898f82f61592b3</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text46</Name>
+              <Name>Text79</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>Số anten phát</Text>
@@ -1067,8 +1099,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text46>
-            <Text47 Ref="60" type="Text" isKey="true">
+            </Text79>
+            <Text80 Ref="62" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,12.3,0.7,0.8</ClientRectangle>
@@ -1076,10 +1108,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10,Bold</Font>
-              <Guid>be4718089af8412890ba3085fe324e74</Guid>
+              <Guid>8a859a3452a247a1ac82ff884be2d359</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text47</Name>
+              <Name>Text80</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>Số máy phát, thu-phát</Text>
@@ -1087,8 +1119,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text47>
-            <Text48 Ref="61" type="Text" isKey="true">
+            </Text80>
+            <Text81 Ref="63" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,12.3,1.1,0.8</ClientRectangle>
@@ -1096,10 +1128,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10,Bold</Font>
-              <Guid>f25d830c665d41b6bc05352e1dc5c7f4</Guid>
+              <Guid>48e4476eb1af4fc6b37d53f281090ae2</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text48</Name>
+              <Name>Text81</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>Tổng công suất phát từng anten</Text>
@@ -1107,8 +1139,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text48>
-            <Text49 Ref="62" type="Text" isKey="true">
+            </Text81>
+            <Text82 Ref="64" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,12.3,0.7,0.8</ClientRectangle>
@@ -1116,10 +1148,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10,Bold</Font>
-              <Guid>66e55b5752ed40b39b73d1e678f02dbf</Guid>
+              <Guid>2b026d0f045d4759ba314f8b72e7b999</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text49</Name>
+              <Name>Text82</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>Băng tần hoạt động</Text>
@@ -1127,8 +1159,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text49>
-            <Text50 Ref="63" type="Text" isKey="true">
+            </Text82>
+            <Text83 Ref="65" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,12.3,1.1,0.8</ClientRectangle>
@@ -1136,10 +1168,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10,Bold</Font>
-              <Guid>e1b96ff9c86644aead5e041ca8dc3b2d</Guid>
+              <Guid>797d87841d51414abd19fd74d2af341d</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text50</Name>
+              <Name>Text83</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>Độ cao từng anten (tính từ mặt đất đến mép thấp nhất của anten)</Text>
@@ -1147,8 +1179,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text50>
-            <Text51 Ref="64" type="Text" isKey="true">
+            </Text83>
+            <Text133 Ref="66" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,12,5.2,0.3</ClientRectangle>
@@ -1156,10 +1188,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10,Bold</Font>
-              <Guid>dc5df6755c41470f907595a635bd093d</Guid>
+              <Guid>321d20e713aa44429d68fc3cc2533a46</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text51</Name>
+              <Name>Text133</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>Độ cao từng anten (tính từ mặt đất đến mép thấp nhất của anten)</Text>
@@ -1167,8 +1199,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text51>
-            <Text52 Ref="65" type="Text" isKey="true">
+            </Text133>
+            <Text85 Ref="67" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,13.1,1.2,0.8</ClientRectangle>
@@ -1176,10 +1208,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>6472f04eab924d73b69276b65a8f5c1e</Guid>
+              <Guid>f5d7b9eec483440789b4cb47c5fec381</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text52</Name>
+              <Name>Text85</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1188,8 +1220,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text52>
-            <Text53 Ref="66" type="Text" isKey="true">
+            </Text85>
+            <Text86 Ref="68" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,13.1,0.7,0.8</ClientRectangle>
@@ -1197,10 +1229,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>b8bf1762f35a41b98d731cf0c7464050</Guid>
+              <Guid>a73c34dcf4e44e84a64eb179c3cf1740</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text53</Name>
+              <Name>Text86</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1209,8 +1241,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text53>
-            <Text54 Ref="67" type="Text" isKey="true">
+            </Text86>
+            <Text87 Ref="69" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,13.1,1.1,0.8</ClientRectangle>
@@ -1218,10 +1250,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>c024600478844f7694936ae4d87db657</Guid>
+              <Guid>ae642e31ac3d4ea68a8a168522077c73</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text54</Name>
+              <Name>Text87</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1230,8 +1262,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text54>
-            <Text55 Ref="68" type="Text" isKey="true">
+            </Text87>
+            <Text88 Ref="70" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,13.1,0.5,0.8</ClientRectangle>
@@ -1239,10 +1271,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>e925e2ec4d584d68a75770bd9d2593a0</Guid>
+              <Guid>7497c839f6034c8fb7d4599e4e67ceee</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text55</Name>
+              <Name>Text88</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1251,8 +1283,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text55>
-            <Text56 Ref="69" type="Text" isKey="true">
+            </Text88>
+            <Text89 Ref="71" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,13.1,0.7,0.8</ClientRectangle>
@@ -1260,10 +1292,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>cf83e956652e4cf9aefadb955777efcb</Guid>
+              <Guid>a98a2cab146c48ec91d01cdd94ebf497</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text56</Name>
+              <Name>Text89</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1272,8 +1304,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text56>
-            <Text59 Ref="70" type="Text" isKey="true">
+            </Text89>
+            <Text90 Ref="72" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,13.1,1.1,0.8</ClientRectangle>
@@ -1281,10 +1313,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>9a4e47547eb44dafa9819cf94b0a3eb6</Guid>
+              <Guid>b4f1c2b7cbfb439dabf58393c222f345</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text59</Name>
+              <Name>Text90</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1293,8 +1325,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text59>
-            <Text60 Ref="71" type="Text" isKey="true">
+            </Text90>
+            <Text91 Ref="73" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,13.1,0.7,0.8</ClientRectangle>
@@ -1302,10 +1334,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>a344fa6c6b4c46ea9fca08cc9d8c3b27</Guid>
+              <Guid>1be8af1f0f2f479a804f13cf383065a4</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text60</Name>
+              <Name>Text91</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1314,8 +1346,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text60>
-            <Text61 Ref="72" type="Text" isKey="true">
+            </Text91>
+            <Text92 Ref="74" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,13.1,1.1,0.8</ClientRectangle>
@@ -1323,10 +1355,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0031_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>0a32d2286f504d079e723f4609b3e83e</Guid>
+              <Guid>9cb3a9c087d746ceb506c233c1903c22</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text61</Name>
+              <Name>Text92</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1335,8 +1367,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text61>
-            <Text62 Ref="73" type="Text" isKey="true">
+            </Text92>
+            <Text93 Ref="75" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,13.9,1.2,0.8</ClientRectangle>
@@ -1344,10 +1376,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>83c4b4952ce1431ab2df759a451b24dd</Guid>
+              <Guid>72758623ccd944538838fb748e7ab688</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text62</Name>
+              <Name>Text93</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1356,8 +1388,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text62>
-            <Text63 Ref="74" type="Text" isKey="true">
+            </Text93>
+            <Text94 Ref="76" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,13.9,0.7,0.8</ClientRectangle>
@@ -1365,10 +1397,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>11bfd9b7491549069598b453153a98dc</Guid>
+              <Guid>b7a7e92d17f148b3b385627f3af0bae4</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text63</Name>
+              <Name>Text94</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1377,8 +1409,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text63>
-            <Text64 Ref="75" type="Text" isKey="true">
+            </Text94>
+            <Text95 Ref="77" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,13.9,1.1,0.8</ClientRectangle>
@@ -1386,10 +1418,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>18702f07c30941519841a2887c1b5d8b</Guid>
+              <Guid>04a3d121ae4444889803b808c388d529</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text64</Name>
+              <Name>Text95</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1398,8 +1430,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text64>
-            <Text65 Ref="76" type="Text" isKey="true">
+            </Text95>
+            <Text96 Ref="78" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,13.9,0.5,0.8</ClientRectangle>
@@ -1407,10 +1439,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>950b1810cc8f42fab081d529f9b808dd</Guid>
+              <Guid>0e369048a84b48959d6340fe3347e96d</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text65</Name>
+              <Name>Text96</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1419,8 +1451,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text65>
-            <Text66 Ref="77" type="Text" isKey="true">
+            </Text96>
+            <Text97 Ref="79" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,13.9,0.7,0.8</ClientRectangle>
@@ -1428,10 +1460,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>51c134c0dbec46229c81586a90e43fd8</Guid>
+              <Guid>fc19dde8a57e43a9bc68c29adde609c1</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text66</Name>
+              <Name>Text97</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1440,8 +1472,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text66>
-            <Text67 Ref="78" type="Text" isKey="true">
+            </Text97>
+            <Text98 Ref="80" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,13.9,1.1,0.8</ClientRectangle>
@@ -1449,10 +1481,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>de176dbf23ed4e1299ddb1e13f49ef93</Guid>
+              <Guid>cbe04d31e1384af284112b06fad32bbd</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text67</Name>
+              <Name>Text98</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1461,8 +1493,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text67>
-            <Text68 Ref="79" type="Text" isKey="true">
+            </Text98>
+            <Text99 Ref="81" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,13.9,0.7,0.8</ClientRectangle>
@@ -1470,10 +1502,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>167639ce8bcc42a99212868a49666058</Guid>
+              <Guid>78d33c0f3ae047e89c27f33ea7973fd1</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text68</Name>
+              <Name>Text99</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1482,8 +1514,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text68>
-            <Text69 Ref="80" type="Text" isKey="true">
+            </Text99>
+            <Text100 Ref="82" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,13.9,1.1,0.8</ClientRectangle>
@@ -1491,10 +1523,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0032_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>42d56f64c5b046659c5cba4546cb6943</Guid>
+              <Guid>40fe6c70e08646f9adb34d2040e55e2e</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text69</Name>
+              <Name>Text100</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1503,8 +1535,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text69>
-            <Text70 Ref="81" type="Text" isKey="true">
+            </Text100>
+            <Text101 Ref="83" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,14.7,1.2,0.8</ClientRectangle>
@@ -1512,10 +1544,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>e42de0a731cc4a4084a8b463df46b6bf</Guid>
+              <Guid>2b55b06049e2447f966e9b402a46e5ac</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text70</Name>
+              <Name>Text101</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1524,8 +1556,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text70>
-            <Text71 Ref="82" type="Text" isKey="true">
+            </Text101>
+            <Text102 Ref="84" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,14.7,0.7,0.8</ClientRectangle>
@@ -1533,10 +1565,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>462cde042240463eaca76c17732f1b80</Guid>
+              <Guid>30ece436a4464413b1b8321d42d274ba</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text71</Name>
+              <Name>Text102</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1545,8 +1577,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text71>
-            <Text72 Ref="83" type="Text" isKey="true">
+            </Text102>
+            <Text103 Ref="85" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,14.7,1.1,0.8</ClientRectangle>
@@ -1554,10 +1586,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>412bf4edacd04eea8287562724b22fc1</Guid>
+              <Guid>9070e1907e9e4724aa466cf7eeccfc70</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text72</Name>
+              <Name>Text103</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1566,8 +1598,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text72>
-            <Text73 Ref="84" type="Text" isKey="true">
+            </Text103>
+            <Text104 Ref="86" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,14.7,0.5,0.8</ClientRectangle>
@@ -1575,10 +1607,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>8f885337be3e4a52981ec3796acb4b5c</Guid>
+              <Guid>cc6def59d38b4b37a23ff5908244892f</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text73</Name>
+              <Name>Text104</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1587,8 +1619,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text73>
-            <Text74 Ref="85" type="Text" isKey="true">
+            </Text104>
+            <Text105 Ref="87" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,14.7,0.7,0.8</ClientRectangle>
@@ -1596,10 +1628,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>5e2ec5d725f149118115bbf60d916d84</Guid>
+              <Guid>bbd3b76c1d8d4254bbd90d53906a2203</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text74</Name>
+              <Name>Text105</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1608,8 +1640,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text74>
-            <Text75 Ref="86" type="Text" isKey="true">
+            </Text105>
+            <Text106 Ref="88" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,14.7,1.1,0.8</ClientRectangle>
@@ -1617,10 +1649,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>2d8c909a306c41ac95b53e1418454720</Guid>
+              <Guid>16de1703befc4181bf32ab869e837e15</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text75</Name>
+              <Name>Text106</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1629,8 +1661,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text75>
-            <Text76 Ref="87" type="Text" isKey="true">
+            </Text106>
+            <Text107 Ref="89" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,14.7,0.7,0.8</ClientRectangle>
@@ -1638,10 +1670,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>7eedf928044b4d7f90a23fca78e5663c</Guid>
+              <Guid>d679373e01e348a4be8f8ba01ad9c17e</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text76</Name>
+              <Name>Text107</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1650,8 +1682,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text76>
-            <Text77 Ref="88" type="Text" isKey="true">
+            </Text107>
+            <Text108 Ref="90" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,14.7,1.1,0.8</ClientRectangle>
@@ -1659,10 +1691,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0033_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>cdcf547ae35347d8b79dbe536f580883</Guid>
+              <Guid>ab6ae647bb754a2cb03a83c606c5520d</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text77</Name>
+              <Name>Text108</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1671,8 +1703,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text77>
-            <Text78 Ref="89" type="Text" isKey="true">
+            </Text108>
+            <Text109 Ref="91" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,15.5,1.2,0.8</ClientRectangle>
@@ -1680,10 +1712,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>9b2aef6c305e4f819ae0f8fbab7d33a7</Guid>
+              <Guid>1089dd0d41c240be840913e1c763043a</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text78</Name>
+              <Name>Text109</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1692,8 +1724,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text78>
-            <Text79 Ref="90" type="Text" isKey="true">
+            </Text109>
+            <Text110 Ref="92" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,15.5,0.7,0.8</ClientRectangle>
@@ -1701,10 +1733,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>10c1a15a8a8a42e399fedf771dfc855e</Guid>
+              <Guid>ba928f1c7b374e079f21a62c2c3d9f0d</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text79</Name>
+              <Name>Text110</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1713,8 +1745,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text79>
-            <Text80 Ref="91" type="Text" isKey="true">
+            </Text110>
+            <Text111 Ref="93" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,15.5,1.1,0.8</ClientRectangle>
@@ -1722,10 +1754,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>3830a731fe454844ae06e4cd7f864795</Guid>
+              <Guid>85a988911fca463c9e75425b62c00887</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text80</Name>
+              <Name>Text111</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1734,8 +1766,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text80>
-            <Text81 Ref="92" type="Text" isKey="true">
+            </Text111>
+            <Text112 Ref="94" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,15.5,0.5,0.8</ClientRectangle>
@@ -1743,10 +1775,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>fe7ecb0aef28448891fc2883d50adaa6</Guid>
+              <Guid>dc59e1d28b534883a121221213d9375c</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text81</Name>
+              <Name>Text112</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1755,8 +1787,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text81>
-            <Text82 Ref="93" type="Text" isKey="true">
+            </Text112>
+            <Text113 Ref="95" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,15.5,0.7,0.8</ClientRectangle>
@@ -1764,10 +1796,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>185381efbe7d40d08d2232fa196c62e4</Guid>
+              <Guid>fb4544ee972542a9b68b51f51625f596</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text82</Name>
+              <Name>Text113</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1776,8 +1808,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text82>
-            <Text83 Ref="94" type="Text" isKey="true">
+            </Text113>
+            <Text114 Ref="96" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,15.5,1.1,0.8</ClientRectangle>
@@ -1785,10 +1817,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>33b0befd58d04e54888b794b7f4b871b</Guid>
+              <Guid>cd600216aa254c65926aa1392fb1189a</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text83</Name>
+              <Name>Text114</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1797,8 +1829,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text83>
-            <Text84 Ref="95" type="Text" isKey="true">
+            </Text114>
+            <Text115 Ref="97" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,15.5,0.7,0.8</ClientRectangle>
@@ -1806,10 +1838,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>40367644006e4e6e83a24de7b544e1e7</Guid>
+              <Guid>c4938e5c066948b7960bc10913756244</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text84</Name>
+              <Name>Text115</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1818,8 +1850,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text84>
-            <Text85 Ref="96" type="Text" isKey="true">
+            </Text115>
+            <Text116 Ref="98" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,15.5,1.1,0.8</ClientRectangle>
@@ -1827,10 +1859,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0034_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>647cdf3423024d858e8e419f48828d64</Guid>
+              <Guid>1a738e055aab46a6b392e57cb0a29844</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text85</Name>
+              <Name>Text116</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1839,8 +1871,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text85>
-            <Text86 Ref="97" type="Text" isKey="true">
+            </Text116>
+            <Text117 Ref="99" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,16.3,1.2,0.8</ClientRectangle>
@@ -1848,10 +1880,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>931142bd74dd454ebf276a4ef21c9122</Guid>
+              <Guid>9453ff159f904243b6cba683878aeede</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text86</Name>
+              <Name>Text117</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1860,8 +1892,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text86>
-            <Text87 Ref="98" type="Text" isKey="true">
+            </Text117>
+            <Text118 Ref="100" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,16.3,0.7,0.8</ClientRectangle>
@@ -1869,10 +1901,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>ea2c8b37ed0d4b928a981d6c99c0d62e</Guid>
+              <Guid>459f7b31a1124ccdbfb00e39f0501699</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text87</Name>
+              <Name>Text118</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1881,8 +1913,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text87>
-            <Text88 Ref="99" type="Text" isKey="true">
+            </Text118>
+            <Text119 Ref="101" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,16.3,1.1,0.8</ClientRectangle>
@@ -1890,10 +1922,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>c513c7feeecd41c4a28b7d0cd2907f65</Guid>
+              <Guid>3d1ef56fa21245f8b8cadeae3c18e6a0</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text88</Name>
+              <Name>Text119</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1902,8 +1934,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text88>
-            <Text89 Ref="100" type="Text" isKey="true">
+            </Text119>
+            <Text120 Ref="102" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,16.3,0.5,0.8</ClientRectangle>
@@ -1911,10 +1943,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>d1049e049b6b413da124431c57d8363b</Guid>
+              <Guid>6b81abfe88ad403da3a02d7b4e085f3e</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text89</Name>
+              <Name>Text120</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1923,8 +1955,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text89>
-            <Text90 Ref="101" type="Text" isKey="true">
+            </Text120>
+            <Text121 Ref="103" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,16.3,0.7,0.8</ClientRectangle>
@@ -1932,10 +1964,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>e51257dba05c48058b19dca34733c936</Guid>
+              <Guid>3c9cb604879a404db8d9bde3d4bacd8f</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text90</Name>
+              <Name>Text121</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1944,8 +1976,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text90>
-            <Text91 Ref="102" type="Text" isKey="true">
+            </Text121>
+            <Text122 Ref="104" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,16.3,1.1,0.8</ClientRectangle>
@@ -1953,10 +1985,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>fa0da99be8ea4b8e9094e8b334c3b54c</Guid>
+              <Guid>0c935543a71248c8b2a7a4cc85b67226</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text91</Name>
+              <Name>Text122</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1965,8 +1997,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text91>
-            <Text92 Ref="103" type="Text" isKey="true">
+            </Text122>
+            <Text123 Ref="105" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,16.3,0.7,0.8</ClientRectangle>
@@ -1974,10 +2006,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>19062b3a25874e62a8e012a5671a0d89</Guid>
+              <Guid>7ce1da9759ab4d31980be6be8e33b74c</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text92</Name>
+              <Name>Text123</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -1986,8 +2018,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text92>
-            <Text93 Ref="104" type="Text" isKey="true">
+            </Text123>
+            <Text124 Ref="106" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,16.3,1.1,0.8</ClientRectangle>
@@ -1995,10 +2027,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0035_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>82b8094e504540c48a78b11bded9d6d2</Guid>
+              <Guid>c2489bec579e4699852c002359b3d911</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text93</Name>
+              <Name>Text124</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -2007,8 +2039,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text93>
-            <Text94 Ref="105" type="Text" isKey="true">
+            </Text124>
+            <Text125 Ref="107" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,17.1,1.2,0.8</ClientRectangle>
@@ -2016,10 +2048,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>1478c703e7a54599beeca11886c8a8a1</Guid>
+              <Guid>e4577a1bb46d40eab1e3fdd0658e8952</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text94</Name>
+              <Name>Text125</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -2028,8 +2060,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text94>
-            <Text95 Ref="106" type="Text" isKey="true">
+            </Text125>
+            <Text126 Ref="108" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,17.1,0.7,0.8</ClientRectangle>
@@ -2037,10 +2069,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>56ed762fc74e43478dc41807087c1f66</Guid>
+              <Guid>17fd103dc7194f3799a359390797dc50</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text95</Name>
+              <Name>Text126</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -2049,8 +2081,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text95>
-            <Text96 Ref="107" type="Text" isKey="true">
+            </Text126>
+            <Text127 Ref="109" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,17.1,1.1,0.8</ClientRectangle>
@@ -2058,10 +2090,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>a06453ed73f8465cb3fd5ee2c31d5eb8</Guid>
+              <Guid>dc58c6346a85433b955460288b8141f0</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text96</Name>
+              <Name>Text127</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -2070,8 +2102,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text96>
-            <Text97 Ref="108" type="Text" isKey="true">
+            </Text127>
+            <Text128 Ref="110" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,17.1,0.5,0.8</ClientRectangle>
@@ -2079,10 +2111,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>0dc5fa7057574d7b80240ed33e4895db</Guid>
+              <Guid>0a90b6544db741829cc1f645a01630df</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text97</Name>
+              <Name>Text128</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -2091,8 +2123,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text97>
-            <Text98 Ref="109" type="Text" isKey="true">
+            </Text128>
+            <Text129 Ref="111" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,17.1,0.7,0.8</ClientRectangle>
@@ -2100,10 +2132,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>aef176717ad247f5ab627c73d9373485</Guid>
+              <Guid>f39ae92fb0ad427cab4205dfa4b753cc</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text98</Name>
+              <Name>Text129</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -2112,8 +2144,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text98>
-            <Text99 Ref="110" type="Text" isKey="true">
+            </Text129>
+            <Text130 Ref="112" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,17.1,1.1,0.8</ClientRectangle>
@@ -2121,10 +2153,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>fab0c4fb99d045aa91d0fee62443a4b9</Guid>
+              <Guid>a69983e11f77451588af72ad00c439be</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text99</Name>
+              <Name>Text130</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -2133,8 +2165,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text99>
-            <Text100 Ref="111" type="Text" isKey="true">
+            </Text130>
+            <Text131 Ref="113" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,17.1,0.7,0.8</ClientRectangle>
@@ -2142,10 +2174,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>c58535171d1d4a37abf6cd3c11df5a66</Guid>
+              <Guid>2e32b7fa5cb449d587ea33029029ae1e</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text100</Name>
+              <Name>Text131</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -2154,8 +2186,8 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text100>
-            <Text101 Ref="112" type="Text" isKey="true">
+            </Text131>
+            <Text132 Ref="114" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,17.1,1.1,0.8</ClientRectangle>
@@ -2163,10 +2195,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
                 <value>Certificates.BackSubBtsQuantity,LessThan,_x0036_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,10</Font>
-              <Guid>bb4ce8548bef4975b815ffed6efb36bd</Guid>
+              <Guid>a1c0a0ea9d61431fb2f8fd6f8d04bbae</Guid>
               <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
-              <Name>Text101</Name>
+              <Name>Text132</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <ShrinkFontToFit>True</ShrinkFontToFit>
@@ -2175,17 +2207,17 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text101>
-            <Text102 Ref="113" type="Text" isKey="true">
+            </Text132>
+            <Text134 Ref="115" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,11.6,7.1,0.3</ClientRectangle>
               <Conditions isList="true" count="1">
                 <value>Certificates.BackSubBtsQuantity,EqualTo,_x0030_,,Numeric,White,Transparent,Arial_x002C_8,True,False,,,None</value>
               </Conditions>
               <Font>Times New Roman,14</Font>
-              <Guid>48ebb3190ac24c38ac61bab0988081d9</Guid>
+              <Guid>0e26abf9dc854678a47810b82ba3a4a8</Guid>
               <Margins>0,0,0,0</Margins>
-              <Name>Text102</Name>
+              <Name>Text134</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
               <Text>Thông tin về trạm gốc của doanh nghiệp khác lắp đặt tại cùng vị trí</Text>
@@ -2193,7 +2225,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
-            </Text102>
+            </Text134>
           </Components>
           <Conditions isList="true" count="0" />
           <DataRelationName isNull="true" />
@@ -2202,14 +2234,20 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
             <value>FrontSubBtsQuantity,EqualTo,_x0031_,,Numeric</value>
           </Filters>
           <Name>DataBand1</Name>
+          <NewPageAfter>True</NewPageAfter>
           <Page isRef="3" />
           <Parent isRef="3" />
-          <RenderingEvent>if (Certificates.BackSubBtsQuantity &lt; 1){
+          <RenderingEvent>if (IsTemplate == true){
+	Image1.File = Certificates.SignatureFileName;
+	Image2.File = Certificates.SubSignFileName;
+}
+if (Certificates.BackSubBtsQuantity &lt; 1){
  	DataBand1.Height = 10.5;
 }
 else {
 	DataBand1.Height = 20;
-}</RenderingEvent>
+}
+</RenderingEvent>
           <Sort isList="true" count="0" />
         </DataBand1>
       </Components>
@@ -2221,7 +2259,7 @@ else {
       <PageWidth>8.27</PageWidth>
       <PaperSize>A4</PaperSize>
       <Report isRef="0" />
-      <Watermark Ref="114" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+      <Watermark Ref="116" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
         <Font>Arial,100</Font>
         <ImageMultipleFactor>0.5</ImageMultipleFactor>
         <ImageStretch>True</ImageStretch>
@@ -2240,10 +2278,10 @@ else {
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>7/31/2020 2:14:12 PM</ReportChanged>
+  <ReportChanged>8/10/2020 9:23:36 AM</ReportChanged>
   <ReportCreated>11/8/2019 2:14:55 PM</ReportCreated>
   <ReportFile>E:\Projects\BTS\BTS.Web\Content\ReportTemplates-TT14-2017\GCNKD_1BTS.mrt</ReportFile>
-  <ReportGuid>5588746b701a435984ea3974f24b9725</ReportGuid>
+  <ReportGuid>18094dea90134a39a0ff45c1099ec773</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2019.3.4.0</ReportVersion>

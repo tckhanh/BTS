@@ -16,6 +16,7 @@ namespace BTS.Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        //HttpConfiguration config = GlobalConfiguration.Configuration;
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -26,6 +27,7 @@ namespace BTS.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             log4net.Config.XmlConfigurator.Configure();
+            //config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         }
 
         protected void Application_Error(Object sender, EventArgs e)

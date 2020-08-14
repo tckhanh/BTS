@@ -1,5 +1,10 @@
 ﻿
+//var data = "";
+
 var homeController = {
+    DoPost: function (url, id) {
+        $.post(url, { id: id });  //Your values here..
+    },
     startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     endDate: new Date(),
     token: function () {
@@ -68,6 +73,7 @@ var homeController = {
         $('#btnReset').off('click').on('click', function () {
             $('#SelOperatorID').val('');
             $('#SelCityID').val('');
+            $('#SelProfileID').val('');
             $('#BtsCodeOrAddress').val('');
             homeController.endDate = new Date();
             homeController.startDate = new Date(homeController.endDate.getFullYear() - 5, homeController.endDate.getMonth(), homeController.endDate.getDate());
@@ -146,6 +152,7 @@ var homeController = {
     },
 
     loadData: function () {
+
         $('#SelProfileID').attr('disabled', myNotAuthenticated);
 
         homeController.startDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -278,7 +285,8 @@ var homeController = {
                             "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 if ($.inArray(myConstant.Info_CanPrintCertificate_Role, myArrayRoles) > -1) {
-                                    $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
+                                    $(nTd).html("<a href='javascript:homeController.printCertificate(\"" + oData.Id + "\")'>" + oData.Id + "</a>");
+                                    //$(nTd).html("<a target='_blank' href='/PrintCertificate/Print/" + oData.Id + "'>" + oData.Id + "</a>");
                                 } else {
                                     $(nTd).html(oData.Id);
                                 }
@@ -413,7 +421,8 @@ var homeController = {
                             "data": "Id", "name": "Id", "className": "dt-body-center",
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 if ($.inArray(myConstant.Info_CanPrintCertificate_Role, myArrayRoles) > -1) {
-                                    $(nTd).html("<a target='_blank' href='/PrintCertificate/Index/" + oData.Id + "'>" + oData.Id + "</a>");
+                                    $(nTd).html("<a href='javascript:homeController.printCertificate(\"" + oData.Id + "\")'>" + oData.Id + "</a>");
+                                    //$(nTd).html("<a target='_blank' href='/PrintCertificate/Print/" + oData.Id + "'>" + oData.Id + "</a>");
                                 } else {
                                     $(nTd).html(oData.Id);
                                 }
@@ -563,9 +572,13 @@ var homeController = {
             }, true);
     },
 
-    printCertificate: function () {
+    printCertificate: function (CertificateNum) {
         var form = $("#__AjaxAntiForgeryForm")[0];
         var dataForm = new FormData(form);
+        if (CertificateNum != null) {
+            dataForm.set('CertificateNum', CertificateNum);
+        }
+            
         dataForm.append('StartDate', homeController.startDate.toISOString());
         dataForm.append('EndDate', homeController.endDate.toISOString());
         dataForm.append('action', 'GetReport');
@@ -601,3 +614,19 @@ var homeController = {
 }
 
 homeController.init();
+
+//$('#MyDataTable tbody').on('click', 'tr', function () {
+//    if ($(this).hasClass('selected')) {
+//        $(this).removeClass('selected');
+//    }
+//    else {
+//        table.$('tr.selected').removeClass('selected');
+//        $(this).addClass('selected');
+//    }
+//});
+
+//$('#button').click(function () {
+//    table.row('.selected').remove().draw(false);
+//});
+
+// See post: http://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps

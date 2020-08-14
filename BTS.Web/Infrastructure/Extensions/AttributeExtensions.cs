@@ -1,4 +1,13 @@
-﻿using BTS.Data;
+﻿using BTS.Common;
+using BTS.Data;
+using BTS.Data.Infrastructure;
+using BTS.Data.Logs;
+using BTS.Data.Repositories;
+using BTS.Data.Repository;
+using BTS.Model.Models;
+using BTS.Service;
+using BTS.Web.Infrastructure.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,14 +15,78 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.Security;
+using System.Web.SessionState;
 
 namespace BTS.Web.Infrastructure.Extensions
 {
-    
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
+    public class AuthorizeRolesAttribute : AuthorizeAttribute
+    {
+        public AuthorizeRolesAttribute(params string[] roles)
+        {
+            Roles = String.Join(",", roles);
+        }
+
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        {
+            if (filterContext.HttpContext.Request.IsAjaxRequest())
+            {
+                if (filterContext.HttpContext.Request.IsAuthenticated)
+                {
+                    filterContext.Result = new JsonResult
+                    {
+                        Data = new
+                        {
+                            // put whatever data you want which will be sent
+                            // to the client
+                            status = CommonConstants.Status_Error,
+                            message = "Bạn Không được cấp quyền để thực hiện chức năng này"
+                        },
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                else
+                {
+                    filterContext.Result = new JsonResult
+                    {
+                        Data = new
+                        {
+                            // put whatever data you want which will be sent
+                            // to the client
+                            status = CommonConstants.Status_TimeOut,
+                            message = "Xin lỗi! Đã quá thời gian chờ. Bạn đã bị đăng xuất ra khỏi hệ thống."
+                        },
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+            }
+            else
+            {
+                if (filterContext.HttpContext.Request.IsAuthenticated)
+                {
+                    filterContext.Controller.TempData["error"] = "Bạn Không được cấp quyền để thực hiện chức năng này";
+                    if (HttpContext.Current.Request.UrlReferrer != null)
+                        filterContext.Result = new RedirectResult(HttpContext.Current.Request.UrlReferrer.ToString());
+                    else
+                    {
+                        filterContext.Result = new RedirectResult("/");
+                    }
+                }
+                else
+                {
+                    base.HandleUnauthorizedRequest(filterContext);
+                }
+            }
+        }
+    }
+
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class Unique: ValidationAttribute
     {
@@ -138,7 +211,6 @@ namespace BTS.Web.Infrastructure.Extensions
         }
     }
 
-
     public class UserNameFilter : ActionFilterAttribute
     {
         private const string parameterName = "userName";
@@ -207,4 +279,40 @@ namespace BTS.Web.Infrastructure.Extensions
             return new MvcHtmlString(tag.ToString());
         }
     }
+
+    public class AuditAttribute : ActionFilterAttribute, IExceptionFilter
+    {
+        //Our value to handle our AuditingLevel
+        public int AuditingLevel { get; set; }
+
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            base.OnActionExecuted(filterContext);
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            AuditHelpers.Log(AuditingLevel);
+            base.OnActionExecuting(filterContext);
+        }
+
+        void IExceptionFilter.OnException(ExceptionContext filterContext)
+        {
+            if (!filterContext.ExceptionHandled)
+            {
+                Exception exception = filterContext.Exception;
+
+                // To do Log Exception
+                
+
+                filterContext.Result = new RedirectResult("/ErrorViews");
+                filterContext.ExceptionHandled = true;
+            }            
+        }
+
+
+        
+    }
+
+
 }

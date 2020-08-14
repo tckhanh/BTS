@@ -63,12 +63,12 @@ namespace BTS.Web.App_Start
 
 
             //// Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
-            //app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
+            app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
 
             //// Enables the application to remember the second login verification factor such as phone or email.
             //// Once you check this option, your second step of verification during the login process will be remembered on the device where you logged in from.
             //// This is similar to the RememberMe option when you log in.
-            //app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
+            app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(
@@ -95,6 +95,19 @@ namespace BTS.Web.App_Start
             public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
             {
                 context.Validated();
+                //string clientId;
+                //string clientSecret;
+
+                //if (context.TryGetBasicCredentials(out clientId, out clientSecret))
+                //{
+                //    // validate the client Id and secret against database or from configuration file.  
+                //    context.Validated();
+                //}
+                //else
+                //{
+                //    context.SetError("invalid_client", "Client credentials could not be retrieved from the Authorization header");
+                //    context.Rejected();
+                //}
             }
 
             public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)

@@ -169,7 +169,12 @@
                 addinController.ViewMap(id, long, lat);
                 break;
             case myConstant.Action_Print:
-                addinController.Print('http://' + window.location.host + '/PrintCertificate/Index/' + id);
+                //addinController.Print('http://' + window.location.host + '/PrintCertificate/Index/' + id);
+                if (typeof homeController !== 'undefined') {
+                    homeController.printCertificate(id);
+                }else if (typeof certificateController !== 'undefined') {
+                    certificateController.printCertificate(id)
+                }
                 break;
         }
     },

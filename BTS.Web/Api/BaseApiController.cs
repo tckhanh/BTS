@@ -330,14 +330,14 @@ namespace BTS.Web.Infrastructure.Core
         protected override void Initialize(HttpControllerContext requestContext)
         {
             base.Initialize(requestContext);
-            if (HttpContext.Current.Session[CommonConstants.CurrentCulture] != null)
+            if (HttpContext.Current.Session[CommonConstants.CULTURE_SESSION] != null)
             {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(HttpContext.Current.Session[CommonConstants.CurrentCulture]?.ToString());
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(HttpContext.Current.Session[CommonConstants.CurrentCulture]?.ToString());
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(HttpContext.Current.Session[CommonConstants.CULTURE_SESSION]?.ToString());
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(HttpContext.Current.Session[CommonConstants.CULTURE_SESSION]?.ToString());
             }
             else
             {
-                HttpContext.Current.Session[CommonConstants.CurrentCulture] = "vi";
+                HttpContext.Current.Session[CommonConstants.CULTURE_SESSION] = "vi";
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("vi");
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("vi");
             }
@@ -349,7 +349,7 @@ namespace BTS.Web.Infrastructure.Core
             Thread.CurrentThread.CurrentCulture = new CultureInfo(ddlCulture);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(ddlCulture);
 
-            HttpContext.Current.Session[CommonConstants.CurrentCulture] = ddlCulture;
+            HttpContext.Current.Session[CommonConstants.CULTURE_SESSION] = ddlCulture;
             return Redirect(returnUrl);
         }
     }

@@ -17,10 +17,12 @@ using System.Linq.Dynamic;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.SessionState;
 
 namespace BTS.Web.Areas.Controllers
 {    
     [Authorize]
+    [SessionState(SessionStateBehavior.ReadOnly)]
     public class StatisticsController : BaseController
     {
         //IProductCategoryService _productCategoryService;

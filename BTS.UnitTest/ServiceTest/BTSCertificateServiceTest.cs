@@ -40,7 +40,7 @@ namespace BTS.UnitTest.ServiceTest
             int totalRow = 1;
 
             // set up method
-            _mockCertificateRepository.Setup(m => m.GetMultiPaging(x => true, out totalRow, 1, 10, null)).Returns(_listCertificate);
+            _mockCertificateRepository.Setup(m => m.GetMultiPaging(x => true, out totalRow,null, 1, 10)).Returns(_listCertificate);
 
             // call action
             var result = _CertificateService.getAll(out totalRow, true) as List<Certificate>;

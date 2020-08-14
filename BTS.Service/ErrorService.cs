@@ -1,4 +1,5 @@
-﻿using BTS.Data.InfraError;
+﻿using BTS.Data.Logs;
+using BTS.Data.Logs;
 using BTS.Data.Repositories;
 using BTS.Model.Models;
 
@@ -14,9 +15,9 @@ namespace BTS.Service
     public class ErrorService : IErrorService
     {
         private IErrorRepository _errorRepository;
-        private IErrorUnitOfWork _unitOfWork;
+        private ILogUnitOfWork _unitOfWork;
 
-        public ErrorService(IErrorRepository errorRepository, IErrorUnitOfWork unitOfWork)
+        public ErrorService(IErrorRepository errorRepository, ILogUnitOfWork unitOfWork)
         {
             this._errorRepository = errorRepository;
             this._unitOfWork = unitOfWork;
