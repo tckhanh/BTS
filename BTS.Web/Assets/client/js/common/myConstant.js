@@ -22,6 +22,7 @@
     Data_CanEdit_Role: "Data_CanEdit",
     Data_CanReset_Role: "Data_CanReset",
     Data_CanLock_Role: "Data_CanLock",
+    Data_CanCancel_Role: "Data_CanCancel",
     Data_CanDelete_Role: "Data_CanDelete",
 
     Info_CanViewMap_Role: "Info_CanViewMap",
@@ -49,6 +50,7 @@
     Action_Edit: "Edit",
     Action_Delete: "Delete",
     Action_Lock: "Lock",
+    Action_Cancel: "Cancel",
     Action_Reset: "Reset",
     Action_ViewMap: "ViewMap",
     Action_Print: "Print"

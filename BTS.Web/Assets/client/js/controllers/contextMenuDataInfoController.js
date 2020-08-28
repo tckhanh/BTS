@@ -45,6 +45,20 @@
                         }
                     }
                 },
+                {
+                    title: "Thu hồi/Hủy bỏ GCNKĐ", cmd: myConstant.Action_Cancel, uiIcon: "ui-icon-cancel",
+                    disabled: function (event, ui) {
+                        // return `true` to disable, `"hide"` to remove entry:
+                        if (typeof homeController !== 'undefined' || typeof certificateController !== 'undefined') {
+                            if ($.inArray(myConstant.Data_CanCancel_Role, myArrayRoles) > -1) {
+                                return false;
+                            }
+                            return true;
+                        } else {
+                            return 'hide';
+                        }
+                    }
+                },
                 { title: "----" },
                 {
                     title: "Xem trên bản đồ", cmd: myConstant.Action_ViewMap, uiIcon: " ui-icon-circle-zoomin",
@@ -112,7 +126,7 @@
                 // Optionally return false, to prevent opening the menu now
             },
             select: function (event, ui) {
-                $('#MyDataTable tbody tr').on('click', addinController.doContextAction(ui.cmd, ui.target.closest('tr').data('id'), ui.target.parent().data('long'), ui.target.parent().data('lat')));
+                $('#MyDataTable tbody tr').on('click', addinController.doContextAction(ui.cmd, ui.target.closest('tr').data('id'), ui.target.closest('tr').data('long'), ui.target.closest('tr').data('lat')));
                 //var m = "clicked: " + ui.target.text();
                 //window.console && console.log(m) || alert(m);
                 return true;

@@ -8,7 +8,7 @@
 }
 
 @section headCSS{
-
+    <link href="~/Assets/client/css/canceledCertificate.css" rel="stylesheet" />
 }
 
 @section footerJS{
@@ -16,6 +16,7 @@
     <script src="~/Assets/client/js/controllers/contextMenuDataInfoController.js"></script>
     <script src="~/Assets/client/js/common/myMap.js"></script>
     <script src="~/Assets/client/js/controllers/certificateController.js"></script>
+    <script src="~/Assets/client/js/controllers/canceledCertificateController.js"></script>
     <script src="~/Assets/client/js/controllers/printCertificateController.js"></script>
     <script src="~/Assets/client/js/common/toExcel.js"></script>
 }
@@ -52,7 +53,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="clearfix"></div>
-                        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm", data_restUrl = Url.Action("Add", "Certificate") }))
                         {
                             @Html.AntiForgeryToken()
                             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -148,30 +149,41 @@
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IsNotExpired">
                                         Loại Giấy CNKĐ<span class="required"></span>
                                     </label>
+                                    <div class="col-md-1 col-sm-1 col-xs-offset-0">
+                                    </div>
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         <fieldset>
-
+                                            <label class="control-label">
+                                                <input type="radio" name="IsExpired" value="WaitSigned" />
+                                                Chờ phê duyệt
+                                            </label>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <fieldset>
                                             <label class="control-label">
                                                 <input type="radio" name="IsExpired" value="no" checked="checked" />
                                                 Còn hiệu lực
                                             </label>
                                         </fieldset>
                                     </div>
-                                    <div class="col-md-5 col-sm-5 col-xs-12">
-                                        <div class="form-group">
-                                            <fieldset>
-                                                <label class="control-label">
-                                                    <input type="radio" name="IsExpired" value="yes" />
-                                                    Hết hiệu lực
-                                                </label>
-
-                                            </fieldset>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div class="ln_solid"></div>
                             </div>
 
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <label class="control-label">
+                                                <input type="radio" name="IsExpired" value="yes" />
+                                                Hết hiệu lực
+                                            </label>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -254,7 +266,7 @@
                     <!-- /.col -->
                 </div>
             </div>
-            
+
             <div id="AddOrEditTab" class="tab-pane fade">@Html.Action("Add")</div>
 
             <div id="mapTab" class="tab-pane fade">
@@ -269,3 +281,5 @@
         </div>
     </section>
 </div>
+
+@{Html.RenderPartial("CancelForm");}

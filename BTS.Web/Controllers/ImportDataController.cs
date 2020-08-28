@@ -100,7 +100,11 @@ namespace BTS.Web.Areas.Controllers
                     catch (Exception e)
                     {
                         // Base Controller đã ghi Log Error rồi
-                        return Json(new { status = CommonConstants.Status_Error, message = e.Message + "\n" + e.StackTrace }, JsonRequestBehavior.AllowGet);
+                        //return Json(new { status = CommonConstants.Status_Error, message = e.Message}, JsonRequestBehavior.AllowGet);
+                        //return Json(new { status = CommonConstants.Status_Error, message = e.Message + "\n" + e.StackTrace }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = CommonConstants.Status_Error, message = e.Message }, JsonRequestBehavior.AllowGet);
+                        
+
                     }
                 }
             }
@@ -579,7 +583,7 @@ namespace BTS.Web.Areas.Controllers
 
                     if (String.IsNullOrEmpty(Item.OperatorID))
                     {
-                        return CommonConstants.Status_Error + ": Doanh nghiệp cung cấp dịch vụ chưa được khai báo";
+                        return CommonConstants.Status_Error + ": Doanh nghiệp cung cấp dịch vụ chưa được khai báo hoặc đã được khai báo với Mã khác";
                     }
 
                     Item.CreatedBy = User.Identity.Name;
@@ -611,7 +615,7 @@ namespace BTS.Web.Areas.Controllers
 
                 if (String.IsNullOrEmpty(Item.ApplicantID) || _importService.findApplicant(Item.ApplicantID) == null)
                 {
-                    return CommonConstants.Status_Error + ": Đơn vị nộp hồ sơ chưa được khai báo";
+                    return CommonConstants.Status_Error + ": Đơn vị nộp hồ sơ chưa được khai báo hoặc đã được khai báo với Mã khác";
                 }
 
 
@@ -1021,10 +1025,11 @@ namespace BTS.Web.Areas.Controllers
 
         private bool AddSubBtsInCert (Certificate Item)
         {
-            string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
+            string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsTechnologies, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
             SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
             SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
             SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
+            //SubBtsTechnologies = Item.SubBtsTechnologies.Split(new char[] { ';' });
             SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
             SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
             SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
@@ -1041,6 +1046,7 @@ namespace BTS.Web.Areas.Controllers
                 subBtsItem.AntenHeight = SubBtsAntenHeights[j];
                 subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
                 subBtsItem.Band = SubBtsBands[j];
+                //subBtsItem.Technology = (SubBtsTechnologies.Count() > j) ? SubBtsTechnologies[j] : "" ;
                 subBtsItem.Configuration = SubBtsConfigurations[j];
                 subBtsItem.Equipment = SubBtsEquipments[j];
                 if (subBtsItem.Equipment.IndexOf(' ') >= 0)
@@ -1123,7 +1129,9 @@ namespace BTS.Web.Areas.Controllers
 
             Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
 
-            Item.SubBtsCodes = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsCodes]?.ToString();
+            Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
+
+            //Item.SubBtsTechnologies = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsTechnologies]?.ToString();
 
             Item.SubBtsConfigurations = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsConfigurations]?.ToString();
 

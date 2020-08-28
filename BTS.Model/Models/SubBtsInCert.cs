@@ -36,8 +36,11 @@ namespace BTS.Model.Models
         [MaxLength(30)]
         public string PowerSum { get; set; }
 
-        [MaxLength(30)]
+        [MaxLength(60)]
         public string Band { get; set; }
+
+        [MaxLength(30)]
+        public string Technology { get; set; }
 
         [MaxLength(30)]
         public string AntenHeight { get; set; }

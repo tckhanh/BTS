@@ -414,8 +414,13 @@ namespace BTS.Web.Areas.Controllers
             try
             {
                 strReturn = function.Invoke(excelConnectionString, strReturn);
+                if (strReturn != CommonConstants.Status_Success)
+                {
+                    LogError(strReturn);
+                    throw new Exception(strReturn);
+                }
             }
-            catch (DbEntityValidationException ex)
+            catch (DbEntityValidationException ex)            
             {
                 foreach (var eve in ex.EntityValidationErrors)
                 {

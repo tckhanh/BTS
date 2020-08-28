@@ -72,6 +72,11 @@ namespace BTS.Web.Infrastructure.Extensions
             certificate.Verifier1 = btsCertificateVm.Verifier1;
             certificate.Verifier2 = btsCertificateVm.Verifier2;
 
+            //certificate.SubBtsTechnologies = btsCertificateVm.SubBtsTechnologies;
+
+            //certificate.IsCanceled = btsCertificateVm.IsCanceled;
+            //certificate.CanceledDate = btsCertificateVm.CanceledDate;
+            //certificate.CanceledReason = btsCertificateVm.CanceledReason;
         }
 
         public static void UpdateNoCertificate(this NoCertificate noCertificate, NoCertificateViewModel btsCertificateVm)
@@ -174,7 +179,7 @@ namespace BTS.Web.Infrastructure.Extensions
             appUser.EducationalField = appUserViewModel.EducationalField;
             appUser.EntryDate = appUserViewModel.EntryDate;
             appUser.EndDate = appUserViewModel.EndDate;
-            appUser.Locked = appUserViewModel.Locked;
+            //appUser.Locked = appUserViewModel.Locked;
             appUser.JobPositions = appUserViewModel.JobPositions;
             appUser.ImagePath = appUserViewModel.ImagePath;
             appUser.CityIDsScope = appUserViewModel.CityIDsScope;

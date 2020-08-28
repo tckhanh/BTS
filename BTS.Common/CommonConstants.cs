@@ -25,6 +25,7 @@
         public const string Action_Edit = "Edit";
         public const string Action_Delete = "Delete";
         public const string Action_Lock = "Lock";
+        public const string Action_Cancel = "Cancel";
         public const string Action_Reset = "Reset";
         public const string Action_ViewMap = "ViewMap";
         public const string Action_Print = "Print";
@@ -70,6 +71,7 @@
         public const string Data_CanEdit_Role = "Data_CanEdit";
         public const string Data_CanReset_Role = "Data_CanReset";
         public const string Data_CanLock_Role = "Data_CanLock";
+        public const string Data_CanCancel_Role = "Data_CanCancel";
         public const string Data_CanDelete_Role = "Data_CanDelete";
 
         public const string Info_CanViewMap_Role = "Info_CanViewMap";
@@ -103,6 +105,7 @@
         public const string Data_CanEdit_Description = "Sửa dữ liệu";
         public const string Data_CanReset_Description = "Thay đổi mật khẩu";
         public const string Data_CanLock_Description = "Khóa dữ liệu";
+        public const string Data_CanCancel_Description = "Hủy bỏ/Thu hồi Giấy CNKĐ";
         public const string Data_CanDelete_Description = "Xóa bỏ dữ liệu";
 
         public const string Info_CanView_Description = "Xem thông tin";
@@ -214,6 +217,7 @@
         public const string Sheet_Certificate_SubBtsConfigurations = "SubBtsConfigurations";
         public const string Sheet_Certificate_SubBtsPowerSums = "SubBtsPowerSums";
         public const string Sheet_Certificate_SubBtsBands = "SubBtsBands";
+        public const string Sheet_Certificate_SubBtsTechnologies = "SubBtsTechnologies";
         public const string Sheet_Certificate_SubBtsAntenHeights = "SubBtsAntenHeights";
         public const string Sheet_Certificate_IsPoleOnGround = "IsPoleOnGround";
         public const string Sheet_Certificate_IsSafeLimit = "IsSafeLimit";

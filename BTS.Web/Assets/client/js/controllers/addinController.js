@@ -156,6 +156,9 @@
             case myConstant.Action_Delete:
                 addinController.Delete(window.location.href + '/' + myConstant.Action_Delete + '/' + id);
                 break;
+            case myConstant.Action_Cancel:
+                addinController.Cancel(id);
+                break;
             case myConstant.Action_Lock:
                 addinController.Lock(window.location.href + '/' + myConstant.Action_Lock + '/' + id);
                 break;
@@ -172,7 +175,7 @@
                 //addinController.Print('http://' + window.location.host + '/PrintCertificate/Index/' + id);
                 if (typeof homeController !== 'undefined') {
                     homeController.printCertificate(id);
-                }else if (typeof certificateController !== 'undefined') {
+                } else if (typeof certificateController !== 'undefined') {
                     certificateController.printCertificate(id)
                 }
                 break;
@@ -308,6 +311,12 @@
                 }
             });
         }
+    },
+
+    Cancel: function (id) {
+        $("#certificateNum").val(id);
+        $("#canceledDate").val(moment().format('YYYY-MM-DD'));
+        canceledCertificateController.showDialog.dialog("open");
     },
 
     activatejQueryTable: function () {

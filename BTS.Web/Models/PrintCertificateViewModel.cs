@@ -100,9 +100,9 @@ namespace BTS.Web.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách công suất")]
         public string SubBtsPowerSums { get; set; }
 
-        [MaxLength(150)]
+        [MaxLength(256)]
         [Display(Name = "Danh sách băng tần của mỗi BTS")]
-        [StringLength(150, ErrorMessage = "Danh sách băng tần không quá 150 ký tự")]
+        [StringLength(256, ErrorMessage = "Danh sách băng tần không quá 256 ký tự")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách băng tần")]
         public string SubBtsBands { get; set; }
 

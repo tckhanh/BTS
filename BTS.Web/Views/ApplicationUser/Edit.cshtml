@@ -45,8 +45,9 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Locked, new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-                            @Html.EditorFor(model => model.Locked, new { @class = "form-control" })
+                            @Html.CheckBoxFor(model => model.Locked, new { @class = "form-control", disabled = "disabled" })
                             @Html.ValidationMessageFor(model => model.Locked)
+                            @Html.HiddenFor(model => model.Locked)
                         </div>
                     </div>
 

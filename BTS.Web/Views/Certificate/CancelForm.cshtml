@@ -1,0 +1,20 @@
+﻿<div id="dialog-form" title="Thu hồi/ Hủy bỏ Giấy CNKĐ">
+    <h2 class="BTS-title">THU HỒI/ HỦY BỎ GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h2>
+    <p class="validateTips"></p>
+
+    <form id="popupForm">
+        <fieldset>
+            <label class="control-label" for="certificateNum">Số Giấy CNKĐ bị Thu hồi/ Hủy bỏ:</label>
+            <input type="text" name="certificateNum" id="certificateNum" value="XXXXXXXXXXXX" class="form-control text ui-widget-content ui-corner-all" disabled>
+
+            <label class="control-label" for="canceledReason">Lý do bị Thu hồi/ Hủy bỏ:</label>
+            <textarea type="text" data-val="true" data-val-length="Lý do bị Hủy không quá 150 ký tự" data-val-length-max="150" data-val-required="Yêu cầu nhập Lý do bị Hủy" name="canceledReason" id="canceledReason" rows="3" class="form-control text ui-widget-content ui-corner-all"></textarea>
+            <span class="field-validation-valid" data-valmsg-for="canceledReason" data-valmsg-replace="true"></span>
+            <label class="control-label" for="canceledDate">Ngày Giấy CNKĐ bị Thu hồi/ Hủy bỏ</label>
+            <input data-val="true" data-val-date="Ngày không hợp lệ." data-val-required="Yêu cầu nhập ngày hợp lệ." type="date" id="canceledDate" name="canceledDate" value="" class="form-control text ui-widget-content ui-corner-all">
+            <span class="field-validation-valid" data-valmsg-for="canceledDate" data-valmsg-replace="true"></span>
+            <!-- Allow form submission with keyboard without duplicating the dialog button -->
+            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+    </form>
+</div>

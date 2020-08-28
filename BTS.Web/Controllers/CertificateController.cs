@@ -7,7 +7,6 @@ using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.SessionState;
 
@@ -23,11 +22,13 @@ namespace BTS.Web.Areas.Controllers
         private ICityService _cityService;
         private IInCaseOfService _inCaseOfService;
         private ILabService _labService;
+        private ISubBtsInCertService _subBtsInCertService;
 
 
-        public CertificateController(ICertificateService certificateService, IOperatorService operatorService, IProfileService profileService, ICityService cityService, IInCaseOfService inCaseOfService, ILabService labService, IErrorService errorService) : base(errorService)
+        public CertificateController(ICertificateService certificateService, ISubBtsInCertService subBtsInCertService, IOperatorService operatorService, IProfileService profileService, ICityService cityService, IInCaseOfService inCaseOfService, ILabService labService, IErrorService errorService) : base(errorService)
         {
             _certificateService = certificateService;
+            _subBtsInCertService = subBtsInCertService;
             _operatorService = operatorService;
             _profileService = profileService;
             _cityService = cityService;
@@ -50,6 +51,76 @@ namespace BTS.Web.Areas.Controllers
             return View();
         }
 
+        
+        public JsonResult ConvertSubBtsBands___()
+        {
+            int countItem;
+            Dictionary<string, string> BandList = new Dictionary<string, string>();
+            BandList.Add("G900 & G1800", "900 & 1800 MHz (2G)");
+            BandList.Add("G1800 & U2100", "1800 & 2100 MHz (2G-3G)");
+            BandList.Add("G900", "900 MHz (2G)");
+            BandList.Add("U900", "900 MHz (3G)");
+            BandList.Add("G1800", "1800 MHz (2G)");
+            BandList.Add("U1800", "1800 MHz (3G)");
+            BandList.Add("L1800", "1800 MHz (4G)");
+            BandList.Add("U2100", "2100 MHz (3G)");
+            //BandList.Add("900 & 1800", "900 & 1800 MHz (2G)");
+            //BandList.Add("900", "900 MHz (2G)");
+            //BandList.Add("1800", "1800 MHz (2G)");
+            //BandList.Add("2100", "2100 MHz (3G)");
+
+            IEnumerable<Certificate> Items;
+            Items = _certificateService.getAll(out countItem, false).ToList();
+            string newSubBtsBands = "";
+            foreach (var Item in Items)
+            {
+                newSubBtsBands = Item.SubBtsBandsOld;
+                foreach (var itemBand in BandList)
+                {
+                    newSubBtsBands = newSubBtsBands.Replace(itemBand.Key, itemBand.Value);
+                }
+                Item.SubBtsBands = newSubBtsBands;
+            }
+            _certificateService.SaveChanges();
+
+
+            return Json(new { status = CommonConstants.Status_Success, message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+            //return Json(new { status = CommonConstants.Status_Error, message = "Không có dữ liệu" }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ConvertSubBtsInCertBands()
+        {
+            Dictionary<string, string> BandList = new Dictionary<string, string>();
+            BandList.Add("G900 & G1800", "900 & 1800 MHz (2G)");
+            BandList.Add("900 & 1800", "900 & 1800 MHz (2G)");
+            BandList.Add("G1800 & U2100", "1800 & 2100 MHz (2G-3G)");
+            BandList.Add("G900", "900 MHz (2G)");
+            BandList.Add("U900", "900 MHz (3G)");
+            BandList.Add("G1800", "1800 MHz (2G)");
+            BandList.Add("U1800", "1800 MHz (3G)");
+            BandList.Add("L1800", "1800 MHz (4G)");
+            BandList.Add("U2100", "2100 MHz (3G)");
+            BandList.Add("900", "900 MHz (2G)");
+            BandList.Add("1800", "1800 MHz (2G)");
+            BandList.Add("2100", "2100 MHz (3G)");
+
+            IEnumerable<SubBtsInCert> SubBtsItems;
+            SubBtsItems = _subBtsInCertService.getAll().ToList();
+            string newSubBtsInCertBand = "";
+            foreach (var SubBtsItem in SubBtsItems)
+            {
+                newSubBtsInCertBand = SubBtsItem.Band;
+                foreach (var itemBand in BandList)
+                {
+                    newSubBtsInCertBand = newSubBtsInCertBand.Replace(itemBand.Key, itemBand.Value);
+                }
+                SubBtsItem.Band = newSubBtsInCertBand;
+            }
+            _subBtsInCertService.Save();
+
+            return Json(new { status = CommonConstants.Status_Success, message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+            //return Json(new { status = CommonConstants.Status_Error, message = "Không có dữ liệu" }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -655,6 +726,49 @@ namespace BTS.Web.Areas.Controllers
                         _certificateService.SaveChanges();
                     }
                     return Json(new { status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
+                }
+                else
+                {
+                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanCancel_Role)]
+        public ActionResult Cancel()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    string CertificateNum = Request.Form.GetValues("CertificateNum")?.FirstOrDefault();
+                    string CanceledReason = Request.Form.GetValues("canceledReason")?.FirstOrDefault();
+                    DateTime CanceledDate;
+
+                    if (!DateTime.TryParse(Request.Form.GetValues("CanceledDate")?.FirstOrDefault(), out CanceledDate))
+                    {
+                        Console.Write("Loi chuyen doi kieu");
+                    }
+
+                    Certificate editItem = _certificateService.getByID(CertificateNum);
+                    editItem.IsCanceled = true;
+                    editItem.CanceledReason = CanceledReason;
+                    editItem.CanceledDate = CanceledDate;
+
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _certificateService.Update(editItem);
+                    _certificateService.SaveChanges();
+
+                    return Json(new { status = CommonConstants.Status_Success, message = "Thu hồi/ Hủy bỏ Giấy CNKĐ thành công" }, JsonRequestBehavior.AllowGet);
                     // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                 }
                 else

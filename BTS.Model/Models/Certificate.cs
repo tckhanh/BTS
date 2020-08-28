@@ -90,9 +90,14 @@ namespace BTS.Model.Models
         [Required]
         public string SubBtsPowerSums { get; set; }
 
-        [MaxLength(150)]
+        [MaxLength(256)]
         [Required]
         public string SubBtsBands { get; set; }
+
+        [MaxLength(256)]
+        [Required]
+        public string SubBtsBandsOld { get; set; }
+
 
         [MaxLength(150)]
         [Required]
@@ -132,6 +137,17 @@ namespace BTS.Model.Models
 
         [MaxLength(50)]
         public string Verifier2 { get; set; }
+
+        //[MaxLength(150)]
+        //public string SubBtsTechnologies { get; set; }
+
+        public bool IsCanceled { get; set; }
+
+        [Column(TypeName = "date")]
+        public DateTime? CanceledDate { get; set; }
+
+        [MaxLength(150)]
+        public string CanceledReason { get; set; }
 
 
         [ForeignKey("ProfileID")]

@@ -112,7 +112,7 @@
                 // Optionally return false, to prevent opening the menu now
             },
             select: function (event, ui) {
-                $('#MyDataTable tbody tr').on('click', commonController.doContextAction(ui.cmd, ui.target.parent().data('id')));
+                $('#MyDataTable tbody tr').on('click', commonController.doContextAction(ui.cmd, ui.target.closest('tr').data('id')));
                 //var m = "clicked: " + ui.target.text();
                 //window.console && console.log(m) || alert(m);
                 return true;

@@ -136,10 +136,10 @@ namespace BTS.Service
         private IBtsRepository _btsRepository;
         private ICertificateRepository _certificateRepository;
         private INoCertificateRepository _noCertificateRepository;
-        private ISubBTSinCertRepository _subBTSinCertRepository;
+        private ISubBtsInCertRepository _subBTSinCertRepository;
         private IUnitOfWork _unitOfWork;
 
-        public ImportService(IInCaseOfRepository inCaseOfRepository, ILabRepository labRepository, ICityRepository cityRepository, IDistrictRepository districtRepository, IWardRepository wardRepository, IEquipmentRepository equipmentRepository, IOperatorRepository operatorRepository, IApplicantRepository applicantRepository, IProfileRepository profileRepository, IBtsRepository btsRepository, ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository, ISubBTSinCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
+        public ImportService(IInCaseOfRepository inCaseOfRepository, ILabRepository labRepository, ICityRepository cityRepository, IDistrictRepository districtRepository, IWardRepository wardRepository, IEquipmentRepository equipmentRepository, IOperatorRepository operatorRepository, IApplicantRepository applicantRepository, IProfileRepository profileRepository, IBtsRepository btsRepository, ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository, ISubBtsInCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
         {
             _inCaseOfRepository = inCaseOfRepository;
             _labRepository = labRepository;

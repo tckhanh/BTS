@@ -92,6 +92,7 @@ namespace BTS.Data
                 CommonConstants.Data_CanEdit_Role,
                 CommonConstants.Data_CanReset_Role,
                 CommonConstants.Data_CanLock_Role,
+                CommonConstants.Data_CanCancel_Role,
                 CommonConstants.Info_CanViewMap_Role,
                 CommonConstants.Info_CanViewDetail_Role,
                 CommonConstants.Info_CanViewChart_Role,
@@ -129,7 +130,8 @@ namespace BTS.Data
                 CommonConstants.Data_CanImport_Role,
                 CommonConstants.Data_CanEdit_Role,
                 CommonConstants.Data_CanReset_Role,
-                CommonConstants.Data_CanLock_Role
+                CommonConstants.Data_CanLock_Role,
+                CommonConstants.Data_CanCancel_Role,
             };
                 foreach (string roleItem in roleList)
                 {
@@ -398,6 +400,9 @@ namespace BTS.Data
                         CommonConstants.Data_CanLock_Role,
                         CommonConstants.Data_CanLock_Description },
                     new string[]{
+                        CommonConstants.Data_CanCancel_Role,
+                        CommonConstants.Data_CanCancel_Description },
+                    new string[]{
                         CommonConstants.Data_CanDelete_Role,
                         CommonConstants.Data_CanDelete_Description },
 
@@ -586,6 +591,9 @@ namespace BTS.Data
                     new string[]{
                         CommonConstants.Data_CanLock_Role,
                         CommonConstants.Data_CanLock_Description },
+                    new string[]{
+                        CommonConstants.Data_CanCancel_Role,
+                        CommonConstants.Data_CanCancel_Description },
                     new string[]{
                         CommonConstants.Data_CanDelete_Role,
                         CommonConstants.Data_CanDelete_Description },

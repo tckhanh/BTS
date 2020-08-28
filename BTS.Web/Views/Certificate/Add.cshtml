@@ -206,16 +206,6 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.SubBtsConfigurations, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                @Html.TextAreaFor(model => model.SubBtsConfigurations, new { @class = "form-control", rows = 3 })
-                                @Html.ValidationMessageFor(model => model.SubBtsConfigurations)
-                            </div>
-                        </div>
-                        <div class="ln_solid"></div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
                             @Html.LabelFor(model => model.SubBtsBands, new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
                                 @Html.TextAreaFor(model => model.SubBtsBands, new { @class = "form-control", rows = 3 })
@@ -224,7 +214,36 @@
                         </div>
                         <div class="ln_solid"></div>
                     </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsConfigurations, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsConfigurations, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsConfigurations)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
                 </div>
+
+                @*<div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubBtsTechnologies, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.SubBtsTechnologies, new { @class = "form-control", rows = 3 })
+                                @Html.ValidationMessageFor(model => model.SubBtsTechnologies)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>*@
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-6 col-sm-6 col-xs-12">

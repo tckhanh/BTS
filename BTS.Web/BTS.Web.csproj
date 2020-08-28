@@ -577,6 +577,7 @@
     <Content Include="Assets\admin\img\user8-128x128.jpg" />
     <Content Include="Assets\client\css\dtree.css" />
     <Content Include="Assets\client\css\maxibox.css" />
+    <Content Include="Assets\client\css\canceledCertificate.css" />
     <Content Include="Assets\client\Images\hyperlink.png" />
     <Content Include="Assets\client\Images\line.png" />
     <Content Include="Assets\client\Images\logoweb.png" />
@@ -594,7 +595,7 @@
     <Content Include="Assets\client\Images\Tree\plusbottom.gif" />
     <Content Include="Assets\client\Images\Tree\report.gif" />
     <Content Include="Assets\client\css\printCertificate.css" />
-    <Content Include="Assets\client\js\common\mainWindow.js" />
+    <Content Include="Assets\client\js\common\myBrowserTab.js" />
     <Content Include="Assets\client\js\common\maxibox.js" />
     <Content Include="Assets\client\js\common\message.js" />
     <Content Include="Assets\client\js\common\myMap.js" />
@@ -11287,7 +11288,7 @@
     <Content Include="Assets\client\js\controllers\commonController.js" />
     <Content Include="Assets\client\js\controllers\certificateController_v1.js" />
     <Content Include="Assets\client\js\controllers\certificateController.js" />
-    <Content Include="Assets\client\js\controllers\certificate.js" />
+    <Content Include="Assets\client\js\controllers\canceledCertificateController.js" />
     <Content Include="Assets\client\js\controllers\checkController.js" />
     <Content Include="Assets\client\js\controllers\contact.js" />
     <Content Include="Assets\client\js\controllers\home.js" />
@@ -11566,6 +11567,7 @@
     <Content Include="Views\Shared\Layouts_PrintCertificate.cshtml" />
     <Content Include="Views\Shared\LeftSideBar.cshtml" />
     <Content Include="Views\Shared\RightSideBar.cshtml" />
+    <Content Include="Views\Certificate\CancelForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />
@@ -12738,7 +12740,6 @@
     <Content Include="Views\Certificate\Add.cshtml" />
     <Content Include="Views\Certificate\Detail.cshtml" />
     <Content Include="Views\Certificate\Edit.cshtml" />
-    <Content Include="Views\Certificate\ViewAll.cshtml" />
     <Content Include="Views\Recovery\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\PrintCertificate\Index.cshtml" />

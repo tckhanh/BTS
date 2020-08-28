@@ -50,8 +50,12 @@ namespace BTS.Web.Models
         public string PowerSum { get; set; }
 
         [Display(Name = "Băng tần")]
-        [StringLength(30, ErrorMessage = "Băng tần không quá 30 ký tự")]
+        [StringLength(60, ErrorMessage = "Băng tần không quá 60 ký tự")]
         public string Band { get; set; }
+
+        [Display(Name = "Công nghệ")]
+        [StringLength(30, ErrorMessage = "Công nghệ không quá 30 ký tự")]
+        public string Technology { get; set; }
 
         [Display(Name = "Độ cao Anten")]
         [StringLength(30, ErrorMessage = "Độ cao Anten không quá 30 ký tự")]

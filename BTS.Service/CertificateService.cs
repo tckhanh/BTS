@@ -63,10 +63,10 @@ namespace BTS.Service
     {
         private ICertificateRepository _CertificateRepository;
         private INoCertificateRepository _NoCertificateRepository;
-        private ISubBTSinCertRepository _SubBTSinCertRepository;
+        private ISubBtsInCertRepository _SubBTSinCertRepository;
         private IUnitOfWork _unitOfWork;
 
-        public CertificateService(ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository, ISubBTSinCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
+        public CertificateService(ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository, ISubBtsInCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
         {
             _CertificateRepository = certificateRepository;
             _NoCertificateRepository = noCertificateRepository;

@@ -62,11 +62,11 @@ namespace BTS.Service
     public class StatisticService : IStatisticService
     {
         private ICertificateRepository _certificateRepository;
-        private ISubBTSinCertRepository _subBTSinCertRepository;
+        private ISubBtsInCertRepository _subBTSinCertRepository;
         private IOperatorRepository _operatorRepository;
         private ICityRepository _cityRepository;
 
-        public StatisticService(ICertificateRepository certificateRepository, IOperatorRepository operatorRepository, ICityRepository cityRepository, ISubBTSinCertRepository subBTSinCertRepository)
+        public StatisticService(ICertificateRepository certificateRepository, IOperatorRepository operatorRepository, ICityRepository cityRepository, ISubBtsInCertRepository subBTSinCertRepository)
         {
             _certificateRepository = certificateRepository;
             _subBTSinCertRepository = subBTSinCertRepository;

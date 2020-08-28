@@ -135,11 +135,17 @@ namespace BTS.Web.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách công suất")]
         public string SubBtsPowerSums { get; set; }
 
-        [MaxLength(150)]
+        [MaxLength(256)]
         [Display(Name = "Danh sách băng tần của mỗi BTS")]
-        [StringLength(150, ErrorMessage = "Danh sách băng tần không quá 150 ký tự")]
+        [StringLength(256, ErrorMessage = "Danh sách băng tần không quá 256 ký tự")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách băng tần")]
         public string SubBtsBands { get; set; }
+
+        [MaxLength(256)]
+        [Display(Name = "Danh sách băng tần cũ của mỗi BTS")]
+        [StringLength(256, ErrorMessage = "Danh sách băng tần cũ không quá 256 ký tự")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách băng tần cũ")]
+        public string SubBtsBandsOld { get; set; }
 
         [MaxLength(150)]
         [Display(Name = "Danh sách độ cao Anten của mỗi BTS")]
@@ -204,6 +210,23 @@ namespace BTS.Web.Models
         [Display(Name = "Chuyên viên Kiểm định 2")]
         [StringLength(50, ErrorMessage = "Tên Chuyên viên Kiểm định 2 không quá 50 ký tự")]
         public string Verifier2 { get; set; }
+
+        //[Display(Name = "Danh sách công nghệ của mỗi BTS")]
+        //[StringLength(150, ErrorMessage = "Danh sách công nghệ của mỗi BTS không quá 150 ký tự")]
+        //public string SubBtsTechnologies { get; set; }
+
+        [Display(Name = "Giấy CNKĐ bị thu hồi/hủy bỏ")]
+        public bool IsCanceled { get; set; }
+
+        [Display(Name = "Ngày thu hồi/hủy bỏ")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+
+        public DateTime? CanceledDate { get; set; }
+
+        [Display(Name = "Lý do Thu hồi/hủy bỏ Giấy CNKĐ")]
+        [StringLength(150, ErrorMessage = "Lý do Thu hồi/hủy bỏ Giấy CNKĐ không quá 150 ký tự")]
+        public string CanceledReason { get; set; }
 
         [Display(Name = "Thuộc hồ sơ KĐ")]
         public ICollection<SelectListItem> ProfileList { get; set; }
