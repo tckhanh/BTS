@@ -16,7 +16,7 @@
     <script src="~/Assets/client/js/controllers/contextMenuDataInfoController.js"></script>
     <script src="~/Assets/client/js/common/myMap.js"></script>
     <script src="~/Assets/client/js/controllers/certificateController.js"></script>
-    <script src="~/Assets/client/js/controllers/canceledCertificateController.js"></script>
+    <script src="~/Assets/client/js/controllers/certificatecanceledController.js"></script>
     <script src="~/Assets/client/js/controllers/printCertificateController.js"></script>
     <script src="~/Assets/client/js/common/toExcel.js"></script>
 }
@@ -53,7 +53,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="clearfix"></div>
-                        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm", data_restUrl = Url.Action("Add", "Certificate") }))
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm", data_resetUrl = Url.Action("Add", "Certificate") }))
                         {
                             @Html.AntiForgeryToken()
                             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -146,7 +146,7 @@
 
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IsNotExpired">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CertificateStatus">
                                         Loại Giấy CNKĐ<span class="required"></span>
                                     </label>
                                     <div class="col-md-1 col-sm-1 col-xs-offset-0">
@@ -154,7 +154,7 @@
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         <fieldset>
                                             <label class="control-label">
-                                                <input type="radio" name="IsExpired" value="WaitSigned" />
+                                                <input type="radio" name="CertificateStatus" value = @CommonConstants.CertStatus_WaitToSign />
                                                 Chờ phê duyệt
                                             </label>
                                         </fieldset>
@@ -162,7 +162,7 @@
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         <fieldset>
                                             <label class="control-label">
-                                                <input type="radio" name="IsExpired" value="no" checked="checked" />
+                                                <input type="radio" name="CertificateStatus" value= @CommonConstants.CertStatus_Valid checked="checked" />
                                                 Còn hiệu lực
                                             </label>
                                         </fieldset>
@@ -175,7 +175,7 @@
                                     <div class="form-group">
                                         <fieldset>
                                             <label class="control-label">
-                                                <input type="radio" name="IsExpired" value="yes" />
+                                                <input type="radio" name="CertificateStatus" value=@CommonConstants.CertStatus_Expired  />
                                                 Hết hiệu lực
                                             </label>
                                         </fieldset>

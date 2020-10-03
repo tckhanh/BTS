@@ -71,16 +71,13 @@ namespace BTS.Model.Models
         [Required]
         public string SubBtsOperatorIDs { get; set; }
 
-        [MaxLength(255)]
+        [MaxLength(512)]
         [Required]
         public string SubBtsEquipments { get; set; }
 
         [MaxLength(150)]
         [Required]
         public string SubBtsAntenNums { get; set; }
-
-        [MaxLength(50)]
-        public string SharedAntens { get; set; }
 
         [MaxLength(150)]
         [Required]
@@ -95,7 +92,6 @@ namespace BTS.Model.Models
         public string SubBtsBands { get; set; }
 
         [MaxLength(256)]
-        [Required]
         public string SubBtsBandsOld { get; set; }
 
 
@@ -141,6 +137,7 @@ namespace BTS.Model.Models
         //[MaxLength(150)]
         //public string SubBtsTechnologies { get; set; }
 
+        public bool IsSigned { get; set; }
         public bool IsCanceled { get; set; }
 
         [Column(TypeName = "date")]

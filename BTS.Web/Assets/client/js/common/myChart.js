@@ -627,9 +627,12 @@ var myChart = {
                     };
 
                     var lineChartCanvas = $(ChartId);
-                    var lineChart = new Chart(lineChartCanvas, config);
+                    var lineChart = new Chart(lineChartCanvas, config);                    
                     var colorNames = Object.keys(myChart.chartColors);
                     var firstColorIndex = myChart.randomize(colorNames.length);
+
+                    //lineChart.destroy();
+                    //myChart.removeData(lineChart)
 
                     for (var i in response.chartData) {
                         if (i > 1) {
@@ -1132,6 +1135,22 @@ var myChart = {
             backgroundColor: Color(color).alpha(0.2).rgbString(),
             pointBackgroundColor: color,
             data: data
+        });
+        chart.update();
+    },
+
+    addData: function (chart, label, data) {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(data);
+        });
+        chart.update();
+    },
+
+    removeData: function (chart) {
+        chart.data.labels.pop();
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.pop();
         });
         chart.update();
     },

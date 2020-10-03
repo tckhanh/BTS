@@ -46,12 +46,88 @@
                     }
                 },
                 {
+                    title: "Phê duyệt ban hành", cmd: myConstant.Action_Sign, uiIcon: "ui-icon-circle-check",
+                    disabled: function (event, ui) {
+                        // return `true` to disable, `"hide"` to remove entry:
+                        if (typeof homeController !== 'undefined' || typeof certificateController !== 'undefined') {
+                            if ($.inArray(myConstant.Data_CanSign_Role, myArrayRoles) > -1) {
+                                if ($('input[name=CertificateStatus]:checked').val() == myConstant.CertStatus_WaitToSign)
+                                    return false;
+                            }
+                            return true;
+                        } else {
+                            return 'hide';
+                        }
+                    }
+                },               
+                {
                     title: "Thu hồi/Hủy bỏ GCNKĐ", cmd: myConstant.Action_Cancel, uiIcon: "ui-icon-cancel",
                     disabled: function (event, ui) {
                         // return `true` to disable, `"hide"` to remove entry:
                         if (typeof homeController !== 'undefined' || typeof certificateController !== 'undefined') {
                             if ($.inArray(myConstant.Data_CanCancel_Role, myArrayRoles) > -1) {
-                                return false;
+                                if ($('input[name=CertificateStatus]:checked').val() == myConstant.CertStatus_Valid || $('input[name=CertificateStatus]:checked').val() == myConstant.CertStatus_WaitToSign)
+                                    return false;
+                            }
+                            return true;
+                        } else {
+                            return 'hide';
+                        }
+                    }
+                },
+                {
+                    title: "Phê duyệt ban hành tất cả", cmd: myConstant.Action_SignAll, uiIcon: "ui-icon-circle-check",
+                    disabled: function (event, ui) {
+                        // return `true` to disable, `"hide"` to remove entry:
+                        if (typeof homeController !== 'undefined' || typeof certificateController !== 'undefined') {
+                            if ($.inArray(myConstant.Data_CanSign_Role, myArrayRoles) > -1) {
+                                if ($('input[name=CertificateStatus]:checked').val() == myConstant.CertStatus_WaitToSign)
+                                    return false;
+                            }
+                            return true;
+                        } else {
+                            return 'hide';
+                        }
+                    }
+                },
+                {
+                    title: "Phê duyệt ban hành", cmd: myConstant.Action_Sign_NoCert, uiIcon: "ui-icon-circle-check",
+                    disabled: function (event, ui) {
+                        // return `true` to disable, `"hide"` to remove entry:
+                        if (typeof noCertificateController !== 'undefined') {
+                            if ($.inArray(myConstant.Data_CanSign_Role, myArrayRoles) > -1) {
+                                if ($('input[name=CertificateStatus]:checked').val() == myConstant.CertStatus_WaitToSign)
+                                    return false;
+                            }
+                            return true;
+                        } else {
+                            return 'hide';
+                        }
+                    }
+                },                
+                {
+                    title: "Thu hồi/Hủy bỏ trạm BTS", cmd: myConstant.Action_Cancel_NoCert, uiIcon: "ui-icon-cancel",
+                    disabled: function (event, ui) {
+                        // return `true` to disable, `"hide"` to remove entry:
+                        if (typeof noCertificateController !== 'undefined') {
+                            if ($.inArray(myConstant.Data_CanCancel_Role, myArrayRoles) > -1) {
+                                if ($('input[name=CertificateStatus]:checked').val() == myConstant.CertStatus_Valid || $('input[name=CertificateStatus]:checked').val() == myConstant.CertStatus_WaitToSign)
+                                    return false;
+                            }
+                            return true;
+                        } else {
+                            return 'hide';
+                        }
+                    }
+                },
+                {
+                    title: "Phê duyệt ban hành tất cả", cmd: myConstant.Action_SignAll_NoCert, uiIcon: "ui-icon-circle-check",
+                    disabled: function (event, ui) {
+                        // return `true` to disable, `"hide"` to remove entry:
+                        if (typeof noCertificateController !== 'undefined') {
+                            if ($.inArray(myConstant.Data_CanSign_Role, myArrayRoles) > -1) {
+                                if ($('input[name=CertificateStatus]:checked').val() == myConstant.CertStatus_WaitToSign)
+                                    return false;
                             }
                             return true;
                         } else {

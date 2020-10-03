@@ -40,6 +40,10 @@ namespace BTS.Service
 
         IEnumerable<Certificate> getCertificateByCertificateNum(string CertificateNum, string[] includes = null);
 
+        IEnumerable<Certificate> getCertificateWaitToSign(string[] includes = null);
+
+        IEnumerable<Certificate> getCertificateExpired(string[] includes = null);
+
         IEnumerable<Certificate> getCertificateByCity(string cityID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10);
 
         IEnumerable<Certificate> getCertificateByCity(string cityID, string[] includes = null);
@@ -205,6 +209,16 @@ namespace BTS.Service
         public IEnumerable<Certificate> getCertificateByCertificateNum(string CertificateNum, string[] includes = null)
         {
             return _CertificateRepository.GetMulti(x => x.Id.ToUpper().Contains(CertificateNum), includes);
+        }
+
+        public IEnumerable<Certificate> getCertificateWaitToSign(string[] includes = null)
+        {
+            return _CertificateRepository.GetMulti(x => x.IsSigned == false && x.IsCanceled == false, includes);
+        }
+
+        public IEnumerable<Certificate> getCertificateExpired(string[] includes = null)
+        {
+            return _CertificateRepository.GetMulti(x => x.IsCanceled == true || x.ExpiredDate < DateTime.Today, includes);
         }
 
 

@@ -168,7 +168,7 @@ namespace BTS.Data.Repository
                                                                   join oper in DbContext.Operators
                                                                   on certificate.OperatorID equals oper.Id
                                                                   where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new { Year = certificate.IssuedDate.Year.ToString(), OperatorID = oper.RootId } into ItemGroup
+                                                                  group certificate by new { Year = certificate.IssuedDate.Year.ToString(), OperatorID = oper.Id } into ItemGroup
                                                                   select new StatIssuedCerByOperatorYearVM()
                                                                   {
                                                                       Year = ItemGroup.Key.Year,
@@ -183,7 +183,7 @@ namespace BTS.Data.Repository
                                                                   join oper in DbContext.Operators
                                                                   on certificate.OperatorID equals oper.Id
                                                                   where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new { Year = certificate.IssuedDate.Year.ToString(), OperatorID = oper.RootId } into ItemGroup
+                                                                  group certificate by new { Year = certificate.IssuedDate.Year.ToString(), OperatorID = oper.Id } into ItemGroup
                                                                   select new StatIssuedCerByOperatorYearVM()
                                                                   {
                                                                       Year = ItemGroup.Key.Year,
@@ -238,7 +238,7 @@ namespace BTS.Data.Repository
                                                                   join city in DbContext.Cities on certificate.CityID equals city.Id
                                                                   join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                   where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new { Area = city.Area, OperatorID = oper.RootId } into ItemGroup
+                                                                  group certificate by new { Area = city.Area, OperatorID = oper.Id } into ItemGroup
                                                                   select new StatIssuedCerByOperatorAreaVM()
                                                                   {
                                                                       Area = ItemGroup.Key.Area,
@@ -253,7 +253,7 @@ namespace BTS.Data.Repository
                                                                   join city in DbContext.Cities on certificate.CityID equals city.Id
                                                                   join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                   where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new { Area = city.Area, OperatorID = oper.RootId } into ItemGroup
+                                                                  group certificate by new { Area = city.Area, OperatorID = oper.Id } into ItemGroup
                                                                   select new StatIssuedCerByOperatorAreaVM()
                                                                   {
                                                                       Area = ItemGroup.Key.Area,
@@ -271,11 +271,11 @@ namespace BTS.Data.Repository
                                                                          join city in DbContext.Cities on certificate.CityID equals city.Id
                                                                          join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                          where ((certificate.ExpiredDate >= DateTime.Now) && (Area == CommonConstants.SelectAll || city.Area == Area))
-                                                                         group certificate by new { oper.RootId, certificate.CityID } into ItemGroup
+                                                                         group certificate by new { oper.Id, certificate.CityID } into ItemGroup
                                                                          select new StatNearExpiredInYearCerByOperatorCityVM()
                                                                          {
                                                                              CityID = ItemGroup.Key.CityID,
-                                                                             OperatorID = ItemGroup.Key.RootId,
+                                                                             OperatorID = ItemGroup.Key.Id,
                                                                              NearExpiredInYearCertificates = ItemGroup.Where(x => x.ExpiredDate.Year == DateTime.Now.Year && x.ExpiredDate >= DateTime.Now).Count()
                                                                          };
             return query;
@@ -288,11 +288,11 @@ namespace BTS.Data.Repository
                                                                join city in DbContext.Cities on certificate.CityID equals city.Id
                                                                join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                where ((certificate.ExpiredDate < DateTime.Now) && (Area == CommonConstants.SelectAll || city.Area == Area))
-                                                               group certificate by new { oper.RootId, certificate.CityID } into ItemGroup
+                                                               group certificate by new { oper.Id, certificate.CityID } into ItemGroup
                                                                select new StatExpiredCerByOperatorCityVM()
                                                                {
                                                                    CityID = ItemGroup.Key.CityID,
-                                                                   OperatorID = ItemGroup.Key.RootId,
+                                                                   OperatorID = ItemGroup.Key.Id,
                                                                    ExpiredCertificates = ItemGroup.Where(x => x.ExpiredDate < DateTime.Now).Count()
                                                                };
             return query;
@@ -308,7 +308,7 @@ namespace BTS.Data.Repository
                                                                   join city in DbContext.Cities on certificate.CityID equals city.Id
                                                                   join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                   where ((certificate.ExpiredDate >= DateTime.Now) && (certificate.ExpiredDate.Year == DateTime.Now.Year) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new { Area = city.Area, OperatorID = oper.RootId } into ItemGroup
+                                                                  group certificate by new { Area = city.Area, OperatorID = oper.Id } into ItemGroup
                                                                   select new StatIssuedCerByOperatorAreaVM()
                                                                   {
                                                                       Area = ItemGroup.Key.Area,
@@ -323,7 +323,7 @@ namespace BTS.Data.Repository
                                                                   join city in DbContext.Cities on certificate.CityID equals city.Id
                                                                   join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                   where ((certificate.ExpiredDate.Year == DateTime.Now.Year) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                  group certificate by new { Area = city.Area, OperatorID = oper.RootId } into ItemGroup
+                                                                  group certificate by new { Area = city.Area, OperatorID = oper.Id } into ItemGroup
                                                                   select new StatIssuedCerByOperatorAreaVM()
                                                                   {
                                                                       Area = ItemGroup.Key.Area,
@@ -341,7 +341,7 @@ namespace BTS.Data.Repository
                 IQueryable<StatExpiredCerByOperatorYearVM> query = from certificate in DbContext.Certificates
                                                                    join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                    where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                   group certificate by new { Year = certificate.ExpiredDate.Year.ToString(), OperatorID = oper.RootId } into ItemGroup
+                                                                   group certificate by new { Year = certificate.ExpiredDate.Year.ToString(), OperatorID = oper.Id } into ItemGroup
                                                                    select new StatExpiredCerByOperatorYearVM()
                                                                    {
                                                                        Year = ItemGroup.Key.Year,
@@ -355,7 +355,7 @@ namespace BTS.Data.Repository
                 IQueryable<StatExpiredCerByOperatorYearVM> query = from certificate in DbContext.Certificates
                                                                    join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                    where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                                   group certificate by new { Year = certificate.ExpiredDate.Year.ToString(), OperatorID = oper.RootId } into ItemGroup
+                                                                   group certificate by new { Year = certificate.ExpiredDate.Year.ToString(), OperatorID = oper.Id } into ItemGroup
                                                                    select new StatExpiredCerByOperatorYearVM()
                                                                    {
                                                                        Year = ItemGroup.Key.Year,
@@ -435,7 +435,7 @@ namespace BTS.Data.Repository
                 IQueryable<StatCoupleCerByOperatorVM> query = from certificate in DbContext.Certificates
                                                               join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                               where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                              group certificate by oper.RootId into ItemGroup
+                                                              group certificate by oper.Id into ItemGroup
                                                               select new StatCoupleCerByOperatorVM()
                                                               {
                                                                   OperatorID = ItemGroup.Key.ToString(),
@@ -449,7 +449,7 @@ namespace BTS.Data.Repository
                 IQueryable<StatCoupleCerByOperatorVM> query = from certificate in DbContext.Certificates
                                                               join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                               where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                              group certificate by oper.RootId into ItemGroup
+                                                              group certificate by oper.Id into ItemGroup
                                                               select new StatCoupleCerByOperatorVM()
                                                               {
                                                                   OperatorID = ItemGroup.Key.ToString(),
@@ -503,7 +503,7 @@ namespace BTS.Data.Repository
                 IQueryable<StatCerByOperatorVM> query = from certificate in DbContext.Certificates
                                                         join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                         where ((certificate.ExpiredDate >= DateTime.Now) && (operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                        group certificate by oper.RootId into ItemGroup
+                                                        group certificate by oper.Id into ItemGroup
                                                         select new StatCerByOperatorVM()
                                                         {
                                                             ValidCertificates = ItemGroup.Count(),
@@ -516,7 +516,7 @@ namespace BTS.Data.Repository
                 IQueryable<StatCerByOperatorVM> query = from certificate in DbContext.Certificates
                                                         join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                         where ((operatorID == CommonConstants.SelectAll || certificate.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || certificate.CityID == cityID))
-                                                        group certificate by oper.RootId into ItemGroup
+                                                        group certificate by oper.Id into ItemGroup
                                                         select new StatCerByOperatorVM()
                                                         {
                                                             ValidCertificates = ItemGroup.Count(),
@@ -686,11 +686,11 @@ namespace BTS.Data.Repository
                                                                   join city in DbContext.Cities on certificate.CityID equals city.Id
                                                                   join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                   where ((Area == CommonConstants.SelectAll || city.Area == Area) && certificate.ExpiredDate >= DateTime.Now)
-                                                                  group certificate by new { certificate.CityID, oper.RootId } into ItemGroup
+                                                                  group certificate by new { certificate.CityID, oper.Id } into ItemGroup
                                                                   select new StatIssuedCerByOperatorCityVM()
                                                                   {
                                                                       CityID = ItemGroup.Key.CityID,
-                                                                      OperatorID = ItemGroup.Key.RootId,
+                                                                      OperatorID = ItemGroup.Key.Id,
                                                                       IssuedCertificates = ItemGroup.Count()
                                                                   };
                 return query;
@@ -701,11 +701,11 @@ namespace BTS.Data.Repository
                                                                   join city in DbContext.Cities on certificate.CityID equals city.Id
                                                                   join oper in DbContext.Operators on certificate.OperatorID equals oper.Id
                                                                   where (Area == CommonConstants.SelectAll || city.Area == Area)
-                                                                  group certificate by new { certificate.CityID, oper.RootId } into ItemGroup
+                                                                  group certificate by new { certificate.CityID, oper.Id } into ItemGroup
                                                                   select new StatIssuedCerByOperatorCityVM()
                                                                   {
                                                                       CityID = ItemGroup.Key.CityID,
-                                                                      OperatorID = ItemGroup.Key.RootId,
+                                                                      OperatorID = ItemGroup.Key.Id,
                                                                       IssuedCertificates = ItemGroup.Count()
                                                                   };
                 return query;

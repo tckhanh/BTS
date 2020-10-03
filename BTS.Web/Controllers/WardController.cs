@@ -134,16 +134,16 @@ namespace BTS.Web.Areas.Controllers
 
                     _WardService.Add(newItem);
                     _WardService.Save();
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<WardVM>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<WardVM>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -163,16 +163,16 @@ namespace BTS.Web.Areas.Controllers
 
                     _WardService.Update(editItem);
                     _WardService.Save();
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<WardVM>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<WardVM>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -195,7 +195,7 @@ namespace BTS.Web.Areas.Controllers
 
                         _WardService.Add(newItem);
                         _WardService.Save();
-                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<WardVM>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<WardVM>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
@@ -206,17 +206,17 @@ namespace BTS.Web.Areas.Controllers
 
                         _WardService.Update(editItem);
                         _WardService.Save();
-                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<WardVM>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<WardVM>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -233,17 +233,17 @@ namespace BTS.Web.Areas.Controllers
 
                 if (_WardService.IsUsed(id))
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
                 }
 
                 _WardService.Delete(id);
                 _WardService.Save();
 
-                return Json(new { data_restUrl = "/Ward/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

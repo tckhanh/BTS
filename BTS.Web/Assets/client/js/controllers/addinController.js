@@ -83,7 +83,7 @@
                         $.notify(response.message, "error");
                     } else if (response.status = "Success") {
                         // $("#firstTab").html(response.html);
-                        addinController.refreshAddNewTab($(form).attr('data-restUrl'), true);
+                        addinController.refreshAddNewTab(response.resetUrl, 0, 'Thêm mới');
                         $('#MyDataTable').DataTable().ajax.reload();
                         $.notify(response.message, "success");
                         if (typeof addinController.activatejQueryTable !== 'undefined' && $.isFunction(addinController.activatejQueryTable))
@@ -106,7 +106,26 @@
         return false;
     },
 
-    refreshAddNewTab: function (resetUrl, showViewTab) {
+    refreshAddNewTab: function (resetUrl, showTab, secondTabTitle) {
+        $.ajax({
+            type: 'GET',
+            url: resetUrl,
+            success: function (response) {
+                if (response.status == "TimeOut") {
+                    $.notify(response.message, "warn");
+                    window.location.href = "/Account/Login"
+                } else if (response.status == "Error") {
+                    $.notify(response.message, "error");
+                } else {
+                    $("#AddOrEditTab").html(response);
+                    $('ul.nav.nav-tabs a:eq(1)').html(secondTabTitle);
+                    $('ul.nav.nav-tabs a:eq(' + showTab + ')').tab('show');
+                }
+            }
+        });
+    },
+
+    refreshAddNewTab_: function (resetUrl, showViewTab) {
         $.ajax({
             type: 'GET',
             url: resetUrl,
@@ -156,8 +175,23 @@
             case myConstant.Action_Delete:
                 addinController.Delete(window.location.href + '/' + myConstant.Action_Delete + '/' + id);
                 break;
+            case myConstant.Action_Sign:
+                addinController.Sign(id);
+                break;
+            case myConstant.Action_SignAll:
+                addinController.SignAll(id);
+                break;
             case myConstant.Action_Cancel:
                 addinController.Cancel(id);
+                break;
+            case myConstant.Action_Sign_NoCert:
+                addinController.Sign_NoCert(id);
+                break;
+            case myConstant.Action_SignAll_NoCert:
+                addinController.SignAll_NoCert(id);
+                break;
+            case myConstant.Action_Cancel_NoCert:
+                addinController.Cancel_NoCert(id);
                 break;
             case myConstant.Action_Lock:
                 addinController.Lock(window.location.href + '/' + myConstant.Action_Lock + '/' + id);
@@ -313,13 +347,192 @@
         }
     },
 
+    SignAll_NoCert: function (noCertificateId) {
+        var form = $("#__AjaxAntiForgeryForm")[0];
+        var dataForm = new FormData(form);
+        dataForm.append('noCertificateId', 'x');
+        var myData = $("#MyDataTable").dataTable().fnGetNodes();
+        $('html').addClass('waiting');
+        $.each(myData, function (index, item) {
+            //console.log(`For index ${index}, data value is ${item.getAttribute('data-id')}`);
+            dataForm.set('noCertificateId', item.getAttribute('data-id'));
+
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: '/NoCertificate/Sign',
+                    data: dataForm,
+                    success: function (response) {
+                        if (response.status == "TimeOut") {
+                            $.notify(response.message, "warn");
+                            window.location.href = "/Account/Login"
+                        } else if (response.status == "Error") {
+                            $.notify(response.message, "error");
+                        } else if (response.status = "Success") {
+                            if (index == myData.length - 1) {
+                                // $("#firstTab").html(response.html);
+                                $('#MyDataTable').DataTable().ajax.reload();
+                                $.notify(response.message, "success");
+                            }
+                        }
+                        else {
+                            $.notify(response.message, "error");
+                        }
+                    },
+                    error: function (response) {
+                        $.notify(response.message, "error");
+                    }
+                }
+                if ($(form).attr('enctype') == "multipart/form-data") {
+                    ajaxConfig["contentType"] = false;
+                    ajaxConfig["processData"] = false;
+                }
+                $.ajax(ajaxConfig);
+            }
+        })
+    },
+
+    Sign_NoCert: function (noCertificateId) {
+        var form = $("#__AjaxAntiForgeryForm")[0];
+        var dataForm = new FormData(form);
+        dataForm.append('noCertificateId', noCertificateId.toString());
+
+        $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            $('html').addClass('waiting');
+            var ajaxConfig = {
+                type: 'POST',
+                url: '/NoCertificate/Sign',
+                data: dataForm,
+                success: function (response) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Error") {
+                        $.notify(response.message, "error");
+                    } else if (response.status = "Success") {
+                        // $("#firstTab").html(response.html);
+                        $('#MyDataTable').DataTable().ajax.reload();
+                        $.notify(response.message, "success");
+                    }
+                    else {
+                        $.notify(response.message, "error");
+                    }
+                },
+                error: function (response) {
+                    $.notify(response.message, "error");
+                }
+            }
+            if ($(form).attr('enctype') == "multipart/form-data") {
+                ajaxConfig["contentType"] = false;
+                ajaxConfig["processData"] = false;
+            }
+            $.ajax(ajaxConfig);
+        }
+        return false;
+    },
+
+    Cancel_NoCert: function (noCertificateId) {
+        $("#noCertificateId").val(noCertificateId);
+        $("#canceledDate").val(moment().format('YYYY-MM-DD'));
+            noCertificatecanceledController.showDialog.dialog("open");
+    },
+
+    SignAll: function (Id) {
+        var form = $("#__AjaxAntiForgeryForm")[0];
+        var dataForm = new FormData(form);
+        var myData = $("#MyDataTable").dataTable().fnGetNodes();
+        $('html').addClass('waiting');
+        $.each(myData, function (index, item) {
+            //console.log(`For index ${index}, data value is ${item.getAttribute('data-id')}`);
+            dataForm.set('CertificateNum', item.getAttribute('data-id'));
+
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                var ajaxConfig = {
+                    type: 'POST',
+                    url: '/Certificate/Sign',
+                    data: dataForm,
+                    success: function (response) {
+                        if (response.status == "TimeOut") {
+                            $.notify(response.message, "warn");
+                            window.location.href = "/Account/Login"
+                        } else if (response.status == "Error") {
+                            $.notify(response.message, "error");
+                        } else if (response.status = "Success") {
+                            if (index == myData.length - 1) {
+                                // $("#firstTab").html(response.html);
+                                $('#MyDataTable').DataTable().ajax.reload();
+                                $.notify(response.message, "success");
+                            }
+                        }
+                        else {
+                            $.notify(response.message, "error");
+                        }
+                    },
+                    error: function (response) {
+                        $.notify(response.message, "error");
+                    }
+                }
+                if ($(form).attr('enctype') == "multipart/form-data") {
+                    ajaxConfig["contentType"] = false;
+                    ajaxConfig["processData"] = false;
+                }
+                $.ajax(ajaxConfig);
+            }
+        })
+    },
+
+    Sign: function (id) {
+        var form = $("#__AjaxAntiForgeryForm")[0];
+        var dataForm = new FormData(form);
+        dataForm.set('CertificateNum', id);
+
+        $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            $('html').addClass('waiting');
+            var ajaxConfig = {
+                type: 'POST',
+                url: '/Certificate/Sign',
+                data: dataForm,
+                success: function (response) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Error") {
+                        $.notify(response.message, "error");
+                    } else if (response.status = "Success") {
+                        // $("#firstTab").html(response.html);
+                        $('#MyDataTable').DataTable().ajax.reload();
+                        $.notify(response.message, "success");
+                    }
+                    else {
+                        $.notify(response.message, "error");
+                    }
+                },
+                error: function (response) {
+                    $.notify(response.message, "error");
+                }
+            }
+            if ($(form).attr('enctype') == "multipart/form-data") {
+                ajaxConfig["contentType"] = false;
+                ajaxConfig["processData"] = false;
+            }
+            $.ajax(ajaxConfig);
+        }
+        return false;
+    },
+
+
     Cancel: function (id) {
         $("#certificateNum").val(id);
         $("#canceledDate").val(moment().format('YYYY-MM-DD'));
-        canceledCertificateController.showDialog.dialog("open");
+        certificatecanceledController.showDialog.dialog("open");
     },
 
     activatejQueryTable: function () {
+        // Không cần chạy lại vì nếu chạy bị lỗi No ReInitialize DataTable
         //$("#MyDataTable").DataTable({
         //    "language": {
         //        url: '/AppFiles/localization/vi_VI.json'
@@ -339,6 +552,8 @@
         //        });
         //    }
         //});
+        //if (typeof contextMenuDataInfoController !== 'undefined')
+        //    contextMenuDataInfoController.init();
     }
 };
 addinController.init();

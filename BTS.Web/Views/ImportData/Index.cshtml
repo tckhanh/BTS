@@ -92,22 +92,51 @@
                                         Loại nhập dữ liệu<span class="required"></span>
                                     </label>
                                     <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <div class="col-md-3 col-sm-3 col-xs-12">
-                                            <input type="radio" id=@CommonConstants.InputType_AddNew name="InputType" value=@CommonConstants.InputType_AddNew checked>
-                                            <label for=@CommonConstants.InputType_AddNew>Thêm Giấy CNKĐ lần đầu</label>
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">
+                                                <input class="" type="radio" id=@CommonConstants.InputType_AddNew name="InputType" value=@CommonConstants.InputType_AddNew checked>
+                                                Thêm Giấy CNKĐ lần đầu
+                                            </label>
                                         </div>
 
-                                        <div class="col-md-3 col-sm-3 col-xs-12">
-                                            <input type="radio" id=@CommonConstants.InputType_AddMore name="InputType" value=@CommonConstants.InputType_AddMore>
-                                            <label for=@CommonConstants.InputType_AddMore>Bổ sung Giấy CNKĐ lần 2,3,...</label>
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">
+                                                <input type="radio" id=@CommonConstants.InputType_AddMore name="InputType" value=@CommonConstants.InputType_AddMore>
+                                                Bổ sung Giấy CNKĐ lần 2,3,...
+                                            </label>
                                         </div>
                                         @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                                         {
-                                            <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">
                                                 <input type="radio" id=@CommonConstants.InputType_UpdateAdd name="InputType" value=@CommonConstants.InputType_UpdateAdd>
-                                                <label for=@CommonConstants.InputType_UpdateAdd>Cập nhật và bổ sung Giấy CNKĐ</label>
-                                            </div>
+                                                Cập nhật và bổ sung Giấy CNKĐ
+                                            </label>
+                                        </div>
                                         }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="InputType">
+                                        Hồ sơ cấp Giấy CNKĐ<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">
+                                                <input type="radio" name="IsSigned" value=false checked>
+                                                Đang chờ phê duyệt
+                                            </label>
+                                        </div>
+
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">
+                                                <input type="radio" name="IsSigned" value=true>
+                                                Đã ký phê duyệt
+                                            </label>
+                                        </div>                                        
                                     </div>
                                 </div>
                             </div>

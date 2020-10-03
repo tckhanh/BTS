@@ -1,6 +1,8 @@
 ﻿//var data = "";
 
 var noCertificateController = {
+    startDate: new Date(new Date().getFullYear(), 0, 1),
+    endDate: new Date(),
     token: function () {
         var form = $('#__AjaxAntiForgeryForm');
         return $('input[name="__RequestVerificationToken"]', form).val();
@@ -29,6 +31,15 @@ var noCertificateController = {
         });
     },
     registerEvent: function () {
+
+        $('input[name="CertificateStatus]"]').change(function () {
+            if ($('input[name="CertificateStatus]"]:checked').val() == myConstant.CertStatus_Valid) {
+                $('input[name="DateRange"]').prop("disabled", false);
+            } else {
+                $('input[name="DateRange"]').prop("disabled", true);
+            }
+        });
+
         $('#btnSearch').off('click').on('click', function () {
             $('#MyDataTable').DataTable().ajax.reload();
         });
@@ -49,9 +60,26 @@ var noCertificateController = {
         });
 
         $('#btnReset').off('click').on('click', function () {
-            $('#txtNameS').val('');
-            $('#ddlStatusS').val('');
-            noCertificateController.loadData(true);
+            $('#SelOperatorID').val('');
+            $('#SelCityID').val('');
+            $('#SelProfileID').val('');
+            $('#BtsCodeOrAddress').val('');
+            noCertificateController.endDate = new Date();
+            noCertificateController.startDate = new Date(noCertificateController.endDate.getFullYear() - 5, noCertificateController.endDate.getMonth(), noCertificateController.endDate.getDate());
+
+            $('input[name="DateRange"]').daterangepicker(
+                {
+                    locale: {
+                        format: 'DD/MM/YYYY'
+                    },
+                    startDate: noCertificateController.startDate,
+                    endDate: noCertificateController.endDate
+                },
+                function (start, end, label) {
+                    //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
+                    noCertificateController.startDate = start;
+                    noCertificateController.endDate = end;
+                });
         });
     },
     loadDetail: function (id) {
@@ -90,21 +118,40 @@ var noCertificateController = {
     },
 
     loadData: function () {
-        var startDate = new Date(new Date().getFullYear(), 0, 1);
-        var endDate = new Date();
+        //var startDate = new Date(new Date().getFullYear(), 0, 1);
+        //var endDate = new Date();
+
+        //$('input[name="DateRange"]').daterangepicker(
+        //    {
+        //        locale: {
+        //            format: 'DD/MM/YYYY'
+        //        },
+        //        startDate: startDate,
+        //        endDate: endDate
+        //    },
+        //    function (start, end, label) {
+        //        //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
+        //        startDate = start;
+        //        endDate = end;
+        //    });
+
+        $('#SelProfileID').attr('disabled', myNotAuthenticated);
+
+        noCertificateController.startDate = new Date(new Date().getFullYear(), 0, 1);
+        noCertificateController.endDate = new Date();
 
         $('input[name="DateRange"]').daterangepicker(
             {
                 locale: {
                     format: 'DD/MM/YYYY'
                 },
-                startDate: startDate,
-                endDate: endDate
+                startDate: noCertificateController.startDate,
+                endDate: noCertificateController.endDate
             },
             function (start, end, label) {
                 //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
-                startDate = start;
-                endDate = end;
+                noCertificateController.startDate = start;
+                noCertificateController.endDate = end;
             });
 
         //$.ajax({
@@ -188,10 +235,10 @@ var noCertificateController = {
                             d.CityID = $('#SelCityID').val().trim();
                             d.OperatorID = $('#SelOperatorID').val().trim();
                             d.ProfileID = $('#SelProfileID').val().trim();
-                            d.StartDate = startDate.toISOString();
-                            d.EndDate = endDate.toISOString();
+                            d.StartDate = noCertificateController.startDate.toISOString();
+                            d.EndDate = noCertificateController.endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-                            d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.CertificateStatus = $('input[name=CertificateStatus]:checked').val();
                             d.__RequestVerificationToken = noCertificateController.token();
                         }
                     },
@@ -200,9 +247,9 @@ var noCertificateController = {
                         { "data": "CityID", "name": "CityID", "width": "4%", "className": "dt-body-center"},
                         {
                             "data": "BtsCode", "name": "BtsCode", "width": "10%",
-                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
-                            }
+                            //fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            //    $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
+                            //}
                         },        // index 2
                         { "data": "Address", "name": "Address", "width": "25%" },
                         {
@@ -298,10 +345,10 @@ var noCertificateController = {
                             d.CityID = $('#SelCityID').val().trim();
                             d.OperatorID = $('#SelOperatorID').val().trim();
                             d.ProfileID = $('#SelProfileID').val().trim();
-                            d.StartDate = startDate.toISOString();
-                            d.EndDate = endDate.toISOString();
+                            d.StartDate = noCertificateController.startDate.toISOString();
+                            d.EndDate = noCertificateController.endDate.toISOString();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-                            d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.CertificateStatus = $('input[name=CertificateStatus]:checked').val();
                             d.__RequestVerificationToken = noCertificateController.token();
                         }
                     },
@@ -310,9 +357,9 @@ var noCertificateController = {
                         { "data": "CityID", "name": "CityID", "width": "4%", "className": "dt-body-center" },
                         {
                             "data": "BtsCode", "name": "BtsCode", "width": "10%",
-                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
-                            }
+                            //fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            //    $(nTd).html("<a href='/Bts/Detail/" + oData.BtsCode + "'>" + oData.BtsCode + "</a>");
+                            //}
                         },        // index 2
                         { "data": "Address", "name": "Address", "width": "25%" },
                         {

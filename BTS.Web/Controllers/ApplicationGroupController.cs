@@ -234,11 +234,11 @@ namespace BTS.Web.Areas.Controllers
 
                     UpdateFromGroupToRoleUser(appGroup, selectedRoleItems, selectedUserItems);
                    
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -246,6 +246,7 @@ namespace BTS.Web.Areas.Controllers
             {
                 return Json(new
                 {
+                    resetUrl = Url.Action("Add", "ApplicationGroup"),
                     status = CommonConstants.Status_Error,
                     message = ex.Message
                 }, JsonRequestBehavior.AllowGet);
@@ -275,11 +276,11 @@ namespace BTS.Web.Areas.Controllers
 
                     UpdateFromGroupToRoleUser(appGroup, selectedRoleItems, selectedUserItems);
 
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -287,6 +288,7 @@ namespace BTS.Web.Areas.Controllers
             {
                 return Json(new
                 {
+                    resetUrl = Url.Action("Add", "ApplicationGroup"),
                     status = CommonConstants.Status_Error,
                     message = ex.Message
                 }, JsonRequestBehavior.AllowGet);
@@ -464,11 +466,11 @@ namespace BTS.Web.Areas.Controllers
                             await addUserRoles(userItem.Id, newUserRoles);
                         }
                     }
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -476,6 +478,7 @@ namespace BTS.Web.Areas.Controllers
             {
                 return Json(new
                 {
+                    resetUrl = Url.Action("Add", "ApplicationGroup"),
                     status = CommonConstants.Status_Error,
                     message = ex.Message
                 }, JsonRequestBehavior.AllowGet);
@@ -495,7 +498,7 @@ namespace BTS.Web.Areas.Controllers
                 var dbUser = _appGroupService.GetUsersByGroupId(id).LastOrDefault();
                 if (dbUser != null)
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Nhóm còn người dùng" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Error, message = "Không thể xóa Nhóm còn người dùng" }, JsonRequestBehavior.AllowGet);
                 }
 
                 _appGroupService.DeleteRolesFromGroup(id);
@@ -504,11 +507,11 @@ namespace BTS.Web.Areas.Controllers
                 _appGroupService.Delete(id);
                 _appGroupService.Save();
 
-                return Json(new { data_restUrl = "/ApplicationGroup/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

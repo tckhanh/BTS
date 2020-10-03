@@ -333,21 +333,21 @@ namespace BTS.Web.Areas.Controllers
 
                     if (result.Succeeded)
                     {
-                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        return Json(new { status = CommonConstants.Status_Error, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Error, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -393,21 +393,21 @@ namespace BTS.Web.Areas.Controllers
                     }
                     if (result.Succeeded)
                     {
-                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        return Json(new { status = CommonConstants.Status_Error, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Error, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = string.Join(",", result.Errors) }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -435,21 +435,21 @@ namespace BTS.Web.Areas.Controllers
 
                         await store.SetPasswordHashAsync(cUser, hashedNewPassword);
                         await store.UpdateAsync(cUser);
-                        return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Mật khẩu cũ nhập vào không đúng" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Error, message = "Mật khẩu cũ nhập vào không đúng" }, JsonRequestBehavior.AllowGet);
                     }
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "ApplicationUserProfile"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

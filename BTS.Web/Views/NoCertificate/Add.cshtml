@@ -7,7 +7,7 @@
 
 @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
 {
-    using (Html.BeginForm("Add", "NoCertificate", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return addinController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "NoCertificate") }))//data-resetUrl
+    using (Html.BeginForm("Add", "NoCertificate", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return addinController.jQueryAjaxPost(this);", data_resetUrl = Url.Action("Add", "NoCertificate") }))//data_resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -162,7 +162,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <a class="btn btn-info" onclick="addinController.refreshAddNewTab('@Url.Action("Add","NoCertificate")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="addinController.refreshAddNewTab('@Url.Action("Add","NoCertificate")', 0, 'Thêm mới')"><i class="fa fa-close"></i> Hủy bỏ</a>
                             <input type="submit" value="Lưu" class="btn btn-primary" />
                         </div>
                     </div>

@@ -808,7 +808,7 @@ namespace BTS.Web.Areas.Controllers
                 _certificateService.Delete(id);
                 _certificateService.SaveChanges();
 
-                return Json(new { data_restUrl = "/Certificate/Add", status = CommonConstants.Status_Success, message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()),
             }
             catch (Exception ex)

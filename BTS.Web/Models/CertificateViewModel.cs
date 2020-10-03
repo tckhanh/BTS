@@ -109,7 +109,7 @@ namespace BTS.Web.Models
         public string SubBtsOperatorIDs { get; set; }
 
         [Display(Name = "Danh sách thiết bị của mỗi BTS")]
-        [StringLength(255, ErrorMessage = "Danh sách thiết bị không quá 255 ký tự")]
+        [StringLength(512, ErrorMessage = "Danh sách thiết bị không quá 512 ký tự")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách thiết bị")]
         [DataType(DataType.MultilineText)]
         public string SubBtsEquipments { get; set; }
@@ -118,10 +118,6 @@ namespace BTS.Web.Models
         [StringLength(150, ErrorMessage = "Danh sách số Anten không quá 150 ký tự")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách số Anten")]
         public string SubBtsAntenNums { get; set; }
-
-        [Display(Name = "Các Anten dùng chung")]
-        [StringLength(50, ErrorMessage = "Các Anten dùng chung không quá 150 ký tự")]
-        public string SharedAntens { get; set; }
 
         [MaxLength(150)]
         [Display(Name = "Danh sách cấu hình của mỗi BTS")]
@@ -143,8 +139,7 @@ namespace BTS.Web.Models
 
         [MaxLength(256)]
         [Display(Name = "Danh sách băng tần cũ của mỗi BTS")]
-        [StringLength(256, ErrorMessage = "Danh sách băng tần cũ không quá 256 ký tự")]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách băng tần cũ")]
+        [StringLength(256, ErrorMessage = "Danh sách băng tần cũ không quá 256 ký tự")]        
         public string SubBtsBandsOld { get; set; }
 
         [MaxLength(150)]
@@ -214,6 +209,9 @@ namespace BTS.Web.Models
         //[Display(Name = "Danh sách công nghệ của mỗi BTS")]
         //[StringLength(150, ErrorMessage = "Danh sách công nghệ của mỗi BTS không quá 150 ký tự")]
         //public string SubBtsTechnologies { get; set; }
+
+        [Display(Name = "Giấy CNKĐ đã được ký duyệt")]
+        public bool IsSigned { get; set; }
 
         [Display(Name = "Giấy CNKĐ bị thu hồi/hủy bỏ")]
         public bool IsCanceled { get; set; }

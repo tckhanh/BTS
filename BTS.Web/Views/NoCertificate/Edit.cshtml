@@ -8,7 +8,7 @@
 
 @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
 {
-    using (Html.BeginForm("Edit", "NoCertificate", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return addinController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "NoCertificate") }))//data-resetUrl
+    using (Html.BeginForm("Edit", "NoCertificate", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return addinController.jQueryAjaxPost(this);", data_resetUrl = Url.Action("Add", "NoCertificate"), id = "__AjaxAntiForgeryForm" }))//data_resetUrl
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -159,9 +159,54 @@
                 </div>
 
                 <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsCanceled, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.CheckBoxFor(model => model.IsCanceled, new { @class = "form-check-input", disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.IsCanceled)
+                                @Html.HiddenFor(model => model.IsCanceled)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CanceledDate, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.CanceledDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                                @Html.ValidationMessageFor(model => model.CanceledDate)
+                                @Html.HiddenFor(model => model.CanceledDate)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CanceledReason, new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(model => model.CanceledReason, new { @class = "form-control", rows = 3, disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.CanceledReason)
+                                @Html.HiddenFor(model => model.CanceledReason)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <a class="btn btn-info" onclick="addinController.refreshAddNewTab('@Url.Action("Add","NoCertificate")', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                            <a class="btn btn-info" onclick="addinController.refreshAddNewTab('@Url.Action("Add","NoCertificate")', 0, 'Thêm mới')"><i class="fa fa-close"></i> Hủy bỏ</a>
 
                             <input type="submit" value="Lưu" class="btn btn-primary" />
                         </div>

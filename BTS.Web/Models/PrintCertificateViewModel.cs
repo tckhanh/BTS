@@ -74,7 +74,7 @@ namespace BTS.Web.Models
         public string SubBtsOperatorIDs { get; set; }
 
         [Display(Name = "Danh sách thiết bị của mỗi BTS")]
-        [StringLength(255, ErrorMessage = "Danh sách thiết bị không quá 255 ký tự")]
+        [StringLength(512, ErrorMessage = "Danh sách thiết bị không quá 512 ký tự")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Danh sách thiết bị")]
         [DataType(DataType.MultilineText)]
         public string SubBtsEquipments { get; set; }

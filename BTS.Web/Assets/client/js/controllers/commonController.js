@@ -94,9 +94,9 @@
                         $("#firstTab").html(response.html);                       
                         $.notify(response.message, "Success");
                         if (typeof applicationUserProfileController !== 'undefined') {
-                            commonController.refreshAddNewTab(response.data_restUrl, 1, 'Chi tiết');
+                            commonController.refreshAddNewTab(response.resetUrl, 1, 'Chi tiết');
                         } else {
-                            commonController.refreshAddNewTab(response.data_restUrl, 0, 'Thêm mới');
+                            commonController.refreshAddNewTab(response.resetUrl, 0, 'Thêm mới');
                         }
                         if (typeof commonController.activatejQueryTable !== 'undefined' && $.isFunction(commonController.activatejQueryTable))
                             commonController.activatejQueryTable();
@@ -301,9 +301,9 @@
                         $("#firstTab").html(response.html);
                         $.notify(response.message, "warn");
                         if (typeof applicationUserProfileController !== 'undefined') {
-                            commonController.refreshAddNewTab(response.data_restUrl, 1, 'Chi tiết');
+                            commonController.refreshAddNewTab(response.resetUrl, 1, 'Chi tiết');
                         } else {
-                            commonController.refreshAddNewTab(response.data_restUrl, 0, 'Thêm mới');
+                            commonController.refreshAddNewTab(response.resetUrl, 0, 'Thêm mới');
                         }
                         
                         if (typeof commonController.activatejQueryTable !== 'undefined' && $.isFunction(commonController.activatejQueryTable))
@@ -322,21 +322,25 @@
             "language": {
                 url: '/AppFiles/localization/vi_VI.json'
             },
-            initComplete: function () {
-                this.api().columns().every(function () {
-                    var column = this;
-                    var select = $('<select><option value=""></option></select>')
-                        .appendTo($(column.footer()).empty())
-                        .on('change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                            column.search(val ? '^' + val + '$' : '', true, false).draw();
-                        });
-                    column.data().unique().sort().each(function (d, j) {
-                        select.append('<option value="' + d + '">' + d + '</option>')
-                    });
-                });
-            }
+        //    initComplete: function () {
+        //        this.api().columns().every(function () {
+        //            var column = this;
+        //            var select = $('<select><option value=""></option></select>')
+        //                .appendTo($(column.footer()).empty())
+        //                .on('change', function () {
+        //                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+        //                    column.search(val ? '^' + val + '$' : '', true, false).draw();
+        //                });
+        //            column.data().unique().sort().each(function (d, j) {
+        //                select.append('<option value="' + d + '">' + d + '</option>')
+        //            });
+        //        });
+        //    }
         });
+        if (typeof contextMenuDataController !== 'undefined')
+            contextMenuDataController.init();
+        else if (typeof contextMenuSysController !== 'undefined')
+            contextMenuSysController.init();
     }
 };
 commonController.init();

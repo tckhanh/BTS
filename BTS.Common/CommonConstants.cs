@@ -25,14 +25,22 @@
         public const string Action_Edit = "Edit";
         public const string Action_Delete = "Delete";
         public const string Action_Lock = "Lock";
+        public const string Action_Sign = "Sign";
+        public const string Action_SignAll = "SignAll";
         public const string Action_Cancel = "Cancel";
+        public const string Action_CancelAll = "CancelAll";
+        public const string Action_Sign_NoCert = "Sign_NoCert";
+        public const string Action_SignAll_NoCert = "SignAll_NoCert";
+        public const string Action_Cancel_NoCert = "Cancel_NoCert";
+        public const string Action_CancelAll_NoCert = "CancelAll_NoCert";
         public const string Action_Reset = "Reset";
         public const string Action_ViewMap = "ViewMap";
         public const string Action_Print = "Print";
 
         public const string InputType_AddNew = "AddNew";
         public const string InputType_AddMore = "AddMore";
-        public const string InputType_UpdateAdd = "UpdateAdd";        
+        public const string InputType_UpdateAdd = "UpdateAdd";
+        public const string InputType_IsSigned = "IsSigned";
 
         public const string SuperAdmin_Name = "Admin";
         public const string SuperAdmin_FullName = "Trần Công Khanh";
@@ -72,6 +80,7 @@
         public const string Data_CanReset_Role = "Data_CanReset";
         public const string Data_CanLock_Role = "Data_CanLock";
         public const string Data_CanCancel_Role = "Data_CanCancel";
+        public const string Data_CanSign_Role = "Data_CanSign";
         public const string Data_CanDelete_Role = "Data_CanDelete";
 
         public const string Info_CanViewMap_Role = "Info_CanViewMap";
@@ -106,6 +115,7 @@
         public const string Data_CanReset_Description = "Thay đổi mật khẩu";
         public const string Data_CanLock_Description = "Khóa dữ liệu";
         public const string Data_CanCancel_Description = "Hủy bỏ/Thu hồi Giấy CNKĐ";
+        public const string Data_CanSign_Description = "Ký phê duyệt ban hành";
         public const string Data_CanDelete_Description = "Xóa bỏ dữ liệu";
 
         public const string Info_CanView_Description = "Xem thông tin";
@@ -124,6 +134,10 @@
         public const string Status_TimeOut = "TimeOut";
         public const string Status_Success = "Success";
         public const string Status_Recovery = "Recovery";
+
+        public const string CertStatus_WaitToSign = "WaitToSign";
+        public const string CertStatus_Valid = "Valid";
+        public const string CertStatus_Expired = "Expired";
 
         public const string ProductTag = "product";
         public const string PostTag = "post";

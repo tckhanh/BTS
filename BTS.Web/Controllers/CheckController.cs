@@ -118,6 +118,9 @@ namespace BTS.Web.Areas.Controllers
                         //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
                         _excelIO.AddNewColumns(fileLocation, CommonConstants.Sheet_Bts, CommonConstants.Sheet_Bts_LastOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_LastNoOwnCertificateIDs + ";" + CommonConstants.Sheet_Bts_ProfileInProcess + ";" + CommonConstants.Sheet_Bts_ReasonNoCertificate);
 
+                        string[] sheetNames = new string[] {
+                            CommonConstants.Sheet_Bts,
+                        };
                         string[] columnNames = new string[] {
                             CommonConstants.Sheet_Certificate_Longtitude,
                             CommonConstants.Sheet_Certificate_Latitude,
@@ -126,7 +129,7 @@ namespace BTS.Web.Areas.Controllers
                             CommonConstants.Sheet_Certificate_OffsetHeight,
                             CommonConstants.Sheet_Certificate_SafeLimitHeight,
                             CommonConstants.Sheet_Certificate_BtsCode};
-                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+                        _excelIO.FormatColumns(fileLocation, sheetNames, columnNames, "@");
 
                         ExecuteDatabase(UpdateCheckResult, fileLocation);
                     }

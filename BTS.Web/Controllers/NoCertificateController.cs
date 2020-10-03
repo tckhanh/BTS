@@ -7,7 +7,6 @@ using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.SessionState;
 
@@ -60,6 +59,7 @@ namespace BTS.Web.Areas.Controllers
             string OperatorID = Request.Form.GetValues("OperatorID").FirstOrDefault();
             string ProfileID = Request.Form.GetValues("ProfileID").FirstOrDefault();
             string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress").FirstOrDefault().ToLower();
+            string CertificateStatus = Request.Form.GetValues("CertificateStatus")?.FirstOrDefault();
             DateTime StartDate, EndDate;
             if (!DateTime.TryParse(Request.Form.GetValues("StartDate").FirstOrDefault(), out StartDate))
             {
@@ -72,44 +72,74 @@ namespace BTS.Web.Areas.Controllers
             }
 
             // searching ...
-            IEnumerable<NoCertificate> Items;
 
-            if (!(string.IsNullOrEmpty(CityID)))
+            IEnumerable<NoCertificate> Items = new List<NoCertificate>();
+
+            if (CertificateStatus == CommonConstants.CertStatus_WaitToSign)
             {
-                Items = _noCertificateService.getNoCertificateByCity(CityID).ToList();
+                Items = _noCertificateService.getNoCertificateWaitToSign().ToList();
             }
-            else if (!(string.IsNullOrEmpty(OperatorID)))
+            else if (CertificateStatus == CommonConstants.CertStatus_Expired)
             {
-                Items = _noCertificateService.getNoCertificateByOperator(OperatorID).ToList();
+                Items = _noCertificateService.getNoCertificateExpired().ToList();
             }
-            else if (!(string.IsNullOrEmpty(ProfileID)))
+            else if (CertificateStatus == CommonConstants.CertStatus_Valid)
             {
-                Items = _noCertificateService.getNoCertificateByProfile(ProfileID).ToList();
-            }
-            else if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
-            {
-                Items = _noCertificateService.getNoCertificateByBtsCodeOrAddress(BtsCodeOrAddress).ToList();
-            }
-            else if (StartDate != null && EndDate != null)
-            {
-                Items = _noCertificateService.getAll(out countItem, false, StartDate, EndDate).ToList();
-            }
-            else
-            {
-                Items = _noCertificateService.getAll(out countItem).ToList();
+
+                if (!(string.IsNullOrEmpty(CityID)))
+                {
+                    Items = _noCertificateService.getNoCertificateByCity(CityID).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(OperatorID)))
+                {
+                    Items = _noCertificateService.getNoCertificateByOperator(OperatorID).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(ProfileID)))
+                {
+                    Items = _noCertificateService.getNoCertificateByProfile(ProfileID).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
+                {
+                    Items = _noCertificateService.getNoCertificateByBtsCodeOrAddress(BtsCodeOrAddress).ToList();
+                }
+                else if (CertificateStatus == CommonConstants.CertStatus_Valid && StartDate != null && EndDate != null)
+                {
+                    Items = _noCertificateService.getAll(out countItem, false, StartDate, EndDate).ToList();
+                }
+                else
+                {
+                    Items = _noCertificateService.getAll(out countItem).ToList();
+                }
             }
 
-
-            if (StartDate != null && EndDate != null)
+            if (CertificateStatus == CommonConstants.CertStatus_WaitToSign)
             {
-                Items = Items.Where(x => x.TestReportDate >= StartDate && x.TestReportDate <= EndDate).ToList();
-            }            
+                Items = Items.Where(x => x.IsSigned == false && x.IsCanceled == false);
+            }
+            if (CertificateStatus == CommonConstants.CertStatus_Expired)
+            {
+                Items = Items.Where(x => x.IsCanceled == true);
+            }
+
+            if (CertificateStatus == CommonConstants.CertStatus_Valid)
+            {
+                Items = Items.Where(x => x.IsSigned == true && x.IsCanceled == false);
+
+                if (StartDate != null && EndDate != null)
+                {
+                    Items = Items.Where(x => x.TestReportDate >= StartDate && x.TestReportDate <= EndDate).ToList();
+                }
+            }
+
+            if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
+            {
+                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
+            }
 
             if (!(string.IsNullOrEmpty(CityID)))
             {
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }
-            Items = Items.Where(x => getCityIDsScope().ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
             if (!(string.IsNullOrEmpty(OperatorID)))
             {
@@ -121,16 +151,14 @@ namespace BTS.Web.Areas.Controllers
                 Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
-            {
-                Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
-            }
+            Items = Items.Where(x => getCityIDsScope().ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
             //Items = Items.OrderByDescending(x => x.TestReportDate.ToString());
 
+            IEnumerable<NoCertificateViewModel> dataViewModel = Mapper.Map<List<NoCertificateViewModel>>(Items);
+
             int recordsFiltered = Items.Count();
 
-            IEnumerable<NoCertificateViewModel> dataViewModel = Mapper.Map<List<NoCertificateViewModel>>(Items);
             if (recordsFiltered > 0)
             {
                 //var tbcat = from c in dataViewModel select new { c.Id, c.title, c.descriptions, action = "<a href='" + Url.Action("edit", "Category", new { id = c.Id }) + "'>Edit</a> | <a href='javascript:;' onclick='MyStore.Delete(" + c.Id + ")'>Delete</a>" };
@@ -275,6 +303,48 @@ namespace BTS.Web.Areas.Controllers
             return View(ItemVm);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanCancel_Role)]
+        public ActionResult Cancel()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    string NoCertificateId = Request.Form.GetValues("noCertificateId")?.FirstOrDefault();
+                    string CanceledReason = Request.Form.GetValues("canceledReason")?.FirstOrDefault();
+                    DateTime CanceledDate;
+
+                    if (!DateTime.TryParse(Request.Form.GetValues("CanceledDate")?.FirstOrDefault(), out CanceledDate))
+                    {
+                        Console.Write("Loi chuyen doi kieu");
+                    }
+
+                    NoCertificate editItem = _noCertificateService.getByID(NoCertificateId);
+                    editItem.IsCanceled = true;
+                    editItem.CanceledReason = CanceledReason;
+                    editItem.CanceledDate = CanceledDate;
+
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _noCertificateService.Update(editItem);
+                    _noCertificateService.SaveChanges();
+
+                    return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Success, message = "Thu hồi/ Hủy bỏ trạm BTS không cấp Giấy CNKĐ thành công" }, JsonRequestBehavior.AllowGet);
+                    // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
+                }
+                else
+                {
+                    return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanViewDetail_Role, CommonConstants.Data_CanEdit_Role)]
         public ActionResult AddOrEdit(string act, string id = "0")
@@ -382,17 +452,17 @@ namespace BTS.Web.Areas.Controllers
 
                     _noCertificateService.Add(newItem);
                     _noCertificateService.SaveChanges();
-                    return Json(new { status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -413,17 +483,17 @@ namespace BTS.Web.Areas.Controllers
 
                     _noCertificateService.Update(editItem);
                     _noCertificateService.SaveChanges();
-                    return Json(new { status = CommonConstants.Status_Success, message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Success, message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -446,7 +516,7 @@ namespace BTS.Web.Areas.Controllers
 
                         _noCertificateService.Add(newItem);
                         _noCertificateService.SaveChanges();
-                        return Json(new { status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                         // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                     }
                     else
@@ -458,18 +528,52 @@ namespace BTS.Web.Areas.Controllers
 
                         _noCertificateService.Update(editItem);
                         _noCertificateService.SaveChanges();
-                        return Json(new { status = CommonConstants.Status_Success, message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Success, message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                         // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                     }
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanSign_Role)]
+        public ActionResult Sign(string noCertificateId)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //string noCertificateId = Request.Form.GetValues("noCertificateId")?.FirstOrDefault();
+
+                    NoCertificate editItem = _noCertificateService.getByID(noCertificateId);
+                    editItem.IsSigned = true;
+
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _noCertificateService.Update(editItem);
+                    _noCertificateService.SaveChanges();
+
+                    return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Success, message = "Ký phê duyệt ban hành thành công" }, JsonRequestBehavior.AllowGet);
+                    // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
+                }
+                else
+                {
+                    return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -486,18 +590,18 @@ namespace BTS.Web.Areas.Controllers
 
                 //if (_btsService.IsUsed(id))
                 //{
-                //    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
+                //    return Json(new {resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
                 //}
 
                 _noCertificateService.Delete(id);
                 _noCertificateService.SaveChanges();
 
-                return Json(new { data_restUrl = "/NoCertificate/Add", status = CommonConstants.Status_Success, message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = "/NoCertificate/Add", status = CommonConstants.Status_Success, message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()),
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "NoCertificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

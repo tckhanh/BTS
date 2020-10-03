@@ -48,6 +48,15 @@ var certificateController = {
         });        
     },
     registerEvent: function () {
+        $('input[name="CertificateStatus"]').change(function () {
+            if ($('input[name="CertificateStatus"]:checked').val() == myConstant.CertStatus_Valid)
+            {
+                $('input[name="DateRange"]').prop("disabled", false);
+            } else {
+                $('input[name="DateRange"]').prop("disabled", true);
+            }
+        });
+
         $('#btnSearch').off('click').on('click', function () {
             $('#MyDataTable').DataTable().ajax.reload();
         });
@@ -264,7 +273,7 @@ var certificateController = {
                             d.EndDate = certificateController.endDate.toISOString();
                             d.CertificateNum = $('#CertificateNum').val().trim();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-                            d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.CertificateStatus = $('input[name=CertificateStatus]:checked').val();
                             d.__RequestVerificationToken = certificateController.token();
                         }
                     },
@@ -400,7 +409,7 @@ var certificateController = {
                             d.EndDate = certificateController.endDate.toISOString();
                             d.CertificateNum = $('#CertificateNum').val().trim();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-                            d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.CertificateStatus = $('input[name=CertificateStatus]:checked').val();
                             d.__RequestVerificationToken = certificateController.token();
                         }
                     },
@@ -606,7 +615,7 @@ var certificateController = {
             $.ajax(ajaxConfig);
         }
         return false;
-    }
+    },
 }
 
 certificateController.init();

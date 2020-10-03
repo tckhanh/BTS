@@ -23,6 +23,7 @@
     Data_CanReset_Role: "Data_CanReset",
     Data_CanLock_Role: "Data_CanLock",
     Data_CanCancel_Role: "Data_CanCancel",
+    Data_CanSign_Role: "Data_CanSign",
     Data_CanDelete_Role: "Data_CanDelete",
 
     Info_CanViewMap_Role: "Info_CanViewMap",
@@ -50,9 +51,21 @@
     Action_Edit: "Edit",
     Action_Delete: "Delete",
     Action_Lock: "Lock",
+    Action_Sign: "Sign",
+    Action_SignAll: "SignAll",
     Action_Cancel: "Cancel",
+    Action_CancelAll: "CancelAll",
+    Action_Sign_NoCert: "Sign_NoCert",
+    Action_SignAll_NoCert: "SignAll_NoCert",
+    Action_Cancel_NoCert: "Cancel_NoCert",
+    Action_CancelAll_NoCert: "CancelAll_NoCert",
     Action_Reset: "Reset",
     Action_ViewMap: "ViewMap",
-    Action_Print: "Print"
+    Action_Print: "Print",
+
+    CertStatus_WaitToSign: "WaitToSign",
+    CertStatus_Valid: "Valid",
+    CertStatus_Expired: "Expired",
+
 };
 Object.freeze(myConstant);

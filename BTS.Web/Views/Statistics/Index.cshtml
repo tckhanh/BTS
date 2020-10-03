@@ -382,6 +382,13 @@
                         </div>
                     }
 
+                    <ul class="nav nav-tabs nav-pills">
+                        @foreach (var item in AreaList)
+                        {
+                            <li class="active"><a data-toggle="tab" href="#@item">@item</a></li>
+                        }
+                    </ul>
+
                     <div class="col-md-6">
                         <div class="box box-info">
                             <div class="box-header with-border">

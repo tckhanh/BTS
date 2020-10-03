@@ -98,7 +98,7 @@
                         {
                             <a class="btn btn-success" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole",new { id = ""})', false)"><i class="fa fa-plus"></i> Thêm mới</a>
                         }
-                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole", new { id = "", act = CommonConstants.Action_View })', true)"><i class="fa fa-close"></i> Hủy bỏ</a>
+                        <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("AddOrEdit","ApplicationRole", new { id = "", act = CommonConstants.Action_View })', 0, 'Thêm mới')"><i class="fa fa-close"></i> Hủy bỏ</a>
 
                         <input type="submit" value="Lưu" class="btn btn-primary" />
                     </div>

@@ -138,7 +138,7 @@ namespace BTS.Web.Controllers
         {
             _operatorService.Delete(id);
             _operatorService.SaveChanges();
-            return Json(new { data_restUrl = "/Operator/Add", status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+            return Json(new { resetUrl = "/Operator/Add", status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
         }
     }
 }

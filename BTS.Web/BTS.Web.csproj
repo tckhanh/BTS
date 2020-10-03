@@ -611,6 +611,7 @@
     <Content Include="Assets\client\js\controllers\applicationUserController.js" />
     <Content Include="Assets\client\js\common\dtree.js" />
     <Content Include="Assets\client\js\common\myChart.js" />
+    <Content Include="Assets\client\js\controllers\noCertificateCanceledController.js" />
     <Content Include="Assets\client\js\controllers\contextMenuDataInfoController.js" />
     <Content Include="Assets\client\js\controllers\contextMenuSysController.js" />
     <Content Include="Assets\client\js\controllers\contextMenuDataController.js" />
@@ -11288,7 +11289,7 @@
     <Content Include="Assets\client\js\controllers\commonController.js" />
     <Content Include="Assets\client\js\controllers\certificateController_v1.js" />
     <Content Include="Assets\client\js\controllers\certificateController.js" />
-    <Content Include="Assets\client\js\controllers\canceledCertificateController.js" />
+    <Content Include="Assets\client\js\controllers\certificateCanceledController.js" />
     <Content Include="Assets\client\js\controllers\checkController.js" />
     <Content Include="Assets\client\js\controllers\contact.js" />
     <Content Include="Assets\client\js\controllers\home.js" />
@@ -11568,6 +11569,7 @@
     <Content Include="Views\Shared\LeftSideBar.cshtml" />
     <Content Include="Views\Shared\RightSideBar.cshtml" />
     <Content Include="Views\Certificate\CancelForm.cshtml" />
+    <Content Include="Views\NoCertificate\CancelForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />

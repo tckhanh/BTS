@@ -22,7 +22,9 @@ namespace BTS.Service
         IEnumerable<NoCertificate> getAll(out int totalRow, bool onlyValidNoCertificate, DateTime startDate, DateTime endDate);
 
         IEnumerable<NoCertificate> getAll(out int totalRow);
-
+        IEnumerable<NoCertificate> getNoCertificateWaitToSign(string[] includes = null);
+        IEnumerable<NoCertificate> getNoCertificateExpired(string[] includes = null);
+        
         IEnumerable<NoCertificate> getNoCertificateByProfile(string profileID);
 
         IEnumerable<NoCertificate> getNoCertificateByCity(string cityID);
@@ -88,6 +90,16 @@ namespace BTS.Service
         public void Update(NoCertificate btsNoCertificate)
         {
             _NoCertificateRepository.Update(btsNoCertificate);
+        }
+
+        public IEnumerable<NoCertificate> getNoCertificateWaitToSign(string[] includes = null)
+        {
+            return _NoCertificateRepository.GetMulti(x => x.IsSigned == false && x.IsCanceled == false, includes);
+        }
+
+        public IEnumerable<NoCertificate> getNoCertificateExpired(string[] includes = null)
+        {
+            return _NoCertificateRepository.GetMulti(x => x.IsCanceled == true, includes);
         }
 
         public IEnumerable<NoCertificate> getNoCertificateByProfile(string profileID)

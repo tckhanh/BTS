@@ -38,7 +38,6 @@ namespace BTS.Web.Infrastructure.Extensions
             certificate.SubBtsQuantity = btsCertificateVm.SubBtsQuantity;
             certificate.SubBtsAntenHeights = btsCertificateVm.SubBtsAntenHeights;
             certificate.SubBtsAntenNums = btsCertificateVm.SubBtsAntenNums;
-            certificate.SharedAntens = btsCertificateVm.SharedAntens;
             certificate.SubBtsBands = btsCertificateVm.SubBtsBands;
             certificate.SubBtsCodes = btsCertificateVm.SubBtsCodes;
             certificate.SubBtsConfigurations = btsCertificateVm.SubBtsConfigurations;
@@ -74,6 +73,7 @@ namespace BTS.Web.Infrastructure.Extensions
 
             //certificate.SubBtsTechnologies = btsCertificateVm.SubBtsTechnologies;
 
+            //certificate.IsSigned = btsCertificateVm.IsSigned;
             //certificate.IsCanceled = btsCertificateVm.IsCanceled;
             //certificate.CanceledDate = btsCertificateVm.CanceledDate;
             //certificate.CanceledReason = btsCertificateVm.CanceledReason;
@@ -94,6 +94,11 @@ namespace BTS.Web.Infrastructure.Extensions
             noCertificate.TestReportNo = btsCertificateVm.TestReportNo;
             noCertificate.TestReportDate = btsCertificateVm.TestReportDate;
             noCertificate.ReasonNoCertificate = btsCertificateVm.ReasonNoCertificate;
+
+            //noCertificate.IsSigned = btsCertificateVm.IsSigned;
+            //noCertificate.IsCanceled = btsCertificateVm.IsCanceled;
+            //noCertificate.CanceledDate = btsCertificateVm.CanceledDate;
+            //noCertificate.CanceledReason = btsCertificateVm.CanceledReason;
         }
 
         public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)

@@ -154,7 +154,7 @@ namespace BTS.ExcelLib
             }
         }
 
-        public bool FormatColumns(string fullFileName, string[] columnNames, string strFormat)
+        public bool FormatColumns(string fullFileName, string[] sheetNames, string[] columnNames, string strFormat)
         {
             // nếu đường dẫn null hoặc rỗng thì báo không hợp lệ và return hàm
             if (string.IsNullOrEmpty(fullFileName))
@@ -167,21 +167,23 @@ namespace BTS.ExcelLib
                 using (ExcelPackage excelPackage = new ExcelPackage(new FileInfo(fullFileName)))
                 {
                     // đặt tên người tạo file
-                    excelPackage.Workbook.Properties.Author = "VCC2";
+                    //excelPackage.Workbook.Properties.Author = "VCC2";
 
                     // đặt tiêu đề cho file
-                    excelPackage.Workbook.Properties.Title = "VCC2";
+                    //excelPackage.Workbook.Properties.Title = "VCC2";
 
                     foreach (ExcelWorksheet xlWorkSheet in excelPackage.Workbook.Worksheets)
                     {
-                        for (int col = xlWorkSheet.Dimension.Start.Column; col <= xlWorkSheet.Dimension.End.Column; col++)
-                        {
-                            if (xlWorkSheet.Cells[1, col].Value != null)
+                        if (Array.Exists(sheetNames, x => x == xlWorkSheet.Name)){
+                            for (int col = xlWorkSheet.Dimension.Start.Column; col <= xlWorkSheet.Dimension.End.Column; col++)
                             {
-                                if (Array.Exists(columnNames, x => x == xlWorkSheet.Cells[1, col].Value.ToString()))
+                                if (xlWorkSheet.Cells[1, col].Value != null)
                                 {
-                                    xlWorkSheet.Column(col).AutoFit();
-                                    xlWorkSheet.Column(col).Style.Numberformat.Format = strFormat;
+                                    if (Array.Exists(columnNames, x => x == xlWorkSheet.Cells[1, col].Value.ToString()))
+                                    {
+                                        xlWorkSheet.Column(col).AutoFit();
+                                        xlWorkSheet.Column(col).Style.Numberformat.Format = strFormat;
+                                    }
                                 }
                             }
                         }

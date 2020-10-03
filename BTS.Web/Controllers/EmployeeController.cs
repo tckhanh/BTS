@@ -73,7 +73,7 @@ namespace Asp.NETMVCCRUD.Controllers
                 Operator emp = db.Operators.Where(x => x.Id == id).FirstOrDefault<Operator>();
                 db.Operators.Remove(emp);
                 db.SaveChanges();
-                return Json(new { data_restUrl = "/Employee/Add", status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = "/Employee/Add", status = CommonConstants.Status_Success, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
             }
         }
     }

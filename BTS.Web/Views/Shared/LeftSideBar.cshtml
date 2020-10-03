@@ -77,6 +77,23 @@
                     </li>
                 }
 
+                @if (User.IsInRole(CommonConstants.Data_CanImport_Role))
+                {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-file-archive-o"></i> <span>Đăng tải Hồ sơ kiểm định</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="/ImportData"><i class="fa fa-circle-o"></i>Upload Hồ sơ KĐ đã xử lý</a></li>
+                            @*<li><a href="/ImportData/Area"><i class="fa fa-circle-o"></i>Nhập Quận/Huyện Phường/Xã</a></li>
+                            <li><a href="/ImportData/Equipment"><i class="fa fa-circle-o"></i>Nhập Thiết bị</a></li>*@
+                        </ul>
+                    </li>
+                }
+
                 @if (User.IsInRole(CommonConstants.Data_CanView_Role))
                 {
                     <li class="treeview">
@@ -87,9 +104,6 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            @if (User.IsInRole(CommonConstants.Data_CanImport_Role)) {
-                                <li><a href="/ImportData"><i class="fa fa-circle-o"></i>Upload Hồ sơ KĐ đã xử lý</a></li>
-                            }
                             <li><a href="/Profile/"><i class="fa fa-circle-o"></i> Đơn đề nghị Kiểm định</a></li>
                             @*<li><a href="/BTS/"><i class="fa fa-circle-o"></i> Trạm BTS đã tiếp nhận</a></li>
                                 <li><a href="/Inspect/"><i class="fa fa-circle-o"></i> Báo cáo thẩm định cấp Giấy CNKĐ</a></li>*@

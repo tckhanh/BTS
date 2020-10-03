@@ -64,7 +64,7 @@ namespace BTS.Web.Areas.Controllers
 
                         string[] columnNames = new string[] {
                             };
-                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+                        //_excelIO.FormatColumns(fileLocation, columnNames, "@");
 
                         int ProfileID = 0;
 

@@ -1,12 +1,12 @@
 ﻿
-var canceledCertificateController = {
+var certificatecanceledController = {
     emailRegex: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0, 61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0, 61}[a-zA-Z0-9])?)*$/,
     certificateNum: $("#certificateNum"),
     canceledReason: $("#canceledReason"),
     canceledDate: $("#canceledDate"),
     tips: $(".validateTips"),
     form: function () {
-        return canceledCertificateController.showDialog.find("form").on("submit", function (event) {
+        return certificatecanceledController.showDialog.find("form").on("submit", function (event) {
             event.preventDefault();
             cancelCertificate();
         });
@@ -14,7 +14,7 @@ var canceledCertificateController = {
     // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
 
     init: function () {
-        certificateController.registerEvent();
+        certificatecanceledController.registerEvent();
     },
 
     showDialog: $("#dialog-form").dialog({
@@ -29,14 +29,14 @@ var canceledCertificateController = {
                 text: 'Thu hồi',
                 class: 'btn btn-success',
                 click: function () {
-                    canceledCertificateController.cancelCertificate();
+                    certificatecanceledController.cancelCertificate();
                 }
             },
             "cancel": {
                 text: 'Thoát',
                 class: 'btn btn-info',
                 click: function () {
-                    canceledCertificateController.showDialog.dialog("close");
+                    certificatecanceledController.showDialog.dialog("close");
                 }
             }
         },
@@ -46,24 +46,24 @@ var canceledCertificateController = {
 
     registerEvent: function () {
         $("#create-user").button().on("click", function () {
-            canceledCertificateController.dialog.dialog("open");
+            certificatecanceledController.dialog.dialog("open");
         });
 
 
     },
     updateTips: function (t) {
-        canceledCertificateController.tips
+        certificatecanceledController.tips
             .text(t)
             .addClass("ui-state-highlight");
         setTimeout(function () {
-            canceledCertificateController.tips.removeClass("ui-state-highlight", 1500);
+            certificatecanceledController.tips.removeClass("ui-state-highlight", 1500);
         }, 500);
     },
 
     checkLength: function (o, n, min, max) {
         if (o.val().length > max || o.val().length < min) {
             o.addClass("ui-state-error");
-            canceledCertificateController.updateTips("Length of " + n + " must be between " +
+            certificatecanceledController.updateTips("Length of " + n + " must be between " +
                 min + " and " + max + ".");
             return false;
         } else {
@@ -74,7 +74,7 @@ var canceledCertificateController = {
     checkRegexp: function (o, regexp, n) {
         if (!(regexp.test(o.val()))) {
             o.addClass("ui-state-error");
-            canceledCertificateController.updateTips(n);
+            certificatecanceledController.updateTips(n);
             return false;
         } else {
             return true;
@@ -111,11 +111,11 @@ var canceledCertificateController = {
                     else {
                         $.notify(response.message, "error");
                     }
-                    canceledCertificateController.showDialog.dialog("close");
+                    certificatecanceledController.showDialog.dialog("close");
                 },
                 error: function (response) {
                     $.notify(response.message, "error");
-                    canceledCertificateController.showDialog.dialog("close");
+                    certificatecanceledController.showDialog.dialog("close");
                 }
             }
             if ($(form).attr('enctype') == "multipart/form-data") {
@@ -128,4 +128,4 @@ var canceledCertificateController = {
     },
 };
 
-canceledCertificateController.init();
+certificatecanceledController.init();

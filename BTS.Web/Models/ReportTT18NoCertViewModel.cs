@@ -51,7 +51,7 @@ namespace BTS.Web.Models
         public string Manufactory { get; set; }
 
         [Display(Name = "Thiết bị")]
-        [StringLength(50, ErrorMessage = "Thiết bị không quá 50 ký tự")]
+        [StringLength(80, ErrorMessage = "Thiết bị không quá 80 ký tự")]
         public string Equipment { get; set; }
 
         [Display(Name = "Số Anten")]

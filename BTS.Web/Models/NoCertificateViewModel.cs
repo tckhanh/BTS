@@ -76,6 +76,24 @@ namespace BTS.Web.Models
         [DataType(DataType.MultilineText)]
         public string ReasonNoCertificate { get; set; }
 
+        [Display(Name = "Trạm BTS không cấp Giấy CNKĐ đã được ký duyệt")]
+        public bool IsSigned { get; set; }
+
+        [Display(Name = "Trạm BTS không cấp Giấy CNKĐ bị hủy bỏ")]
+        public bool IsCanceled { get; set; }
+
+        [Display(Name = "Ngày thu hồi/hủy bỏ")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+
+        public DateTime? CanceledDate { get; set; }
+
+        [Display(Name = "Lý do Thu hồi/hủy bỏ")]
+        [StringLength(150, ErrorMessage = "Lý do Thu hồi/hủy bỏ không quá 150 ký tự")]
+        public string CanceledReason { get; set; }
+
+
+
         [Display(Name = "Thuộc hồ sơ KĐ")]
         public ICollection<SelectListItem> ProfileList { get; set; }
 

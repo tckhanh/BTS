@@ -49,7 +49,7 @@ namespace BTS.Model.Models
         [MaxLength(50)]
         public string Manufactory { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(80)]
         public string Equipment { get; set; }
 
         public int? AntenNum { get; set; }

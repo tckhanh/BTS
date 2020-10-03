@@ -51,7 +51,7 @@ namespace BTS.Web.Areas.Controllers
             return View();
         }
 
-        
+
         public JsonResult ConvertSubBtsBands___()
         {
             int countItem;
@@ -84,8 +84,8 @@ namespace BTS.Web.Areas.Controllers
             _certificateService.SaveChanges();
 
 
-            return Json(new { status = CommonConstants.Status_Success, message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
-            //return Json(new { status = CommonConstants.Status_Error, message = "Không có dữ liệu" }, JsonRequestBehavior.AllowGet);
+            return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+            //return Json(new {resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Không có dữ liệu" }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ConvertSubBtsInCertBands()
@@ -118,8 +118,8 @@ namespace BTS.Web.Areas.Controllers
             }
             _subBtsInCertService.Save();
 
-            return Json(new { status = CommonConstants.Status_Success, message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
-            //return Json(new { status = CommonConstants.Status_Error, message = "Không có dữ liệu" }, JsonRequestBehavior.AllowGet);
+            return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+            //return Json(new {resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Không có dữ liệu" }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -133,7 +133,7 @@ namespace BTS.Web.Areas.Controllers
             string ProfileID = Request.Form.GetValues("ProfileID")?.FirstOrDefault();
             string CertificateNum = Request.Form.GetValues("CertificateNum")?.FirstOrDefault().ToUpper();
             string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress")?.FirstOrDefault().ToLower();
-            string IsExpired = Request.Form.GetValues("IsExpired")?.FirstOrDefault().ToLower();
+            string CertificateStatus = Request.Form.GetValues("CertificateStatus")?.FirstOrDefault();
             DateTime StartDate, EndDate;
 
             if (!DateTime.TryParse(Request.Form.GetValues("StartDate")?.FirstOrDefault(), out StartDate))
@@ -147,44 +147,67 @@ namespace BTS.Web.Areas.Controllers
             }
 
             // searching ...
-            IEnumerable<Certificate> Items;
+            IEnumerable<Certificate> Items = new List<Certificate>();
+
+            if (CertificateStatus == CommonConstants.CertStatus_WaitToSign)
+            {
+                Items = _certificateService.getCertificateWaitToSign().ToList();
+            }
+            else if (CertificateStatus == CommonConstants.CertStatus_Expired)
+            {
+                Items = _certificateService.getCertificateExpired().ToList();
+            }
+            else if (CertificateStatus == CommonConstants.CertStatus_Valid)
+            {
+                if (!(string.IsNullOrEmpty(CertificateNum)))
+                {
+                    Items = _certificateService.getCertificateByCertificateNum(CertificateNum).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(CityID)))
+                {
+                    Items = _certificateService.getCertificateByCity(CityID).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(OperatorID)))
+                {
+                    Items = _certificateService.getCertificateByOperator(OperatorID).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(ProfileID)))
+                {
+                    Items = _certificateService.getCertificateByProfile(ProfileID).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
+                {
+                    Items = _certificateService.getCertificateByBtsCodeOrAddress(BtsCodeOrAddress).ToList();
+                }
+                else if (CertificateStatus == CommonConstants.CertStatus_Valid && StartDate != null && EndDate != null)
+                {
+                    Items = _certificateService.getAll(out countItem, false, StartDate, EndDate).ToList();
+                }
+                else
+                {
+                    Items = _certificateService.getAll(out countItem, false).ToList();
+                }
+            }
 
 
-            if (!(string.IsNullOrEmpty(CertificateNum)))
+            if (CertificateStatus == CommonConstants.CertStatus_WaitToSign)
             {
-                Items = _certificateService.getCertificateByCertificateNum(CertificateNum).ToList();
+                Items = Items.Where(x=> x.IsSigned == false && x.IsCanceled == false);
             }
-            else if (!(string.IsNullOrEmpty(CityID)))
+            if (CertificateStatus == CommonConstants.CertStatus_Expired)
             {
-                Items = _certificateService.getCertificateByCity(CityID).ToList();
-            }
-            else if (!(string.IsNullOrEmpty(OperatorID)))
-            {
-                Items = _certificateService.getCertificateByOperator(OperatorID).ToList();
-            }
-            else if (!(string.IsNullOrEmpty(ProfileID)))
-            {
-                Items = _certificateService.getCertificateByProfile(ProfileID).ToList();
-            }
-            else if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
-            {
-                Items = _certificateService.getCertificateByBtsCodeOrAddress(BtsCodeOrAddress).ToList();
-            }
-            else if (StartDate != null && EndDate != null)
-            {
-                Items = _certificateService.getAll(out countItem, false, StartDate, EndDate).ToList();
-            }
-            else
-            {
-                Items = _certificateService.getAll(out countItem, false).ToList();
+                Items = Items.Where(x => x.IsCanceled == true || x.ExpiredDate < DateTime.Now);
             }
 
-
-            if (StartDate != null && EndDate != null)
+            if (CertificateStatus == CommonConstants.CertStatus_Valid)
             {
-                Items = Items.Where(x => x.IssuedDate >= StartDate && x.IssuedDate <= EndDate).ToList();
-            }
+                Items = Items.Where(x => x.IsSigned == true && x.IsCanceled == false && x.ExpiredDate >= DateTime.Now);
 
+                if (StartDate != null && EndDate != null)
+                {
+                    Items = Items.Where(x => x.IssuedDate >= StartDate && x.IssuedDate <= EndDate).ToList();
+                }
+            }
 
             if (!(string.IsNullOrEmpty(CertificateNum)))
             {
@@ -194,16 +217,6 @@ namespace BTS.Web.Areas.Controllers
             if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
             {
                 Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
-            }
-
-
-            if (IsExpired == "yes")
-            {
-                Items = Items.Where(x => x.ExpiredDate < DateTime.Today).ToList();
-            }
-            else
-            {
-                Items = Items.Where(x => x.ExpiredDate >= DateTime.Today).ToList();
             }
 
             if (!(string.IsNullOrEmpty(CityID)))
@@ -228,6 +241,7 @@ namespace BTS.Web.Areas.Controllers
             IEnumerable<CertificateViewModel> dataViewModel = Mapper.Map<List<CertificateViewModel>>(Items);
 
             int recordsFiltered = Items.Count();
+
             //for (int i = 0; i < recordsFiltered; i++)
             //{
             //    IEnumerable<SubBtsInCert> SubItems = _certificateService.getDetailByID(dataViewModel.ElementAt(i).Id);
@@ -260,16 +274,16 @@ namespace BTS.Web.Areas.Controllers
                 IEnumerable<SubBtsInCertViewModel> dataViewModel = Mapper.Map<List<SubBtsInCertViewModel>>(Items);
                 if (countItem > 0)
                 {
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "SubDetail", dataViewModel), message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "SubDetail", dataViewModel), message = "Lấy dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Không có dữ liệu" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Không có dữ liệu" }, JsonRequestBehavior.AllowGet);
                 }
             }
             else
             {
-                return Json(new { status = CommonConstants.Status_Error, message = "Lỗi lấy dữ liệu" }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi lấy dữ liệu" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -511,61 +525,61 @@ namespace BTS.Web.Areas.Controllers
                     SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsCodes.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã trạm của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã trạm của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsOperatorIDs.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã Doanh nghiệp CCDV của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã Doanh nghiệp CCDV của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsEquipments.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Thiết bị phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Thiết bị phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsAntenNums.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsConfigurations.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số máy phát, thu phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số máy phát, thu phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsBands.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Băng tần của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Băng tần của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsPowerSums.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Tổng công suất phát các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Tổng công suất phát các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsAntenHeights.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Độ cao các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Độ cao các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     Certificate newItem = new Certificate();
 
                     if (_certificateService.getByID(Item.Id) != null)
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi" }, JsonRequestBehavior.AllowGet);
                     }
 
                     if (_certificateService.findCertificate(Item.BtsCode, Item.ProfileID) != null)
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")" }, JsonRequestBehavior.AllowGet);
                     }
 
                     newItem.UpdateCertificate(Item);
@@ -609,17 +623,17 @@ namespace BTS.Web.Areas.Controllers
                         _certificateService.SaveChanges();
                     }
 
-                    return Json(new { status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -628,6 +642,8 @@ namespace BTS.Web.Areas.Controllers
         [AuthorizeRoles(CommonConstants.Data_CanEdit_Role)]
         public ActionResult Edit(CertificateViewModel Item)
         {
+            int StartIndex, StopIndex;
+            string Technology;
             try
             {
                 if (ModelState.IsValid)
@@ -637,49 +653,49 @@ namespace BTS.Web.Areas.Controllers
                     SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsCodes.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã trạm của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã trạm của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsOperatorIDs.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã Doanh nghiệp CCDV của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã Doanh nghiệp CCDV của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsEquipments.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Thiết bị phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Thiết bị phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsAntenNums.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsConfigurations.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số máy phát, thu phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số máy phát, thu phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsBands.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Băng tần của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Băng tần của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsPowerSums.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Tổng công suất phát các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Tổng công suất phát các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsAntenHeights.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Độ cao các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Độ cao các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
 
@@ -696,6 +712,16 @@ namespace BTS.Web.Areas.Controllers
 
                     for (int j = 0; j < Item.SubBtsQuantity; j++)
                     {
+                        StartIndex = SubBtsBands[j].IndexOf("(");
+                        StopIndex = SubBtsBands[j].IndexOf(")");
+                        if (StartIndex > -1 && StopIndex > -1 && StopIndex > StartIndex)
+                        {
+                            Technology = SubBtsBands[j].Substring(StartIndex + 1, StopIndex - StartIndex - 1);
+                        }
+                        else
+                        {
+                            Technology = "";
+                        }
                         SubBtsInCert subBtsItem = new SubBtsInCert
                         {
                             CertificateID = Item.Id,
@@ -705,6 +731,7 @@ namespace BTS.Web.Areas.Controllers
                             AntenHeight = SubBtsAntenHeights[j],
                             AntenNum = int.Parse(SubBtsAntenNums[j]),
                             Band = SubBtsBands[j],
+                            Technology = Technology,
                             Configuration = SubBtsConfigurations[j],
                             Equipment = SubBtsEquipments[j]
                         };
@@ -725,17 +752,17 @@ namespace BTS.Web.Areas.Controllers
                         _certificateService.Add(subBtsItem);
                         _certificateService.SaveChanges();
                     }
-                    return Json(new { status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                     // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -768,17 +795,17 @@ namespace BTS.Web.Areas.Controllers
                     _certificateService.Update(editItem);
                     _certificateService.SaveChanges();
 
-                    return Json(new { status = CommonConstants.Status_Success, message = "Thu hồi/ Hủy bỏ Giấy CNKĐ thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Thu hồi/ Hủy bỏ Giấy CNKĐ thành công" }, JsonRequestBehavior.AllowGet);
                     // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -796,49 +823,49 @@ namespace BTS.Web.Areas.Controllers
                     SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsCodes.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã trạm của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã trạm của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsOperatorIDs.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã Doanh nghiệp CCDV của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã Doanh nghiệp CCDV của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsEquipments.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Thiết bị phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Thiết bị phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsAntenNums.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsConfigurations.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số máy phát, thu phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số máy phát, thu phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsBands.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Băng tần của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Băng tần của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsPowerSums.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Tổng công suất phát các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Tổng công suất phát các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
                     if (Item.SubBtsQuantity != SubBtsAntenHeights.Count())
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Độ cao các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Độ cao các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
                     if (act == CommonConstants.Action_Add)
@@ -847,12 +874,12 @@ namespace BTS.Web.Areas.Controllers
 
                         if (_certificateService.getByID(Item.Id) != null)
                         {
-                            return Json(new { status = CommonConstants.Status_Error, message = "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi" }, JsonRequestBehavior.AllowGet);
+                            return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi" }, JsonRequestBehavior.AllowGet);
                         }
 
                         if (_certificateService.findCertificate(Item.BtsCode, Item.ProfileID) != null)
                         {
-                            return Json(new { status = CommonConstants.Status_Error, message = "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")" }, JsonRequestBehavior.AllowGet);
+                            return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")" }, JsonRequestBehavior.AllowGet);
                         }
 
                         newItem.UpdateCertificate(Item);
@@ -896,7 +923,7 @@ namespace BTS.Web.Areas.Controllers
                             _certificateService.SaveChanges();
                         }
 
-                        return Json(new { status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                         // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                     }
                     else
@@ -944,18 +971,52 @@ namespace BTS.Web.Areas.Controllers
                             _certificateService.SaveChanges();
                         }
 
-                        return Json(new { status = CommonConstants.Status_Success, message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                         // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
                     }
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(CommonConstants.Data_CanSign_Role)]
+        public ActionResult Sign()
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    string CertificateNum = Request.Form.GetValues("CertificateNum")?.FirstOrDefault();                    
+
+                    Certificate editItem = _certificateService.getByID(CertificateNum);
+                    editItem.IsSigned = true;
+
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
+
+                    _certificateService.Update(editItem);
+                    _certificateService.SaveChanges();
+
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Ký phê duyệt ban hành thành công" }, JsonRequestBehavior.AllowGet);
+                    // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<BtsViewModel>>(GetAll()))
+                }
+                else
+                {
+                    return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -972,18 +1033,18 @@ namespace BTS.Web.Areas.Controllers
 
                 //if (_btsService.IsUsed(id))
                 //{
-                //    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
+                //    return Json(new {resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
                 //}
 
                 _certificateService.Delete(id);
                 _certificateService.SaveChanges();
 
-                return Json(new { data_restUrl = "/Certificate/Add", status = CommonConstants.Status_Success, message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Success, message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 // html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()),
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

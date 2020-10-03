@@ -231,13 +231,13 @@ namespace BTS.Web.Areas.Controllers
         }
 
 
-        protected void ExecuteDatabase(Func<string, string> function, string fileLocation)
+        protected void ExecuteDatabase(Func<string, string> function, string Para1)
         {
             string strReturn;
             string description = "";
             try
             {
-                strReturn = function.Invoke(fileLocation);
+                strReturn = function.Invoke(Para1);
                 if (strReturn != CommonConstants.Status_Success)
                 {
                     LogError(strReturn);
@@ -277,13 +277,13 @@ namespace BTS.Web.Areas.Controllers
 
 
         // Thuc hien lenh ghi Log neu có loi va nem loi ra ngoai
-        protected void ExecuteDatabase(Func<string, string, string> function, string fileLocation, string InputType)
+        protected void ExecuteDatabase(Func<string, string, string> function, string Para1, string Para2)
         {
             string strReturn;
             string description = "";
             try
             {
-                strReturn = function.Invoke(fileLocation, InputType);
+                strReturn = function.Invoke(Para1, Para2);
                 if (strReturn != CommonConstants.Status_Success)
                 {
                     LogError(strReturn);
@@ -321,13 +321,13 @@ namespace BTS.Web.Areas.Controllers
             }
         }
 
-        protected void ExecuteDatabase(Func<string, string, string, string> function, string fileLocation, string Group, string InputType)
+        protected void ExecuteDatabase(Func<string, string, string, string> function, string Para1, string Para2, string Para3)
         {
             string strReturn;
             string description = "";
             try
             {
-                strReturn = function.Invoke(fileLocation, Group, InputType);
+                strReturn = function.Invoke(Para1, Para2, Para3);
                 if (strReturn != CommonConstants.Status_Success)
                 {
                     LogError(strReturn);
@@ -364,13 +364,57 @@ namespace BTS.Web.Areas.Controllers
 
             }
         }
-        protected void ExecuteDatabaseAsyn(Func<string, Task<string>> function, string excelConnectionString)
+
+        protected void ExecuteDatabase(Func<string, string, string, bool, string> function, string Para1, string Para2, string Para3, bool Para4)
+        {
+            string strReturn;
+            string description = "";
+            try
+            {
+                strReturn = function.Invoke(Para1, Para2, Para3, Para4);
+                if (strReturn != CommonConstants.Status_Success)
+                {
+                    LogError(strReturn);
+                    throw new Exception(strReturn);
+                }
+            }
+            catch (DbEntityValidationException ex)
+            {
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Trace.WriteLine($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.");
+                    description += ($"Entity of type \"{eve.Entry.Entity.GetType().Name}\" in state \"{eve.Entry.State}\" has the following validation error.\n");
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Trace.WriteLine($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"");
+                        description += ($"- Property: \"{ve.PropertyName}\", Error: \"{ve.ErrorMessage}\"\n");
+                    }
+                }
+                LogError(ex, description);
+                throw;
+            }
+            catch (DbUpdateException ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+            finally
+            {
+
+            }
+        }
+        protected void ExecuteDatabaseAsyn(Func<string, Task<string>> function, string Para1)
         {
             Task<string> strReturn;
             string description = "";
             try
             {
-                strReturn = function.Invoke(excelConnectionString);
+                strReturn = function.Invoke(Para1);
                 if (strReturn?.ToString() != CommonConstants.Status_Success)
                 {
                     LogError(strReturn?.ToString());
@@ -407,17 +451,18 @@ namespace BTS.Web.Areas.Controllers
             }
         }
 
-        protected void ExecuteDatabase(Func<string, string, string> function, string excelConnectionString, out string strReturn)
+        protected void ExecuteDatabase(Func<string, string, string> function, string Para1, out string Para2)
         {
-            strReturn = "";
+            string strReturn;
             string description = "";
+            Para2 = "";
             try
             {
-                strReturn = function.Invoke(excelConnectionString, strReturn);
+                strReturn = function.Invoke(Para1, Para2);
                 if (strReturn != CommonConstants.Status_Success)
                 {
-                    LogError(strReturn);
-                    throw new Exception(strReturn);
+                    LogError(Para2);
+                    throw new Exception(Para2);
                 }
             }
             catch (DbEntityValidationException ex)            

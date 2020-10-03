@@ -27,6 +27,7 @@ namespace BTS.Web.Areas.Controllers
 
         private EpplusIO _excelIO;
         private NumberFormatInfo provider;
+        private string profileID;
 
         public ImportDataController(IImportService importService, IErrorService errorService) : base(errorService)
         {
@@ -47,7 +48,7 @@ namespace BTS.Web.Areas.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(HttpPostedFileBase file, string ImportAction, string InputType)
+        public ActionResult Index(HttpPostedFileBase file, string ImportAction, string InputType, bool IsSigned)
         {
             if (Request.Files["file"].ContentLength > 0)
             {
@@ -65,6 +66,11 @@ namespace BTS.Web.Areas.Controllers
 
                         Request.Files["file"].SaveAs(fileLocation);
 
+                        string[] sheetNames = new string[] {
+                            CommonConstants.Sheet_Certificate,
+                            CommonConstants.Sheet_NoCertificate,
+                        };
+
                         string[] columnNames = new string[] {
                             CommonConstants.Sheet_Certificate_Longtitude,
                             CommonConstants.Sheet_Certificate_Latitude,
@@ -73,12 +79,10 @@ namespace BTS.Web.Areas.Controllers
                             CommonConstants.Sheet_Certificate_OffsetHeight,
                             CommonConstants.Sheet_Certificate_SafeLimitHeight,
                             CommonConstants.Sheet_Certificate_BtsCode};
-                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+                        _excelIO.FormatColumns(fileLocation, sheetNames, columnNames, "@");
 
                         //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
                         //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
-
-                        string ProfileID = "";
 
                         ExecuteDatabase(ImportInCaseOf, fileLocation);
                         ExecuteDatabase(ImportLab, fileLocation);
@@ -86,13 +90,13 @@ namespace BTS.Web.Areas.Controllers
                         ExecuteDatabase(ImportOperator, fileLocation);
                         ExecuteDatabase(ImportApplicant, fileLocation);
 
-                        ExecuteDatabase(ImportProfile, fileLocation, out ProfileID);
+                        ExecuteDatabase(ImportProfile, fileLocation);
                         if (ImportAction == CommonConstants.ImportBTS)
-                            ExecuteDatabase(ImportBts, fileLocation, InputType, ProfileID);
+                            ExecuteDatabase(ImportBts, fileLocation, InputType, profileID);
                         if (ImportAction == CommonConstants.ImportCER)
                         {
-                            ExecuteDatabase(ImportCertificate, fileLocation, InputType, ProfileID);
-                            ExecuteDatabase(ImportNoCertificate, fileLocation, InputType, ProfileID);
+                            ExecuteDatabase(ImportCertificate, fileLocation, InputType, profileID, IsSigned);
+                            ExecuteDatabase(ImportNoCertificate, fileLocation, InputType, profileID, IsSigned);
                         }
 
                         //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
@@ -136,10 +140,15 @@ namespace BTS.Web.Areas.Controllers
 
                         Request.Files["file"].SaveAs(fileLocation);
 
+                        string[] sheetNames = new string[] {
+                            CommonConstants.Sheet_Area,
+                        };
+
+
                         string[] columnNames = new string[] {
                             CommonConstants.Sheet_Area_WardId,
                             CommonConstants.Sheet_Area_DistrictId };
-                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+                        _excelIO.FormatColumns(fileLocation, sheetNames, columnNames, "@");
 
                         //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
                         //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
@@ -192,6 +201,10 @@ namespace BTS.Web.Areas.Controllers
 
                         Request.Files["file"].SaveAs(fileLocation);
 
+                        string[] sheetNames = new string[] {
+                            CommonConstants.Sheet_Equipment,
+                        };
+
                         string[] columnNames = new string[] {
                             CommonConstants.Sheet_Equipment_Tx,
                             CommonConstants.Sheet_Equipment_MobiFone,
@@ -200,7 +213,7 @@ namespace BTS.Web.Areas.Controllers
                             CommonConstants.Sheet_Equipment_VNMobile,
                             CommonConstants.Sheet_Equipment_Gtel
                         };
-                        _excelIO.FormatColumns(fileLocation, columnNames, "@");
+                        _excelIO.FormatColumns(fileLocation, sheetNames, columnNames, "@");
 
                         //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
                         //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
@@ -596,21 +609,21 @@ namespace BTS.Web.Areas.Controllers
             return CommonConstants.Status_Success;
         }
 
-        private string ImportProfile(string excelConnectionString, string proFileID)
+        private string ImportProfile(string excelConnectionString)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Profile);
             var Item = new Profile();
-            proFileID = "";
-            if (!string.IsNullOrEmpty(dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantID]?.ToString()))
+            profileID = "";
+            if (!string.IsNullOrEmpty(dt.Rows[1][CommonConstants.Sheet_Profile_ApplicantID]?.ToString()))
             {
                 if (dt.Columns.Contains(CommonConstants.Sheet_Profile_ApplicantID))
                 {
-                    Item.ApplicantID = dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantID]?.ToString();
+                    Item.ApplicantID = dt.Rows[1][CommonConstants.Sheet_Profile_ApplicantID]?.ToString();
                 }
 
                 if (String.IsNullOrEmpty(Item.ApplicantID) && (dt.Columns.Contains(CommonConstants.Sheet_Profile_ApplicantName)))
                 {
-                    Item.ApplicantID = _importService.getOperatorByName(dt.Rows[0][CommonConstants.Sheet_Profile_ApplicantName]?.ToString()).Id;
+                    Item.ApplicantID = _importService.getOperatorByName(dt.Rows[1][CommonConstants.Sheet_Profile_ApplicantName]?.ToString()).Id;
                 }
 
                 if (String.IsNullOrEmpty(Item.ApplicantID) || _importService.findApplicant(Item.ApplicantID) == null)
@@ -619,24 +632,24 @@ namespace BTS.Web.Areas.Controllers
                 }
 
 
-                Item.ProfileNum = dt.Rows[0][CommonConstants.Sheet_Profile_ProfileNum]?.ToString();
-                Item.ProfileDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ProfileDate]?.ToString());
-                Item.BtsQuantity = Int32.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_BtsQuantity]?.ToString());
-                Item.AcceptedBtsQuantity = Int32.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_AcceptedBtsQuantity]?.ToString());
-                Item.ApplyDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_ApplyDate]?.ToString());
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString().Length > 0)
+                Item.ProfileNum = dt.Rows[1][CommonConstants.Sheet_Profile_ProfileNum]?.ToString();
+                Item.ProfileDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_ProfileDate]?.ToString());
+                Item.BtsQuantity = Int32.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_BtsQuantity]?.ToString());
+                Item.AcceptedBtsQuantity = Int32.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_AcceptedBtsQuantity]?.ToString());
+                Item.ApplyDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_ApplyDate]?.ToString());
+                if (dt.Rows[1][CommonConstants.Sheet_Profile_Fee]?.ToString().Length > 0)
                 {
                     //int fee;
-                    //int.TryParse(dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number, provider, out fee);
-                    Item.Fee = Int64.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number);
+                    //int.TryParse(dt.Rows[1][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number, provider, out fee);
+                    Item.Fee = Int64.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number);
                 }
 
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString().Length > 0)
-                    Item.FeeAnnounceNum = dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString();
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString().Length > 0)
-                    Item.FeeAnnounceDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString());
-                if (dt.Rows[0][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString().Length > 0)
-                    Item.FeeReceiptDate = DateTime.Parse(dt.Rows[0][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString());
+                if (dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString().Length > 0)
+                    Item.FeeAnnounceNum = dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString();
+                if (dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString().Length > 0)
+                    Item.FeeAnnounceDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString());
+                if (dt.Rows[1][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString().Length > 0)
+                    Item.FeeReceiptDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString());
                 Item.CreatedBy = User.Identity.Name;
                 Item.CreatedDate = DateTime.Now;
 
@@ -644,8 +657,8 @@ namespace BTS.Web.Areas.Controllers
                 // Neu Profile da ton tai thi cap nhat Profile
                 if (dbProfile != null)
                 {
-                    proFileID = dbProfile.Id;
-                    Profile dbPro = _importService.getProfile(proFileID);
+                    profileID = dbProfile.Id;
+                    Profile dbPro = _importService.getProfile(profileID);
                     dbPro.BtsQuantity = Item.BtsQuantity;
                     dbPro.AcceptedBtsQuantity = Item.AcceptedBtsQuantity;
                     dbPro.ApplyDate = Item.ApplyDate;
@@ -662,10 +675,10 @@ namespace BTS.Web.Areas.Controllers
                 {
                     _importService.Add(Item);
                     _importService.Save();
-                    proFileID = Item.Id;
+                    profileID = Item.Id;
                 }
             }
-            return proFileID;
+            return CommonConstants.Status_Success;
         }
 
         private string ImportBts(string excelConnectionString, string InputType, string profileID)
@@ -773,7 +786,7 @@ namespace BTS.Web.Areas.Controllers
             return CommonConstants.Status_Success;
         }
 
-        private string ImportCertificate(string excelConnectionString, string InputType, string profileID)
+        private string ImportCertificate(string excelConnectionString, string InputType, string profileID, bool IsSigned)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_Certificate);
             string operatorID = _importService.getApplicant(profileID).OperatorID;
@@ -799,6 +812,8 @@ namespace BTS.Web.Areas.Controllers
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Certificate Item = FillInCertificate(profileID, operatorID, dt, i);
+                    Item.IsSigned = IsSigned;
+
                     if (!string.IsNullOrEmpty(Item.BtsCode?.ToString()))
                     {
                         Certificate existedItemID = _importService.getCertificate(Item.Id);
@@ -903,6 +918,7 @@ namespace BTS.Web.Areas.Controllers
                 }
 
             }
+
             if (InputType == CommonConstants.InputType_AddMore)
             {
                 // Them cac Giấy CNKĐ cua Profile vao
@@ -910,6 +926,8 @@ namespace BTS.Web.Areas.Controllers
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Certificate Item = FillInCertificate(profileID, operatorID, dt, i);
+                    Item.IsSigned = IsSigned;
+
                     if (!string.IsNullOrEmpty(Item.BtsCode?.ToString()))
                     {
                         Certificate existedItemID = _importService.getCertificate(Item.Id);
@@ -961,6 +979,8 @@ namespace BTS.Web.Areas.Controllers
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Certificate Item = FillInCertificate(profileID, operatorID, dt, i);
+                    Item.IsSigned = IsSigned;
+
                     if (!string.IsNullOrEmpty(Item.BtsCode?.ToString()))
                     {
                         Certificate existedItemID = _importService.getCertificate(Item.Id);
@@ -1025,6 +1045,8 @@ namespace BTS.Web.Areas.Controllers
 
         private bool AddSubBtsInCert (Certificate Item)
         {
+            int StartIndex, StopIndex;
+            string Technology;
             string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsTechnologies, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
             SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
             SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
@@ -1038,6 +1060,16 @@ namespace BTS.Web.Areas.Controllers
 
             for (int j = 0; j < Item.SubBtsQuantity; j++)
             {
+                StartIndex = SubBtsBands[j].IndexOf("(");
+                StopIndex = SubBtsBands[j].IndexOf(")");
+                if (StartIndex > -1 && StopIndex > -1 && StopIndex > StartIndex)
+                {
+                    Technology = SubBtsBands[j].Substring(StartIndex + 1, StopIndex - StartIndex - 1);
+                }
+                else
+                {
+                    Technology = "";
+                }
                 SubBtsInCert subBtsItem = new SubBtsInCert();
                 subBtsItem.CertificateID = Item.Id;
                 subBtsItem.BtsSerialNo = j + 1;
@@ -1046,7 +1078,7 @@ namespace BTS.Web.Areas.Controllers
                 subBtsItem.AntenHeight = SubBtsAntenHeights[j];
                 subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
                 subBtsItem.Band = SubBtsBands[j];
-                //subBtsItem.Technology = (SubBtsTechnologies.Count() > j) ? SubBtsTechnologies[j] : "" ;
+                subBtsItem.Technology = Technology;
                 subBtsItem.Configuration = SubBtsConfigurations[j];
                 subBtsItem.Equipment = SubBtsEquipments[j];
                 if (subBtsItem.Equipment.IndexOf(' ') >= 0)
@@ -1071,6 +1103,7 @@ namespace BTS.Web.Areas.Controllers
 
         private Certificate FillInCertificate(string profileID, string operatorID, DataTable dt, int i)
         {
+            DateTime datetimeData;
             var Item = new Certificate();
 
             Item.ProfileID = profileID;
@@ -1089,9 +1122,22 @@ namespace BTS.Web.Areas.Controllers
             Item.LabID = dt.Rows[i][CommonConstants.Sheet_Certificate_LabID]?.ToString();
 
             Item.TestReportNo = dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportNo]?.ToString();
-            Item.TestReportDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportDate]?.ToString());
-            Item.IssuedDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedDate]?.ToString());
-            Item.ExpiredDate = DateTime.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate]?.ToString());
+
+            if (DateTime.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_TestReportDate]?.ToString(), out datetimeData))
+            {
+                Item.TestReportDate = datetimeData;
+            }
+
+            if (DateTime.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedDate]?.ToString(), out datetimeData))
+            {
+                Item.IssuedDate = datetimeData;
+            }
+                
+            if (DateTime.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate]?.ToString(), out datetimeData))
+            {
+                Item.ExpiredDate = datetimeData;
+            }
+
             Item.SubBtsQuantity = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity]?.ToString());
 
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString().Length > 0)
@@ -1119,13 +1165,15 @@ namespace BTS.Web.Areas.Controllers
             Item.OffsetHeight = Item.MinAntenHeight - Item.MaxHeightIn100m;
 
             //if (dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString().Length > 0)
-            //    Item.OffsetHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString());                    
+            //    Item.OffsetHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_OffsetHeight]?.ToString());
+
+            Item.SubBtsCodes = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsCodes]?.ToString();
 
             Item.SubBtsAntenHeights = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenHeights]?.ToString();
 
             Item.SubBtsAntenNums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenNums]?.ToString();
 
-            Item.SharedAntens = dt.Rows[i][CommonConstants.Sheet_Certificate_SharedAntens]?.ToString();
+            //Item.SharedAntens = dt.Rows[i][CommonConstants.Sheet_Certificate_SharedAntens]?.ToString();
 
             Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
 
@@ -1141,29 +1189,29 @@ namespace BTS.Web.Areas.Controllers
 
             Item.SubBtsPowerSums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums]?.ToString();
 
-            Item.VerifyUnit = CommonConstants.VerifyUnit;
-            Item.IssuedPlace = CommonConstants.IssuePalce;
-            Item.Signer = CommonConstants.Signer;
-            Item.SignerRole = CommonConstants.SignerRole;
-            Item.SignerSubRole = CommonConstants.SignerSubRole;
+            //Item.VerifyUnit = CommonConstants.VerifyUnit;
+            //Item.IssuedPlace = CommonConstants.IssuePalce;
+            //Item.Signer = CommonConstants.Signer;
+            //Item.SignerRole = CommonConstants.SignerRole;
+            //Item.SignerSubRole = CommonConstants.SignerSubRole;
 
 
             // Bo sung them cho data 2020
 
-            //Item.VerifyUnit = dt.Rows[i][CommonConstants.Sheet_Certificate_VerifyUnit]?.ToString();
-            //Item.IssuedPlace = dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedPlace]?.ToString();
-            //Item.Signer = dt.Rows[i][CommonConstants.Sheet_Certificate_Signer]?.ToString();            
-            //Item.SignerRole = dt.Rows[i][CommonConstants.Sheet_Certificate_SignerRole]?.ToString();
-            //Item.SignerSubRole = dt.Rows[i][CommonConstants.Sheet_Certificate_SignerSubRole]?.ToString();
-            //Item.Verifier1 = dt.Rows[i][CommonConstants.Sheet_Certificate_Verifier1]?.ToString();
-            //Item.Verifier2 = dt.Rows[i][CommonConstants.Sheet_Certificate_Verifier2]?.ToString();
+            Item.VerifyUnit = dt.Rows[i][CommonConstants.Sheet_Certificate_VerifyUnit]?.ToString();
+            Item.IssuedPlace = dt.Rows[i][CommonConstants.Sheet_Certificate_IssuedPlace]?.ToString();
+            Item.Signer = dt.Rows[i][CommonConstants.Sheet_Certificate_Signer]?.ToString();
+            Item.SignerRole = dt.Rows[i][CommonConstants.Sheet_Certificate_SignerRole]?.ToString();
+            Item.SignerSubRole = dt.Rows[i][CommonConstants.Sheet_Certificate_SignerSubRole]?.ToString();
+            Item.Verifier1 = dt.Rows[i][CommonConstants.Sheet_Certificate_Verifier1]?.ToString();
+            Item.Verifier2 = dt.Rows[i][CommonConstants.Sheet_Certificate_Verifier2]?.ToString();
 
             Item.CreatedBy = User.Identity.Name;
             Item.CreatedDate = DateTime.Now;
             return Item;
         }
 
-        private string ImportNoCertificate(string excelConnectionString, string InputType, string proFileID)
+        private string ImportNoCertificate(string excelConnectionString, string InputType, string proFileID, bool IsSigned)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_NoCertificate);
             string operatorID = _importService.getApplicant(proFileID).OperatorID;
@@ -1182,6 +1230,8 @@ namespace BTS.Web.Areas.Controllers
                 if (!string.IsNullOrEmpty(dt.Rows[i][CommonConstants.Sheet_Bts_BtsCode]?.ToString()))
                 {
                     var Item = new NoCertificate();
+
+                    Item.IsSigned = IsSigned;
 
                     Item.ProfileID = proFileID;
                     Item.OperatorID = operatorID;
@@ -1208,6 +1258,9 @@ namespace BTS.Web.Areas.Controllers
                     if (dbNoCertificate != null)
                     {
                         NoCertificate dbUpdate = _importService.getNoCertificate(dbNoCertificate.Id);
+
+                        dbNoCertificate.IsSigned = Item.IsSigned;
+
                         dbNoCertificate.OperatorID = Item.OperatorID;
                         dbNoCertificate.Address = Item.Address;
                         dbNoCertificate.CityID = Item.CityID;
@@ -1227,6 +1280,9 @@ namespace BTS.Web.Areas.Controllers
                         _importService.Add(Item);
                     }
                     _importService.Save();
+
+
+
 
                     Bts dbBts = _importService.findBts(proFileID, Item.BtsCode);
                     if (dbBts != null)

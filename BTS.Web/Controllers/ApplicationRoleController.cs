@@ -205,21 +205,21 @@ namespace BTS.Web.Areas.Controllers
                     IdentityResult roleresult = await RoleManager.CreateAsync(appRole);
                     if (!roleresult.Succeeded)
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
                     }
 
                     UpdateFromRoleToGroupUser(appRole, selectedGroupItems);
 
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -241,21 +241,21 @@ namespace BTS.Web.Areas.Controllers
                     IdentityResult roleresult = await RoleManager.UpdateAsync(appRole);
                     if (!roleresult.Succeeded)
                     {
-                        return Json(new { status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
+                        return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
                     }
 
                     UpdateFromRoleToGroupUser(appRole, selectedGroupItems);
                     
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -317,7 +317,7 @@ namespace BTS.Web.Areas.Controllers
                         IdentityResult roleresult = await RoleManager.CreateAsync(appRole);
                         if (!roleresult.Succeeded)
                         {
-                            return Json(new { status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
+                            return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
                         }
                     }
                     else
@@ -362,16 +362,16 @@ namespace BTS.Web.Areas.Controllers
                     {
                         await addUserRole(userItem.Id, appRole.Name);
                     }
-                    return Json(new { status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = ModelState.Values.SelectMany(v => v.Errors).Take(1).Select(x => x.ErrorMessage) }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -388,22 +388,22 @@ namespace BTS.Web.Areas.Controllers
 
                 if (_appGroupService.GetGroupsByRoleId(id) != null)
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Không thể xóa Quyền đã cấp cho Nhóm người dùng" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = "Không thể xóa Quyền đã cấp cho Nhóm người dùng" }, JsonRequestBehavior.AllowGet);
                 }
 
                 IdentityResult result = await RoleManager.DeleteAsync(role);
                 if (result.Succeeded)
                 {
-                    return Json(new { data_restUrl = "/ApplicationRole/Add", status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", RoleManager.Roles), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", RoleManager.Roles), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = CommonConstants.Status_Error, message = "Xóa dữ liệu không thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = "Xóa dữ liệu không thành công" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

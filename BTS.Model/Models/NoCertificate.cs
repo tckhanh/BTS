@@ -53,6 +53,17 @@ namespace BTS.Model.Models
         [Required]
         public string ReasonNoCertificate { get; set; }
 
+        public bool IsSigned { get; set; }
+        
+        public bool IsCanceled { get; set; }
+
+        [Column(TypeName = "date")]
+        public DateTime? CanceledDate { get; set; }
+
+        [MaxLength(150)]
+        public string CanceledReason { get; set; }
+
+
         [ForeignKey("ProfileID")]
         public virtual Profile Profile { get; set; }
 

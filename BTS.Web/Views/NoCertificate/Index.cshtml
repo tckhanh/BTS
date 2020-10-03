@@ -14,9 +14,9 @@
 @section footerJS{
     <script src="~/Assets/client/js/controllers/addinController.js"></script>
     <script src="~/Assets/client/js/controllers/contextMenuDataInfoController.js"></script>
-
     <script src="~/Assets/client/js/common/myMap.js"></script>
     <script src="~/Assets/client/js/controllers/noCertificateController.js"></script>
+    <script src="~/Assets/client/js/controllers/noCertificatecanceledController.js"></script>
     <script src="~/Assets/client/js/common/toExcel.js"></script>
 }
 
@@ -52,15 +52,15 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="clearfix"></div>
-                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
                         {
                             @Html.AntiForgeryToken()
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="DateRange">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DateRange">
                                         Khoảng thời gian<span class="required"></span>
                                     </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
                                         <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
                                     </div>
                                 </div>
@@ -68,10 +68,10 @@
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="OperatorID">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="OperatorID">
                                         Nhà mạng<span class="required"></span>
                                     </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
                                         <select id="SelOperatorID" name="SelOperatorID" class="form-control selectYear">
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in operators)
@@ -86,10 +86,10 @@
 
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="CityID">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CityID">
                                         Tỉnh/Thành phố<span class="required"></span>
                                     </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
                                         <select id="SelCityID" name="SelCityID" class="form-control">
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in cities)
@@ -103,10 +103,10 @@
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="ProfileID">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ProfileID">
                                         Hồ sơ nộp<span class="required"></span>
                                     </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
                                         <select id="SelProfileID" name="SelProfileID" class="form-control selectYear">
                                             <option value="" selected="selected">Tất cả</option>
                                             @foreach (var item in profiles)
@@ -119,21 +119,63 @@
                                 <div class="ln_solid"></div>
                             </div>
 
-                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="BtsCodeOrAddress">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
                                         Mã trạm/Địa chỉ trạm <span class="required"></span>
                                     </label>
-                                    <div class="col-md-10 col-sm-10 col-xs-12">
-                                        <input id="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" required="required" type="text">
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <input id="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CertificateStatus">
+                                        Trạm BTS không cấp Giấy CNKĐ<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-1 col-sm-1 col-xs-offset-0">
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <fieldset>
+                                            <label class="control-label">
+                                                <input type="radio" name="CertificateStatus" value=@CommonConstants.CertStatus_WaitToSign />
+                                                Chờ phê duyệt
+                                            </label>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <fieldset>
+                                            <label class="control-label">
+                                                <input type="radio" name="CertificateStatus" value=@CommonConstants.CertStatus_Valid checked="checked" />
+                                                Đã phê duyệt
+                                            </label>
+                                        </fieldset>
                                     </div>
                                 </div>
                             </div>
 
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <label class="control-label">
+                                                <input type="radio" name="CertificateStatus" value=@CommonConstants.CertStatus_Expired />
+                                                Đã hủy bỏ
+                                            </label>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                        <button class="btn btn-primary" type="reset">Bỏ lọc</button>
+                                        <button class="btn btn-primary" type="button" id="btnReset">Bỏ lọc</button>
                                         <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
                                     </div>
                                 </div>
@@ -191,11 +233,11 @@
                                         </tr>
                                     </thead>
                                     @*<tfoot>
-                                        <tr>
-                                            <td>Nhà mạng</td>
-                                            <td>Tỉnh</td>
-                                        </tr>
-                                    </tfoot>*@
+                                            <tr>
+                                                <td>Nhà mạng</td>
+                                                <td>Tỉnh</td>
+                                            </tr>
+                                        </tfoot>*@
                                 </table>
                             </div>
                             <!-- /.box-body -->
@@ -218,3 +260,5 @@
         </div>
     </section>
 </div>
+
+@{Html.RenderPartial("CancelForm");}
