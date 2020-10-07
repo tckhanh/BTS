@@ -885,12 +885,12 @@ namespace BTS.Web.Areas.Controllers
         [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StatNearExpiredInYearCerByOperatorCity(string Area)
+        public ActionResult StatNearExpiredInYearCerByOperatorCity()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<StatNearExpiredInYearCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatNearExpiredInYearCerByOperatorCity(Area);
+                IEnumerable<StatNearExpiredInYearCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatNearExpiredInYearCerByOperatorCity();
                 ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.NearExpiredInYearCertificates) : 0);
@@ -945,12 +945,12 @@ namespace BTS.Web.Areas.Controllers
         [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StatExpiredCerByOperatorCity(string Area)
+        public ActionResult StatExpiredCerByOperatorCity()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<StatExpiredCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatExpiredInYearCerByOperatorCity(Area);
+                IEnumerable<StatExpiredCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatExpiredInYearCerByOperatorCity();
                 ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.ExpiredCertificates) : 0);
@@ -1261,12 +1261,12 @@ namespace BTS.Web.Areas.Controllers
         [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StatCerByOperatorCity(string Area)
+        public ActionResult StatCerByOperatorCity()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<StatIssuedCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetIssuedStatCerByOperatorCity(Area);
+                IEnumerable<StatIssuedCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetIssuedStatCerByOperatorCity();
                 ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
@@ -1309,12 +1309,12 @@ namespace BTS.Web.Areas.Controllers
         [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StatInYearCerByOperatorCity(string Area)
+        public ActionResult StatInYearCerByOperatorCity()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<StatIssuedCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatInYearCerByOperatorCity(Area);
+                IEnumerable<StatIssuedCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatInYearCerByOperatorCity();
                 ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
@@ -1357,12 +1357,12 @@ namespace BTS.Web.Areas.Controllers
         [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StatBtsByBandCity(string Area)
+        public ActionResult StatBtsByBandCity()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<StatBtsByBandCityVM> ByBandCity = _stattisticService.GetStatBtsByBandCity(Area);
+                IEnumerable<StatBtsByBandCityVM> ByBandCity = _stattisticService.GetStatBtsByBandCity();
                 ByBandCity = ByBandCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByBandCity.ToPivotTable(item => item.Band, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
@@ -1464,12 +1464,12 @@ namespace BTS.Web.Areas.Controllers
         [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult StatBtsByOperatorCity(string Area)
+        public ActionResult StatBtsByOperatorCity()
         {
             List<object> chartData = new List<object>();
             try
             {
-                IEnumerable<StatBtsByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatBtsByOperatorCity(Area);
+                IEnumerable<StatBtsByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatBtsByOperatorCity();
                 ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
 
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);

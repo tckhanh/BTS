@@ -86,7 +86,7 @@ namespace BTS.Web.Areas.Controllers
             else if (CertificateStatus == CommonConstants.CertStatus_Valid)
             {
 
-                if (!(string.IsNullOrEmpty(CityID)))
+                if (!(string.IsNullOrEmpty(CityID)) && CityID != CommonConstants.SelectAll)
                 {
                     Items = _noCertificateService.getNoCertificateByCity(CityID).ToList();
                 }
@@ -136,7 +136,7 @@ namespace BTS.Web.Areas.Controllers
                 Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(CityID)))
+            if (!(string.IsNullOrEmpty(CityID)) && CityID != CommonConstants.SelectAll)
             {
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }

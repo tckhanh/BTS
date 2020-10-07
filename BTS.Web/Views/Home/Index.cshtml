@@ -1,49 +1,28 @@
 ﻿@using BTS.Common
 @{
-    ViewBag.Title = "Home";
+    ViewBag.Title = "Certificate";
     Layout = "~/Views/Shared/Layouts_DataTable_Export_Map_PivotTable.cshtml";
-    IEnumerable<BTS.Web.Models.OperatorViewModel> operators = ViewBag.operators;
-    IEnumerable<BTS.Web.Models.ProfileViewModel> profiles = ViewBag.profiles;
     IEnumerable<BTS.Web.Models.CityViewModel> cities = ViewBag.cities;
 }
 
 @section headCSS{
-
 }
 
 @section footerJS{
-    <script src="~/Assets/client/js/controllers/addinController.js"></script>
-    <script src="~/Assets/client/js/controllers/contextMenuDataInfoController.js"></script>
     <script src="~/Assets/client/js/common/myMap.js"></script>
-    <script src="~/Assets/client/js/controllers/homeController.js"></script>
-	<script src="~/Assets/client/js/controllers/printCertificateController.js"></script>
-    <script src="~/Assets/client/js/common/toExcel.js"></script>
+    <script src="~/Assets/client/js/controllers/homeController.js"></script>    
 }
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    @*<section class="content-header">
-            <h1>
-                Data Tables
-                <small>advanced tables</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Tables</a></li>
-                <li class="active">Data tables</li>
-            </ol>
-        </section>*@
-
     <!-- Main content -->
-
     <section class="content">
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12 ">
                 <!-- SELECT2 EXAMPLE -->
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <h3 class="BTS-title">LỌC GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
+                        <h3 class="BTS-title">TRẠM GỐC BTS ĐÃ ĐƯỢC CẤP GIẤY CHÚNG NHẬN KIỂM ĐỊNH CÒN HIỆU LỰC</h3>
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -52,38 +31,9 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="clearfix"></div>
-                        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm", data_resetUrl = Url.Action("Add", "Certificate") }))
                         {
                             @Html.AntiForgeryToken()
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DateRange">
-                                        Khoảng thời gian<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <input class="form-control" type="text" name="DateRange" value="" style="width:100%" />
-                                    </div>
-                                </div>
-                                <div class="ln_solid"></div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="OperatorID">
-                                        Nhà mạng<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <select id="SelOperatorID" name="SelOperatorID" class="form-control selectYear">
-                                            <option value="" selected="selected">Tất cả</option>
-                                            @foreach (var item in operators)
-                                            {
-                                                <option value="@item.Id">@item.Id _ @item.Name</option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="ln_solid"></div>
-                            </div>
-
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CityID">
@@ -91,7 +41,7 @@
                                     </label>
                                     <div class="col-md-9 col-sm-9 col-xs-12">
                                         <select id="SelCityID" name="SelCityID" class="form-control">
-                                            <option value="" selected="selected">Tất cả</option>
+                                            <option value="" selected="selected">Chọn ...</option>
                                             @foreach (var item in cities)
                                             {
                                                 <option value="@item.Id">@item.Name</option>
@@ -101,75 +51,7 @@
                                 </div>
                                 <div class="ln_solid"></div>
                             </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ProfileID">
-                                        Hồ sơ nộp<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <select id="SelProfileID" name="SelProfileID" class="form-control selectYear">
-                                            <option value="" selected="selected">Tất cả</option>
-                                            @foreach (var item in profiles)
-                                            {
-                                                <option value="@item.Id">@item.ApplyDate.Year _ @item.ApplicantID _ @item.ProfileNum _ @item.BtsQuantity BTS </option>
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="ln_solid"></div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
-                                        Số Giấy CNKĐ <span class="required"></span>
-                                    </label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <input id="CertificateNum" name="CertificateNum" class="form-control col-md-7 col-xs-12" type="text">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BtsCodeOrAddress">
-                                        Mã trạm/Địa chỉ<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-9 col-sm-9 col-xs-12">
-                                        <input id="BtsCodeOrAddress" name="BtsCodeOrAddress" class="form-control col-md-7 col-xs-12" type="text">
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="clearfix"></div>
-
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IsNotExpired">
-                                        Loại Giấy CNKĐ<span class="required"></span>
-                                    </label>
-                                    <div class="col-md-4 col-sm-4 col-xs-12">
-                                        <fieldset>
-                                            <label class="control-label">
-                                                <input type="radio" name="IsExpired" value="no" checked="checked" />
-                                                Còn hiệu lực
-                                            </label>
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-md-5 col-sm-5 col-xs-12">
-                                        <div class="form-group">
-                                            <fieldset>
-                                                <label class="control-label">
-                                                    <input type="radio" name="IsExpired" value="yes" />
-                                                    Hết hiệu lực
-                                                </label>
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ln_solid"></div>
-                            </div>
-
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -187,83 +69,6 @@
                 <!-- /.box -->
             </div>
         </div>
-
-        <ul class="nav nav-tabs nav-pills">
-            <li class="active"><a data-toggle="tab" href="#homeTab">Danh sách GCNKĐ</a></li>
-
-            <li><a data-toggle="tab" href="#AddOrEditTab"> Thêm mới</a></li>
-
-            @if (User.IsInRole(CommonConstants.Info_CanViewMap_Role))
-            {
-                <li><a data-toggle="tab" href="#mapTab">Xem trên Bản đồ</a></li>
-            }
-
-            @if (User.IsInRole(CommonConstants.Info_CanViewStatitics_Role))
-            {
-                <li><a data-toggle="tab" href="#pivotTableTab">Số liệu thống kê</a></li>
-            }
-        </ul>
-        <div class="tab-content">
-            <div id="homeTab" class="tab-pane fade in active">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="box">
-                            <div class="box-header">
-                                <h3 class="BTS-title">DANH SÁCH GIẤY CHỨNG NHẬN KIỂM ĐỊNH ĐÃ BAN HÀNH</h3>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                @if (User.IsInRole(CommonConstants.Data_CanExport_Role))
-                                {
-                                    <input type="button" class="btn btn-primary" onclick="ExportTableToExcel.tableToExcel('MyDataTable','Certificates','Certificates')" value="Xuất Excel">
-                                }
-                                @if (User.IsInRole(CommonConstants.Info_CanPrintCertificate_Role))
-                                {
-                                    <input type="button" class="btn btn-success" onclick="homeController.printCertificate()" value="In Giấy CNKĐ">
-                                }
-                                <br /><br />
-                                <table id="MyDataTable" class="table table-bordered table-striped MyDataTable" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Nhà mạng</th>
-                                            <th>Tỉnh</th>
-                                            <th>Số Giấy CNKĐ</th>
-                                            <th>Mã trạm</th>
-                                            <th>Địa chỉ</th>
-                                            <th>Ngày ban hành</th>
-                                            <th>Ngày hết hạn</th>
-                                            <th>Thao tác</th>
-                                        </tr>
-                                    </thead>
-                                    @*<tfoot>
-                                        <tr>
-                                            <td></td>
-                                            <td>Nhà mạng</td>
-                                            <td>Tỉnh</td>
-                                        </tr>
-                                    </tfoot>*@
-                                </table>
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <!-- /.box -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-            </div>
-
-            <div id="AddOrEditTab" class="tab-pane fade">@Html.Action("Add")</div>
-                
-            <div id="mapTab" class="tab-pane fade">
-                <h3 class="BTS-title">VỊ TRÍ CÁC TRẠM BTS ĐÃ ĐƯỢC CẤP GIẤY CHỨNG NHẬN KIỂM ĐỊNH</h3>
-                <div id="mapBTS" style="width: 100%; height: 500px;"></div>
-            </div>
-            <div id="pivotTableTab" class="tab-pane fade">
-                <h3 class="BTS-title">THỐNG KÊ SỐ LƯỢNG GIẤY CHỨNG NHẬN KIỂM ĐỊNH ĐÃ ĐƯỢC CẤP </h3>
-                <div id="pivotTable" style="width: 100%"></div>
-            </div>
-            <!-- /.row -->
-        </div>
+        <div id="mapBTS" style="width: 100%; height: 500px;"></div>
     </section>
 </div>

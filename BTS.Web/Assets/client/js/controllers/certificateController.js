@@ -2,6 +2,9 @@
 //var data = "";
 
 var certificateController = {
+    DoPost: function (url, id) {
+        $.post(url, { id: id });  //Your values here..
+    },
     startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     endDate: new Date(),
     token: function () {

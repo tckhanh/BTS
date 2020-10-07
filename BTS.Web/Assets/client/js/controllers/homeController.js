@@ -5,140 +5,111 @@ var homeController = {
     DoPost: function (url, id) {
         $.post(url, { id: id });  //Your values here..
     },
-    startDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    endDate: new Date(),
     token: function () {
         var form = $('#__AjaxAntiForgeryForm');
         return $('input[name="__RequestVerificationToken"]', form).val();
     },
 
     init: function () {
-        homeController.loadData();
+        //myMap.invalidateSize();
+        //homeController.loadMap();
+        //homeController.loadPostData();
         homeController.registerEventDataTable();
         homeController.registerEvent();
+        if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1) {
+            $('#SelCityID').attr('disabled', false);
+        } else {
+            $('#SelCityID').attr('disabled', true);
+        }
+            
     },
-    registerEventDataTable: function () {
-        var table = $("#MyDataTable").DataTable();
-        table.on('draw', function () {
-            $('.btn-edit').off('click').on('click', function () {
-                $('#modalAddUpdate').modal('show');
-                var id = $(this).data('myid');
-                homeController.loadDetail(id);
-            });
-
-            $('.btn-delete').off('click').on('click', function () {
-                var id = $(this).data('myid');
-                bootbox.confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?", function (result) {
-                    homeController.deleteItem(id);
-                });
-            });
-        });
-
-        $('#MyDataTable tbody').on('click', 'td.details-control', function () {
-            if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
-                var tr = $(this).closest('tr');
-                var row = table.row(tr);
-
-                if (row.child.isShown()) {
-                    row.child.hide();
-                    tr.removeClass('shown');
-                }
-                else {
-                    row.child(homeController.format(row.data())).show();
-                    tr.addClass('shown');
-                }
-            }
-        });
+    registerEventDataTable: function () {        
     },
     registerEvent: function () {
+        $('input[name="CertificateStatus"]').change(function () {
+            if ($('input[name="CertificateStatus"]:checked').val() == myConstant.CertStatus_Valid) {
+                $('input[name="DateRange"]').prop("disabled", false);
+            } else {
+                $('input[name="DateRange"]').prop("disabled", true);
+            }
+        });
+
         $('#btnSearch').off('click').on('click', function () {
-            $('#MyDataTable').DataTable().ajax.reload();
+            homeController.loadPostData();
+            //$('#MyDataTable').DataTable().ajax.reload();
         });
 
         $("a[href='#mapTab']").on('shown.bs.tab', function (e) {
             myMap.invalidateSize();
         });
 
-        $('#btnAddNew').off('click').on('click', function () {
-            $('#modalAddUpdate').modal('show');
-            homeController.resetForm();
-        });
-
-        $('#btnSave').off('click').on('click', function () {
-            if ($('#frmSaveData').valid()) {
-                homeController.saveData();
-            }
-        });
-
         $('#btnReset').off('click').on('click', function () {
-            $('#SelOperatorID').val('');
             $('#SelCityID').val('');
-            $('#SelProfileID').val('');
-            $('#BtsCodeOrAddress').val('');
-            homeController.endDate = new Date();
-            homeController.startDate = new Date(homeController.endDate.getFullYear() - 5, homeController.endDate.getMonth(), homeController.endDate.getDate());
+        });
+    },
 
-            $('input[name="DateRange"]').daterangepicker(
-                {
-                    locale: {
-                        format: 'DD/MM/YYYY'
-                    },
-                    startDate: homeController.startDate,
-                    endDate: homeController.endDate
+    loadPostData: function (CityId) {
+        var form = $("#__AjaxAntiForgeryForm")[0];
+        var dataForm = new FormData(form);
+        if (CityId != null) {
+            dataForm.set('SelCityID', CityId);
+        }
+        dataForm.append('action', 'GetReport');
+        $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            $('html').addClass('waiting');
+            var ajaxConfig = {
+                type: 'POST',
+                url: '/Home/loadCertificate',
+                data: dataForm,
+                dataType: 'json',
+                success: function (response) {
+                    $('html').removeClass('waiting');
+                    if (myMap != undefined && myMap != null && myMarkerClusters != null) {
+                        myMap.removeLayer(myMarkerClusters);
+                        myMarkerClusters.clearLayers();
+                        //myMap.eachLayer(function (layer) {
+                        //    myMap.removeLayer(layer);
+                        //});
+                    }
+                    if (response != null) {
+                        if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
+                            homeController.loadMap(response.data);
+                    }
                 },
-                function (start, end, label) {
-                    //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
-                    homeController.startDate = start;
-                    homeController.endDate = end;
-                });
-        });
-    },
-
-    format: function (rowData) {
-        var div = $('<div/>')
-            .addClass('loading')
-            .text('Loading...');
-
-        $.ajax({
-            url: '/Home/SubDetail',
-            type: "GET",
-            data: {
-                Id: rowData.Id,
-            },
-            dataType: 'json',
-            success: function (json) {
-                div
-                    .html(json.html)
-                    .removeClass('loading');
+                error: function (response) {
+                    $.notify(response.error, "error");
+                }
             }
-        });
-
-        return div;
+            if ($(form).attr('enctype') == "multipart/form-data") {
+                ajaxConfig["contentType"] = false;
+                ajaxConfig["processData"] = false;
+            }
+            $.ajax(ajaxConfig);
+        }
+        return false;
     },
 
-    loadDetail: function (id) {
+    loadGetData: function (url) {
         $.ajax({
-            url: '/Operator/GetDetail',
-            data: {
-                id: id
-            },
+            url: url,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
                 if (response.status == "TimeOut") {
                     $.notify(response.message, "warn");
                     window.location.href = "/Account/Login"
+                } else if (response.status == "Error") {
+                    $.notify(response.message, "error");
                 } else if (response.status == "Success") {
-                    data = response.data;
-                    $('#hidID').val(data.ID);
-                    $('#txtCode').val(data.Code);
-                    $('#txtName').val(data.Name);
+                    return response.data;
                 }
                 else {
                     //bootbox.alert(response.message);
                     $.notify(response.message, {
                         className: "warn"
                     });
+                    return "";
                 }
             },
             error: function (err) {
@@ -147,41 +118,14 @@ var homeController = {
                     className: "error",
                     clickToHide: true
                 });
+                return "";
             }
         });
     },
-
+    
     loadData: function () {
 
         $('#SelProfileID').attr('disabled', myNotAuthenticated);
-
-        homeController.startDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-        homeController.endDate = new Date();
-
-        $('input[name="DateRange"]').daterangepicker(
-            {
-                locale: {
-                    format: 'DD/MM/YYYY'
-                },
-                startDate: homeController.startDate,
-                endDate: homeController.endDate
-            },
-            function (start, end, label) {
-                //alert("A new date range was chosen: " + start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
-                homeController.startDate = start;
-                homeController.endDate = end;
-            });
-
-        //$.ajax({
-        //    url: 'Home/GetUserRoles',
-        //    dataType: 'json',
-        //    data: {},
-        //    type: 'post',
-        //    success: function (data) {
-        //        userRoleAdmin = data.Roles;
-        //        __RequestVerificationToken = btsController.token();
-        //    }
-        //});
 
         if ($.inArray(myConstant.System_CanExport_Role, myArrayRoles) > -1) {
             $("#MyDataTable")
@@ -267,7 +211,7 @@ var homeController = {
                             d.EndDate = homeController.endDate.toISOString();
                             d.CertificateNum = $('#CertificateNum').val().trim();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-                            d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.CertificateStatus = $('input[name=CertificateStatus]:checked').val();
                             d.__RequestVerificationToken = homeController.token();
                         }
                     },
@@ -403,7 +347,7 @@ var homeController = {
                             d.EndDate = homeController.endDate.toISOString();
                             d.CertificateNum = $('#CertificateNum').val().trim();
                             d.BtsCodeOrAddress = $('#BtsCodeOrAddress').val().trim();
-                            d.IsExpired = $('input[name=IsExpired]:checked').val();
+                            d.CertificateStatus = $('input[name=CertificateStatus]:checked').val();
                             d.__RequestVerificationToken = homeController.token();
                         }
                     },
@@ -452,13 +396,13 @@ var homeController = {
                             fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                                 var htmlLink = "";
                                 if ($.inArray(myConstant.Data_CanViewDetail_Role, myArrayRoles) > -1) {
-                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Home/Detail/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
+                                    htmlLink += '<a class="btn btn-info btn-sm" onclick="addinController.Detail(\'/Certificate/Detail/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanEdit_Role, myArrayRoles) > -1) {
-                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Home/Edit/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
+                                    htmlLink += ' <a class="btn btn-primary btn-sm" onclick="addinController.Edit(\'/Certificate/Edit/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>';
                                 }
                                 if ($.inArray(myConstant.Data_CanDelete_Role, myArrayRoles) > -1) {
-                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Home/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
+                                    htmlLink += ' <a class="btn btn-danger btn-sm" onclick="addinController.Delete(\'/Certificate/Delete/' + oData.Id + '\')" data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>';
                                 }
                                 $(nTd).html(htmlLink);
                             }
@@ -484,27 +428,8 @@ var homeController = {
             //}).draw();
         }
     },
-    initCompleteFunction: function (settings, json) {
-        var api = new $.fn.dataTable.Api(settings);
-        api.columns().every(function () {
-            var column = this;
-            var select = $('<select><option value=""></option></select>')
-                .appendTo($(column.footer()).empty())
-                .on('change', function () {
-                    var val = $.fn.dataTable.util.escapeRegex(
-                        $(this).val()
-                    );
 
-                    column
-                        .search(val ? '^' + val + '$' : '', true, false)
-                        .draw();
-                });
 
-            column.data().unique().sort().each(function (d, j) {
-                select.append('<option value="' + d + '">' + d + '</option>')
-            });
-        });
-    },
     loadMap: function (markers) {
         var myURL = $('script[src$="leaflet.js"]').attr('src').replace('leaflet.js', '');
         if (markers != null) {
@@ -544,89 +469,8 @@ var homeController = {
             myMap.addLayer(myMarkerClusters);
         }
     },
-
-    loadPivotTable: function (pivotTableData) {
-        var inputFunction = function (callback) {
-            for (var i = 0; i < pivotTableData.length; ++i) {
-                callback({
-                    "OperatorID": pivotTableData[i].OperatorID,
-                    "CityID": pivotTableData[i].CityID,
-                    "LabID": pivotTableData[i].LabID,
-                    "Year": moment(pivotTableData[i].IssuedDate).year()
-                });
-            }
-        };
-
-        // This example adds Plotly chart renderers.
-
-        var derivers = $.pivotUtilities.derivers;
-        var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.plotly_renderers, $.pivotUtilities.c3_renderers);
-        $("#pivotTable").pivotUI(inputFunction,
-            {
-                renderers: renderers,
-                rows: ["OperatorID"],
-                cols: ["CityID"],
-                rendererName: "Bar Chart",
-                rowOrder: "value_a_to_z", colOrder: "value_z_to_a",
-                hiddenAttributes: ["select.pvtRenderer", "renderers"]
-            }, true);
-    },
-
-    printCertificate: function (CertificateNum) {
-        var form = $("#__AjaxAntiForgeryForm")[0];
-        var dataForm = new FormData(form);
-        if (CertificateNum != null) {
-            dataForm.set('CertificateNum', CertificateNum);
-        }
-            
-        dataForm.append('StartDate', homeController.startDate.toISOString());
-        dataForm.append('EndDate', homeController.endDate.toISOString());
-        dataForm.append('action', 'GetReport');
-        $.validator.unobtrusive.parse(form);
-        if ($(form).valid()) {
-            $('html').addClass('waiting');
-            var ajaxConfig = {
-                type: 'POST',
-                url: '/PrintCertificate/Index',
-                data: dataForm,
-                success: function (response) {
-                    $('html').removeClass('waiting');
-                    //open a new window note:this is a popup so it may be blocked by your browser
-                    var newWindow = window.open("/PrintCertificate/Index", "Print Certificates");
-
-                    //write the data to the document of the newWindow
-                    newWindow.document.open();
-                    newWindow.document.write(response);
-                    newWindow.document.close();
-                },
-                error: function (response) {
-                    $.notify(response.error, "error");
-                }
-            }
-            if ($(form).attr('enctype') == "multipart/form-data") {
-                ajaxConfig["contentType"] = false;
-                ajaxConfig["processData"] = false;
-            }
-            $.ajax(ajaxConfig);
-        }
-        return false;
-    }
 }
 
 homeController.init();
-
-//$('#MyDataTable tbody').on('click', 'tr', function () {
-//    if ($(this).hasClass('selected')) {
-//        $(this).removeClass('selected');
-//    }
-//    else {
-//        table.$('tr.selected').removeClass('selected');
-//        $(this).addClass('selected');
-//    }
-//});
-
-//$('#button').click(function () {
-//    table.row('.selected').remove().draw(false);
-//});
 
 // See post: http://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps

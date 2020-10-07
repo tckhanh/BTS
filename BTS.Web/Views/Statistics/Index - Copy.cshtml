@@ -1,0 +1,535 @@
+﻿@using BTS.Model.Models
+@using BTS.Common
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layouts_Chart.cshtml";
+    IEnumerable<string> AreaList = ViewBag.AreaList;
+}
+
+@section headCSS{
+    <link href="~/Assets/client/css/maxibox.css" rel="stylesheet" />
+}
+
+@section footerJS{
+    <script src="~/Assets/client/js/common/maxibox.js"></script>
+    <script src="~/Assets/client/js/common/myChart.js"></script>
+    <script src="~/Assets/client/js/controllers/statisticsController.js"></script>
+
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    @*<section class="content-header">
+            <h1>
+                Data Tables
+                <small>advanced tables</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">Data tables</li>
+            </ol>
+        </section>*@
+
+    <!-- Main content -->
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <!-- SELECT2 EXAMPLE -->
+                <div class="box box-default col col-md-12 col-lg-12">
+                    <div class="box-header with-border">
+                        <h3 class="BTS-title">THỐNG KÊ GIẤY CHỨNG NHẬN KIỂM ĐỊNH TRẠM GỐC BTS</h3>
+                        <div class="box-tools pull-right">
+                            @*<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+
+            <ul class="nav nav-tabs nav-pills">
+                <li class="active"><a data-toggle="tab" href="#Tab1">Toàn quốc</a></li>
+                @if (User.IsInRole(CommonConstants.Info_CanViewStatitics_Role))
+                {
+                    <li><a data-toggle="tab" href="#Tab2">Khu vực</a></li>
+                    <li><a data-toggle="tab" href="#Tab3">Tỉnh/Thành</a></li>
+                }
+            </ul>
+
+            <div class="tab-content">
+                <div id="Tab1" class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Giấy CNKĐ Còn hiệu lực</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab1-chart_StatCerByOperator" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Số Giấy CNKĐ đã cấp hàng năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab1-chart_StatCerByOperatorYear" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (RIGHT) -->
+
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Giấy CNKĐ Còn hiệu lực/ gần hết hạn trong năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab1-chart_StatCoupleCerByOperator" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Số Giấy CNKĐ hết hạn theo năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab1-chart_StatExpiredCerByOperatorYear" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+
+                        <div class="col-md-6">
+                            <!-- PIE CHART -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Thống kê Trạm gốc BTS theo Band</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab1-chart_StatBtsByOperatorBand" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+                        <div class="col-md-6">
+                            <!-- PIE CHART -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Thống kê Trạm gốc BTS theo NSX</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab1-chart_StatBtsByOperatorManufactory" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (RIGHT) -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <div id="Tab2" class="tab-pane fade">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Giấy CNKĐ Còn hiệu lực</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatCerByArea" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Số Giấy CNKĐ đã cấp hàng năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatCerByAreaYear" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (RIGHT) -->
+
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Giấy CNKĐ Còn hiệu lực/ gần hết hạn trong năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatCoupleCerByArea" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Số Giấy CNKĐ đã hết hạn</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatExpiredCerByAreaYear" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+
+                        <div class="col-md-6">
+                            <!-- PIE CHART -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Thống kê Trạm gốc BTS theo Band</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatBtsByAreaBand" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (LEFT) -->
+                        <div class="col-md-6">
+                            <!-- PIE CHART -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Thống kê Trạm gốc BTS theo NSX</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab2-chart_StatBtsByAreaManufactory" style="height:300px"></canvas>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                        <!-- /.col (RIGHT) -->
+                    </div>
+                </div>
+                <div id="Tab3" class="tab-pane fade">
+                    <h3 class="BTS-title">THỐNG KÊ CHI TIẾT THEO KHU VỰC TỈNH/ THÀNH PHỐ</h3>
+
+                    <div class="clearfix"></div>
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SelArea">
+                                    Khu vực<span class="required"></span>
+                                </label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <select id="SelArea" name="SelArea" class="form-control">
+                                        @foreach (var item in AreaList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                    <button class="btn btn-primary" type="reset">Bỏ lọc</button>
+                                    <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <ul class="nav nav-tabs nav-pills">
+                        @foreach (var item in AreaList)
+                        {
+                            <li class="active"><a data-toggle="tab" href="#@item">@item</a></li>
+                        }
+                    </ul>
+
+                    <div class="col-md-6">
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Giấy CNKĐ còn hiệu lực</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <canvas id="Tab3-chart_StatCerByOperatorCity" style="height:300px"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col (LEFT) -->
+
+                    <div class="col-md-6">
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Giấy CNKĐ gần hết hiệu lực trong năm</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <canvas id="Tab3-chart_StatNearExpiredInYearCerByOperatorCity" style="height:300px"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Số Giấy CNKĐ đã cấp trong năm</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <canvas id="Tab3-chart_StatInYearCerByOperatorCity" style="height:300px"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col (RIGHT) -->
+
+                    <div class="col-md-6">
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Số Giấy CNKĐ đã/ sẽ hết hạn trong năm</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <canvas id="Tab3-chart_StatExpiredCerByOperatorCity" style="height:300px"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col (LEFT) -->
+
+                    <div class="col-md-6">
+                        <!-- LINE CHART -->
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Thống kê Trạm gốc BTS theo Band</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <canvas id="Tab3-chart_StatBtsByBandCity" style="height:300px"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col (LEFT) -->
+                    <div class="col-md-6">
+                        <!-- LINE CHART -->
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Thống kê Trạm gốc BTS theo NSX</h3>
+                                <div class="box-tools pull-right">
+                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="chart">
+                                    <canvas id="Tab3-chart_StatBtsByOperatorCity" style="height:300px"></canvas>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col (RIGHT) -->
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+</div>

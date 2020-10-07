@@ -163,7 +163,7 @@ namespace BTS.Web.Areas.Controllers
                 {
                     Items = _certificateService.getCertificateByCertificateNum(CertificateNum).ToList();
                 }
-                else if (!(string.IsNullOrEmpty(CityID)))
+                else if (!(string.IsNullOrEmpty(CityID)) && CityID != CommonConstants.SelectAll)
                 {
                     Items = _certificateService.getCertificateByCity(CityID).ToList();
                 }
@@ -219,7 +219,7 @@ namespace BTS.Web.Areas.Controllers
                 Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(CityID)))
+            if (!(string.IsNullOrEmpty(CityID)) && CityID != CommonConstants.SelectAll)
             {
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }

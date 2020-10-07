@@ -95,7 +95,7 @@ namespace BTS.Web.Areas.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Statistics");
+                            return RedirectToAction("Index", "Home");
                         }
                     }
                     else

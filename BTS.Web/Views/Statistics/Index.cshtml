@@ -348,184 +348,176 @@
                     </div>
                 </div>
                 <div id="Tab3" class="tab-pane fade">
-                    <h3 class="BTS-title">THỐNG KÊ CHI TIẾT THEO KHU VỰC TỈNH/ THÀNH PHỐ</h3>
-
                     <div class="clearfix"></div>
                     @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm" }))
                     {
                         @Html.AntiForgeryToken()
 
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="form-group">
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SelArea">
-                                    Khu vực<span class="required"></span>
-                                </label>
-                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                    <select id="SelArea" name="SelArea" class="form-control">
-                                        @foreach (var item in AreaList)
-                                        {
-                                            <option value="@item">@item</option>
-                                        }
-                                    </select>
+                        @*<div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="SelArea">
+                                        Khu vực<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <select id="SelArea" name="SelArea" class="form-control">
+                                            @foreach (var item in AreaList)
+                                            {
+                                                <option value="@item">@item</option>
+                                            }
+                                        </select>
+                                    </div>
                                 </div>
+                                <div class="ln_solid"></div>
                             </div>
-                            <div class="ln_solid"></div>
-                        </div>
 
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                    <button class="btn btn-primary" type="reset">Bỏ lọc</button>
-                                    <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <button class="btn btn-primary" type="reset">Bỏ lọc</button>
+                                        <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </div>*@
                     }
-
-                    <ul class="nav nav-tabs nav-pills">
-                        @foreach (var item in AreaList)
-                        {
-                            <li class="active"><a data-toggle="tab" href="#@item">@item</a></li>
-                        }
-                    </ul>
-
-                    <div class="col-md-6">
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Giấy CNKĐ còn hiệu lực</h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Giấy CNKĐ còn hiệu lực</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="chart">
-                                    <canvas id="Tab3-chart_StatCerByOperatorCity" style="height:300px"></canvas>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab3-chart_StatCerByOperatorCity" style="height:300px"></canvas>
+                                    </div>
                                 </div>
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
+                            <!-- /.box -->
                         </div>
-                        <!-- /.box -->
-                    </div>
-                    <!-- /.col (LEFT) -->
+                        <!-- /.col (LEFT) -->
 
-                    <div class="col-md-6">
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Giấy CNKĐ gần hết hiệu lực trong năm</h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Giấy CNKĐ gần hết hiệu lực trong năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="chart">
-                                    <canvas id="Tab3-chart_StatNearExpiredInYearCerByOperatorCity" style="height:300px"></canvas>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab3-chart_StatNearExpiredInYearCerByOperatorCity" style="height:300px"></canvas>
+                                    </div>
                                 </div>
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
+                            <!-- /.box -->
                         </div>
-                        <!-- /.box -->
-                    </div>
 
-                    <div class="col-md-6">
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Số Giấy CNKĐ đã cấp trong năm</h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Số Giấy CNKĐ đã cấp trong năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="chart">
-                                    <canvas id="Tab3-chart_StatInYearCerByOperatorCity" style="height:300px"></canvas>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab3-chart_StatInYearCerByOperatorCity" style="height:300px"></canvas>
+                                    </div>
                                 </div>
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
+                            <!-- /.box -->
                         </div>
-                        <!-- /.box -->
-                    </div>
-                    <!-- /.col (RIGHT) -->
+                        <!-- /.col (RIGHT) -->
 
-                    <div class="col-md-6">
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Số Giấy CNKĐ đã/ sẽ hết hạn trong năm</h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Số Giấy CNKĐ đã/ sẽ hết hạn trong năm</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="chart">
-                                    <canvas id="Tab3-chart_StatExpiredCerByOperatorCity" style="height:300px"></canvas>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab3-chart_StatExpiredCerByOperatorCity" style="height:300px"></canvas>
+                                    </div>
                                 </div>
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
+                            <!-- /.box -->
                         </div>
-                        <!-- /.box -->
-                    </div>
-                    <!-- /.col (LEFT) -->
+                        <!-- /.col (LEFT) -->
 
-                    <div class="col-md-6">
-                        <!-- LINE CHART -->
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Thống kê Trạm gốc BTS theo Band</h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <div class="col-md-12">
+                            <!-- LINE CHART -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Thống kê Trạm gốc BTS theo Band</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="chart">
-                                    <canvas id="Tab3-chart_StatBtsByBandCity" style="height:300px"></canvas>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab3-chart_StatBtsByBandCity" style="height:300px"></canvas>
+                                    </div>
                                 </div>
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
+                            <!-- /.box -->
                         </div>
-                        <!-- /.box -->
-                    </div>
-                    <!-- /.col (LEFT) -->
-                    <div class="col-md-6">
-                        <!-- LINE CHART -->
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Thống kê Trạm gốc BTS theo NSX</h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <!-- /.col (LEFT) -->
+                        <div class="col-md-12">
+                            <!-- LINE CHART -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Thống kê Trạm gốc BTS theo NSX</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="toggle-expand-btn btn btn-box-tool"><i class="fa fa-expand"></i></button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="chart">
-                                    <canvas id="Tab3-chart_StatBtsByOperatorCity" style="height:300px"></canvas>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="Tab3-chart_StatBtsByOperatorCity" style="height:300px"></canvas>
+                                    </div>
                                 </div>
+                                <!-- /.box-body -->
                             </div>
-                            <!-- /.box-body -->
+                            <!-- /.box -->
                         </div>
-                        <!-- /.box -->
+                        <!-- /.col (RIGHT) -->
                     </div>
-                    <!-- /.col (RIGHT) -->
                 </div>
             </div>
         </div>

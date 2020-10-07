@@ -557,7 +557,7 @@ var myChart = {
             dataType: 'json',
             data: {
                 __RequestVerificationToken: myChart.token(),
-                Area: $('#SelArea').val()
+                //Area: $('#SelArea').val()
             },
             type: 'post',
             beforeSend: function () {

@@ -344,6 +344,7 @@
     <Compile Include="Models\ApplicationRoleViewModel.cs" />
     <Compile Include="Models\ApplicationUserGroupViewModel.cs" />
     <Compile Include="Models\ApplicationUserViewModel.cs" />
+    <Compile Include="Models\AreaListVM.cs" />
     <Compile Include="Models\AuditableViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
     <Compile Include="Models\CityTabVM.cs" />
@@ -615,6 +616,7 @@
     <Content Include="Assets\client\js\controllers\contextMenuDataInfoController.js" />
     <Content Include="Assets\client\js\controllers\contextMenuSysController.js" />
     <Content Include="Assets\client\js\controllers\contextMenuDataController.js" />
+    <Content Include="Assets\client\js\controllers\statisticsController - Copy.js" />
     <Content Include="Assets\client\js\controllers\statisticsController.js" />
     <Content Include="Assets\client\js\controllers\inspectController.js" />
     <Content Include="Assets\client\js\controllers\homeController - Copy.js" />
@@ -11570,6 +11572,7 @@
     <Content Include="Views\Shared\RightSideBar.cshtml" />
     <Content Include="Views\Certificate\CancelForm.cshtml" />
     <Content Include="Views\NoCertificate\CancelForm.cshtml" />
+    <Content Include="Views\Statistics\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />
