@@ -1507,6 +1507,54 @@ namespace BTS.Web.Areas.Controllers
                     chartData = chartData
                 }, JsonRequestBehavior.AllowGet);
             }
-        }        
+        }
+
+        [AuthorizeRoles(CommonConstants.Info_CanViewStatitics_Role)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult StatBtsByManufactoryCity()
+        {
+            List<object> chartData = new List<object>();
+            try
+            {
+                IEnumerable<StatBtsByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatBtsByManufactoryCity();
+                ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
+
+                DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
+
+                //DataTable pivotTable = ByBand.ToDataTable();
+                List<String> ColumnNames = new List<string>();
+                foreach (DataColumn col in pivotTable.Columns)
+                {
+                    ColumnNames.Add(col.ColumnName);
+                }
+                chartData.Add(ColumnNames);
+
+                List<object> seriesNo = new List<object>();
+
+                for (int i = 0; i < ColumnNames.Count; i++)
+                {
+                    seriesNo = pivotTable.AsEnumerable().Select(r => r.Field<object>(ColumnNames.ElementAt(i))).ToList();
+
+                    chartData.Add(seriesNo);
+                }
+                return Json(new
+                {
+                    status = CommonConstants.Status_Success,
+                    message = "StatBtsByOperatorCity Finished !",
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                // Base Controller đã ghi Log Error rồi
+                return Json(new
+                {
+                    status = CommonConstants.Status_Error,
+                    message = e.Message,
+                    chartData = chartData
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

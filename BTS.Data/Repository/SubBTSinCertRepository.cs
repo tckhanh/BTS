@@ -5,8 +5,6 @@ using BTS.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BTS.Data.Repository
 {
@@ -25,8 +23,10 @@ namespace BTS.Data.Repository
 
         IEnumerable<StatBtsByOperatorCityVM> GetStatBtsByOperatorCity(string Area = CommonConstants.SelectAll);
 
+        IEnumerable<StatBtsByOperatorCityVM> GetStatBtsByManufactoryCity(string Area = CommonConstants.SelectAll);
+
         IEnumerable<StatBtsByOperatorAreaVM> GetStatBtsByOperatorArea(string operatorID = CommonConstants.SelectAll);
-                
+
         IEnumerable<StatBtsByManufactoryVM> GetStatBtsByManufactory(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll);
 
         IEnumerable<StatBtsByOperatorManufactoryVM> GetStatBtsByOperatorManufactory(string operatorID = CommonConstants.SelectAll, string cityID = CommonConstants.SelectAll);
@@ -47,7 +47,7 @@ namespace BTS.Data.Repository
                          join cert in DbContext.Certificates on subBts.CertificateID equals cert.Id
                          join oper in DbContext.Operators on subBts.OperatorID equals oper.Id
                          where ((operatorID == CommonConstants.SelectAll || subBts.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || cert.CityID == cityID))
-                         group subBts by new {oper.RootId, subBts.BtsCode } into ItemGroup
+                         group subBts by new { oper.RootId, subBts.BtsCode } into ItemGroup
                          select new
                          {
                              Id = ItemGroup.Max(x => x.Id)
@@ -161,11 +161,27 @@ namespace BTS.Data.Repository
                          join city in DbContext.Cities on cert.CityID equals city.Id
                          join oper in DbContext.Operators on subBts.OperatorID equals oper.Id
                          where (cert.ExpiredDate >= DateTime.Now && (Area == CommonConstants.SelectAll || city.Area == Area))
-                         group subBts by new { cert.CityID, oper.RootId } into ItemGroup
+                         group subBts by new { cert.CityID, OperatorID = oper.RootId } into ItemGroup
                          select new StatBtsByOperatorCityVM()
                          {
                              CityID = ItemGroup.Key.CityID,
-                             OperatorID = ItemGroup.Key.RootId,
+                             OperatorID = ItemGroup.Key.OperatorID,
+                             Btss = ItemGroup.Count()
+                         };
+            return query2;
+        }
+
+        public IEnumerable<StatBtsByOperatorCityVM> GetStatBtsByManufactoryCity(string Area = CommonConstants.SelectAll)
+        {
+            var query2 = from subBts in DbContext.SubBtsInCerts
+                         join cert in DbContext.Certificates on subBts.CertificateID equals cert.Id
+                         join city in DbContext.Cities on cert.CityID equals city.Id
+                         where (cert.ExpiredDate >= DateTime.Now && (Area == CommonConstants.SelectAll || city.Area == Area))
+                         group subBts by new { cert.CityID, subBts.Manufactory } into ItemGroup
+                         select new StatBtsByOperatorCityVM()
+                         {
+                             CityID = ItemGroup.Key.CityID,
+                             OperatorID = ItemGroup.Key.Manufactory,
                              Btss = ItemGroup.Count()
                          };
             return query2;
@@ -207,7 +223,7 @@ namespace BTS.Data.Repository
                          join cert in DbContext.Certificates on subBts.CertificateID equals cert.Id
                          join oper in DbContext.Operators on subBts.OperatorID equals oper.Id
                          where (cert.ExpiredDate >= DateTime.Now && (operatorID == CommonConstants.SelectAll || subBts.OperatorID == operatorID) && (cityID == CommonConstants.SelectAll || cert.CityID == cityID))
-                         group subBts by new { oper.RootId , subBts.Manufactory } into ItemGroup
+                         group subBts by new { oper.RootId, subBts.Manufactory } into ItemGroup
                          select new StatBtsByOperatorManufactoryVM()
                          {
                              OperatorID = ItemGroup.Key.RootId,
@@ -221,9 +237,9 @@ namespace BTS.Data.Repository
         {
             var query2 = from subBts in DbContext.SubBtsInCerts
                          join certificateArea in (from certificate in DbContext.Certificates
-                                                       join city in DbContext.Cities on certificate.CityID equals city.Id
-                                                       where ((area == CommonConstants.SelectAll || city.Area == area))
-                                                       select new { certificate.Id, certificate.ExpiredDate, certificate.CityID, city.Area })
+                                                  join city in DbContext.Cities on certificate.CityID equals city.Id
+                                                  where ((area == CommonConstants.SelectAll || city.Area == area))
+                                                  select new { certificate.Id, certificate.ExpiredDate, certificate.CityID, city.Area })
                          on subBts.CertificateID equals certificateArea.Id
                          where (certificateArea.ExpiredDate >= DateTime.Now && (area == CommonConstants.SelectAll || certificateArea.Area == area) && (cityID == CommonConstants.SelectAll || certificateArea.CityID == cityID))
                          group subBts by new { certificateArea.Area, subBts.Manufactory } into ItemGroup

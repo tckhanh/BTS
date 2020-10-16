@@ -40,7 +40,14 @@ namespace BTS.Web.Areas.Controllers
             IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll().OrderByDescending(x => x.ApplyDate)).ToList();
             IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll().ToList());
 
-            cities = cities.Where(x => getCityIDsScope().ToString().Split(new char[] { ';' }).Contains(x.Id));
+            if (User.Identity.IsAuthenticated)
+            {
+                cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+            }
+            else
+            {
+                cities = new List<CityViewModel>();
+            }
 
             ViewBag.operators = operators;
             ViewBag.profiles = profiles;
@@ -90,11 +97,11 @@ namespace BTS.Web.Areas.Controllers
                 {
                     Items = _noCertificateService.getNoCertificateByCity(CityID).ToList();
                 }
-                else if (!(string.IsNullOrEmpty(OperatorID)))
+                else if (!(string.IsNullOrEmpty(OperatorID)) && OperatorID != CommonConstants.SelectAll)
                 {
                     Items = _noCertificateService.getNoCertificateByOperator(OperatorID).ToList();
                 }
-                else if (!(string.IsNullOrEmpty(ProfileID)))
+                else if (!(string.IsNullOrEmpty(ProfileID)) && ProfileID != CommonConstants.SelectAll)
                 {
                     Items = _noCertificateService.getNoCertificateByProfile(ProfileID).ToList();
                 }
@@ -141,12 +148,12 @@ namespace BTS.Web.Areas.Controllers
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(OperatorID)))
+            if (!(string.IsNullOrEmpty(OperatorID)) && OperatorID != CommonConstants.SelectAll)
             {
                 Items = Items.Where(x => x.OperatorID.Contains(OperatorID)).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(ProfileID)))
+            if (!(string.IsNullOrEmpty(ProfileID)) && ProfileID != CommonConstants.SelectAll)
             {
                 Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
@@ -500,7 +507,7 @@ namespace BTS.Web.Areas.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public ActionResult AddOrEdit(string act, NoCertificateViewModel Item)
+        public ActionResult AddOrEdit(string act, NoCertificateViewModel ItemVm)
         {
             try
             {
@@ -509,8 +516,9 @@ namespace BTS.Web.Areas.Controllers
                     if (act == CommonConstants.Action_Add)
                     {
                         NoCertificate newItem = new NoCertificate();
-                        newItem.UpdateNoCertificate(Item);
+                        newItem.UpdateNoCertificate(ItemVm);
 
+                        newItem.Id = ItemVm.Id;
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;
 
@@ -521,8 +529,8 @@ namespace BTS.Web.Areas.Controllers
                     }
                     else
                     {
-                        NoCertificate editItem = _noCertificateService.getByID(Item.Id);
-                        editItem.UpdateNoCertificate(Item);
+                        NoCertificate editItem = _noCertificateService.getByID(ItemVm.Id);
+                        editItem.UpdateNoCertificate(ItemVm);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
 

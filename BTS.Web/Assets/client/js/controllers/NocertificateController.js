@@ -437,7 +437,7 @@ var noCertificateController = {
     },
     loadMap: function (markers) {
         var myURL = $('script[src$="leaflet.js"]').attr('src').replace('leaflet.js', '');
-        if (markers != null) {
+        if (!myLib.isEmptyOrNull(markers)) {
             for (var i = 0; i < markers.length; ++i) {
                 var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
                     '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
@@ -472,6 +472,11 @@ var noCertificateController = {
                 myMarkerClusters.addLayer(m);
             }
             myMap.addLayer(myMarkerClusters);
+
+            var latLon = L.latLng(markers[0].Latitude, markers[0].Longtitude);
+            var bounds = latLon.toBounds(500); // 500 = metres
+            myMap.panTo(latLon).fitBounds(bounds);
+            myMap.setZoom(8);
         }
     },
 

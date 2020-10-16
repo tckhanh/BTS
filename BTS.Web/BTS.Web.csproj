@@ -379,6 +379,12 @@
     <Compile Include="Models\SlideViewModel.cs" />
     <Compile Include="Models\SubBtsInCertViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".bowerrc" />
@@ -599,6 +605,7 @@
     <Content Include="Assets\client\js\common\myBrowserTab.js" />
     <Content Include="Assets\client\js\common\maxibox.js" />
     <Content Include="Assets\client\js\common\message.js" />
+    <Content Include="Assets\client\js\common\myLib.js" />
     <Content Include="Assets\client\js\common\myMap.js" />
     <Content Include="Assets\client\js\common\myCulture2.js" />
     <Content Include="Assets\client\js\common\myCulture.js" />
@@ -11419,6 +11426,11 @@
     <Content Include="font\context-menu-icons.eot" />
     <Content Include="Content\jquery.contextMenu.min.css.map" />
     <Content Include="Content\ReportTemplates\license 3.1.key" />
+    <Content Include="AppFiles\Samples\TT1_ Data_Ketqua.xlsm" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />

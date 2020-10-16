@@ -73,10 +73,10 @@ namespace BTS.Web.Infrastructure.Extensions
 
             //certificate.SubBtsTechnologies = btsCertificateVm.SubBtsTechnologies;
 
-            //certificate.IsSigned = btsCertificateVm.IsSigned;
-            //certificate.IsCanceled = btsCertificateVm.IsCanceled;
-            //certificate.CanceledDate = btsCertificateVm.CanceledDate;
-            //certificate.CanceledReason = btsCertificateVm.CanceledReason;
+            certificate.IsSigned = btsCertificateVm.IsSigned;
+            certificate.IsCanceled = btsCertificateVm.IsCanceled;
+            certificate.CanceledDate = btsCertificateVm.CanceledDate;
+            certificate.CanceledReason = btsCertificateVm.CanceledReason;
         }
 
         public static void UpdateNoCertificate(this NoCertificate noCertificate, NoCertificateViewModel btsCertificateVm)
@@ -95,10 +95,10 @@ namespace BTS.Web.Infrastructure.Extensions
             noCertificate.TestReportDate = btsCertificateVm.TestReportDate;
             noCertificate.ReasonNoCertificate = btsCertificateVm.ReasonNoCertificate;
 
-            //noCertificate.IsSigned = btsCertificateVm.IsSigned;
-            //noCertificate.IsCanceled = btsCertificateVm.IsCanceled;
-            //noCertificate.CanceledDate = btsCertificateVm.CanceledDate;
-            //noCertificate.CanceledReason = btsCertificateVm.CanceledReason;
+            noCertificate.IsSigned = btsCertificateVm.IsSigned;
+            noCertificate.IsCanceled = btsCertificateVm.IsCanceled;
+            noCertificate.CanceledDate = btsCertificateVm.CanceledDate;
+            noCertificate.CanceledReason = btsCertificateVm.CanceledReason;
         }
 
         public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)

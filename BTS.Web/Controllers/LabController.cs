@@ -98,21 +98,22 @@ namespace BTS.Web.Areas.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
-        public ActionResult Add(LabViewModel Item)
+        public ActionResult Add(LabViewModel ItemVm)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                        Lab newItem = new Lab();
-                        newItem.UpdateLab(Item);
+                    Lab newItem = new Lab();
+                    newItem.UpdateLab(ItemVm);
+                    newItem.Id = ItemVm.Id;
 
-                        newItem.CreatedBy = User.Identity.Name;
-                        newItem.CreatedDate = DateTime.Now;
+                    newItem.CreatedBy = User.Identity.Name;
+                    newItem.CreatedDate = DateTime.Now;
 
-                        _labService.Add(newItem);
-                        _labService.Save();
-                        return Json(new { resetUrl = Url.Action("Add", "Lab"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<LabViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    _labService.Add(newItem);
+                    _labService.Save();
+                    return Json(new { resetUrl = Url.Action("Add", "Lab"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<LabViewModel>>(GetAll())), message = "Thêm dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -134,14 +135,14 @@ namespace BTS.Web.Areas.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                        Lab editItem = _labService.getByID(Item.Id);
-                        editItem.UpdateLab(Item);
-                        editItem.UpdatedBy = User.Identity.Name;
-                        editItem.UpdatedDate = DateTime.Now;
+                    Lab editItem = _labService.getByID(Item.Id);
+                    editItem.UpdateLab(Item);
+                    editItem.UpdatedBy = User.Identity.Name;
+                    editItem.UpdatedDate = DateTime.Now;
 
-                        _labService.Update(editItem);
-                        _labService.Save();
-                        return Json(new { resetUrl = Url.Action("Add", "Lab"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<LabViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    _labService.Update(editItem);
+                    _labService.Save();
+                    return Json(new { resetUrl = Url.Action("Add", "Lab"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<LabViewModel>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {

@@ -929,6 +929,7 @@ namespace BTS.Web.Areas.Controllers
             IEnumerable<PrintCertificateViewModel> printCertificates = (IEnumerable<PrintCertificateViewModel>)Session["printCertificates"];
             if (string.IsNullOrEmpty(BtsNum) && printCertificates != null)
             {
+                BtsNum = "1";
                 int[] BtsNums = new int[6];
                 foreach (var item in printCertificates)
                 {

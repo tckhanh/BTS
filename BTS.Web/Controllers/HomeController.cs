@@ -12,7 +12,7 @@ using System.Web.SessionState;
 
 namespace BTS.Web.Areas.Controllers
 {
-    //[AuthorizeRoles(CommonConstants.Data_CanView_Role)]
+    [AuthorizeRoles(CommonConstants.Data_CanView_Role)]
     [SessionState(SessionStateBehavior.ReadOnly)]
     public class HomeController : BaseController
     {
@@ -49,8 +49,6 @@ namespace BTS.Web.Areas.Controllers
             {
                 cities = new List<CityViewModel>();
             }
-            
-
             ViewBag.operators = operators;
             ViewBag.profiles = profiles;
             ViewBag.cities = cities;
@@ -867,7 +865,7 @@ namespace BTS.Web.Areas.Controllers
                             }
                             else
                             {
-                                subBtsItem.Manufactory = SubBtsEquipments[j];
+                                subBtsItem.Manufactory =SubBtsEquipments[j];
                             }
                             subBtsItem.PowerSum = SubBtsPowerSums[j];
 
@@ -911,7 +909,7 @@ namespace BTS.Web.Areas.Controllers
                             };
                             if (subBtsItem.Equipment.IndexOf(' ') >= 0)
                             {
-                                subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                                subBtsItem.Manufactory =subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
                             }
                             else
                             {

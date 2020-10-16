@@ -98,14 +98,15 @@ namespace BTS.Web.Areas.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
-        public ActionResult Add(CityViewModel Item)
+        public ActionResult Add(CityViewModel ItemVm)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     City newItem = new City();
-                    newItem.UpdateCity(Item);
+                    newItem.UpdateCity(ItemVm);
+                    newItem.Id = ItemVm.Id;
 
                     newItem.CreatedBy = User.Identity.Name;
                     newItem.CreatedDate = DateTime.Now;

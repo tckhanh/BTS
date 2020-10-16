@@ -35,7 +35,7 @@
             <!-- SELECT2 EXAMPLE -->
             <div class="box box-default col-md-8">
                 <div class="box-header with-border">
-                    <h3 class="BTS-title">NHẬP DỮ LIỆU HỒ SƠ KIỂM ĐỊNH TRẠM GỐC BTS</h3>
+                    <h3 class="BTS-title">ĐĂNG TẢI VÀ NHẬP DỮ LIỆU HỒ SƠ KIỂM ĐỊNH TRẠM GỐC BTS</h3>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
@@ -55,7 +55,7 @@
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <select id="ImportAction" name="ImportAction" class="form-control" required="required">
-                                            <option value="@CommonConstants.ImportBTS">BTS đăng ký kiểm định</option>
+                                            @*<option value="@CommonConstants.ImportBTS">BTS đăng ký kiểm định</option>*@
                                             <option selected="selected" value="@CommonConstants.ImportCER">Giấy Chứng nhận BTS</option>
                                         </select>
                                     </div>
@@ -67,7 +67,7 @@
                                         Mẫu file dữ liệu nhập<span class="required"></span>
                                     </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <a class="form-control" href="~/AppFiles/Samples/Sample File.xlsm">File mẫu Hồ sơ kiểm định</a>
+                                        <a class="form-control" href="~/AppFiles/Samples/TT1_ Data_Ketqua.xlsm">File mẫu Hồ sơ kiểm định</a>
                                         <input class="btn btn-success" type="button" id="btnGetSampleFile" value="Tải File mẫu" />
                                     </div>
                                 </div>
@@ -89,7 +89,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="InputType">
-                                        Loại nhập dữ liệu<span class="required"></span>
+                                        Hồ sơ kiểm định nhập<span class="required"></span>
                                     </label>
                                     <div class="col-md-9 col-sm-9 col-xs-12">
                                         <div class="col-md-4 col-sm-4 col-xs-12">
@@ -121,7 +121,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="InputType">
-                                        Hồ sơ cấp Giấy CNKĐ<span class="required"></span>
+                                        Tình trạng Hồ sơ<span class="required"></span>
                                     </label>
                                     <div class="col-md-9 col-sm-9 col-xs-12">
                                         <div class="col-md-4 col-sm-4 col-xs-12">

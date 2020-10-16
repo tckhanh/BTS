@@ -43,7 +43,14 @@ namespace BTS.Web.Areas.Controllers
             IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll().OrderByDescending(x => x.ApplyDate)).ToList();
             IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll()).ToList();
 
-            cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+            if (User.Identity.IsAuthenticated)
+            {
+                cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+            }
+            else
+            {
+                cities = new List<CityViewModel>();
+            }
 
             ViewBag.operators = operators;
             ViewBag.profiles = profiles;
@@ -167,11 +174,11 @@ namespace BTS.Web.Areas.Controllers
                 {
                     Items = _certificateService.getCertificateByCity(CityID).ToList();
                 }
-                else if (!(string.IsNullOrEmpty(OperatorID)))
+                else if (!(string.IsNullOrEmpty(OperatorID)) && OperatorID != CommonConstants.SelectAll)
                 {
                     Items = _certificateService.getCertificateByOperator(OperatorID).ToList();
                 }
-                else if (!(string.IsNullOrEmpty(ProfileID)))
+                else if (!(string.IsNullOrEmpty(ProfileID)) && ProfileID != CommonConstants.SelectAll)
                 {
                     Items = _certificateService.getCertificateByProfile(ProfileID).ToList();
                 }
@@ -224,12 +231,12 @@ namespace BTS.Web.Areas.Controllers
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(OperatorID)))
+            if (!(string.IsNullOrEmpty(OperatorID)) && OperatorID != CommonConstants.SelectAll)
             {
                 Items = Items.Where(x => x.OperatorID.Contains(OperatorID)).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(ProfileID)))
+            if (!(string.IsNullOrEmpty(ProfileID)) && ProfileID != CommonConstants.SelectAll)
             {
                 Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
@@ -737,7 +744,7 @@ namespace BTS.Web.Areas.Controllers
                         };
                         if (subBtsItem.Equipment.IndexOf(' ') >= 0)
                         {
-                            subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                            subBtsItem.Manufactory= subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
                         }
                         else
                         {
@@ -812,7 +819,7 @@ namespace BTS.Web.Areas.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public ActionResult AddOrEdit(string act, CertificateViewModel Item)
+        public ActionResult AddOrEdit(string act, CertificateViewModel ItemVm)
         {
             try
             {
@@ -820,50 +827,50 @@ namespace BTS.Web.Areas.Controllers
                 {
                     string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
 
-                    SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
-                    if (Item.SubBtsQuantity != SubBtsCodes.Count())
+                    SubBtsCodes = ItemVm.SubBtsCodes.Split(new char[] { ';' });
+                    if (ItemVm.SubBtsQuantity != SubBtsCodes.Count())
                     {
                         return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã trạm của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
-                    SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
-                    if (Item.SubBtsQuantity != SubBtsOperatorIDs.Count())
+                    SubBtsOperatorIDs = ItemVm.SubBtsOperatorIDs.Split(new char[] { ';' });
+                    if (ItemVm.SubBtsQuantity != SubBtsOperatorIDs.Count())
                     {
                         return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Mã Doanh nghiệp CCDV của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
-                    SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
-                    if (Item.SubBtsQuantity != SubBtsEquipments.Count())
+                    SubBtsEquipments = ItemVm.SubBtsEquipments.Split(new char[] { ';' });
+                    if (ItemVm.SubBtsQuantity != SubBtsEquipments.Count())
                     {
                         return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Thiết bị phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
-                    SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
-                    if (Item.SubBtsQuantity != SubBtsAntenNums.Count())
+                    SubBtsAntenNums = ItemVm.SubBtsAntenNums.Split(new char[] { ';' });
+                    if (ItemVm.SubBtsQuantity != SubBtsAntenNums.Count())
                     {
                         return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
-                    SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
-                    if (Item.SubBtsQuantity != SubBtsConfigurations.Count())
+                    SubBtsConfigurations = ItemVm.SubBtsConfigurations.Split(new char[] { ';' });
+                    if (ItemVm.SubBtsQuantity != SubBtsConfigurations.Count())
                     {
                         return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Số máy phát, thu phát của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
-                    SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
-                    if (Item.SubBtsQuantity != SubBtsBands.Count())
+                    SubBtsBands = ItemVm.SubBtsBands.Split(new char[] { ';' });
+                    if (ItemVm.SubBtsQuantity != SubBtsBands.Count())
                     {
                         return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Băng tần của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
-                    SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
-                    if (Item.SubBtsQuantity != SubBtsPowerSums.Count())
+                    SubBtsPowerSums = ItemVm.SubBtsPowerSums.Split(new char[] { ';' });
+                    if (ItemVm.SubBtsQuantity != SubBtsPowerSums.Count())
                     {
                         return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Tổng công suất phát các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
 
-                    SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
-                    if (Item.SubBtsQuantity != SubBtsAntenHeights.Count())
+                    SubBtsAntenHeights = ItemVm.SubBtsAntenHeights.Split(new char[] { ';' });
+                    if (ItemVm.SubBtsQuantity != SubBtsAntenHeights.Count())
                     {
                         return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Lỗi nhập Danh sách Độ cao các Anten của các trạm BTS" }, JsonRequestBehavior.AllowGet);
                     }
@@ -872,30 +879,30 @@ namespace BTS.Web.Areas.Controllers
                     {
                         Certificate newItem = new Certificate();
 
-                        if (_certificateService.getByID(Item.Id) != null)
+                        if (_certificateService.getByID(ItemVm.Id) != null)
                         {
-                            return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Giấy Chứng nhận kiểm định số " + Item.Id + " đã tôn tại rồi" }, JsonRequestBehavior.AllowGet);
+                            return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Giấy Chứng nhận kiểm định số " + ItemVm.Id + " đã tôn tại rồi" }, JsonRequestBehavior.AllowGet);
                         }
 
-                        if (_certificateService.findCertificate(Item.BtsCode, Item.ProfileID) != null)
+                        if (_certificateService.findCertificate(ItemVm.BtsCode, ItemVm.ProfileID) != null)
                         {
-                            return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + Item.Id + ")" }, JsonRequestBehavior.AllowGet);
+                            return Json(new { resetUrl = Url.Action("Add", "Certificate"), status = CommonConstants.Status_Error, message = "Trạm gốc " + ItemVm.BtsCode + " trong hồ sơ đã được cấp Giấy CNKĐ rồi (số: " + ItemVm.Id + ")" }, JsonRequestBehavior.AllowGet);
                         }
 
-                        newItem.UpdateCertificate(Item);
+                        newItem.UpdateCertificate(ItemVm);
 
-                        newItem.Id = Item.Id;
+                        newItem.Id = ItemVm.Id;
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;
 
                         _certificateService.Add(newItem);
                         _certificateService.SaveChanges();
 
-                        for (int j = 0; j < Item.SubBtsQuantity; j++)
+                        for (int j = 0; j < ItemVm.SubBtsQuantity; j++)
                         {
                             SubBtsInCert subBtsItem = new SubBtsInCert
                             {
-                                CertificateID = Item.Id,
+                                CertificateID = ItemVm.Id,
                                 BtsSerialNo = j + 1,
                                 BtsCode = SubBtsCodes[j],
                                 OperatorID = SubBtsOperatorIDs[j],
@@ -928,22 +935,22 @@ namespace BTS.Web.Areas.Controllers
                     }
                     else
                     {
-                        Certificate editItem = _certificateService.getByID(Item.Id);
-                        editItem.UpdateCertificate(Item);
+                        Certificate editItem = _certificateService.getByID(ItemVm.Id);
+                        editItem.UpdateCertificate(ItemVm);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
 
                         _certificateService.Update(editItem);
                         _certificateService.SaveChanges();
 
-                        _certificateService.DeleteSubBTSinCert(Item.Id);
+                        _certificateService.DeleteSubBTSinCert(ItemVm.Id);
                         _certificateService.SaveChanges();
 
-                        for (int j = 0; j < Item.SubBtsQuantity; j++)
+                        for (int j = 0; j < ItemVm.SubBtsQuantity; j++)
                         {
                             SubBtsInCert subBtsItem = new SubBtsInCert
                             {
-                                CertificateID = Item.Id,
+                                CertificateID = ItemVm.Id,
                                 BtsSerialNo = j + 1,
                                 BtsCode = SubBtsCodes[j],
                                 OperatorID = SubBtsOperatorIDs[j],

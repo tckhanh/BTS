@@ -47,6 +47,8 @@ namespace BTS.Service
 
         IEnumerable<StatBtsByOperatorCityVM> GetStatBtsByOperatorCity(string Area = CommonConstants.SelectAll);
 
+        IEnumerable<StatBtsByOperatorCityVM> GetStatBtsByManufactoryCity(string Area = CommonConstants.SelectAll);
+
         IEnumerable<StatBtsByOperatorAreaVM> GetStatBtsByOperatorArea();
 
         IEnumerable<StatBtsByEquipmentVM> GetStatBtsByEquipment();
@@ -157,6 +159,11 @@ namespace BTS.Service
         public IEnumerable<StatBtsByOperatorCityVM> GetStatBtsByOperatorCity(string Area = CommonConstants.SelectAll)
         {
             return _subBTSinCertRepository.GetStatBtsByOperatorCity();
+        }
+
+        public IEnumerable<StatBtsByOperatorCityVM> GetStatBtsByManufactoryCity(string Area = CommonConstants.SelectAll)
+        {
+            return _subBTSinCertRepository.GetStatBtsByManufactoryCity();
         }
 
         public IEnumerable<StatBtsByOperatorAreaVM> GetStatBtsByOperatorArea()

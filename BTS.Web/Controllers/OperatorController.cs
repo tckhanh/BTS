@@ -157,7 +157,7 @@ namespace BTS.Web.Areas.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public async Task<ActionResult> AddOrEdit(string act, OperatorViewModel Item)
+        public async Task<ActionResult> AddOrEdit(string act, OperatorViewModel ItemVm)
         {
             try
             {
@@ -166,7 +166,8 @@ namespace BTS.Web.Areas.Controllers
                     if (act == CommonConstants.Action_Add)
                     {
                         Operator newItem = new Operator();
-                        newItem.UpdateOperator(Item);
+                        newItem.UpdateOperator(ItemVm);
+                        newItem.Id = ItemVm.Id;
 
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;
@@ -177,8 +178,8 @@ namespace BTS.Web.Areas.Controllers
                     }
                     else
                     {
-                        Operator editItem = _operatorService.getByID(Item.Id);
-                        editItem.UpdateOperator(Item);
+                        Operator editItem = _operatorService.getByID(ItemVm.Id);
+                        editItem.UpdateOperator(ItemVm);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
 

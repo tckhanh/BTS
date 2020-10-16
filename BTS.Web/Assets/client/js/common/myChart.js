@@ -969,7 +969,7 @@ var myChart = {
                     }
                 }
                 else {
-                    alert(xhr.response.message);
+                    alert(response.message);
                 }
                 --myThreadNumbers;
                 if (myThreadNumbers == 0) {
@@ -1085,7 +1085,7 @@ var myChart = {
                     }
                 }
                 else {
-                    alert(xhr.response.message);
+                    alert(response.message);
                 }
                 --myThreadNumbers;
                 if (myThreadNumbers == 0) {

@@ -41,7 +41,7 @@ namespace BTS.Model.Models
 
         public Applicant()
         {
-            Id = Guid.NewGuid().ToString();
+            //Id = Guid.NewGuid().ToString();
         }
     }
 }

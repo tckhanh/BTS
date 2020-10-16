@@ -51,15 +51,15 @@ namespace BTS.Service
 
         public IEnumerable<Operator> getAll()
         {
-            return _operatorRepository.GetAll();
+            return _operatorRepository.GetAll().OrderBy(x => x.Id);
         }
 
         public IEnumerable<Operator> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _operatorRepository.GetMulti(x => x.Id.Contains(keyword) || x.Name.Contains(keyword));
+                return _operatorRepository.GetMulti(x => x.Id.Contains(keyword) || x.Name.Contains(keyword)).OrderBy(x => x.Id);
             else
-                return _operatorRepository.GetAll();
+                return _operatorRepository.GetAll().OrderBy(x => x.Id);
         }
 
         public Operator getByID(string Id)

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 
 namespace BTS.Web.Infrastructure.Core
 {
@@ -25,14 +26,21 @@ namespace BTS.Web.Infrastructure.Core
 
         public static bool isValid()
         {
-            IEnumerable<Licence> Licences = getLicenses();
-            foreach (var Licence in Licences)
+            if (WebConfigurationManager.AppSettings["BtsLicence"] == "PermanentLicence")
             {
-                LicenceViewModel lastLicenceVM = GetLicenceInfo(Licence);
-                if (lastLicenceVM.isValid)
-                    return !lastLicenceVM.isExpired;                
+                return true;
             }
-            return false;
+            else
+            {
+                IEnumerable<Licence> Licences = getLicenses();
+                foreach (var Licence in Licences)
+                {
+                    LicenceViewModel lastLicenceVM = GetLicenceInfo(Licence);
+                    if (lastLicenceVM.isValid)
+                        return !lastLicenceVM.isExpired;
+                }
+                return false;
+            }
         }
 
         public static LicenceViewModel GetLicenceInfo(Licence licence)

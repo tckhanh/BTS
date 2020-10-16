@@ -61,6 +61,8 @@
         myChart.loadLineChart("/Statistics/StatExpiredCerByOperatorCity", "#Tab3-chart_StatExpiredCerByOperatorCity", "Tỉnh/ Thành phố", "Giấy CNKĐ", "Nhà mạng");
         myChart.loadLineChart("/Statistics/StatBtsByBandCity", "#Tab3-chart_StatBtsByBandCity", "Tỉnh/ Thành phố", "Số trạm BTS", "Băng tần");
         myChart.loadLineChart("/Statistics/StatBtsByOperatorCity", "#Tab3-chart_StatBtsByOperatorCity", "Tỉnh/ Thành phố", "Số trạm BTS", "Nhà mạng");
+        myChart.loadLineChart("/Statistics/StatBtsByManufactoryCity", "#Tab3-chart_StatBtsByManufactoryCity", "Tỉnh/ Thành phố", "Số trạm BTS", "Nhà mạng");
+        
     }
 }
 statisticsController.init();

@@ -155,14 +155,15 @@ namespace BTS.Web.Areas.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role)]
-        public ActionResult Add(ApplicantViewModel Item)
+        public ActionResult Add(ApplicantViewModel ItemVm)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     Applicant newItem = new Applicant();
-                    newItem.UpdateApplicant(Item);
+                    newItem.UpdateApplicant(ItemVm);
+                    newItem.Id = ItemVm.Id;
 
                     newItem.CreatedBy = User.Identity.Name;
                     newItem.CreatedDate = DateTime.Now;

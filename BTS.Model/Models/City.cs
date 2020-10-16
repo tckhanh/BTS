@@ -31,7 +31,7 @@ namespace BTS.Model.Models
 
         public City()
         {
-            Id = Guid.NewGuid().ToString();
+            
         }
     }
 }

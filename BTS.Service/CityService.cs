@@ -3,6 +3,7 @@ using BTS.Data.Repository;
 using BTS.Model.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,15 +51,15 @@ namespace BTS.Service
 
         public IEnumerable<City> getAll(string[] includes = null)
         {
-            return _cityRepository.GetAll(includes);
+            return _cityRepository.GetAll(includes).OrderBy(x => x.Name);
         }
 
         public IEnumerable<City> getAll(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
-                return _cityRepository.GetMulti(x => x.Id.Contains(keyword) || x.Name.Contains(keyword));
+                return _cityRepository.GetMulti(x => x.Id.Contains(keyword) || x.Name.Contains(keyword)).OrderBy(x => x.Name);
             else
-                return _cityRepository.GetAll();
+                return _cityRepository.GetAll().OrderBy(x => x.Name);
         }
 
         public City getByID(string Id)

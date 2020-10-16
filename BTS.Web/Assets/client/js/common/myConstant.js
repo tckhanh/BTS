@@ -1,4 +1,10 @@
-﻿var myConstant = {
+﻿var lib  = {
+    isEmptyOrNull: function (value) {
+        return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
+    },
+};
+
+var myConstant = {
     System_CanView_Role: "System_CanView",
     System_CanViewDetail_Role: "System_CanViewDetail",
     System_CanViewChart_Role: "System_CanViewChart",

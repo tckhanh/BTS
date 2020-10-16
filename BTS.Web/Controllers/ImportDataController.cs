@@ -991,7 +991,12 @@ namespace BTS.Web.Areas.Controllers
                             else
                             {
                                 // Số Giấy chứng nhận này đã được thêm vào lần cấp trước của hồ sơ rồi => Cập nhật lại
-                                _importService.Update(Item);
+                                existedItemID.UpdateCertificate(Mapper.Map<CertificateViewModel>(Item));
+
+                                existedItemID.UpdatedBy = User.Identity.Name;
+                                existedItemID.UpdatedDate = DateTime.Now;
+
+                                _importService.Update(existedItemID);
                                 _importService.Save();
 
                                 RemoveSubBtsInCert(Item);

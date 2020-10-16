@@ -27,7 +27,7 @@ namespace BTS.Model.Models
 
         public Operator()
         {
-            Id = Guid.NewGuid().ToString();
+            //Id = Guid.NewGuid().ToString();
         }
     }
 }

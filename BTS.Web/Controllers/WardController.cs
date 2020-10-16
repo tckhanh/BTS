@@ -179,7 +179,7 @@ namespace BTS.Web.Areas.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeRoles(CommonConstants.Data_CanAdd_Role, CommonConstants.Data_CanEdit_Role)]
-        public ActionResult AddOrEdit(string act, WardVM Item)
+        public ActionResult AddOrEdit(string act, WardVM ItemVm)
         {
             try
             {
@@ -188,7 +188,8 @@ namespace BTS.Web.Areas.Controllers
                     if (act == CommonConstants.Action_Add)
                     {
                         Ward newItem = new Ward();
-                        newItem.UpdateWard(Item);
+                        newItem.UpdateWard(ItemVm);
+                        newItem.Id = ItemVm.Id;
 
                         newItem.CreatedBy = User.Identity.Name;
                         newItem.CreatedDate = DateTime.Now;
@@ -199,8 +200,8 @@ namespace BTS.Web.Areas.Controllers
                     }
                     else
                     {
-                        Ward editItem = _WardService.getByID(Item.Id);
-                        editItem.UpdateWard(Item);
+                        Ward editItem = _WardService.getByID(ItemVm.Id);
+                        editItem.UpdateWard(ItemVm);
                         editItem.UpdatedBy = User.Identity.Name;
                         editItem.UpdatedDate = DateTime.Now;
 

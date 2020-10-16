@@ -33,7 +33,7 @@ namespace BTS.Model.Models
 
         public Lab()
         {
-            Id = Guid.NewGuid().ToString();
+            
         }
     }
 }
