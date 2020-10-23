@@ -1,8 +1,8 @@
 ﻿
 //var data = "";
 
-var homeController = {
-    isLoadingData: 0,
+var publicController = {
+    isLoadingCertificateData: 0,
     DoPost: function (url, id) {
         $.post(url, { id: id });  //Your values here..
     },
@@ -13,10 +13,10 @@ var homeController = {
 
     init: function () {
         //myMap.invalidateSize();
-        //homeController.loadMap();
-        //homeController.loadPostData();
-        homeController.registerEventDataTable();
-        homeController.registerEvent();
+        //publicController.loadMap();
+        //publicController.loadPostData();
+        publicController.registerEventDataTable();
+        publicController.registerEvent();
         if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1) {
             $('#SelCityID').attr('disabled', false);
             $('#btnReset').attr('disabled', false);
@@ -25,9 +25,9 @@ var homeController = {
             $('#SelCityID').attr('disabled', true);
             $('#btnReset').attr('disabled', true);
             $('#btnSearch').attr('disabled', true);
-        }        
+        }
     },
-    registerEventDataTable: function () {        
+    registerEventDataTable: function () {
     },
     registerEvent: function () {
         $('#btnSearch').off('click').on('click', function () {
@@ -35,7 +35,7 @@ var homeController = {
                 myMap.removeLayer(myMarkerClusters);
                 myMarkerClusters.clearLayers();
             }
-            homeController.loadPostData();
+            publicController.loadPostData();
             //$('#MyDataTable').DataTable().ajax.reload();
         });
 
@@ -51,39 +51,37 @@ var homeController = {
             }
         });
 
-        myMap.on('moveend', function () { 
-            var curCenter = myMap.getCenter();
-            homeController.loadPostData(curCenter);
-            
-            //var marker = L.marker(myMap.getCenter()).bindPopup('Your move Dest is here :)');
-            //var circle = L.circle(myMap.getCenter(), 5000, {
-            //    weight: 1,
-            //    color: 'blue',
-            //    fillColor: '#cacaca',
-            //    fillOpacity: 0.2
-            //});
-            //myMap.addLayer(marker);
-            //myMap.addLayer(circle);
+        myMap.on('moveend', function () {
+            if (publicController.isLoadingCertificateData == 0) {
+                var curCenter = myMap.getCenter();
+                publicController.loadPostData(curCenter);
+            }
         });
     },
 
-    loadPostData: function (CityID) {
+    loadPostData: function (curCenter) {
         var form = $("#__AjaxAntiForgeryForm")[0];
         var dataForm = new FormData(form);
-        if (!myLib.isEmptyOrNull(CityID)) {
-            dataForm.set('SelCityID', CityID);
+        if (!myLib.isEmptyOrNull(curCenter)) {
+            var bounds = curCenter.toBounds(5000); // 5000 = metres
+            var strBounds = JSON.stringify(bounds);
+            dataForm.append('curCenter', JSON.stringify(curCenter));
+            dataForm.append('curBounds', strBounds);
         }
-        dataForm.append('action', 'GetReport');
         $.validator.unobtrusive.parse(form);
         if ($(form).valid()) {
             $('html').addClass('waiting');
             var ajaxConfig = {
                 type: 'POST',
-                url: '/Home/loadCertificate',
+                url: '/Public/loadCertificate',
                 data: dataForm,
                 dataType: 'json',
                 success: function (response) {
-                    $('html').removeClass('waiting');
+                    publicController.isLoadingCertificateData--;
+                    //if (publicController.isLoadingCertificateData == 0) {
+                    //    $('html').removeClass('waiting');
+                    //}
+                    
                     if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                         myMap.removeLayer(myMarkerClusters);
                         myMarkerClusters.clearLayers();
@@ -92,24 +90,21 @@ var homeController = {
                         //});
                     }
                     if (!myLib.isEmptyOrNull(response)) {
-                        if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
-                            homeController.loadMap(response.data);
+                        //if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
+                            publicController.loadMap(response.data);
                     }
-                    isLoadingData--;
                 },
                 error: function (response) {
                     $.notify(response.error, "error");
-                    isLoadingData--;
+                    publicController.isLoadingCertificateData--;
                 }
             }
             if ($(form).attr('enctype') == "multipart/form-data") {
                 ajaxConfig["contentType"] = false;
                 ajaxConfig["processData"] = false;
             }
-            if (isLoadingData == 0) {
-                isLoadingData++;
-                $.ajax(ajaxConfig);
-            }
+            publicController.isLoadingCertificateData++;
+            $.ajax(ajaxConfig);
         }
         return false;
     },
@@ -146,7 +141,7 @@ var homeController = {
             }
         });
     },
-    
+
     loadMap: function (markers) {
         var myURL = $('script[src$="leaflet.js"]').attr('src').replace('leaflet.js', '');
         if (!myLib.isEmptyOrNull(markers)) {
@@ -185,14 +180,13 @@ var homeController = {
             }
             myMap.addLayer(myMarkerClusters);
 
-            var latLon = L.latLng(markers[0].Latitude, markers[0].Longtitude);
-            var bounds = latLon.toBounds(500); // 500 = metres
-            myMap.panTo(latLon).fitBounds(bounds);
-            myMap.setZoom(8);
+            //var latLon = L.latLng(markers[0].Latitude, markers[0].Longtitude);
+            //var bounds = latLon.toBounds(20000); // 20000 = metresl; 20Km
+            //myMap.panTo(latLon).fitBounds(bounds);
         }
     },
 }
 
-homeController.init();
+publicController.init();
 
 // See post: http://asmaloney.com/2015/06/code/clustering-markers-on-leaflet-maps

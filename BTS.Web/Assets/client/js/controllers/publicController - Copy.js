@@ -25,7 +25,26 @@ var homeController = {
             $('#SelCityID').attr('disabled', true);
             $('#btnReset').attr('disabled', true);
             $('#btnSearch').attr('disabled', true);
-        }        
+        }
+        if (myMap != undefined && myMap != null) {
+            myMap.locate({ setView: true, watch: true }) /* This will return map so you can do chaining */
+                .on('locationfound', function (e) {
+                    var marker = L.marker([e.latitude, e.longitude]).bindPopup('Your are here :)');
+                    var circle = L.circle([e.latitude, e.longitude], e.accuracy / 2, {
+                        weight: 1,
+                        color: 'blue',
+                        fillColor: '#cacaca',
+                        fillOpacity: 0.2
+                    });
+                    myMap.addLayer(marker);
+                    myMap.addLayer(circle);
+                })
+                .on('locationerror', function (e) {
+                    console.log(e);
+                    alert("Location access denied.");
+                });
+            myMap.setZoom(10);
+        }
     },
     registerEventDataTable: function () {        
     },
@@ -67,11 +86,12 @@ var homeController = {
         });
     },
 
-    loadPostData: function (CityID) {
+    loadPostData: function (curCenter) {
         var form = $("#__AjaxAntiForgeryForm")[0];
         var dataForm = new FormData(form);
-        if (!myLib.isEmptyOrNull(CityID)) {
-            dataForm.set('SelCityID', CityID);
+        if (!myLib.isEmptyOrNull(curCenter)) {
+            dataForm.append('Lng', curCenter.Lng);
+            dataForm.append('Lat', curCenter.Lat);
         }
         dataForm.append('action', 'GetReport');
         $.validator.unobtrusive.parse(form);
@@ -188,7 +208,6 @@ var homeController = {
             var latLon = L.latLng(markers[0].Latitude, markers[0].Longtitude);
             var bounds = latLon.toBounds(500); // 500 = metres
             myMap.panTo(latLon).fitBounds(bounds);
-            myMap.setZoom(8);
         }
     },
 }

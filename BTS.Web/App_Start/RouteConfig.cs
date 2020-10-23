@@ -13,8 +13,15 @@ namespace BTS.Web
             routes.IgnoreRoute("{*botdetect}", new { botdetect = @"(.*)BotDetectCaptcha\.ashx" });
 
             routes.MapRoute(
-                 name: "Home",
+                 name: "Public",
                  url: "trang-chu.html",
+                 defaults: new { controller = "Public", action = "Index", id = UrlParameter.Optional },
+                 namespaces: new string[] { "BTS.Web.Controllers" }
+                );
+
+            routes.MapRoute(
+                 name: "Home",
+                 url: "trang-chu-noibo.html",
                  defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                  namespaces: new string[] { "BTS.Web.Controllers" }
                 );
@@ -114,7 +121,7 @@ namespace BTS.Web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                defaults: new { controller = "Public", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "BTS.Web.Controllers" }
             );
 

@@ -25,7 +25,6 @@ var homeController = {
             $('#btnReset').attr('disabled', true);
             $('#btnSearch').attr('disabled', true);
         }
-            
     },
     registerEventDataTable: function () {        
     },
@@ -49,14 +48,15 @@ var homeController = {
                 myMap.removeLayer(myMarkerClusters);
                 myMarkerClusters.clearLayers();
             }
-        });
+        });        
     },
 
-    loadPostData: function (CityId) {
+    loadPostData: function (curCenter) {
         var form = $("#__AjaxAntiForgeryForm")[0];
         var dataForm = new FormData(form);
-        if (!myLib.isEmptyOrNull(CityId)) {
-            dataForm.set('SelCityID', CityId);
+        if (!myLib.isEmptyOrNull(curCenter)) {
+            dataForm.append('Lng', curCenter.Lng);
+            dataForm.append('Lat', curCenter.Lat);
         }
         dataForm.append('action', 'GetReport');
         $.validator.unobtrusive.parse(form);
@@ -166,9 +166,8 @@ var homeController = {
             myMap.addLayer(myMarkerClusters);
 
             var latLon = L.latLng(markers[0].Latitude, markers[0].Longtitude);
-            var bounds = latLon.toBounds(500); // 500 = metres
+            var bounds = latLon.toBounds(20000); // 20000 = metresl; 20Km
             myMap.panTo(latLon).fitBounds(bounds);
-            myMap.setZoom(8);
         }
     },
 }

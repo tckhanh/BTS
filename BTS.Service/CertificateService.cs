@@ -1,6 +1,7 @@
 ﻿using BTS.Data.Infrastructure;
 using BTS.Data.Repository;
 using BTS.Model.Models;
+using BTS.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,8 @@ namespace BTS.Service
         IEnumerable<Certificate> getCertificateByCity(string cityID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10);
 
         IEnumerable<Certificate> getCertificateByCity(string cityID, string[] includes = null);
+
+        IEnumerable<Certificate> getCertificateByLocation(LatLng center, LatLngBounds boundBox, int KmRadius, string[] includes = null);
 
         IEnumerable<Certificate> getCertificateByOperator(string operatorID, out int totalRow, string[] includes = null, int pageIndex = 1, int pageSize = 10);
 
@@ -204,6 +207,11 @@ namespace BTS.Service
         public IEnumerable<Certificate> getCertificateByCity(string cityID, string[] includes = null)
         {
             return _CertificateRepository.GetMulti(x => x.CityID == cityID, includes);
+        }
+
+        public IEnumerable<Certificate> getCertificateByLocation(LatLng center, LatLngBounds boundBox, int KmRadius, string[] includes = null)
+        {
+            return _CertificateRepository.GetMulti(x => x.Latitude < boundBox._northEast.lat && x.Latitude > boundBox._southWest.lat && x.Longtitude < boundBox._northEast.lng && x.Longtitude > boundBox._southWest.lng, includes);
         }
 
         public IEnumerable<Certificate> getCertificateByCertificateNum(string CertificateNum, string[] includes = null)
