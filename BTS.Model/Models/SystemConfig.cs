@@ -20,6 +20,10 @@ namespace BTS.Model.Models
         [MaxLength(50)]
         public string Code { set; get; }
 
+        [Required]
+        [MaxLength(256)]
+        public string Description { set; get; }
+
         [MaxLength(50)]
         public string ValueString { set; get; }
 

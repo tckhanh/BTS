@@ -1,0 +1,64 @@
+﻿@using BTS.Common
+@{
+    ViewBag.Title = "Config";
+    Layout = "~/Views/Shared/Layouts_DataTable.cshtml";
+}
+
+@section headCSS{
+
+}
+
+@section footerJS{
+    <script src="~/Assets/client/js/controllers/commonController.js"></script>
+    <script src="~/Assets/client/js/controllers/contextMenuDataController.js"></script>
+}
+<br />
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    @*<section class="content-header">
+            <h1>
+                Data Tables
+                <small>advanced tables</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">Data tables</li>
+            </ol>
+        </section>*@
+
+    <!-- Main content -->
+
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="BTS-title">DANH SÁCH CÁC THÔNG SỐ HỆ THỐNG</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            @*<button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>*@
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <ul class="nav nav-tabs nav-pills">
+                            <li class="active"><a data-toggle="tab" href="#firstTab"> Xem</a></li>
+                            <li><a data-toggle="tab" href="#secondTab"> Thêm mới</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="firstTab" class="tab-pane fade in active">@Html.Action("ViewAll")</div>
+                            <div id="secondTab" class="tab-pane fade in">@Html.Action("Add")</div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </section>
+</div>

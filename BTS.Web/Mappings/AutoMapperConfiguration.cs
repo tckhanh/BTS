@@ -61,6 +61,9 @@ namespace BTS.Web.Mappings
                 cfg.CreateMap<ReportTT18Cert, ReportTT18CertViewModel>();
                 cfg.CreateMap<ReportTT18NoCert, ReportTT18NoCertViewModel>();
                 cfg.CreateMap<Licence, LicenceViewModel>();
+
+                cfg.CreateMap<Error, ErrorVM>();
+                cfg.CreateMap<SystemConfig, ConfigVM>();
                 /* etc */
             });
         }

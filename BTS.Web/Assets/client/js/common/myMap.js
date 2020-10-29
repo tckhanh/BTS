@@ -2,7 +2,8 @@
     maxZoom: 18,
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 });
-var myLatLng = L.latLng(10.796841, 106.66252);
+var myLatLng = L.latLng(10.696841, 106.66252);
+var myCoverageLayer;
 
 var myMap = L.map('mapBTS', {layers: [myTiles] });
 //var myMap = L.map('mapBTS', { center: myLatLng, zoom: 12, layers: [myTiles] });
@@ -11,7 +12,7 @@ if (myMap != undefined && myMap != null) {
     myMap.locate({ setView: true, watch: false }) /* This will return map so you can do chaining */
         .on('locationfound', function (e) {
             var latLon = e.latlng;
-            var bounds = latLon.toBounds(4000); // 4000 = metres
+            var bounds = latLon.toBounds(myConstant.coverageRadius); // 4000 = metres
             myMap.panTo(latLon).fitBounds(bounds);
 
             var marker = L.marker(latLon).bindPopup('You are here :)');
@@ -22,6 +23,7 @@ if (myMap != undefined && myMap != null) {
                 fillColor: 'blue',
                 fillOpacity: 0.1
             });
+
             myMap.addLayer(marker);
             myMap.addLayer(circle);
         })
@@ -85,3 +87,5 @@ var myControl = L.Control.geocoder({
 //});
 
 var myMarkerClusters = L.markerClusterGroup();
+
+

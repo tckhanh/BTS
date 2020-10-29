@@ -34,7 +34,7 @@
                         @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "__AjaxAntiForgeryForm", data_resetUrl = Url.Action("Add", "Certificate") }))
                         {
                             @Html.AntiForgeryToken()
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            @*<div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CityID">
                                         Tỉnh/Thành phố<span class="required"></span>
@@ -59,7 +59,7 @@
                                         <input class="btn btn-success" type="button" id="btnSearch" value="Thực hiện" />
                                     </div>
                                 </div>
-                            </div>
+                            </div>*@
                         }
                     </div>
                     <!-- /.box-body -->

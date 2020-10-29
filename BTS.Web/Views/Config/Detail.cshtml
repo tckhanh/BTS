@@ -1,0 +1,84 @@
+﻿@model BTS.Web.Models.ConfigVM
+@using BTS.Common
+@{
+    ViewBag.Title = "Detail";
+    Layout = null;
+}
+
+  @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+{
+    using (Html.BeginForm("Detail", "Config", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return commonController.jQueryAjaxPost(this);", data_restUrl = Url.Action("Add", "Config"), id = "__AjaxAntiForgeryForm" }))//data-resetUrl
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true)
+                <div class="col-md-10">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Id, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Id, new { @class = "form-control", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Id)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Code, new { @class = "form-control", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Code)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "5", cols = "40", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.Description)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ValueString, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.ValueString, new { @class = "form-control", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.ValueString)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ValueInt, new { @class = "control-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.ValueInt, new { @class = "form-control", disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.ValueInt)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+                            {
+                                <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("Add", "Config")', 1, 'Thêm mới')"><i class="fa fa-plus"></i> Thêm mới</a>
+                            }
+                            @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                            {
+                                <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("Edit", "Config", new { id = @Model.Id })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
+                            }
+
+                            @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                            {
+                                <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "Config", new { id = @Model.Id })')"><i class="fa fa-trash"></i> Xóa bỏ</a>
+                            }
+
+                            <a class="btn btn-info" onclick="commonController.refreshAddNewTab('@Url.Action("Add","Config")', 0, 'Thêm mới')"><i class="fa fa-close"></i> Hủy bỏ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3 class="text-danger">Bạn chưa được cấp quyền để thực hiện chức năng này !!!</h3>
+}

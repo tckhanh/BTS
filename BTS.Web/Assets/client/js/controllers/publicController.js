@@ -54,7 +54,38 @@ var publicController = {
         myMap.on('moveend', function () {
             if (publicController.isLoadingCertificateData == 0) {
                 var curCenter = myMap.getCenter();
-                publicController.loadPostData(curCenter);
+                if (typeof myLatLng == 'undefined') {
+                    myLatLng = curCenter;
+                }
+                if (myLatLng == curCenter || curCenter.distanceTo(myLatLng) > myConstant.coverageRadius / 4) {
+                    myLatLng = curCenter;
+                    publicController.isLoadingCertificateData++;
+                    if (typeof myCoverageLayer !== 'undefined') {
+                        myMap.removeLayer(myCoverageLayer);
+                    }
+
+                    var bounds = curCenter.toBounds(myConstant.coverageRadius); // 4000 = metres
+
+                    myCoverageLayer = L.rectangle(bounds, {
+                        weight: 2,
+                        color: 'red',
+                        //fillColor: '#cacaca',
+                        fillColor: 'red',
+                        fillOpacity: 0.1
+                    });
+                    myMap.addLayer(myCoverageLayer);
+
+                    //myCoverageLayer = L.circle(curCenter, 2000, {
+                    //    weight: 2,
+                    //    color: 'red',
+                    //    //fillColor: '#cacaca',
+                    //    fillColor: 'red',
+                    //    fillOpacity: 0.1
+                    //});
+                    //myMap.addLayer(myCoverageLayer);
+
+                    publicController.loadPostData(curCenter);
+                }
             }
         });
     },
@@ -63,7 +94,7 @@ var publicController = {
         var form = $("#__AjaxAntiForgeryForm")[0];
         var dataForm = new FormData(form);
         if (!myLib.isEmptyOrNull(curCenter)) {
-            var bounds = curCenter.toBounds(5000); // 5000 = metres
+            var bounds = curCenter.toBounds(myConstant.coverageRadius); // 4000 = metres
             var strBounds = JSON.stringify(bounds);
             dataForm.append('curCenter', JSON.stringify(curCenter));
             dataForm.append('curBounds', strBounds);
@@ -77,11 +108,6 @@ var publicController = {
                 data: dataForm,
                 dataType: 'json',
                 success: function (response) {
-                    publicController.isLoadingCertificateData--;
-                    //if (publicController.isLoadingCertificateData == 0) {
-                    //    $('html').removeClass('waiting');
-                    //}
-                    
                     if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                         myMap.removeLayer(myMarkerClusters);
                         myMarkerClusters.clearLayers();
@@ -91,19 +117,21 @@ var publicController = {
                     }
                     if (!myLib.isEmptyOrNull(response)) {
                         //if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
-                            publicController.loadMap(response.data);
+                        publicController.loadMap(response.data);
                     }
+                    publicController.isLoadingCertificateData--;
+                    $('html').removeClass('waiting');
                 },
                 error: function (response) {
                     $.notify(response.error, "error");
                     publicController.isLoadingCertificateData--;
+                    $('html').removeClass('waiting');
                 }
             }
             if ($(form).attr('enctype') == "multipart/form-data") {
                 ajaxConfig["contentType"] = false;
                 ajaxConfig["processData"] = false;
             }
-            publicController.isLoadingCertificateData++;
             $.ajax(ajaxConfig);
         }
         return false;
@@ -181,7 +209,7 @@ var publicController = {
             myMap.addLayer(myMarkerClusters);
 
             //var latLon = L.latLng(markers[0].Latitude, markers[0].Longtitude);
-            //var bounds = latLon.toBounds(20000); // 20000 = metresl; 20Km
+            //var bounds = latLon.toBounds(myConstant.coverageRadius); // 20000 = metresl; 20Km
             //myMap.panTo(latLon).fitBounds(bounds);
         }
     },

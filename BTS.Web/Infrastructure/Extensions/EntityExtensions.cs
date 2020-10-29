@@ -253,5 +253,22 @@ namespace BTS.Web.Infrastructure.Extensions
             Item.key = ItemVm.key;
             Item.enable = ItemVm.enable;
         }
+
+        public static void UpdateConfig(this SystemConfig Item, ConfigVM ItemVm)
+        {
+            Item.Code = ItemVm.Code;
+            Item.Description = ItemVm.Description;
+            Item.ValueString = ItemVm.ValueString;
+            Item.ValueInt = ItemVm.ValueInt;
+        }
+
+        public static void UpdateError(this Error Item, ErrorVM ItemVm)
+        {
+            Item.Message = ItemVm.Message;
+            Item.Description = ItemVm.Description;
+            Item.Controller = ItemVm.Controller;
+            Item.StackTrace = ItemVm.StackTrace;
+            Item.CreatedDate = ItemVm.CreatedDate;
+        }
     }
 }
