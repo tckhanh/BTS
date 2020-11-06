@@ -59,7 +59,9 @@
     <Compile Include="BtsService.cs" />
     <Compile Include="ApplicationGroupService.cs" />
     <Compile Include="AuditService.cs" />
+    <Compile Include="NoRequiredBtsService.cs" />
     <Compile Include="ConfigService.cs" />
+    <Compile Include="SubBtsInNoRequiredBtsService.cs" />
     <Compile Include="SubBtsInCertService.cs" />
     <Compile Include="WardService.cs" />
     <Compile Include="DistrictService.cs" />

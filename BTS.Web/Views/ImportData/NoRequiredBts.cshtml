@@ -1,0 +1,154 @@
+﻿@using BTS.Common
+@{
+    ViewBag.Title = "Import NoRequiredBts";
+    Layout = "~/Views/Shared/Layouts.cshtml";
+}
+
+@section headCSS{
+
+}
+
+@section footerJS{
+
+    <script src="~/Assets/client/js/controllers/importController.js"></script>
+}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    @*<section class="content-header">
+            <h1>
+                Data Tables
+                <small>advanced tables</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Tables</a></li>
+                <li class="active">Data tables</li>
+            </ol>
+        </section>*@
+
+    <!-- Main content -->
+
+    <section class="content">
+        <div class="row col-md-12">
+            <!-- SELECT2 EXAMPLE -->
+            <div class="box box-default col-md-8">
+                <div class="box-header with-border">
+                    <h3 class="BTS-title">ĐĂNG TẢI VÀ NHẬP DỮ LIỆU CÔNG BỐ CÁC TRẠM GỐC BTS KHÔNG BẮT BUỘC PHẢI KIỂM ĐỊNH</h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        @using (Html.BeginForm("NoRequiredBts", "ImportData", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal form-label-left", id = "jqueryForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-6 col-sm-6 col-xs-12" for="ImportAction">
+                                        Chọn loại dữ liệu nhập<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select id="ImportAction" name="ImportAction" class="form-control" required="required">
+                                            @*<option value="@CommonConstants.ImportBTS">BTS đăng ký kiểm định</option>*@
+                                            <option selected="selected" value="@CommonConstants.ImportNoRequiredBts">BTS không bắt buộc Kiểm định</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <a class="form-control" href="~/AppFiles/Samples/TT1_Data_Congbo.xlsx">File mẫu Danh sách công bố các trạm BTS</a>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="file">
+                                        Chọn tập tin cần nhập <span class="required"></span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        @*<input type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="file" class="form-control col-md-7 col-xs-12" required="required">*@
+                                        @*<input id="FileDialog" type="file" accept=".xlsx, .xls" name="file" class="form-control col-md-7 col-xs-12" required="required" onchange="checkfile(this);">*@
+                                        @*<input id="FileDialog" type="file" accept=".xls" name="file" class="form-control col-md-7 col-xs-12" required="required" onchange="checkfile(this);">*@
+                                        <input id="FileDialog" type="file" accept=".xlsx, .xlsm" name="file" class="form-control col-md-7 col-xs-12" required="required">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="InputType">
+                                        Hồ sơ công bố nhập<span class="required"></span>
+                                    </label>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">
+                                                <input class="" type="radio" id=@CommonConstants.InputType_AddNew name="InputType" value=@CommonConstants.InputType_AddNew checked>
+                                                Thêm Công bố lần đầu
+                                            </label>
+                                        </div>
+
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label class="control-label">
+                                                <input type="radio" id=@CommonConstants.InputType_AddMore name="InputType" value=@CommonConstants.InputType_AddMore>
+                                                Bổ sung Công bố lần 2,3,...
+                                            </label>
+                                        </div>
+                                        @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                                        {
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                <label class="control-label">
+                                                    <input type="radio" id=@CommonConstants.InputType_UpdateAdd name="InputType" value=@CommonConstants.InputType_UpdateAdd>
+                                                    Cập nhật và bổ sung Công bố
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div id="progressRow" hidden class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="progressBarStatus">
+                                        Tiến độ thực hiện<span class="required"></span>
+                                    </label>
+
+                                    <div class="progress col-md-9 col-sm-9 col-xs-12">
+                                        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+                                    </div>
+                                    <div id="status"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <button class="btn btn-primary" type="reset" id="btnReset">Bỏ chọn</button>
+                                        <input class="btn btn-success" type="submit" id="btnImport" value="Nhập dữ liệu" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.row -->
+    </section>
+</div>

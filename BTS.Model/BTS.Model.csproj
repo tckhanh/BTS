@@ -92,11 +92,13 @@
     <Compile Include="Models\AreaTab.cs" />
     <Compile Include="Models\Audit.cs" />
     <Compile Include="Models\Bts.cs" />
+    <Compile Include="Models\NoRequiredBts.cs" />
     <Compile Include="Models\Certificate.cs" />
     <Compile Include="Models\EquipmentTab.cs" />
     <Compile Include="Models\Equipment.cs" />
     <Compile Include="Models\LatLngBounds.cs" />
     <Compile Include="Models\LatLng.cs" />
+    <Compile Include="Models\SubBtsInNoRequiredBts.cs" />
     <Compile Include="Models\Ward.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Licence.cs" />

@@ -267,6 +267,26 @@
         public const string Sheet_NoCertificate_TotalBtsNum = "TotalBtsNum";
         public const string Sheet_NoCertificate_NoCerBtsNum = "NoCerBtsNum";
 
+        public const string Sheet_NoRequiredBts = "NoRequiredBts";
+        public const string Sheet_NoRequiredBts_OperatorID = "OperatorID";
+        public const string Sheet_NoRequiredBts_AnnouncedDoc = "AnnouncedDoc";
+        public const string Sheet_NoRequiredBts_AnnouncedDate = "AnnouncedDate";
+        public const string Sheet_NoRequiredBts_BtsCode = "BtsCode";
+        public const string Sheet_NoRequiredBts_Address = "Address";
+        public const string Sheet_NoRequiredBts_CityID = "CityID";
+        public const string Sheet_NoRequiredBts_Longtitude = "Longtitude";
+        public const string Sheet_NoRequiredBts_Latitude = "Latitude";
+        public const string Sheet_NoRequiredBts_SubBtsQuantity = "SubBtsQuantity";
+        public const string Sheet_NoRequiredBts_SubBtsCodes = "SubBtsCodes";
+        public const string Sheet_NoRequiredBts_SubBtsOperatorIDs = "SubBtsOperatorIDs";
+        public const string Sheet_NoRequiredBts_SubBtsEquipments = "SubBtsEquipments";
+        public const string Sheet_NoRequiredBts_SubBtsAntenNums = "SubBtsAntenNums";
+        public const string Sheet_NoRequiredBts_SubBtsConfigurations = "SubBtsConfigurations";
+        public const string Sheet_NoRequiredBts_SubBtsPowerSums = "SubBtsPowerSums";
+        public const string Sheet_NoRequiredBts_SubBtsBands = "SubBtsBands";
+        public const string Sheet_NoRequiredBts_SubBtsTechnologies = "SubBtsTechnologies";
+        public const string Sheet_NoRequiredBts_SubBtsAntenHeights = "SubBtsAntenHeights";
+
         public const string Sheet_Area = "Area";
         public const string Sheet_Area_WardId = "WardId";
         public const string Sheet_Area_WardName = "WardName";
@@ -313,10 +333,15 @@
 
         public const string ImportCER = "ImportCER";
         public const string ImportBTS = "ImportBTS";
+        public const string ImportNoRequiredBts = "ImportNoRequiredBts";
         public const string ImportArea = "ImportArea";
         public const string ImportDistrict = "ImportDistrict";
         public const string ImportWard = "ImportWard";
         public const string ImportEquipment = "ImportEquiment";
         public const string SelectAll = "ALL";
+
+        public const string EnableCityIDsScope = "EnableCityIDsScope";
+        public const string BtsLicenceName = "BtsLicence";
+        public const string BtsLicenceValue = "NonCommercial";
     }
 }

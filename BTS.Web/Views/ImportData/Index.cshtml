@@ -63,12 +63,19 @@
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <label class="control-label col-md-6 col-sm-6 col-xs-12" for="SampleFile">
-                                        Mẫu file dữ liệu nhập<span class="required"></span>
-                                    </label>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                    </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <a class="form-control" href="~/AppFiles/Samples/TT1_ Data_Ketqua.xlsm">File mẫu Hồ sơ kiểm định</a>
-                                        <input class="btn btn-success" type="button" id="btnGetSampleFile" value="Tải File mẫu" />
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <input class="btn btn-success" type="button" id="btnGetSampleFile" value="Cập nhật" />
+
+                                        @*<label class="control-label btn btn-warning" for="SampleFile">
+                                            <a id="btnGetSampleFile" href="javascript:void(0);">
+                                                Cập nhật<span class="required"></span>
+                                            </a>
+                                        </label>*@
                                     </div>
                                 </div>
                             </div>
@@ -107,12 +114,12 @@
                                         </div>
                                         @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                                         {
-                                        <div class="col-md-4 col-sm-4 col-xs-12">
-                                            <label class="control-label">
-                                                <input type="radio" id=@CommonConstants.InputType_UpdateAdd name="InputType" value=@CommonConstants.InputType_UpdateAdd>
-                                                Cập nhật và bổ sung Giấy CNKĐ
-                                            </label>
-                                        </div>
+                                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                                <label class="control-label">
+                                                    <input type="radio" id=@CommonConstants.InputType_UpdateAdd name="InputType" value=@CommonConstants.InputType_UpdateAdd>
+                                                    Cập nhật và bổ sung Giấy CNKĐ
+                                                </label>
+                                            </div>
                                         }
                                     </div>
                                 </div>
@@ -136,7 +143,7 @@
                                                 <input type="radio" name="IsSigned" value=true>
                                                 Đã ký phê duyệt
                                             </label>
-                                        </div>                                        
+                                        </div>
                                     </div>
                                 </div>
                             </div>

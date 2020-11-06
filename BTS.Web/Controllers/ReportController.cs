@@ -57,8 +57,10 @@ namespace BTS.Web.Areas.Controllers
                 Items = _certificateService.getAll(out countItem, false, StartDate, EndDate).ToList();
             }
 
-            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
-
+            if (getEnableCityIDsScope() == "True")
+            {
+                Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
             //Items = Items.OrderBy(x => x.Id);
 
             IEnumerable<CertificateViewModel> dataViewModel = Mapper.Map<List<CertificateViewModel>>(Items);
@@ -89,7 +91,11 @@ namespace BTS.Web.Areas.Controllers
             {
                 Items = _certificateService.getReportTT18Cert(out countItem, StartDate, EndDate).ToList();
             }
-            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+
+            if (getEnableCityIDsScope() == "True")
+            {
+                Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
 
             Items = Items.OrderBy(x => x.CertificateId + x.BtsSerialNo);
 
@@ -121,8 +127,11 @@ namespace BTS.Web.Areas.Controllers
             {
                 Items = _noCertificateService.getReportTT18NoCert(out countItem, StartDate, EndDate).ToList();
             }
-            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
+            if (getEnableCityIDsScope() == "True")
+            {
+                Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
             //Items = Items.OrderByDescending(x => x.TestReportDate.ToString());
 
             IEnumerable<ReportTT18NoCertViewModel> dataViewModel = Mapper.Map<List<ReportTT18NoCertViewModel>>(Items);
@@ -143,8 +152,10 @@ namespace BTS.Web.Areas.Controllers
         public ActionResult GetCertificateByCity(string cityID)
         {
             IEnumerable<Certificate> CertificateData = _certificateService.getCertificateByCity(cityID).ToList();
-            CertificateData = CertificateData.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
-
+            if (getEnableCityIDsScope() == "True")
+            {
+                CertificateData = CertificateData.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
             var model = Mapper.Map<IEnumerable<Certificate>, IEnumerable<CertificateViewModel>>(CertificateData);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
@@ -153,8 +164,10 @@ namespace BTS.Web.Areas.Controllers
         {
             int countBTS = 0;
             List<Certificate> dataSumary = _certificateService.getAll(out countBTS, true).ToList();
-            dataSumary = dataSumary.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
-
+            if (getEnableCityIDsScope() == "True")
+            {
+                dataSumary = dataSumary.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
             return Json(dataSumary, JsonRequestBehavior.AllowGet);
         }
     }

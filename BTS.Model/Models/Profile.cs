@@ -27,7 +27,7 @@ namespace BTS.Model.Models
         public int AcceptedBtsQuantity { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime ApplyDate { get; set; }
+        public DateTime? ApplyDate { get; set; }
 
         public long Fee { get; set; }
 

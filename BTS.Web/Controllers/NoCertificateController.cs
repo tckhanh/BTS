@@ -42,7 +42,10 @@ namespace BTS.Web.Areas.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+                if (getEnableCityIDsScope() == "True")
+                {
+                    cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+                }
             }
             else
             {
@@ -158,7 +161,10 @@ namespace BTS.Web.Areas.Controllers
                 Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
 
-            Items = Items.Where(x => getCityIDsScope().ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            if (getEnableCityIDsScope() == "True")
+            {
+                Items = Items.Where(x => getCityIDsScope().ToString().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }            
 
             //Items = Items.OrderByDescending(x => x.TestReportDate.ToString());
 
@@ -184,8 +190,11 @@ namespace BTS.Web.Areas.Controllers
         public ActionResult GetNoCertificateByCity(string cityID)
         {
             List<NoCertificate> NoCertificateData = _noCertificateService.getNoCertificateByCity(cityID).ToList();
-            NoCertificateData = NoCertificateData.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
+            if (getEnableCityIDsScope() == "True")
+            {
+                NoCertificateData = NoCertificateData.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
             IEnumerable<NoCertificateViewModel> model = Mapper.Map<IEnumerable<NoCertificate>, IEnumerable<NoCertificateViewModel>>(NoCertificateData);
             return Json(model, JsonRequestBehavior.AllowGet);
         }

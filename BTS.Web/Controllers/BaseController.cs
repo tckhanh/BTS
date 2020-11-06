@@ -615,6 +615,11 @@ namespace BTS.Web.Areas.Controllers
             return User.Identity.getUserField("CityIDsScope") ?? UserManager.FindByName(User.Identity.Name).CityIDsScope;            
         }
 
+        public string getEnableCityIDsScope()
+        {
+            return User.Identity.getUserField(CommonConstants.EnableCityIDsScope) ?? "False";
+        }
+
         public string getUserField_(string name)
         {
             return User.Identity.getUserField(name) ?? UserManager.FindByName(User.Identity.Name).CityIDsScope;

@@ -104,7 +104,7 @@ var noCertificatecanceledController = {
                         $.notify(response.message, "error");
                     } else if (response.status = "Success") {
                         // $("#firstTab").html(response.html);
-                        addinController.refreshAddNewTab($(form).attr('data-restUrl'), true);
+                        addinController.refreshAddNewTab($(form).attr('data-resetUrl'), true);
                         $('#MyDataTable').DataTable().ajax.reload();
                         $.notify(response.message, "success");
                     }

@@ -26,9 +26,5 @@ namespace BTS.Web.Models
         [Display(Name = "Tên Khu vực")]        
         [StringLength(20, ErrorMessage = "Tên Tên Khu vực không quá 20 ký tự")]        
         public string Area { get; set; }
-
-        [Display(Name = "Mã số Tỉnh/Thành phố")]
-        [StringLength(5, ErrorMessage = "Mã số Tỉnh/Thành phố không quá 05 ký tự")]
-        public string Code { get; set; }
     }
 }

@@ -193,6 +193,9 @@
             case myConstant.Action_Cancel_NoCert:
                 addinController.Cancel_NoCert(id);
                 break;
+            case myConstant.Action_Cancel_NoRequiredBts:
+                addinController.Cancel_NoRequiredBts(id);
+                break;
             case myConstant.Action_Lock:
                 addinController.Lock(window.location.href + '/' + myConstant.Action_Lock + '/' + id);
                 break;
@@ -437,6 +440,12 @@
         $("#noCertificateId").val(noCertificateId);
         $("#canceledDate").val(moment().format('YYYY-MM-DD'));
             noCertificatecanceledController.showDialog.dialog("open");
+    },
+
+    Cancel_NoRequiredBts: function (noRequiredBtsId) {
+        $("#noRequiredBtsId").val(noRequiredBtsId);
+        $("#canceledDate").val(moment().format('YYYY-MM-DD'));
+        noRequiredBtsCanceledController.showDialog.dialog("open");
     },
 
     SignAll: function (Id) {

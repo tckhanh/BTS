@@ -290,6 +290,7 @@
     <Compile Include="Controllers\BtsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Areas\Setup\Controllers\LicenceInfoController.cs" />
+    <Compile Include="Controllers\NoRequiredBtsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\PublicController.cs" />
@@ -350,12 +351,14 @@
     <Compile Include="Models\AreaListVM.cs" />
     <Compile Include="Models\AuditableViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
+    <Compile Include="Models\NoRequiredBtsVM.cs" />
     <Compile Include="Models\CityTabVM.cs" />
     <Compile Include="Models\AreaTabVM.cs" />
     <Compile Include="Models\ErrorVM.cs" />
     <Compile Include="Models\EquipmentTabVM.cs" />
     <Compile Include="Models\EquipmentVM.cs" />
     <Compile Include="Models\ConfigVM.cs" />
+    <Compile Include="Models\SubBtsInNoRequiredBtsVM.cs" />
     <Compile Include="Models\WardVM.cs" />
     <Compile Include="Models\DistrictVM.cs" />
     <Compile Include="Models\InCaseOfTabVM.cs" />
@@ -624,6 +627,8 @@
     <Content Include="Assets\client\js\controllers\applicationUserController.js" />
     <Content Include="Assets\client\js\common\dtree.js" />
     <Content Include="Assets\client\js\common\myChart.js" />
+    <Content Include="Assets\client\js\controllers\noRequiredBtsCanceledController.js" />
+    <Content Include="Assets\client\js\controllers\noRequiredBtsController.js" />
     <Content Include="Assets\client\js\controllers\publicController - Copy.js" />
     <Content Include="Assets\client\js\controllers\publicController.js" />
     <Content Include="Assets\client\js\controllers\homeController - Copy.js" />
@@ -11494,6 +11499,7 @@
     <Content Include="Content\ReportTemplates-TT14-2017\Old\GCNKD_6BTS.mrt" />
     <Content Include="Content\ReportTemplates\CopyGCNKD_6BTS.mrt" />
     <Content Include="Content\ReportTemplates\GCNKD_6BTS.mrt" />
+    <Content Include="AppFiles\Samples\TT1_Data_Congbo.xlsx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -11663,6 +11669,13 @@
     <Content Include="Views\Error\Edit.cshtml" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Error\ViewAll.cshtml" />
+    <Content Include="Views\NoRequiredBts\Add.cshtml" />
+    <Content Include="Views\NoRequiredBts\CancelForm.cshtml" />
+    <Content Include="Views\NoRequiredBts\Detail.cshtml" />
+    <Content Include="Views\NoRequiredBts\Edit.cshtml" />
+    <Content Include="Views\NoRequiredBts\Index.cshtml" />
+    <Content Include="Views\NoRequiredBts\SubDetail.cshtml" />
+    <Content Include="Views\ImportData\NoRequiredBts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />

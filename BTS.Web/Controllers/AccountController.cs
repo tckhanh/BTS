@@ -29,10 +29,12 @@ namespace BTS.Web.Areas.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ILicenceService _licenceService;
+        private IConfigService _configService;
 
-        public AccountController(IErrorService errorService, ILicenceService labService) : base(errorService)
+        public AccountController(IErrorService errorService, ILicenceService licenceService, IConfigService configService) : base(errorService)
         {
-            _licenceService = labService;
+            _licenceService = licenceService;
+            _configService = configService;
         }
 
         public ApplicationSignInManager SignInManager
@@ -75,7 +77,16 @@ namespace BTS.Web.Areas.Controllers
                         ClaimsIdentity identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
 
                         //identity.AddClaim(new Claim("FullName", user.FullName));
-                        //identity.AddClaim(new Claim("Email", user.Email));                        
+                        //identity.AddClaim(new Claim("Email", user.Email));
+                        if (_configService.getByCode(CommonConstants.EnableCityIDsScope) != null)
+                        {
+                            identity.AddClaim(new Claim(CommonConstants.EnableCityIDsScope, _configService.getByCode(CommonConstants.EnableCityIDsScope)?.ValueString));
+                        }
+                        else
+                        {
+                            identity.AddClaim(new Claim(CommonConstants.EnableCityIDsScope, "False"));
+                        }
+                            
                         identity.AddClaim(new Claim("CityIDsScope", user.CityIDsScope ?? ""));
                         identity.AddClaim(new Claim("ImagePath", user.ImagePath ?? ""));
 

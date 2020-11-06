@@ -31,6 +31,8 @@ namespace BTS.Data
         public DbSet<Certificate> Certificates { get; set; }
         public DbSet<SubBtsInCert> SubBtsInCerts { get; set; }
         public DbSet<NoCertificate> NoCertificates { get; set; }
+        public DbSet<NoRequiredBts> NoRequiredBtss { get; set; }
+        public DbSet<SubBtsInNoRequiredBts> SubBtsInNoRequiredBtss { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<Error> Errors { get; set; }
         public DbSet<Footer> Footers { set; get; }

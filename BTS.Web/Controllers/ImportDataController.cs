@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using BTS.Common;
-using BTS.Common.ViewModels;
-using BTS.Data;
 using BTS.ExcelLib;
 using BTS.Model.Models;
 using BTS.Service;
@@ -107,7 +105,61 @@ namespace BTS.Web.Areas.Controllers
                         //return Json(new { status = CommonConstants.Status_Error, message = e.Message}, JsonRequestBehavior.AllowGet);
                         //return Json(new { status = CommonConstants.Status_Error, message = e.Message + "\n" + e.StackTrace }, JsonRequestBehavior.AllowGet);
                         return Json(new { status = CommonConstants.Status_Error, message = e.Message }, JsonRequestBehavior.AllowGet);
-                        
+
+
+                    }
+                }
+            }
+            return Json(new { status = CommonConstants.Status_Success, message = "Import Certificate Finished !" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult NoRequiredBts(HttpPostedFileBase file, string ImportAction, string InputType, bool IsSigned)
+        {
+            if (Request.Files["file"].ContentLength > 0)
+            {
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(Request.Files["file"].FileName);
+                string fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
+
+                if (fileExtension == ".xls" || fileExtension == ".xlsx" || fileExtension == ".xlsm")
+                {
+                    //string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + Request.Files["file"].FileName;
+                    string fileLocation = Server.MapPath("~/AppFiles/Tmp/") + "NoRequiredBts" + DateTime.Now.ToString("yyyymmssfff") + fileExtension;
+                    try
+                    {
+                        if (System.IO.File.Exists(fileLocation))
+                            System.IO.File.Delete(fileLocation);
+
+                        Request.Files["file"].SaveAs(fileLocation);
+
+                        string[] sheetNames = new string[] {
+                            CommonConstants.Sheet_NoRequiredBts,
+                        };
+
+                        string[] columnNames = new string[] {
+                            CommonConstants.Sheet_NoRequiredBts_Longtitude,
+                            CommonConstants.Sheet_NoRequiredBts_Latitude,
+                            CommonConstants.Sheet_NoRequiredBts_BtsCode};
+                        _excelIO.FormatColumns(fileLocation, sheetNames, columnNames, "@");
+
+                        //string extendedProperties = "Excel 12.0;HDR=YES;IMEX=1";
+                        //string connectionString1 = string.Format(CultureInfo.CurrentCulture, "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=\"{1}\"", fileLocation, extendedProperties);
+
+                        if (ImportAction == CommonConstants.ImportNoRequiredBts)
+                        {
+                            ExecuteDatabase(ImportNoCertificate, fileLocation, InputType, profileID, IsSigned);
+                        }
+
+                        //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
+                    }
+                    catch (Exception e)
+                    {
+                        // Base Controller đã ghi Log Error rồi
+                        //return Json(new { status = CommonConstants.Status_Error, message = e.Message}, JsonRequestBehavior.AllowGet);
+                        //return Json(new { status = CommonConstants.Status_Error, message = e.Message + "\n" + e.StackTrace }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = CommonConstants.Status_Error, message = e.Message }, JsonRequestBehavior.AllowGet);
+
 
                     }
                 }
@@ -228,7 +280,7 @@ namespace BTS.Web.Areas.Controllers
                         else
                         {
                             ExecuteDatabase(ImportEquipment, fileLocation, ImportAction, InputType);
-                        }                        
+                        }
                     }
                     catch (Exception e)
                     {
@@ -498,7 +550,7 @@ namespace BTS.Web.Areas.Controllers
                         if (Item.MaxPower != 0)
                         {
                             _importService.Add(Item);
-                        }                        
+                        }
                     }
                     else if (InputType == CommonConstants.InputType_UpdateAdd)
                     {
@@ -1048,7 +1100,13 @@ namespace BTS.Web.Areas.Controllers
             return true;
         }
 
-        private bool AddSubBtsInCert (Certificate Item)
+        private bool RemoveSubBtsInNoRequiredBts(NoRequiredBts Item)
+        {
+            _importService.RemoveSubBtsInNoRequiredBts(Item.Id);
+            return true;
+        }
+
+        private bool AddSubBtsInCert(Certificate Item)
         {
             int StartIndex, StopIndex;
             string Technology;
@@ -1106,9 +1164,71 @@ namespace BTS.Web.Areas.Controllers
             return true;
         }
 
+        private bool AddSubBtsInNoRequiredBts(NoRequiredBts Item)
+        {
+            int StartIndex, StopIndex;
+            string Technology;
+            string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsTechnologies, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
+            SubBtsAntenHeights = Item.SubBtsAntenHeights.Split(new char[] { ';' });
+            SubBtsAntenNums = Item.SubBtsAntenNums.Split(new char[] { ';' });
+            SubBtsBands = Item.SubBtsBands.Split(new char[] { ';' });
+            //SubBtsTechnologies = Item.SubBtsTechnologies.Split(new char[] { ';' });
+            SubBtsCodes = Item.SubBtsCodes.Split(new char[] { ';' });
+            SubBtsConfigurations = Item.SubBtsConfigurations.Split(new char[] { ';' });
+            SubBtsEquipments = Item.SubBtsEquipments.Split(new char[] { ';' });
+            SubBtsOperatorIDs = Item.SubBtsOperatorIDs.Split(new char[] { ';' });
+            SubBtsPowerSums = Item.SubBtsPowerSums.Split(new char[] { ';' });
+
+            for (int j = 0; j < Item.SubBtsQuantity; j++)
+            {
+                StartIndex = SubBtsBands[j].IndexOf("(");
+                StopIndex = SubBtsBands[j].IndexOf(")");
+                if (StartIndex > -1 && StopIndex > -1 && StopIndex > StartIndex)
+                {
+                    Technology = SubBtsBands[j].Substring(StartIndex + 1, StopIndex - StartIndex - 1);
+                }
+                else
+                {
+                    Technology = "";
+                }
+                SubBtsInNoRequiredBts subBtsItem = new SubBtsInNoRequiredBts();
+                subBtsItem.NoRequiredBtsID = Item.Id;
+                subBtsItem.BtsSerialNo = j + 1;
+                subBtsItem.BtsCode = SubBtsCodes[j];
+                subBtsItem.OperatorID = SubBtsOperatorIDs[j];
+                subBtsItem.AntenHeight = SubBtsAntenHeights[j];
+                subBtsItem.AntenNum = Int32.Parse(SubBtsAntenNums[j]);
+                subBtsItem.Band = SubBtsBands[j];
+                subBtsItem.Technology = Technology;
+                subBtsItem.Configuration = SubBtsConfigurations[j];
+                subBtsItem.Equipment = SubBtsEquipments[j];
+                if (subBtsItem.Equipment.IndexOf(' ') >= 0)
+                {
+                    subBtsItem.Manufactory = subBtsItem.Equipment.Substring(0, subBtsItem.Equipment.IndexOf(' '));
+                }
+                else
+                {
+                    subBtsItem.Manufactory = SubBtsEquipments[j];
+                }
+                subBtsItem.PowerSum = SubBtsPowerSums[j];
+
+                subBtsItem.CreatedBy = User.Identity.Name;
+                subBtsItem.CreatedDate = DateTime.Now;
+
+
+                _importService.Add(subBtsItem);
+                _importService.Save();
+            }
+            return true;
+        }
+
         private Certificate FillInCertificate(string profileID, string operatorID, DataTable dt, int i)
         {
             DateTime datetimeData;
+            double doubleData = 0;
+            bool boolData = false;
+            int intData = 0;
+
             var Item = new Certificate();
 
             Item.ProfileID = profileID;
@@ -1118,11 +1238,26 @@ namespace BTS.Web.Areas.Controllers
             Item.Address = dt.Rows[i][CommonConstants.Sheet_Certificate_Address]?.ToString();
             Item.CityID = dt.Rows[i][CommonConstants.Sheet_Certificate_CityID]?.ToString();
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString().Length > 0)
-                Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString());
+                if (double.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString(), out doubleData))
+                {
+                    Item.Longtitude = doubleData;
+                }
+                else
+                {
+
+                }
+
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString().Length > 0)
-                Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString());
+                if (double.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString(), out doubleData))
+                {
+                    Item.Latitude = doubleData;
+                }
+
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString().Length > 0)
-                Item.InCaseOfID = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString());
+                if (Int32.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_InCaseOfID]?.ToString(), out intData))
+                {
+                    Item.InCaseOfID = intData;
+                }
 
             Item.LabID = dt.Rows[i][CommonConstants.Sheet_Certificate_LabID]?.ToString();
 
@@ -1137,7 +1272,7 @@ namespace BTS.Web.Areas.Controllers
             {
                 Item.IssuedDate = datetimeData;
             }
-                
+
             if (DateTime.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_ExpiredDate]?.ToString(), out datetimeData))
             {
                 Item.ExpiredDate = datetimeData;
@@ -1146,26 +1281,52 @@ namespace BTS.Web.Areas.Controllers
             Item.SubBtsQuantity = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity]?.ToString());
 
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString().Length > 0)
-                Item.IsPoleOnGround = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString());
+                if (bool.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsPoleOnGround]?.ToString(), out boolData))
+                {
+                    Item.IsPoleOnGround = boolData;
+                }
+
 
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_IsSafeLimit]?.ToString().Length > 0)
-                Item.IsSafeLimit = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsSafeLimit]?.ToString());
+                if (bool.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsSafeLimit]?.ToString(), out boolData))
+                {
+                    Item.IsSafeLimit = boolData;
+                }
+
 
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString().Length > 0)
-                Item.SafeLimitHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString());
+                if (Double.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_SafeLimitHeight]?.ToString(), out doubleData))
+                {
+                    Item.SafeLimitHeight = doubleData;
+                }
 
-            Item.IsHouseIn100m = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsHouseIn100m]?.ToString());
+            if (bool.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsHouseIn100m]?.ToString(), out boolData))
+            {
+                Item.IsHouseIn100m = boolData;
+            }
 
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString().Length > 0)
-                Item.MaxHeightIn100m = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString());
+                if (Double.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxHeightIn100m]?.ToString(), out doubleData))
+                {
+                    Item.MaxHeightIn100m = doubleData;
+                }
 
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_MaxPowerSum]?.ToString().Length > 0)
-                Item.MaxPowerSum = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxPowerSum]?.ToString());
+                if (Double.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_MaxPowerSum]?.ToString(), out doubleData))
+                {
+                    Item.MaxPowerSum = doubleData;
+                }
 
-            Item.IsMeasuringExposure = bool.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsMeasuringExposure]?.ToString());
+            if (bool.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_IsMeasuringExposure]?.ToString(), out boolData))
+            {
+                Item.IsMeasuringExposure = boolData;
+            }
 
             if (dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString().Length > 0)
-                Item.MinAntenHeight = Double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString());
+                if (Double.TryParse(dt.Rows[i][CommonConstants.Sheet_Certificate_MinAntenHeight]?.ToString(), out doubleData))
+                {
+                    Item.MinAntenHeight = doubleData;
+                }
 
             Item.OffsetHeight = Item.MinAntenHeight - Item.MaxHeightIn100m;
 
@@ -1211,6 +1372,53 @@ namespace BTS.Web.Areas.Controllers
             Item.Verifier1 = dt.Rows[i][CommonConstants.Sheet_Certificate_Verifier1]?.ToString();
             Item.Verifier2 = dt.Rows[i][CommonConstants.Sheet_Certificate_Verifier2]?.ToString();
 
+            Item.CreatedBy = User.Identity.Name;
+            Item.CreatedDate = DateTime.Now;
+            return Item;
+        }
+
+        private NoRequiredBts FillInNoRequiredBts(DataTable dt, int i)
+        {
+            DateTime datetimeData;
+            var Item = new NoRequiredBts();
+
+            Item.OperatorID = dt.Rows[i][CommonConstants.Sheet_NoRequiredBts_OperatorID]?.ToString();
+            Item.BtsCode = dt.Rows[i][CommonConstants.Sheet_Certificate_BtsCode]?.ToString();
+            Item.Address = dt.Rows[i][CommonConstants.Sheet_Certificate_Address]?.ToString();
+            Item.CityID = dt.Rows[i][CommonConstants.Sheet_Certificate_CityID]?.ToString();
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString().Length > 0)
+                Item.Longtitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Longtitude]?.ToString());
+            if (dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString().Length > 0)
+                Item.Latitude = double.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_Latitude]?.ToString());
+
+            Item.AnnouncedDoc = dt.Rows[i][CommonConstants.Sheet_NoRequiredBts_AnnouncedDoc]?.ToString();
+
+            if (DateTime.TryParse(dt.Rows[i][CommonConstants.Sheet_NoRequiredBts_AnnouncedDate]?.ToString(), out datetimeData))
+            {
+                Item.AnnouncedDate = datetimeData;
+            }
+
+            Item.SubBtsQuantity = Int32.Parse(dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsQuantity]?.ToString());
+
+            Item.SubBtsCodes = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsCodes]?.ToString();
+
+            Item.SubBtsAntenHeights = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenHeights]?.ToString();
+
+            Item.SubBtsAntenNums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsAntenNums]?.ToString();
+
+            Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
+
+            Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
+
+            //Item.SubBtsTechnologies = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsTechnologies]?.ToString();
+
+            Item.SubBtsConfigurations = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsConfigurations]?.ToString();
+
+            Item.SubBtsEquipments = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsEquipments]?.ToString();
+
+            Item.SubBtsOperatorIDs = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsOperatorIDs]?.ToString();
+
+            Item.SubBtsPowerSums = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsPowerSums]?.ToString();
             Item.CreatedBy = User.Identity.Name;
             Item.CreatedDate = DateTime.Now;
             return Item;
@@ -1262,7 +1470,7 @@ namespace BTS.Web.Areas.Controllers
                     NoCertificate dbNoCertificate = _importService.findNoCertificate(Item.BtsCode, Item.ProfileID);
                     if (dbNoCertificate != null)
                     {
-                        NoCertificate dbUpdate = _importService.getNoCertificate(dbNoCertificate.Id);
+                        //NoCertificate dbUpdate = _importService.getNoCertificate(dbNoCertificate.Id);
 
                         dbNoCertificate.IsSigned = Item.IsSigned;
 
@@ -1294,6 +1502,139 @@ namespace BTS.Web.Areas.Controllers
                     {
                         _importService.Delete(dbBts);
                         _importService.Save();
+                    }
+                }
+            }
+            return CommonConstants.Status_Success;
+        }
+
+        private string ImportNoRequiredBts(string excelConnectionString, string InputType, string profileID, bool IsSigned)
+        {
+            DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_NoRequiredBts);
+
+            if (InputType == CommonConstants.InputType_AddNew)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    NoRequiredBts Item = FillInNoRequiredBts(dt, i);
+
+                    //Item.IsSigned = IsSigned;
+
+                    if (!string.IsNullOrEmpty(Item.BtsCode?.ToString()))
+                    {
+                        // Thêm các Giấy chứng nhận mới khác của hồ sơ ở lần thứ N.
+
+                        NoRequiredBts existNoRequiredBts = _importService.findNoRequiredBts(Item.BtsCode, Item.OperatorID, Item.AnnouncedDoc);
+                        if (existNoRequiredBts == null)
+                        {
+                            _importService.Add(Item);
+                            _importService.Save();
+
+                            //Bts dbBts = _importService.findBts(profileID, Item.BtsCode);
+                            //if (dbBts != null)
+                            //{
+                            //    _importService.Delete(dbBts);
+                            //    _importService.Save();
+                            //}
+                            RemoveSubBtsInNoRequiredBts(Item);
+                            AddSubBtsInNoRequiredBts(Item);
+                        }
+                        else
+                        {
+                            if (existNoRequiredBts.Id != Item.Id)
+                                return "Lỗi: Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được công bố rồi (Số: " + existNoRequiredBts.Id + ")";
+                            else
+                            {
+                                // Số Giấy chứng nhận này đã được thêm vào bị trùng lập trong hồ sơ.
+                                return "Lỗi: Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được cấp trùng (Số công bố: " + existNoRequiredBts.Id + ")";
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            if (InputType == CommonConstants.InputType_AddMore)
+            {
+                // Them cac tram BTS da cong bo cua Profile vao
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    NoRequiredBts Item = FillInNoRequiredBts(dt, i);
+                    //Item.IsSigned = IsSigned;
+
+                    if (!string.IsNullOrEmpty(Item.BtsCode?.ToString()))
+                    {
+                        // Thêm các Giấy chứng nhận mới khác của hồ sơ ở lần thứ N.
+                        NoRequiredBts existNoRequiredBts = _importService.findNoRequiredBts(Item.BtsCode, Item.OperatorID, Item.AnnouncedDoc);
+                        if (existNoRequiredBts == null)
+                        {
+                            _importService.Add(Item);
+                            _importService.Save();
+
+                            //Bts dbBts = _importService.findBts(profileID, Item.BtsCode);
+                            //if (dbBts != null)
+                            //{
+                            //    _importService.Delete(dbBts);
+                            //    _importService.Save();
+                            //}
+
+                            RemoveSubBtsInNoRequiredBts(Item);
+                            AddSubBtsInNoRequiredBts(Item);
+                        }
+                        else
+                        {
+                            if (existNoRequiredBts.Id != Item.Id)
+                                return "Lỗi: Trạm gốc " + Item.BtsCode + " trong hồ sơ đã được công bố rồi (Số: " + existNoRequiredBts.Id + ")";
+                            else
+                            {
+                                // Số Giấy chứng nhận này đã được thêm vào lần cấp trước của hồ sơ rồi=> Không thêm nữa..
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (InputType == CommonConstants.InputType_UpdateAdd)
+            {
+                // Them cac Giấy CNKĐ cua Profile vao
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    NoRequiredBts Item = FillInNoRequiredBts(dt, i);
+
+                    //Item.IsSigned = IsSigned;
+
+                    if (!string.IsNullOrEmpty(Item.BtsCode?.ToString()))
+                    {
+
+                        // Thêm các Giấy chứng nhận mới khác của hồ sơ ở lần thứ N.
+                        NoRequiredBts existNoRequiredBts = _importService.findNoRequiredBts(Item.BtsCode, Item.OperatorID, Item.AnnouncedDoc);
+                        if (existNoRequiredBts == null)
+                        {
+                            _importService.Add(Item);
+                            _importService.Save();
+
+                            //Bts dbBts = _importService.findBts(profileID, Item.BtsCode);
+                            //if (dbBts != null)
+                            //{
+                            //    _importService.Delete(dbBts);
+                            //    _importService.Save();
+                            //}
+
+                            RemoveSubBtsInNoRequiredBts(Item);
+                            AddSubBtsInNoRequiredBts(Item);
+                        }
+                        else
+                        {
+                            // Trạm BTS này đã được công bố lần trước của hồ sơ AnnoucedDoc rồi => Cập nhật lại
+                            _importService.Update(Item);
+                            _importService.Save();
+
+                            RemoveSubBtsInNoRequiredBts(Item);
+                            AddSubBtsInNoRequiredBts(Item);
+                        }
+
                     }
                 }
             }

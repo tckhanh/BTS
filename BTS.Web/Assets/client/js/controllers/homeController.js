@@ -134,7 +134,9 @@ var homeController = {
                 var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
                     '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
                     '<br/><b>G.CNKĐ:</b> ' + markers[i].Id +
-                    '<br/><b>Địa chỉ:</b> ' + markers[i].Address;
+                    '<br/><b>Địa chỉ:</b> ' + markers[i].Address +
+                    '<br/><b>Ngày cấp:</b> ' + moment(markers[i].IssuedDate).format("DD/MM/YYYY") +
+                    '<br/><b>Ngày hết hạn:</b> ' + moment(markers[i].ExpiredDate).format("DD/MM/YYYY");
                 var img24 = 'images/pin24.png';
                 var img48 = 'images/pin48.png';
                 if (markers[i].OperatorID == "VINAPHONE") {

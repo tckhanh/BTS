@@ -76,8 +76,11 @@ namespace BTS.Web.Areas.Controllers
             {
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }
-            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
+            if (getEnableCityIDsScope() == "True")
+            {
+                Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
 
             if (!(string.IsNullOrEmpty(OperatorID)))
             {

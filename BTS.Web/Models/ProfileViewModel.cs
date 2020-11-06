@@ -39,22 +39,22 @@ namespace BTS.Web.Models
 
         [Display(Name = "Số BTS tiếp nhận")]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số BTS tiếp nhận")]
-        [Range(1, int.MaxValue, ErrorMessage = "Yêu cầu nhập Phí Kiểm định là số nguyên trong phạm vi [1->2147483647]")]
-        [RegularExpression(@"[1-9][0-9]*$", ErrorMessage = "Yêu cầu nhập Số Trạm BTS tiếp nhận là số nguyên")]
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số BTS tiếp nhận")]
+        //[Range(1, int.MaxValue, ErrorMessage = "Yêu cầu nhập Phí Kiểm định là số nguyên trong phạm vi [1->2147483647]")]
+        //[RegularExpression(@"[1-9][0-9]*$", ErrorMessage = "Yêu cầu nhập Số Trạm BTS tiếp nhận là số nguyên")]
         public int AcceptedBtsQuantity { get; set; }
 
         [Display(Name = "Ngày nộp Đơn KĐ")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Ngày nộp Đơn KĐ")]
-        public DateTime ApplyDate { get; set; }
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Ngày nộp Đơn KĐ")]
+        public DateTime? ApplyDate { get; set; }
 
         [Display(Name = "Phí Kiểm định")]
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số Phí Kiểm định")]
-        [Range(1, long.MaxValue, ErrorMessage = "Yêu cầu nhập Phí Kiểm định là số nguyên trong phạm vi [1->2147483647]")]
-        [RegularExpression(@"[1-9][0-9]*$", ErrorMessage = "Yêu cầu nhập Số Trạm BTS tiếp nhận là số nguyên")]
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Số Phí Kiểm định")]
+        //[Range(1, long.MaxValue, ErrorMessage = "Yêu cầu nhập Phí Kiểm định là số nguyên trong phạm vi [1->2147483647]")]
+        //[RegularExpression(@"[1-9][0-9]*$", ErrorMessage = "Yêu cầu nhập Số Trạm BTS tiếp nhận là số nguyên")]
         //Ap dung cho so Double
         //[RegularExpression(@"^\d+.\d{0,}$", ErrorMessage = "Yêu cầu nhập Số Phí Kiểm định là số nguyên")]
         public long Fee { get; set; }

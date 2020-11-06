@@ -87,57 +87,9 @@
         },
         registerEvent: function () {
             $('#btnGetSampleFile').off('click').on('click', function () {
-                var bar = $('.progress-bar');
-                $.ajax({
-                    url: '/ImportData/GetSampleFile',
-                    data: {
-                        fileName: 'Sample File.xlsm'
-                    },
-                    type: 'GET',
-                    dataType: 'json',
-                    beforeSend: function () {
-                        $('html').addClass('waiting');
-                        bar.html('Bắt đầu thực hiện!');
-                        bar.addClass('active');
-                        $('#progressRow').show();
-                    },
-                    error: function (err) {
-                        console.log(err.message);
-                        $.notify(err.message, {
-                            className: "error",
-                            clickToHide: true
-                        });                        
-                        $('html').removeClass('waiting');
-                        bar.removeClass('active');
-                        $('#btnImport').prop('disabled', false);
-                        $('#btnReset').prop('disabled', false);
-                        $('#FileDialog').prop('disabled', false);
-                        $('#ImportAction').prop('disabled', false);
-                        $('#ImportAction').prop('disabled', false);
-                    },
-                    success: function (response) {
-                        if (response.status == "TimeOut") {
-                            $.notify(response.message, "warn");
-                            window.location.href = "/Account/Login"
-                        } else if (response.status == "Success") {
-                            $.notify(response.message, "info");
-                            bar.html('Đã thực hiện xong!');
-                            //$('#ImportAction option').eq(2).prop('selected', true)
-                        }
-                        else {
-                            bar.html('Lỗi trong quá trình thực hiện!');
-                            alert("Complete: " + response.message);
-                        }
-                        $('html').removeClass('waiting');
-                        bar.removeClass('active');
-                        $('#btnImport').prop('disabled', false);
-                        $('#btnReset').prop('disabled', false);
-                        $('#FileDialog').prop('disabled', false);
-                        $('#ImportAction').prop('disabled', false);
-                        //$("#ImportAction").val("ImportBTS");
-                    },
-                });
+                importController.updateFileSample();
             });
+
 
             $('#FileDialog').change(function (sender) {
                 var bar = $('.progress-bar');
@@ -153,6 +105,59 @@
                     bar.html('');
                     return true;
                 }
+            });
+        }
+        , 
+        updateFileSample: function () {
+            var bar = $('.progress-bar');
+            $.ajax({
+                url: '/ImportData/GetSampleFile',
+                data: {
+                    fileName: 'TT1_ Data_Ketqua.xlsm'
+                },
+                type: 'GET',
+                dataType: 'json',
+                beforeSend: function () {
+                    $('html').addClass('waiting');
+                    bar.html('Bắt đầu thực hiện!');
+                    bar.addClass('active');
+                    $('#progressRow').show();
+                },
+                error: function (err) {
+                    console.log(err.message);
+                    $.notify(err.message, {
+                        className: "error",
+                        clickToHide: true
+                    });
+                    $('html').removeClass('waiting');
+                    bar.removeClass('active');
+                    $('#btnImport').prop('disabled', false);
+                    $('#btnReset').prop('disabled', false);
+                    $('#FileDialog').prop('disabled', false);
+                    $('#ImportAction').prop('disabled', false);
+                    $('#ImportAction').prop('disabled', false);
+                },
+                success: function (response) {
+                    if (response.status == "TimeOut") {
+                        $.notify(response.message, "warn");
+                        window.location.href = "/Account/Login"
+                    } else if (response.status == "Success") {
+                        $.notify(response.message, "info");
+                        bar.html('Đã thực hiện xong!');
+                        //$('#ImportAction option').eq(2).prop('selected', true)
+                    }
+                    else {
+                        bar.html('Lỗi trong quá trình thực hiện!');
+                        alert("Complete: " + response.message);
+                    }
+                    $('html').removeClass('waiting');
+                    bar.removeClass('active');
+                    $('#btnImport').prop('disabled', false);
+                    $('#btnReset').prop('disabled', false);
+                    $('#FileDialog').prop('disabled', false);
+                    $('#ImportAction').prop('disabled', false);
+                    //$("#ImportAction").val("ImportBTS");
+                },
             });
         }
     }

@@ -394,7 +394,8 @@ namespace BTS.ExcelLib
                     else
                     {
                         //_xlWorkSheet.Cells.Clear();
-                        DeleteColumns(_xlWorkSheet, 1, _xlWorkSheet.Dimension.End.Column);
+                        //DeleteColumns(_xlWorkSheet, 1, _xlWorkSheet.Dimension.End.Column);
+                        DeleteRows(_xlWorkSheet, 2, _xlWorkSheet.Dimension.End.Row);
                     }
                     _xlWorkSheet.Cells["A1"].LoadFromDataTable(dt, true);
 
@@ -624,6 +625,14 @@ namespace BTS.ExcelLib
             {
                 wsSheet.DeleteColumn(fromColumn);
             }            
+        }
+
+        public void DeleteRows(ExcelWorksheet wsSheet, int fromRow, int toRow)
+        {
+            for (int i = toRow; i >= fromRow; i--)
+            {
+                wsSheet.DeleteRow(fromRow);
+            }
         }
     }
 }

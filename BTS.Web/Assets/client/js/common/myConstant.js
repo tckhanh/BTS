@@ -65,6 +65,8 @@ var myConstant = {
     Action_SignAll_NoCert: "SignAll_NoCert",
     Action_Cancel_NoCert: "Cancel_NoCert",
     Action_CancelAll_NoCert: "CancelAll_NoCert",
+    Action_Cancel_NoRequiredBts: "Cancel_NoRequiredBts",
+    Action_CancelAll_NoRequiredBts: "CancelAll_NoRequiredBts",
     Action_Reset: "Reset",
     Action_ViewMap: "ViewMap",
     Action_Print: "Print",

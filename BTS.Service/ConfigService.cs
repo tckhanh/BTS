@@ -25,6 +25,8 @@ namespace BTS.Service
 
         SystemConfig getByID(int Id);
 
+        SystemConfig getByCode(string code);
+
         bool IsUsed(string Id);
 
         void Save();
@@ -72,6 +74,11 @@ namespace BTS.Service
         public SystemConfig getByID(int Id)
         {
             return _configRepository.GetSingleById(Id);
+        }
+
+        public SystemConfig getByCode(string code)
+        {
+            return _configRepository.GetSingleByCondition(x => x.Code == code);
         }
 
         public bool IsUsed(string Id)

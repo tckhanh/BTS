@@ -73,7 +73,7 @@ namespace BTS.Model.Models
         public string TestReportNo { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime TestReportDate { get; set; }
+        public DateTime? TestReportDate { get; set; }
 
         [MaxLength(255)]
         [Required]

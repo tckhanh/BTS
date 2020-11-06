@@ -45,7 +45,10 @@ namespace BTS.Web.Areas.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+                if (getEnableCityIDsScope() == "True")
+                {
+                    cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+                }
             }
             else
             {
@@ -241,7 +244,11 @@ namespace BTS.Web.Areas.Controllers
                 Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
 
-            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            if (getEnableCityIDsScope() == "True")
+            {
+                Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
+            
 
             //Items = Items.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 
@@ -302,8 +309,11 @@ namespace BTS.Web.Areas.Controllers
         public ActionResult GetCertificateByCity(string cityID)
         {
             IEnumerable<Certificate> Items = _certificateService.getCertificateByCity(cityID);
-            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
+            if (getEnableCityIDsScope() == "True")
+            {
+                Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
             IEnumerable<CertificateViewModel> model = Mapper.Map<IEnumerable<Certificate>, IEnumerable<CertificateViewModel>>(Items);
             return Json(model, JsonRequestBehavior.AllowGet);
         }

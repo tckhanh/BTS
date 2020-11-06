@@ -19,10 +19,7 @@ namespace BTS.Model.Models
         
         [MaxLength(20)]
         public string Area { get; set; }
-
-        [MaxLength(5)]
-        public string Code { get; set; }
-
+        
         public virtual IEnumerable<Bts> BTSs { get; set; }
 
         public virtual IEnumerable<Certificate> Certificates { get; set; }

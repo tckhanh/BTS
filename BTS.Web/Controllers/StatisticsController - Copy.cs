@@ -43,9 +43,11 @@ namespace BTS.Web.Controllers
         public ActionResult Index()
         {
             IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll());
-            
-            //cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
 
+            if (getEnableCityIDsScope() == "True")
+            {
+                cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+            }
             IEnumerable<string> AreaList = cities.Select(x => x.Area).Distinct();
 
             ViewBag.AreaList = AreaList;
@@ -1031,8 +1033,10 @@ namespace BTS.Web.Controllers
             try
             {
                 IEnumerable<StatIssuedCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetIssuedStatCerByOperatorCity(Area);
-                ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
-
+                if (getEnableCityIDsScope() == "True")
+                {
+                    ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
+                }
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
 
                 List<String> ColumnNames = new List<string>();
@@ -1078,8 +1082,10 @@ namespace BTS.Web.Controllers
             try
             {
                 IEnumerable<StatIssuedCerByOperatorCityVM> ByOperatorCity = _stattisticService.GetInYearStatCerByOperatorCity(Area);
-                ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
-
+                if (getEnableCityIDsScope() == "True")
+                {
+                    ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
+                }
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.IssuedCertificates) : 0);
 
                 List<String> ColumnNames = new List<string>();
@@ -1125,8 +1131,10 @@ namespace BTS.Web.Controllers
             try
             {
                 IEnumerable<StatBtsByBandCityVM> ByBandCity = _stattisticService.GetStatBtsByBandCity(Area);
-                ByBandCity = ByBandCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
-
+                if (getEnableCityIDsScope() == "True")
+                {
+                    ByBandCity = ByBandCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
+                }
                 DataTable pivotTable = ByBandCity.ToPivotTable(item => item.Band, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
 
                 //DataTable pivotTable = ByBand.ToDataTable();
@@ -1230,8 +1238,10 @@ namespace BTS.Web.Controllers
             try
             {
                 IEnumerable<StatBtsByOperatorCityVM> ByOperatorCity = _stattisticService.GetStatBtsByOperatorCity(Area);
-                ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
-
+                if (getEnableCityIDsScope() == "True")
+                {
+                    ByOperatorCity = ByOperatorCity.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID));
+                }
                 DataTable pivotTable = ByOperatorCity.ToPivotTable(item => item.OperatorID, item => item.CityID, items => items.Any() ? items.Sum(item => item.Btss) : 0);
 
                 //DataTable pivotTable = ByBand.ToDataTable();

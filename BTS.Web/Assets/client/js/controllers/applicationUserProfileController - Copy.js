@@ -82,7 +82,7 @@
                         $.notify(response.message, "error");
                     } else if (response.status = "Success") {
                         $("#firstTab").html(response.html);
-                        commonController.refreshAddNewTab($(form).attr('data-restUrl'), false);
+                        commonController.refreshAddNewTab($(form).attr('data-resetUrl'), false);
                         $.notify(response.message, "success");
                         if (typeof commonController.activatejQueryTable !== 'undefined' && $.isFunction(commonController.activatejQueryTable))
                             commonController.activatejQueryTable();

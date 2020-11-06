@@ -49,11 +49,13 @@ namespace BTS.Service
 
         IEnumerable<Certificate> getCertificatesByProfile(string profileID);
 
-        NoCertificate getNoCertificate(string Id);
+        NoCertificate getNoCertificate(string Id);        
 
         Certificate findCertificate(string BtsCode, string ProfileID);
 
         NoCertificate findNoCertificate(string BtsCode, string ProfileID);
+
+        NoRequiredBts findNoRequiredBts(string BtsCode, string OperatorID, string AnnouncedDoc);
 
         bool Add(InCaseOf item);
 
@@ -72,9 +74,12 @@ namespace BTS.Service
 
         bool Add(Certificate item);
 
+        bool Add(NoRequiredBts item);
+
         bool Add(NoCertificate item);
 
         bool Add(SubBtsInCert item);
+        bool Add(SubBtsInNoRequiredBts item);
         void Update(District item);
         void Update(Equipment item);
         void Update(Ward item);
@@ -85,6 +90,8 @@ namespace BTS.Service
         void Update(Bts newBts);
 
         void Update(Certificate newCertificate);
+
+        void Update(NoRequiredBts newCertificate);
 
         void Update(NoCertificate newNoCertificate);
 
@@ -97,6 +104,8 @@ namespace BTS.Service
         void RemoveCertsInProfile(string ProFileID);
 
         void RemoveSubBtsInCert(string CertificateID);
+
+        void RemoveSubBtsInNoRequiredBts(string NoRequiredBtsID);
 
         void Save();
 
@@ -137,9 +146,16 @@ namespace BTS.Service
         private ICertificateRepository _certificateRepository;
         private INoCertificateRepository _noCertificateRepository;
         private ISubBtsInCertRepository _subBTSinCertRepository;
+        private ISubBtsInNoRequiredBtsRepository _subBTSinNoRequiredBtsRepository;
+        private INoRequiredBtsRepository _noRequiredBtsRepository;
         private IUnitOfWork _unitOfWork;
 
-        public ImportService(IInCaseOfRepository inCaseOfRepository, ILabRepository labRepository, ICityRepository cityRepository, IDistrictRepository districtRepository, IWardRepository wardRepository, IEquipmentRepository equipmentRepository, IOperatorRepository operatorRepository, IApplicantRepository applicantRepository, IProfileRepository profileRepository, IBtsRepository btsRepository, ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository, ISubBtsInCertRepository subBTSinCertRepository, IUnitOfWork unitOfWork)
+        public ImportService(IInCaseOfRepository inCaseOfRepository, ILabRepository labRepository, ICityRepository cityRepository,
+            IDistrictRepository districtRepository, IWardRepository wardRepository, IEquipmentRepository equipmentRepository,
+            IOperatorRepository operatorRepository, IApplicantRepository applicantRepository, IProfileRepository profileRepository,
+            IBtsRepository btsRepository, ICertificateRepository certificateRepository, INoCertificateRepository noCertificateRepository,
+            ISubBtsInCertRepository subBTSinCertRepository, INoRequiredBtsRepository noRequiredBtsRepository,
+            ISubBtsInNoRequiredBtsRepository subBTSinNoRequiredBtsRepository, IUnitOfWork unitOfWork)        
         {
             _inCaseOfRepository = inCaseOfRepository;
             _labRepository = labRepository;
@@ -154,7 +170,8 @@ namespace BTS.Service
             _certificateRepository = certificateRepository;
             _noCertificateRepository = noCertificateRepository;
             _subBTSinCertRepository = subBTSinCertRepository;
-
+            _noRequiredBtsRepository = noRequiredBtsRepository;
+            _subBTSinNoRequiredBtsRepository = subBTSinNoRequiredBtsRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -270,6 +287,16 @@ namespace BTS.Service
             return true;
         }
 
+        public bool Add(NoRequiredBts item)
+        {
+            if (_noRequiredBtsRepository.GetSingleById(item.Id) == null)
+            {
+                _noRequiredBtsRepository.Add(item);
+            }
+            return true;
+        }
+
+
         public bool Add(NoCertificate item)
         {
             if (_noCertificateRepository.GetSingleById(item.Id) == null)
@@ -284,6 +311,15 @@ namespace BTS.Service
             if (_subBTSinCertRepository.GetSingleById(item.Id) == null)
             {
                 _subBTSinCertRepository.Add(item);
+            }
+            return true;
+        }
+
+        public bool Add(SubBtsInNoRequiredBts item)
+        {
+            if (_subBTSinNoRequiredBtsRepository.GetSingleById(item.Id) == null)
+            {
+                _subBTSinNoRequiredBtsRepository.Add(item);
             }
             return true;
         }
@@ -328,6 +364,12 @@ namespace BTS.Service
         {
             item.UpdatedDate = DateTime.Now;
             _certificateRepository.Update(item);
+        }
+
+        public void Update(NoRequiredBts item)
+        {
+            item.UpdatedDate = DateTime.Now;
+            _noRequiredBtsRepository .Update(item);
         }
 
         public void Update(NoCertificate item)
@@ -392,6 +434,11 @@ namespace BTS.Service
             return _noCertificateRepository.GetSingleByCondition(x => x.BtsCode == BtsCode && x.ProfileID == ProfileID);
         }
 
+        public NoRequiredBts findNoRequiredBts(string BtsCode, string OperatorID, string AnnouncedDoc)
+        {
+            return _noRequiredBtsRepository.GetSingleByCondition(x => x.BtsCode == BtsCode && x.OperatorID == OperatorID && x.AnnouncedDoc == AnnouncedDoc);
+        }
+
         public SubBtsInCert findSubBts(string certificateID, string btsCode, string operatorID)
         {
             return _subBTSinCertRepository.GetSingleByCondition(x => x.CertificateID == certificateID && x.BtsCode == btsCode && x.OperatorID == operatorID);
@@ -401,6 +448,12 @@ namespace BTS.Service
         {
             _subBTSinCertRepository.DeleteMulti(x => x.CertificateID == CertificateID);
         }
+
+        public void RemoveSubBtsInNoRequiredBts(string NoRequiredBtsID)
+        {
+            _subBTSinNoRequiredBtsRepository.DeleteMulti(x => x.NoRequiredBtsID == NoRequiredBtsID);
+        }
+
 
         public void RemoveBtsInProfile(string ProFileID)
         {

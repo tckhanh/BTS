@@ -40,7 +40,10 @@ namespace BTS.Web.Areas.Controllers
             IEnumerable<ProfileViewModel> profiles = Mapper.Map<List<ProfileViewModel>>(_profileService.getAll());
             IEnumerable<CityViewModel> cities = Mapper.Map<List<CityViewModel>>(_cityService.getAll());
 
-            cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+            if (getEnableCityIDsScope() == "True")
+            {
+                cities = cities.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.Id));
+            }
 
             ViewBag.operators = operators;
             ViewBag.profiles = profiles;
@@ -153,8 +156,11 @@ namespace BTS.Web.Areas.Controllers
         public ActionResult GetCertificateByCity(string cityID)
         {
             IEnumerable<Certificate> Items = _certificateService.getCertificateByCity(cityID);
-            Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
 
+            if (getEnableCityIDsScope() == "True")
+            {
+                Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
             IEnumerable<CertificateViewModel> model = Mapper.Map<IEnumerable<Certificate>, IEnumerable<CertificateViewModel>>(Items);
             return Json(model, JsonRequestBehavior.AllowGet);
         }

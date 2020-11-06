@@ -49,7 +49,9 @@ namespace BTS.Web.Mappings
                 cfg.CreateMap<Certificate, CertificateViewModel>();
                 cfg.CreateMap<Certificate, PrintCertificateViewModel>();                
                 cfg.CreateMap<NoCertificate, NoCertificateViewModel>();
+                cfg.CreateMap<NoRequiredBts, NoRequiredBtsVM>();
                 cfg.CreateMap<SubBtsInCert, SubBtsInCertViewModel>();
+                cfg.CreateMap<SubBtsInNoRequiredBts, SubBtsInNoRequiredBtsVM>();
                 cfg.CreateMap<Footer, FooterViewModel>();
                 cfg.CreateMap<Slide, SlideViewModel>();
                 cfg.CreateMap<WebPage, PageViewModel>();

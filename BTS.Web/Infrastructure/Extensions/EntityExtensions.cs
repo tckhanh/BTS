@@ -73,10 +73,37 @@ namespace BTS.Web.Infrastructure.Extensions
 
             //certificate.SubBtsTechnologies = btsCertificateVm.SubBtsTechnologies;
 
-            certificate.IsSigned = btsCertificateVm.IsSigned;
-            certificate.IsCanceled = btsCertificateVm.IsCanceled;
-            certificate.CanceledDate = btsCertificateVm.CanceledDate;
-            certificate.CanceledReason = btsCertificateVm.CanceledReason;
+            //certificate.IsSigned = btsCertificateVm.IsSigned;
+            //certificate.IsCanceled = btsCertificateVm.IsCanceled;
+            //certificate.CanceledDate = btsCertificateVm.CanceledDate;
+            //certificate.CanceledReason = btsCertificateVm.CanceledReason;
+        }
+
+        public static void UpdateNoRequiredBts(this NoRequiredBts noRequiredBts, NoRequiredBtsVM noRequiredBtsVm)
+        {
+            noRequiredBts.OperatorID = noRequiredBtsVm.OperatorID;
+            noRequiredBts.BtsCode = noRequiredBtsVm.BtsCode;
+            noRequiredBts.Address = noRequiredBtsVm.Address;
+            noRequiredBts.CityID = noRequiredBtsVm.CityID;
+            noRequiredBts.Longtitude = noRequiredBtsVm.Longtitude;
+            noRequiredBts.Latitude = noRequiredBtsVm.Latitude;
+
+            noRequiredBts.SubBtsQuantity = noRequiredBtsVm.SubBtsQuantity;
+            noRequiredBts.SubBtsCodes = noRequiredBtsVm.SubBtsCodes;
+            noRequiredBts.SubBtsOperatorIDs = noRequiredBtsVm.SubBtsOperatorIDs;
+            noRequiredBts.SubBtsEquipments = noRequiredBtsVm.SubBtsEquipments;
+            noRequiredBts.SubBtsAntenNums = noRequiredBtsVm.SubBtsAntenNums;
+            noRequiredBts.SubBtsConfigurations = noRequiredBtsVm.SubBtsConfigurations;
+            noRequiredBts.SubBtsPowerSums = noRequiredBtsVm.SubBtsPowerSums;
+            noRequiredBts.SubBtsBands = noRequiredBtsVm.SubBtsBands;
+
+            noRequiredBts.SubBtsAntenHeights = noRequiredBtsVm.SubBtsAntenHeights;
+            noRequiredBts.AnnouncedDate = noRequiredBtsVm.AnnouncedDate;
+            noRequiredBts.AnnouncedDoc = noRequiredBtsVm.AnnouncedDoc;
+            
+            //noRequiredBts.IsCanceled = noRequiredBtsVm.IsCanceled;
+            //noRequiredBts.CanceledDate = noRequiredBtsVm.CanceledDate;
+            //noRequiredBts.CanceledReason = noRequiredBtsVm.CanceledReason;
         }
 
         public static void UpdateNoCertificate(this NoCertificate noCertificate, NoCertificateViewModel btsCertificateVm)
@@ -95,10 +122,10 @@ namespace BTS.Web.Infrastructure.Extensions
             noCertificate.TestReportDate = btsCertificateVm.TestReportDate;
             noCertificate.ReasonNoCertificate = btsCertificateVm.ReasonNoCertificate;
 
-            noCertificate.IsSigned = btsCertificateVm.IsSigned;
-            noCertificate.IsCanceled = btsCertificateVm.IsCanceled;
-            noCertificate.CanceledDate = btsCertificateVm.CanceledDate;
-            noCertificate.CanceledReason = btsCertificateVm.CanceledReason;
+            //noCertificate.IsSigned = btsCertificateVm.IsSigned;
+            //noCertificate.IsCanceled = btsCertificateVm.IsCanceled;
+            //noCertificate.CanceledDate = btsCertificateVm.CanceledDate;
+            //noCertificate.CanceledReason = btsCertificateVm.CanceledReason;
         }
 
         public static void UpdateInCaseOf(this InCaseOf myInCaseOf, InCaseOfViewModel inCaseOfVm)
@@ -118,7 +145,6 @@ namespace BTS.Web.Infrastructure.Extensions
         {
             myCity.Name = cityVm.Name;
             myCity.Area = cityVm.Area;
-            myCity.Code = cityVm.Code;
         }
 
         public static void UpdateWard(this Ward myWard, WardVM wardVm)
@@ -240,12 +266,12 @@ namespace BTS.Web.Infrastructure.Extensions
             Item.ProfileNum = ItemVm.ProfileNum;
             Item.ProfileDate = ItemVm.ProfileDate;
             Item.BtsQuantity = ItemVm.BtsQuantity;
-            Item.AcceptedBtsQuantity = ItemVm.AcceptedBtsQuantity;
-            Item.ApplyDate = ItemVm.ApplyDate;
-            Item.Fee = ItemVm.Fee;
-            Item.FeeAnnounceNum = ItemVm.FeeAnnounceNum;
-            Item.FeeAnnounceDate = ItemVm.FeeAnnounceDate;
-            Item.FeeReceiptDate = ItemVm.FeeReceiptDate;
+            //Item.AcceptedBtsQuantity = ItemVm.AcceptedBtsQuantity;
+            //Item.ApplyDate = ItemVm.ApplyDate;
+            //Item.Fee = ItemVm.Fee;
+            //Item.FeeAnnounceNum = ItemVm.FeeAnnounceNum;
+            //Item.FeeAnnounceDate = ItemVm.FeeAnnounceDate;
+            //Item.FeeReceiptDate = ItemVm.FeeReceiptDate;
         }
 
         public static void UpdateLicence(this Licence Item, LicenceViewModel ItemVm)

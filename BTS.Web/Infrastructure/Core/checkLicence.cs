@@ -6,7 +6,6 @@ using SKGL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Configuration;
 
 namespace BTS.Web.Infrastructure.Core
@@ -18,6 +17,12 @@ namespace BTS.Web.Infrastructure.Core
         static Validate validate = new Validate(skc);
         public static string machineCode = validate.MachineCode.ToString();
 
+        public static string getConfigBtsLicence()
+        {
+            BTSDbContext DbContext = new BTSDbContext();
+            return DbContext.SystemConfigs.SingleOrDefault(x => x.Code == CommonConstants.BtsLicenceName)?.ValueString;
+        }
+
         public static IEnumerable<Licence> getLicenses()
         {
             BTSDbContext DbContext = new BTSDbContext();
@@ -26,7 +31,7 @@ namespace BTS.Web.Infrastructure.Core
 
         public static bool isValid()
         {
-            if (WebConfigurationManager.AppSettings["BtsLicence"] == "PermanentLicence")
+            if ((WebConfigurationManager.AppSettings[CommonConstants.BtsLicenceName] == CommonConstants.BtsLicenceValue) || (getConfigBtsLicence() == CommonConstants.BtsLicenceValue))
             {
                 return true;
             }

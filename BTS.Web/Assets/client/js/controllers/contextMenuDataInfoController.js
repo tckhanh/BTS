@@ -104,7 +104,7 @@
                             return 'hide';
                         }
                     }
-                },                
+                },
                 {
                     title: "Thu hồi/Hủy bỏ trạm BTS", cmd: myConstant.Action_Cancel_NoCert, uiIcon: "ui-icon-cancel",
                     disabled: function (event, ui) {
@@ -135,12 +135,27 @@
                         }
                     }
                 },
+                {
+                    title: "Hủy trạm BTS công bố", cmd: myConstant.Action_Cancel_NoRequiredBts, uiIcon: "ui-icon-cancel",
+                    disabled: function (event, ui) {
+                        // return `true` to disable, `"hide"` to remove entry:
+                        if (typeof noRequiredBtsController !== 'undefined') {
+                            if ($.inArray(myConstant.Data_CanCancel_Role, myArrayRoles) > -1) {
+                                if ($('input[name=NoRequiredBtsStatus]:checked').val() == myConstant.CertStatus_Valid || $('input[name=NoRequiredBtsStatus]:checked').val() == myConstant.CertStatus_WaitToSign)
+                                    return false;
+                            }
+                            return true;
+                        } else {
+                            return 'hide';
+                        }
+                    }
+                },
                 { title: "----" },
                 {
                     title: "Xem trên bản đồ", cmd: myConstant.Action_ViewMap, uiIcon: " ui-icon-circle-zoomin",
                     disabled: function (event, ui) {
                         // return `true` to disable, `"hide"` to remove entry:
-                        if (typeof homeController !== 'undefined' || typeof certificateController !== 'undefined' || typeof noCertificateController !== 'undefined') {
+                        if (typeof homeController !== 'undefined' || typeof certificateController !== 'undefined' || typeof noCertificateController !== 'undefined' || typeof noRequiredBtsController !== 'undefined') {
                             if ($.inArray(myConstant.Info_CanViewMap_Role, myArrayRoles) > -1)
                                 return false;
                             else

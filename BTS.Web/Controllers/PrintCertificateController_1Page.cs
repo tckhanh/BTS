@@ -209,9 +209,11 @@ namespace BTS.Web.Areas.Controllers
                 DbItems = DbItems.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
 
-
-            DbItems = DbItems.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
-            //DbItems = DbItems.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
+            if (getEnableCityIDsScope() == "True")
+            {
+                DbItems = DbItems.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+                //DbItems = DbItems.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
+            }
 
             IEnumerable<PrintCertificateViewModel> printCertificates = Mapper.Map<List<PrintCertificateViewModel>>(DbItems);
 
@@ -358,8 +360,10 @@ namespace BTS.Web.Areas.Controllers
                 DbItems = DbItems.Where(x => Int32.Parse(x.Id.Substring(1, 5)) <= CertNumEnd);
             }
 
-            DbItems = DbItems.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
-
+            if (getEnableCityIDsScope() == "True")
+            {
+                DbItems = DbItems.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
+            }
 
             //DbItems = DbItems.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 
