@@ -11452,7 +11452,7 @@
     <Content Include="font\context-menu-icons.woff" />
     <Content Include="font\context-menu-icons.ttf" />
     <Content Include="font\context-menu-icons.eot" />
-    <Content Include="AppFiles\Samples\TT1_ Data_Ketqua.xlsm" />
+    <Content Include="AppFiles\Samples\TT1_Data_Ketqua.xlsm" />
     <Content Include="Content\ReportTemplates - Copy\CopyGCNKD_1BTS.mrt" />
     <Content Include="Content\ReportTemplates - Copy\CopyGCNKD_2BTS.mrt" />
     <Content Include="Content\ReportTemplates - Copy\CopyGCNKD_3BTS.mrt" />
@@ -11499,7 +11499,10 @@
     <Content Include="Content\ReportTemplates-TT14-2017\Old\GCNKD_6BTS.mrt" />
     <Content Include="Content\ReportTemplates\CopyGCNKD_6BTS.mrt" />
     <Content Include="Content\ReportTemplates\GCNKD_6BTS.mrt" />
-    <Content Include="AppFiles\Samples\TT1_Data_Congbo.xlsx" />
+    <Content Include="AppFiles\Samples\TT1_Data_Bosung.xls" />
+    <Content Include="AppFiles\Samples\TT3_Data_Bosung.xlsm" />
+    <Content Include="AppFiles\Samples\TT3_Data_Ketqua.xlsm" />
+    <Content Include="AppFiles\Samples\TT_Data_Congbo.xlsx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

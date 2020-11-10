@@ -113,9 +113,14 @@ namespace BTS.Web.Areas.Controllers
             return Json(new { status = CommonConstants.Status_Success, message = "Import Certificate Finished !" }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult NoRequiredBts()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult NoRequiredBts(HttpPostedFileBase file, string ImportAction, string InputType, bool IsSigned)
+        public ActionResult NoRequiredBts(HttpPostedFileBase file, string ImportAction, string InputType)
         {
             if (Request.Files["file"].ContentLength > 0)
             {
@@ -148,7 +153,7 @@ namespace BTS.Web.Areas.Controllers
 
                         if (ImportAction == CommonConstants.ImportNoRequiredBts)
                         {
-                            ExecuteDatabase(ImportNoCertificate, fileLocation, InputType, profileID, IsSigned);
+                            ExecuteDatabase(ImportNoRequiredBts, fileLocation, InputType);
                         }
 
                         //_excelIO.AddNewColumns(file.FileName, CommonConstants.Sheet_InCaseOf, "NewCol1;NewCol2");
@@ -159,8 +164,6 @@ namespace BTS.Web.Areas.Controllers
                         //return Json(new { status = CommonConstants.Status_Error, message = e.Message}, JsonRequestBehavior.AllowGet);
                         //return Json(new { status = CommonConstants.Status_Error, message = e.Message + "\n" + e.StackTrace }, JsonRequestBehavior.AllowGet);
                         return Json(new { status = CommonConstants.Status_Error, message = e.Message }, JsonRequestBehavior.AllowGet);
-
-
                     }
                 }
             }
@@ -1508,7 +1511,7 @@ namespace BTS.Web.Areas.Controllers
             return CommonConstants.Status_Success;
         }
 
-        private string ImportNoRequiredBts(string excelConnectionString, string InputType, string profileID, bool IsSigned)
+        private string ImportNoRequiredBts(string excelConnectionString, string InputType)
         {
             DataTable dt = _excelIO.ReadSheet(excelConnectionString, CommonConstants.Sheet_NoRequiredBts);
 

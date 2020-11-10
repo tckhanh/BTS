@@ -86,8 +86,12 @@
         registerEventDataTable: function () {
         },
         registerEvent: function () {
-            $('#btnGetSampleFile').off('click').on('click', function () {
-                importController.updateFileSample();
+            $('#btnGetSampleFileTT1').off('click').on('click', function () {
+                importController.updateFileSample('TT1_Data_Ketqua.xlsm');
+            });
+
+            $('#btnGetSampleFileTT3').off('click').on('click', function () {
+                importController.updateFileSample('TT3_Data_Ketqua.xlsm');
             });
 
 
@@ -108,12 +112,12 @@
             });
         }
         , 
-        updateFileSample: function () {
+        updateFileSample: function (updatedFileName) {
             var bar = $('.progress-bar');
             $.ajax({
                 url: '/ImportData/GetSampleFile',
                 data: {
-                    fileName: 'TT1_ Data_Ketqua.xlsm'
+                    fileName: updatedFileName
                 },
                 type: 'GET',
                 dataType: 'json',

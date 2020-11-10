@@ -18,7 +18,7 @@ namespace BTS.Service
 
         void Delete(string Id);
 
-        void DeleteSubBTSinCert(string Id);
+        void DeleteSubBTSinNoRequiredBts(string NoRequiredBtsId);
 
         IEnumerable<NoRequiredBts> getAll(out int totalRow, bool onlyValidNoRequiredBts, DateTime startDate, DateTime endDate, string[] includes = null);
         IEnumerable<NoRequiredBts> getAll(out int totalRow, bool onlyValidNoRequiredBts, string[] includes = null);
@@ -57,6 +57,8 @@ namespace BTS.Service
 
         List<SubBtsInNoRequiredBts> getDetailByID(string Id);
 
+        List<SubBtsInNoRequiredBts> getDetailByBtsID(string noRequiredBtsID);
+
         void SaveChanges();
     }
 
@@ -89,9 +91,9 @@ namespace BTS.Service
             _NoRequiredBtsRepository.Delete(Id);
         }
 
-        public void DeleteSubBTSinCert(string Id)
+        public void DeleteSubBTSinNoRequiredBts(string NoRequiredBtsId)
         {
-            _SubBTSinNoRequiredBtsRepository.DeleteMulti(x => x.Id == Id);
+            _SubBTSinNoRequiredBtsRepository.DeleteMulti(x => x.NoRequiredBtsID == NoRequiredBtsId);
         }
 
         public IEnumerable<ReportTT18NoCert> getReportTT18NoCert(out int totalRows, DateTime startDate, DateTime endDate)
@@ -230,6 +232,11 @@ namespace BTS.Service
         public List<SubBtsInNoRequiredBts> getDetailByID(string CertId)
         {
             return _SubBTSinNoRequiredBtsRepository.GetMulti(x => x.Id == CertId).OrderBy(x => x.Id).ToList();
+        }
+
+        public List<SubBtsInNoRequiredBts> getDetailByBtsID(string noRequiredBtsID)
+        {
+            return _SubBTSinNoRequiredBtsRepository.GetMulti(x => x.NoRequiredBtsID == noRequiredBtsID).OrderBy(x => x.BtsSerialNo).ToList();
         }
     }
 }

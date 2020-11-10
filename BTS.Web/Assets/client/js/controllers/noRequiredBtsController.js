@@ -485,10 +485,9 @@ var noRequiredBtsController = {
             for (var i = 0; i < markers.length; ++i) {
                 var popup = '<br/><b>Mã trạm:</b> ' + markers[i].BtsCode +
                     '<br/><b>Nhà mạng:</b> ' + markers[i].OperatorID +
-                    '<br/><b>G.CNKĐ:</b> ' + markers[i].Id +
                     '<br/><b>Địa chỉ:</b> ' + markers[i].Address +
-                    '<br/><b>Ngày cấp:</b> ' + markers[i].IssuedDate +
-                    '<br/><b>Ngày hết hạn:</b> ' + markers[i].ExpiredDate;
+                    '<br/><b>Văn bản công bố:</b> ' + markers[i].AnnouncedDoc +
+                    '<br/><b>Ngày công bố:</b> ' + moment(markers[i].AnnouncedDate).format("DD/MM/YYYY");
                 var img24 = 'images/pin24.png';
                 var img48 = 'images/pin48.png';
                 if (markers[i].OperatorID == "VINAPHONE") {

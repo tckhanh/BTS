@@ -90,6 +90,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="/ImportData"><i class="fa fa-circle-o"></i>Upload Hồ sơ KĐ đã xử lý</a></li>
+                            <li><a href="/ImportData/NoRequiredBts"><i class="fa fa-circle-o"></i>Upload BTS không phải KĐ</a></li>
                             @*<li><a href="/ImportData/Area"><i class="fa fa-circle-o"></i>Nhập Quận/Huyện Phường/Xã</a></li>
                             <li><a href="/ImportData/Equipment"><i class="fa fa-circle-o"></i>Nhập Thiết bị</a></li>*@
                         </ul>
@@ -100,7 +101,7 @@
                 {
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-files-o"></i> <span>Hồ sơ Kiểm định</span>
+                            <i class="fa fa-files-o"></i> <span>Hồ sơ về Kiểm định</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -151,6 +152,7 @@
                     <ul class="treeview-menu">
                         <li><a href="/Certificate/"><i class="fa fa-circle-o"></i>Tra cứu Giấy CNKĐ đã cấp</a></li>
                         <li><a href="/NoCertificate/"><i class="fa fa-circle-o"></i>Tra cứu BTS Không cấp Giấy CNKĐ</a></li>
+                        <li><a href="/NoRequiredBts/"><i class="fa fa-circle-o"></i>Tra cứu Không bắt buộc phải KĐ</a></li>
                         @if (User.IsInRole(CommonConstants.Info_CanViewDetail_Role))
                         {
                             @*<li><a href="/Check/"><i class="fa fa-circle-o"></i>Kiểm tra tình trạng KĐ trạm BTS</a></li>*@
@@ -161,7 +163,7 @@
                         }
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li><a href="/Statistics/"><i class="fa fa-circle-o"></i>Báo cáo thống kê</a></li>
+                            <li><a href="/Statistics/"><i class="fa fa-circle-o"></i>Biểu đồ thống kê</a></li>
                         }
 
                     </ul>

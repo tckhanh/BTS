@@ -12,6 +12,7 @@ var publicController = {
     },
 
     init: function () {
+        $('body').addClass('sidebar-collapse');
         //myMap.invalidateSize();
         //publicController.loadMap();
         //publicController.loadPostData();

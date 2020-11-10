@@ -30,6 +30,8 @@ if (myMap != undefined && myMap != null) {
         .on('locationerror', function (e) {
             console.log(e);
             alert("Location access denied.");
+            var bounds = myLatLng.toBounds(myConstant.coverageRadius); // 4000 = metres
+            myMap.panTo(myLatLng).fitBounds(bounds);
         });    
 }
 

@@ -193,7 +193,7 @@ namespace BTS.Web.Areas.Controllers
         {
             if (!string.IsNullOrEmpty(Id))
             {
-                IEnumerable<SubBtsInNoRequiredBts> Items = _noRequiredBtsService.getDetailByID(Id);
+                IEnumerable<SubBtsInNoRequiredBts> Items = _noRequiredBtsService.getDetailByBtsID(Id);
 
                 int countItem = Items.Count();
 
@@ -563,7 +563,7 @@ namespace BTS.Web.Areas.Controllers
                     _noRequiredBtsService.Update(editItem);
                     _noRequiredBtsService.SaveChanges();
 
-                    _noRequiredBtsService.DeleteSubBTSinCert(Item.Id);
+                    _noRequiredBtsService.DeleteSubBTSinNoRequiredBts(Item.Id);
                     _noRequiredBtsService.SaveChanges();
 
                     for (int j = 0; j < Item.SubBtsQuantity; j++)
@@ -582,7 +582,7 @@ namespace BTS.Web.Areas.Controllers
                         int.TryParse(SubBtsAntenNums[j], out AntenNum);
                         SubBtsInNoRequiredBts subBtsItem = new SubBtsInNoRequiredBts
                         {
-                            Id = Item.Id,
+                            NoRequiredBtsID = Item.Id,
                             BtsSerialNo = j + 1,
                             BtsCode = SubBtsCodes[j],
                             OperatorID = SubBtsOperatorIDs[j],
@@ -794,7 +794,7 @@ namespace BTS.Web.Areas.Controllers
                         _noRequiredBtsService.Update(editItem);
                         _noRequiredBtsService.SaveChanges();
 
-                        _noRequiredBtsService.DeleteSubBTSinCert(ItemVm.Id);
+                        _noRequiredBtsService.DeleteSubBTSinNoRequiredBts(ItemVm.Id);
                         _noRequiredBtsService.SaveChanges();
 
                         for (int j = 0; j < ItemVm.SubBtsQuantity; j++)
