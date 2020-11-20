@@ -195,7 +195,8 @@ namespace BTS.Service
         }
         public IEnumerable<ApplicationGroup> GetGroupsByUserId(string userId)
         {
-            return _appGroupRepository.GetGroupsByUserId(userId);
+            var Item = _appGroupRepository.GetGroupsByUserId(userId);
+            return Item;
         }
 
         public ICollection<ApplicationUser> GetUsersByGroupId(string groupId)
@@ -230,7 +231,8 @@ namespace BTS.Service
 
         public IEnumerable<ApplicationGroup> GetGroupsByRoleId(string roleId)
         {
-            return _appGroupRepository.GetGroupsByRoleId(roleId);
+            var Item = _appGroupRepository.GetGroupsByRoleId(roleId);
+            return Item;
         }
     }
 }

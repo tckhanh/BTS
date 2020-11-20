@@ -254,9 +254,9 @@ var noCertificateController = {
                         { "data": "Address", "name": "Address", "width": "25%" },
                         {
                             "data": "LabID", "name": "LabID", "width": "8%", "className": "dt-body-center",
-                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/Lab/Detail/" + oData.LabID + "'>" + oData.LabID + "</a>");
-                            }
+                            //fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            //    $(nTd).html("<a href='/Lab/Detail/" + oData.LabID + "'>" + oData.LabID + "</a>");
+                            //}
                         },
                         {
                             "data": "TestReportDate", "name": "TestReportDate", "width": "8%", "className": "dt-body-center",
@@ -364,9 +364,9 @@ var noCertificateController = {
                         { "data": "Address", "name": "Address", "width": "25%" },
                         {
                             "data": "LabID", "name": "LabID", "width": "8%", "className": "dt-body-center",
-                            fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                                $(nTd).html("<a href='/Lab/Detail/" + oData.LabID + "'>" + oData.LabID + "</a>");
-                            }
+                            //fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                            //    $(nTd).html("<a href='/Lab/Detail/" + oData.LabID + "'>" + oData.LabID + "</a>");
+                            //}
                         },
                         {
                             "data": "TestReportDate", "name": "TestReportDate", "width": "8%", "className": "dt-body-center",

@@ -106,7 +106,7 @@ namespace BTS.Web.Areas.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Public");
                         }
                     }
                     else
@@ -129,7 +129,7 @@ namespace BTS.Web.Areas.Controllers
             IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
             authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             Session.Abandon();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Public");
         }
 
         public ActionResult Logout()
@@ -137,7 +137,7 @@ namespace BTS.Web.Areas.Controllers
             IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
             authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             Session.Abandon();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Public");
         }
 
         //
@@ -291,7 +291,7 @@ namespace BTS.Web.Areas.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Public");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

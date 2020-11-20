@@ -1346,8 +1346,6 @@ namespace BTS.Web.Areas.Controllers
 
             Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
 
-            Item.SubBtsBands = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsBands]?.ToString();
-
             //Item.SubBtsTechnologies = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsTechnologies]?.ToString();
 
             Item.SubBtsConfigurations = dt.Rows[i][CommonConstants.Sheet_Certificate_SubBtsConfigurations]?.ToString();

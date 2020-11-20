@@ -206,20 +206,21 @@ namespace BTS.Web.Areas.Controllers
         [AuthorizeRoles(CommonConstants.Data_CanDelete_Role)]
         public async Task<ActionResult> Delete(string id = "0")
         {
+            int ID = Convert.ToInt32(id);
             try
             {
-                SystemConfig dbItem = _configService.getByID(id);
+                SystemConfig dbItem = _configService.getByID(ID);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
                 }
 
-                if (_configService.IsUsed(id))
+                if (_configService.IsUsed(ID))
                 {
-                    return Json(new { resetUrl = Url.Action("Add", "Config"), status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "Config"), status = CommonConstants.Status_Error, message = "Không thể xóa Thông số này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
                 }
 
-                _configService.Delete(id);
+                _configService.Delete(ID);
                 _configService.Save();
 
                 return Json(new { resetUrl = Url.Action("Add", "Config"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);

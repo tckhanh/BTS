@@ -6,7 +6,7 @@
     <DataSources isList="true" count="1">
       <Certificates Ref="2" type="DataTableSource" isKey="true">
         <Alias>Certificates</Alias>
-        <Columns isList="true" count="112">
+        <Columns isList="true" count="111">
           <value>Id,System.String</value>
           <value>Address,System.String</value>
           <value>BtsCode,System.String</value>
@@ -118,7 +118,6 @@
           <value>BackSubBtsCode6,System.String</value>
           <value>SignatureFileName,System.String</value>
           <value>SubSignFileName,System.String</value>
-          <value>StrIssuedDate,System.String</value>
         </Columns>
         <Dictionary isRef="1" />
         <Key>6c7ff314bf764e88aa68cac514a2f519</Key>
@@ -129,11 +128,10 @@
     <Relations isList="true" count="0" />
     <Report isRef="0" />
     <Resources isList="true" count="0" />
-    <Variables isList="true" count="9">
+    <Variables isList="true" count="8">
       <value>,NoBuildingIn100m,NoBuildingIn100m,NoBuildingIn100m,System.String,Trong_x0020_khoảng_x0020_cách_x0020_100_x0020_m_x0020_tính_x0020_từ_x0020_điểm_x0020_bất_x0020_kỳ_x0020_nào_x0020_thuộc_x0020_chân_x0020_cột_x0020_anten_x0020_của_x0020_trạm_x0020_gốc_x0020_không_x0020_có_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_trong_x0020_đó_x0020_có_x0020_người_x0020_sinh_x0020_sống_x002C__x0020_làm_x0020_việc.,False,False,False,False</value>
       <value>,BuildingIn100m,BuildingIn100m,BuildingIn100m,System.String,Trong_x0020_khoảng_x0020_cách_x0020_100_x0020_m_x0020_tính_x0020_từ_x0020_điểm_x0020_bất_x0020_kỳ_x0020_nào_x0020_thuộc_x0020_chân_x0020_cột_x0020_anten_x0020_của_x0020_trạm_x0020_gốc_x0020_có_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_trong_x0020_đó_x0020_có_x0020_người_x0020_sinh_x0020_sống_x002C__x0020_làm_x0020_việc_x0020_và_x0020_có_x0020_độ_x0020_cao_x0020_mép_x0020_dưới_x0020_thấp_x0020_nhất_x0020_của_x0020_các_x0020_anten_x0020__x005B_xxx_x005D__x0020_độ_x0020_cao_x0020_tính_x0020_tới_x0020_nóc_x002C__x0020_mặt_x0020_bằng_x0020_cao_x0020_nhất_x0020_của_x0020_các_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_này_x0020_là_x0020__x005B_yyy_x005D__x0020_m.,False,False,False,False</value>
-      <value>,BuildingIn100mEqual,BuildingIn100mEqual,,System.String,Trong_x0020_khoảng_x0020_cách_x0020_100_x0020_m_x0020_tính_x0020_từ_x0020_điểm_x0020_bất_x0020_kỳ_x0020_nào_x0020_thuộc_x0020_chân_x0020_cột_x0020_anten_x0020_của_x0020_trạm_x0020_gốc_x0020_có_x0020_công_x0020_trình_x0020_xây_x0020_dựng_x0020_trong_x0020_đó_x0020_có_x0020_người_x0020_sinh_x0020_sống_x002C__x0020_làm_x0020_việc_x0020_và_x0020_có_x0020_độ_x0020_cao_x0020_mép_x0020_dưới_x0020_thấp_x0020_nhất_x0020_của_x0020_các_x0020_anten_x0020_bằng_x0020_độ_x0020_cao_x0020_tính_x0020_tới_x0020_nóc_x002C__x0020_mặt_x0020_bằng_x0020_cao_x0020_nhất_x0020_của_x0020_các_x0020_công_x0020_trình_x0020_xây_x0020_dựng.,False,False,False,False</value>
-      <value>,GHAT,GHAT,GHAT,System.String,Giới_x0020_hạn_x0020_an_x0020_toàn:_x0020_từ_x0020_độ_x0020_cao_x0020__x005B_zzz_x005D__x0020_m_x0020_so_x0020_với_x0020_mặt_x0020_đất_x0020_trở_x0020_lên_x002C__x0020_trạm_x0020_gốc_x0020_điện_x0020_thoại_x0020_di_x0020_động_x0020_mặt_x0020_đất_x0020_công_x0020_cộng_x0020_không_x0020_phải_x0020_kiểm_x0020_định_x0020_lại_x0020_khi_x0020_có_x0020_thay_x0020_đổi_x0020_một_x0020_số_x0020_thông_x0020_số_x0020_kỹ_x0020_thuật_x0020_theo_x0020_quy_x0020_định.,False,False,False,False</value>
+      <value>,GHAT,GHAT,GHAT,System.String,Giới_x0020_hạn_x0020_an_x0020_toàn:_x0020_là_x0020_khoảng_x0020_chiều_x0020_cao_x0020_trên_x0020_cột_x0020_anten_x0020_tính_x0020_từ_x0020_điểm_x0020_có_x0020_độ_x0020_cao_x0020__x005B_zzz_x005D__x0020_m_x0020_so_x0020_với_x0020_mặt_x0020_đất_x0020_trở_x0020_lên.,False,False,False,False</value>
       <value>,Conclusion,Conclusion,Conclusion,System.String,Trạm_x0020_gốc_x0020_điện_x0020_thoại_x0020_di_x0020_động_x0020_mặt_x0020_đất_x0020_công_x0020_cộng_x0020_này_x0020_có_x0020_mức_x0020_an_x0020_toàn_x0020_phơi_x0020_nhiễm_x0020_trường_x0020_điện_x0020_từ_x0020_tuân_x0020_thủ_x0020_quy_x0020_chuẩn_x0020_kỹ_x0020_thuật_x0020_trên.,False,False,False,False</value>
       <value>,Lower,Lower,,System.String,thấp_x0020_hơn,False,False,False,False</value>
       <value>,Higher,Higher,,System.String,cao_x0020_hơn,False,False,False,False</value>
@@ -154,7 +152,6 @@
           <BeginRenderEvent>if (IsTemplate == true){
 	Image1.File = Certificates.SignatureFileName;
 	Image2.File = Certificates.SubSignFileName;
-	Image3.File = Certificates.SubSignFileName;
 }
 if (Certificates.BackSubBtsQuantity &lt; 1){
  	DataBand1.Height = 10.5;
@@ -164,10 +161,9 @@ else {
 }
 </BeginRenderEvent>
           <Brush>Transparent</Brush>
-          <BusinessObjectGuid isNull="true" />
           <CanGrow>False</CanGrow>
           <ClientRectangle>0,0.2,7.47,20</ClientRectangle>
-          <Components isList="true" count="138">
+          <Components isList="true" count="137">
             <Text1 Ref="5" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>0.48,0.2,2.15,0.45</ClientRectangle>
@@ -686,7 +682,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Name>Text57</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
-              <Text>{Certificates.IsHouseIn100m == true ? Certificates.OffsetHeight == 0 ? BuildingIn100mEqual : Replace(Certificates.OffsetHeight &lt; 0 ? Replace(BuildingIn100m,"[xxx]",Lower) : Replace(BuildingIn100m,"[xxx]",Higher),"[yyy]", Abs(Certificates.OffsetHeight)) : NoBuildingIn100m}</Text>
+              <Text>{Certificates.IsHouseIn100m == true ? Replace(Certificates.OffsetHeight &lt; 0 ? Replace(BuildingIn100m,"[xxx]",Lower) : Replace(BuildingIn100m,"[xxx]",Higher),"[yyy]", Abs(Certificates.OffsetHeight)) : NoBuildingIn100m}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -694,7 +690,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
             </Text57>
             <Text58 Ref="34" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>0,7.95,7.45,0.45</ClientRectangle>
+              <ClientRectangle>0,7.95,7.45,0.25</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>Times New Roman,12,Bold</Font>
               <Guid>cb33ad16c1964ed5bda7b0aadceba196</Guid>
@@ -910,7 +906,26 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text39>
-            <Text41 Ref="48" type="Text" isKey="true">
+            <Text40 Ref="48" type="Text" isKey="true">
+              <Brush>Transparent</Brush>
+              <CanShrink>True</CanShrink>
+              <ClientRectangle>0,8.2,7.45,0.4</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Font>Times New Roman,12,Italic</Font>
+              <Guid>d12f073edc2a4dbf83b4135ada683682</Guid>
+              <HorAlignment>Width</HorAlignment>
+              <Margins>0,0,0,0</Margins>
+              <Name>Text40</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
+              <Text>Trạm gốc điện thoại di động mặt đất công cộng này có mức an toàn phơi nhiễm trường điện từ tuân thủ quy chuẩn kỹ thuật trên.</Text>
+              <TextBrush>Black</TextBrush>
+              <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
+              <Type>Expression</Type>
+              <VertAlignment>Bottom</VertAlignment>
+            </Text40>
+            <Text41 Ref="49" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>3.15,1.45,2,0.25</ClientRectangle>
               <Conditions isList="true" count="0" />
@@ -925,7 +940,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text41>
-            <Shape1 Ref="49" type="Shape" isKey="true">
+            <Shape1 Ref="50" type="Shape" isKey="true">
               <BorderColor>Black</BorderColor>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.7,0.6,1.7,0.1</ClientRectangle>
@@ -933,9 +948,9 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Name>Shape1</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
-              <ShapeType Ref="50" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
+              <ShapeType Ref="51" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
             </Shape1>
-            <Shape2 Ref="51" type="Shape" isKey="true">
+            <Shape2 Ref="52" type="Shape" isKey="true">
               <BorderColor>Black</BorderColor>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.1,0.6,2.2,0.1</ClientRectangle>
@@ -944,9 +959,9 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Name>Shape2</Name>
               <Page isRef="3" />
               <Parent isRef="4" />
-              <ShapeType Ref="52" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
+              <ShapeType Ref="53" type="Stimulsoft.Report.Components.ShapeTypes.StiHorizontalLineShapeType" isKey="true" />
             </Shape2>
-            <Image1 Ref="53" type="Image" isKey="true">
+            <Image1 Ref="54" type="Image" isKey="true">
               <AspectRatio>True</AspectRatio>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.9,9.1,1.6,0.8</ClientRectangle>
@@ -959,12 +974,10 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
               <VertAlignment>Center</VertAlignment>
             </Image1>
-            <Image2 Ref="54" type="Image" isKey="true">
+            <Image2 Ref="55" type="Image" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>5.62,8.2,0.3,0.3</ClientRectangle>
-              <Conditions isList="true" count="1">
-                <value>Certificates.IsSafeLimit,EqualTo,false,,Boolean,Red,Transparent,Arial_x002C_8,False,False,,,None</value>
-              </Conditions>
+              <ClientRectangle>1.42,8.4,0.3,0.3</ClientRectangle>
+              <Conditions isList="true" count="0" />
               <Margins>0,0,0,0</Margins>
               <MultipleFactor>0.4</MultipleFactor>
               <Name>Image2</Name>
@@ -973,7 +986,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
               <VertAlignment>Center</VertAlignment>
             </Image2>
-            <Text42 Ref="55" type="Text" isKey="true">
+            <Text42 Ref="56" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.95,4.7,0.9,0.5</ClientRectangle>
@@ -992,7 +1005,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text42>
-            <Text43 Ref="56" type="Text" isKey="true">
+            <Text43 Ref="57" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.95,5.2,0.9,0.3</ClientRectangle>
@@ -1011,7 +1024,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text43>
-            <Text44 Ref="57" type="Text" isKey="true">
+            <Text44 Ref="58" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.95,5.5,0.9,0.3</ClientRectangle>
@@ -1030,7 +1043,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text44>
-            <Text45 Ref="58" type="Text" isKey="true">
+            <Text45 Ref="59" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.95,5.8,0.9,0.5</ClientRectangle>
@@ -1050,7 +1063,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text45>
-            <Text46 Ref="59" type="Text" isKey="true">
+            <Text46 Ref="60" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.95,6.3,0.9,0.3</ClientRectangle>
@@ -1069,7 +1082,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text46>
-            <Text47 Ref="60" type="Text" isKey="true">
+            <Text47 Ref="61" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.95,6.6,0.9,0.45</ClientRectangle>
@@ -1088,7 +1101,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text47>
-            <Text48 Ref="61" type="Text" isKey="true">
+            <Text48 Ref="62" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.85,4.7,0.9,0.5</ClientRectangle>
@@ -1107,7 +1120,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text48>
-            <Text49 Ref="62" type="Text" isKey="true">
+            <Text49 Ref="63" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.85,5.2,0.9,0.3</ClientRectangle>
@@ -1126,7 +1139,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text49>
-            <Text50 Ref="63" type="Text" isKey="true">
+            <Text50 Ref="64" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.85,5.5,0.9,0.3</ClientRectangle>
@@ -1145,7 +1158,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text50>
-            <Text51 Ref="64" type="Text" isKey="true">
+            <Text51 Ref="65" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.85,5.8,0.9,0.5</ClientRectangle>
@@ -1165,7 +1178,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text51>
-            <Text52 Ref="65" type="Text" isKey="true">
+            <Text52 Ref="66" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.85,6.3,0.9,0.3</ClientRectangle>
@@ -1184,7 +1197,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text52>
-            <Text53 Ref="66" type="Text" isKey="true">
+            <Text53 Ref="67" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.85,6.6,0.9,0.45</ClientRectangle>
@@ -1203,7 +1216,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text53>
-            <Text54 Ref="67" type="Text" isKey="true">
+            <Text54 Ref="68" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.75,4.7,0.9,0.5</ClientRectangle>
@@ -1222,7 +1235,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text54>
-            <Text55 Ref="68" type="Text" isKey="true">
+            <Text55 Ref="69" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.75,5.2,0.9,0.3</ClientRectangle>
@@ -1241,7 +1254,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text55>
-            <Text56 Ref="69" type="Text" isKey="true">
+            <Text56 Ref="70" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.75,5.5,0.9,0.3</ClientRectangle>
@@ -1260,7 +1273,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text56>
-            <Text59 Ref="70" type="Text" isKey="true">
+            <Text59 Ref="71" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.75,5.8,0.9,0.5</ClientRectangle>
@@ -1280,7 +1293,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text59>
-            <Text60 Ref="71" type="Text" isKey="true">
+            <Text60 Ref="72" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.75,6.3,0.9,0.3</ClientRectangle>
@@ -1299,7 +1312,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text60>
-            <Text61 Ref="72" type="Text" isKey="true">
+            <Text61 Ref="73" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.75,6.6,0.9,0.45</ClientRectangle>
@@ -1318,7 +1331,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text61>
-            <Text62 Ref="73" type="Text" isKey="true">
+            <Text62 Ref="74" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.65,4.7,0.9,0.5</ClientRectangle>
@@ -1337,7 +1350,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text62>
-            <Text63 Ref="74" type="Text" isKey="true">
+            <Text63 Ref="75" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.65,5.2,0.9,0.3</ClientRectangle>
@@ -1356,7 +1369,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text63>
-            <Text64 Ref="75" type="Text" isKey="true">
+            <Text64 Ref="76" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.65,5.5,0.9,0.3</ClientRectangle>
@@ -1375,7 +1388,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text64>
-            <Text65 Ref="76" type="Text" isKey="true">
+            <Text65 Ref="77" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.65,5.8,0.9,0.5</ClientRectangle>
@@ -1395,7 +1408,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text65>
-            <Text66 Ref="77" type="Text" isKey="true">
+            <Text66 Ref="78" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.65,6.3,0.9,0.3</ClientRectangle>
@@ -1414,7 +1427,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text66>
-            <Text67 Ref="78" type="Text" isKey="true">
+            <Text67 Ref="79" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.65,6.6,0.9,0.45</ClientRectangle>
@@ -1433,7 +1446,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text67>
-            <Text68 Ref="79" type="Text" isKey="true">
+            <Text68 Ref="80" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>1.25,2,5.3,0.25</ClientRectangle>
               <Conditions isList="true" count="0" />
@@ -1449,7 +1462,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text68>
-            <Text69 Ref="80" type="Text" isKey="true">
+            <Text69 Ref="81" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>4.85,8.85,1.55,0.2</ClientRectangle>
               <Conditions isList="true" count="0" />
@@ -1467,7 +1480,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text69>
-            <Text70 Ref="81" type="Text" isKey="true">
+            <Text70 Ref="82" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.55,4.7,0.9,0.5</ClientRectangle>
@@ -1486,7 +1499,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text70>
-            <Text71 Ref="82" type="Text" isKey="true">
+            <Text71 Ref="83" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.55,5.2,0.9,0.3</ClientRectangle>
@@ -1505,7 +1518,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text71>
-            <Text72 Ref="83" type="Text" isKey="true">
+            <Text72 Ref="84" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.55,5.5,0.9,0.3</ClientRectangle>
@@ -1524,7 +1537,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text72>
-            <Text73 Ref="84" type="Text" isKey="true">
+            <Text73 Ref="85" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.55,5.8,0.9,0.5</ClientRectangle>
@@ -1544,7 +1557,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text73>
-            <Text74 Ref="85" type="Text" isKey="true">
+            <Text74 Ref="86" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.55,6.3,0.9,0.3</ClientRectangle>
@@ -1563,7 +1576,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text74>
-            <Text75 Ref="86" type="Text" isKey="true">
+            <Text75 Ref="87" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.55,6.6,0.9,0.45</ClientRectangle>
@@ -1582,7 +1595,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text75>
-            <Text76 Ref="87" type="Text" isKey="true">
+            <Text76 Ref="88" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,12,1.2,1.1</ClientRectangle>
@@ -1602,7 +1615,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text76>
-            <Text77 Ref="88" type="Text" isKey="true">
+            <Text77 Ref="89" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,12,0.7,1.1</ClientRectangle>
@@ -1622,7 +1635,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text77>
-            <Text78 Ref="89" type="Text" isKey="true">
+            <Text78 Ref="90" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,12.3,1.1,0.8</ClientRectangle>
@@ -1642,7 +1655,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text78>
-            <Text79 Ref="90" type="Text" isKey="true">
+            <Text79 Ref="91" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,12.3,0.5,0.8</ClientRectangle>
@@ -1662,7 +1675,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text79>
-            <Text80 Ref="91" type="Text" isKey="true">
+            <Text80 Ref="92" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,12.3,0.7,0.8</ClientRectangle>
@@ -1682,7 +1695,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text80>
-            <Text81 Ref="92" type="Text" isKey="true">
+            <Text81 Ref="93" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,12.3,1.1,0.8</ClientRectangle>
@@ -1702,7 +1715,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text81>
-            <Text82 Ref="93" type="Text" isKey="true">
+            <Text82 Ref="94" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,12.3,0.7,0.8</ClientRectangle>
@@ -1722,7 +1735,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text82>
-            <Text83 Ref="94" type="Text" isKey="true">
+            <Text83 Ref="95" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,12.3,1.1,0.8</ClientRectangle>
@@ -1742,7 +1755,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text83>
-            <Text133 Ref="95" type="Text" isKey="true">
+            <Text133 Ref="96" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,12,5.2,0.3</ClientRectangle>
@@ -1762,7 +1775,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text133>
-            <Text85 Ref="96" type="Text" isKey="true">
+            <Text85 Ref="97" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,13.1,1.2,0.8</ClientRectangle>
@@ -1783,7 +1796,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text85>
-            <Text86 Ref="97" type="Text" isKey="true">
+            <Text86 Ref="98" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,13.1,0.7,0.8</ClientRectangle>
@@ -1804,7 +1817,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text86>
-            <Text87 Ref="98" type="Text" isKey="true">
+            <Text87 Ref="99" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,13.1,1.1,0.8</ClientRectangle>
@@ -1825,7 +1838,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text87>
-            <Text88 Ref="99" type="Text" isKey="true">
+            <Text88 Ref="100" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,13.1,0.5,0.8</ClientRectangle>
@@ -1846,7 +1859,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text88>
-            <Text89 Ref="100" type="Text" isKey="true">
+            <Text89 Ref="101" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,13.1,0.7,0.8</ClientRectangle>
@@ -1867,7 +1880,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text89>
-            <Text90 Ref="101" type="Text" isKey="true">
+            <Text90 Ref="102" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,13.1,1.1,0.8</ClientRectangle>
@@ -1888,7 +1901,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text90>
-            <Text91 Ref="102" type="Text" isKey="true">
+            <Text91 Ref="103" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,13.1,0.7,0.8</ClientRectangle>
@@ -1909,7 +1922,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text91>
-            <Text92 Ref="103" type="Text" isKey="true">
+            <Text92 Ref="104" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,13.1,1.1,0.8</ClientRectangle>
@@ -1930,7 +1943,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text92>
-            <Text93 Ref="104" type="Text" isKey="true">
+            <Text93 Ref="105" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,13.9,1.2,0.8</ClientRectangle>
@@ -1951,7 +1964,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text93>
-            <Text94 Ref="105" type="Text" isKey="true">
+            <Text94 Ref="106" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,13.9,0.7,0.8</ClientRectangle>
@@ -1972,7 +1985,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text94>
-            <Text95 Ref="106" type="Text" isKey="true">
+            <Text95 Ref="107" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,13.9,1.1,0.8</ClientRectangle>
@@ -1993,7 +2006,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text95>
-            <Text96 Ref="107" type="Text" isKey="true">
+            <Text96 Ref="108" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,13.9,0.5,0.8</ClientRectangle>
@@ -2014,7 +2027,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text96>
-            <Text97 Ref="108" type="Text" isKey="true">
+            <Text97 Ref="109" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,13.9,0.7,0.8</ClientRectangle>
@@ -2035,7 +2048,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text97>
-            <Text98 Ref="109" type="Text" isKey="true">
+            <Text98 Ref="110" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,13.9,1.1,0.8</ClientRectangle>
@@ -2056,7 +2069,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text98>
-            <Text99 Ref="110" type="Text" isKey="true">
+            <Text99 Ref="111" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,13.9,0.7,0.8</ClientRectangle>
@@ -2077,7 +2090,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text99>
-            <Text100 Ref="111" type="Text" isKey="true">
+            <Text100 Ref="112" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,13.9,1.1,0.8</ClientRectangle>
@@ -2098,7 +2111,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text100>
-            <Text101 Ref="112" type="Text" isKey="true">
+            <Text101 Ref="113" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,14.7,1.2,0.8</ClientRectangle>
@@ -2119,7 +2132,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text101>
-            <Text102 Ref="113" type="Text" isKey="true">
+            <Text102 Ref="114" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,14.7,0.7,0.8</ClientRectangle>
@@ -2140,7 +2153,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text102>
-            <Text103 Ref="114" type="Text" isKey="true">
+            <Text103 Ref="115" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,14.7,1.1,0.8</ClientRectangle>
@@ -2161,7 +2174,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text103>
-            <Text104 Ref="115" type="Text" isKey="true">
+            <Text104 Ref="116" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,14.7,0.5,0.8</ClientRectangle>
@@ -2182,7 +2195,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text104>
-            <Text105 Ref="116" type="Text" isKey="true">
+            <Text105 Ref="117" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,14.7,0.7,0.8</ClientRectangle>
@@ -2203,7 +2216,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text105>
-            <Text106 Ref="117" type="Text" isKey="true">
+            <Text106 Ref="118" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,14.7,1.1,0.8</ClientRectangle>
@@ -2224,7 +2237,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text106>
-            <Text107 Ref="118" type="Text" isKey="true">
+            <Text107 Ref="119" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,14.7,0.7,0.8</ClientRectangle>
@@ -2245,7 +2258,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text107>
-            <Text108 Ref="119" type="Text" isKey="true">
+            <Text108 Ref="120" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,14.7,1.1,0.8</ClientRectangle>
@@ -2266,7 +2279,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text108>
-            <Text109 Ref="120" type="Text" isKey="true">
+            <Text109 Ref="121" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,15.5,1.2,0.8</ClientRectangle>
@@ -2287,7 +2300,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text109>
-            <Text110 Ref="121" type="Text" isKey="true">
+            <Text110 Ref="122" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,15.5,0.7,0.8</ClientRectangle>
@@ -2308,7 +2321,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text110>
-            <Text111 Ref="122" type="Text" isKey="true">
+            <Text111 Ref="123" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,15.5,1.1,0.8</ClientRectangle>
@@ -2329,7 +2342,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text111>
-            <Text112 Ref="123" type="Text" isKey="true">
+            <Text112 Ref="124" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,15.5,0.5,0.8</ClientRectangle>
@@ -2350,7 +2363,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text112>
-            <Text113 Ref="124" type="Text" isKey="true">
+            <Text113 Ref="125" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,15.5,0.7,0.8</ClientRectangle>
@@ -2371,7 +2384,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text113>
-            <Text114 Ref="125" type="Text" isKey="true">
+            <Text114 Ref="126" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,15.5,1.1,0.8</ClientRectangle>
@@ -2392,7 +2405,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text114>
-            <Text115 Ref="126" type="Text" isKey="true">
+            <Text115 Ref="127" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,15.5,0.7,0.8</ClientRectangle>
@@ -2413,7 +2426,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text115>
-            <Text116 Ref="127" type="Text" isKey="true">
+            <Text116 Ref="128" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,15.5,1.1,0.8</ClientRectangle>
@@ -2434,7 +2447,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text116>
-            <Text117 Ref="128" type="Text" isKey="true">
+            <Text117 Ref="129" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,16.3,1.2,0.8</ClientRectangle>
@@ -2455,7 +2468,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text117>
-            <Text118 Ref="129" type="Text" isKey="true">
+            <Text118 Ref="130" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,16.3,0.7,0.8</ClientRectangle>
@@ -2476,7 +2489,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text118>
-            <Text119 Ref="130" type="Text" isKey="true">
+            <Text119 Ref="131" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,16.3,1.1,0.8</ClientRectangle>
@@ -2497,7 +2510,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text119>
-            <Text120 Ref="131" type="Text" isKey="true">
+            <Text120 Ref="132" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,16.3,0.5,0.8</ClientRectangle>
@@ -2518,7 +2531,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text120>
-            <Text121 Ref="132" type="Text" isKey="true">
+            <Text121 Ref="133" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,16.3,0.7,0.8</ClientRectangle>
@@ -2539,7 +2552,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text121>
-            <Text122 Ref="133" type="Text" isKey="true">
+            <Text122 Ref="134" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,16.3,1.1,0.8</ClientRectangle>
@@ -2560,7 +2573,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text122>
-            <Text123 Ref="134" type="Text" isKey="true">
+            <Text123 Ref="135" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,16.3,0.7,0.8</ClientRectangle>
@@ -2581,7 +2594,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text123>
-            <Text124 Ref="135" type="Text" isKey="true">
+            <Text124 Ref="136" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,16.3,1.1,0.8</ClientRectangle>
@@ -2602,7 +2615,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text124>
-            <Text125 Ref="136" type="Text" isKey="true">
+            <Text125 Ref="137" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,17.1,1.2,0.8</ClientRectangle>
@@ -2623,7 +2636,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text125>
-            <Text126 Ref="137" type="Text" isKey="true">
+            <Text126 Ref="138" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>1.4,17.1,0.7,0.8</ClientRectangle>
@@ -2644,7 +2657,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text126>
-            <Text127 Ref="138" type="Text" isKey="true">
+            <Text127 Ref="139" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>2.1,17.1,1.1,0.8</ClientRectangle>
@@ -2665,7 +2678,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text127>
-            <Text128 Ref="139" type="Text" isKey="true">
+            <Text128 Ref="140" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.2,17.1,0.5,0.8</ClientRectangle>
@@ -2686,7 +2699,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text128>
-            <Text129 Ref="140" type="Text" isKey="true">
+            <Text129 Ref="141" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>3.7,17.1,0.7,0.8</ClientRectangle>
@@ -2707,7 +2720,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text129>
-            <Text130 Ref="141" type="Text" isKey="true">
+            <Text130 Ref="142" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>4.4,17.1,1.1,0.8</ClientRectangle>
@@ -2728,7 +2741,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text130>
-            <Text131 Ref="142" type="Text" isKey="true">
+            <Text131 Ref="143" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>5.5,17.1,0.7,0.8</ClientRectangle>
@@ -2749,7 +2762,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text131>
-            <Text132 Ref="143" type="Text" isKey="true">
+            <Text132 Ref="144" type="Text" isKey="true">
               <Border>All;Black;1;Solid;False;4;Black</Border>
               <Brush>Transparent</Brush>
               <ClientRectangle>6.2,17.1,1.1,0.8</ClientRectangle>
@@ -2770,7 +2783,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>DataColumn</Type>
               <VertAlignment>Center</VertAlignment>
             </Text132>
-            <Text134 Ref="144" type="Text" isKey="true">
+            <Text134 Ref="145" type="Text" isKey="true">
               <Brush>Transparent</Brush>
               <ClientRectangle>0.2,11.6,7.1,0.3</ClientRectangle>
               <Conditions isList="true" count="1">
@@ -2788,42 +2801,12 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
               <Type>Expression</Type>
               <VertAlignment>Center</VertAlignment>
             </Text134>
-            <Image3 Ref="145" type="Image" isKey="true">
-              <Brush>Transparent</Brush>
-              <ClientRectangle>4.3,7.5,0.3,0.3</ClientRectangle>
-              <Conditions isList="true" count="1">
-                <value>Certificates.IsSafeLimit,EqualTo,true,,Boolean,Red,Transparent,Arial_x002C_8,False,False,,,None</value>
-              </Conditions>
-              <Guid>45e6893efc7d438c82061edd71438578</Guid>
-              <Margins>0,0,0,0</Margins>
-              <MultipleFactor>0.4</MultipleFactor>
-              <Name>Image3</Name>
-              <Page isRef="3" />
-              <Parent isRef="4" />
-              <VertAlignment>Center</VertAlignment>
-            </Image3>
-            <Text135 Ref="146" type="Text" isKey="true">
-              <Brush>Transparent</Brush>
-              <ClientRectangle>4.4,8.45,2.5,0.25</ClientRectangle>
-              <Conditions isList="true" count="0" />
-              <Font>Times New Roman,12</Font>
-              <Guid>7df686a527604a9ca403bb619e78d04c</Guid>
-              <HorAlignment>Center</HorAlignment>
-              <Margins>0,0,0,0</Margins>
-              <Name>Text135</Name>
-              <Page isRef="3" />
-              <Parent isRef="4" />
-              <ShiftMode>IncreasingSize, DecreasingSize</ShiftMode>
-              <Text>{Certificates.StrIssuedDate}</Text>
-              <TextBrush>Black</TextBrush>
-              <Type>Expression</Type>
-            </Text135>
           </Components>
           <Conditions isList="true" count="0" />
           <DataRelationName isNull="true" />
           <DataSourceName>Certificates</DataSourceName>
           <Filters isList="true" count="1">
-            <value>FrontSubBtsQuantity,EqualTo,_x0035_,,Numeric</value>
+            <value>FrontSubBtsQuantity,EqualTo,_x0036_,,Numeric</value>
           </Filters>
           <Name>DataBand1</Name>
           <NewPageAfter>True</NewPageAfter>
@@ -2832,7 +2815,6 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
           <RenderingEvent>if (IsTemplate == true){
 	Image1.File = Certificates.SignatureFileName;
 	Image2.File = Certificates.SubSignFileName;
-	Image3.File = Certificates.SubSignFileName;
 }
 if (Certificates.BackSubBtsQuantity &lt; 1){
  	DataBand1.Height = 10.5;
@@ -2852,7 +2834,7 @@ else {
       <PageWidth>8.27</PageWidth>
       <PaperSize>A4</PaperSize>
       <Report isRef="0" />
-      <Watermark Ref="147" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
+      <Watermark Ref="146" type="Stimulsoft.Report.Components.StiWatermark" isKey="true">
         <Font>Arial,100</Font>
         <ImageMultipleFactor>0.5</ImageMultipleFactor>
         <ImageStretch>True</ImageStretch>
@@ -2871,10 +2853,10 @@ else {
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>8/5/2020 3:15:35 PM</ReportChanged>
+  <ReportChanged>11/16/2020 9:43:17 AM</ReportChanged>
   <ReportCreated>11/8/2019 2:14:55 PM</ReportCreated>
   <ReportFile>E:\Projects\BTS\BTS.Web\Content\ReportTemplates\GCNKD_6BTS.mrt</ReportFile>
-  <ReportGuid>7a9c0d27047147c39f32f0158e2b1d86</ReportGuid>
+  <ReportGuid>a1b312d8bffc4e17bdd3a16137cc7bd7</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2019.3.4.0</ReportVersion>

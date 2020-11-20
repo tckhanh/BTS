@@ -15,7 +15,7 @@ namespace BTS.Service
 
         void Update(SystemConfig newConfig);
 
-        SystemConfig Delete(string Id);
+        SystemConfig Delete(int Id);
 
         IEnumerable<SystemConfig> getAll();
 
@@ -27,7 +27,7 @@ namespace BTS.Service
 
         SystemConfig getByCode(string code);
 
-        bool IsUsed(string Id);
+        bool IsUsed(int Id);
 
         void Save();
     }
@@ -48,7 +48,7 @@ namespace BTS.Service
             return _configRepository.Add(newConfig);
         }
 
-        public SystemConfig Delete(string Id)
+        public SystemConfig Delete(int Id)
         {
             return _configRepository.Delete(Id);
         }
@@ -81,7 +81,7 @@ namespace BTS.Service
             return _configRepository.GetSingleByCondition(x => x.Code == code);
         }
 
-        public bool IsUsed(string Id)
+        public bool IsUsed(int Id)
         {
             return _configRepository.IsUsed(Id);
         }

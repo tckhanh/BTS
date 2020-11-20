@@ -138,9 +138,9 @@ namespace BTS.Web.Areas.Controllers
         {
             int countItem;
 
-            string CityID = Request.Form.GetValues("CityID")?.FirstOrDefault();
-            string OperatorID = Request.Form.GetValues("OperatorID")?.FirstOrDefault();
-            string ProfileID = Request.Form.GetValues("ProfileID")?.FirstOrDefault();
+            string CityID = Request.Form.GetValues("SelCityID")?.FirstOrDefault();
+            string OperatorID = Request.Form.GetValues("SelOperatorID")?.FirstOrDefault();
+            string ProfileID = Request.Form.GetValues("SelProfileID")?.FirstOrDefault();
             string CertificateNum = Request.Form.GetValues("CertificateNum")?.FirstOrDefault().ToUpper();
             string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress")?.FirstOrDefault().ToLower();
             string CertificateStatus = Request.Form.GetValues("CertificateStatus")?.FirstOrDefault();

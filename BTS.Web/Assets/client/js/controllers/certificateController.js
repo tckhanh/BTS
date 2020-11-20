@@ -269,9 +269,9 @@ var certificateController = {
                         "url": "/Certificate/loadCertificate",
                         "type": "POST",
                         "data": function (d) {
-                            d.CityID = $('#SelCityID').val().trim();
-                            d.OperatorID = $('#SelOperatorID').val().trim();
-                            d.ProfileID = $('#SelProfileID').val().trim();
+                            d.SelCityID = $('#SelCityID').val().trim();
+                            d.SelOperatorID = $('#SelOperatorID').val().trim();
+                            d.SelProfileID = $('#SelProfileID').val().trim();
                             d.StartDate = certificateController.startDate.toISOString();
                             d.EndDate = certificateController.endDate.toISOString();
                             d.CertificateNum = $('#CertificateNum').val().trim();

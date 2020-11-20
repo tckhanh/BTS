@@ -29,7 +29,7 @@ if (myMap != undefined && myMap != null) {
         })
         .on('locationerror', function (e) {
             console.log(e);
-            alert("Location access denied.");
+            alert("Quyền truy cập vị trí bị từ chối.");
             var bounds = myLatLng.toBounds(myConstant.coverageRadius); // 4000 = metres
             myMap.panTo(myLatLng).fitBounds(bounds);
         });    

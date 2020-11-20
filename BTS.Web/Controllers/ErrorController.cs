@@ -206,9 +206,10 @@ namespace BTS.Web.Areas.Controllers
         [AuthorizeRoles(CommonConstants.Data_CanDelete_Role)]
         public async Task<ActionResult> Delete(string id = "0")
         {
+            int ID = Convert.ToInt32(id);
             try
             {
-                Error dbItem = _errorService.getByID(id);
+                Error dbItem = _errorService.getByID(ID);
                 if (dbItem == null)
                 {
                     return HttpNotFound();
@@ -219,7 +220,7 @@ namespace BTS.Web.Areas.Controllers
                 //    return Json(new { resetUrl = Url.Action("Add", "Error"), status = CommonConstants.Status_Error, message = "Không thể xóa Trường hợp kiểm định này do đã được sử dụnd" }, JsonRequestBehavior.AllowGet);
                 //}
 
-                _errorService.Delete(id);
+                _errorService.Delete(ID);
                 _errorService.Save();
 
                 return Json(new { resetUrl = Url.Action("Add", "Error"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);

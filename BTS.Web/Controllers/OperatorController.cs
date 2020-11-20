@@ -106,6 +106,7 @@ namespace BTS.Web.Areas.Controllers
                 {
                     Operator newItem = new Operator();
                     newItem.UpdateOperator(Item);
+                    newItem.Id = Item.Id;
 
                     newItem.CreatedBy = User.Identity.Name;
                     newItem.CreatedDate = DateTime.Now;

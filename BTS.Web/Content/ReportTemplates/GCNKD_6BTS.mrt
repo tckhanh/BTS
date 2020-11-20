@@ -161,7 +161,6 @@ else {
 }
 </BeginRenderEvent>
           <Brush>Transparent</Brush>
-          <BusinessObjectGuid isNull="true" />
           <CanGrow>False</CanGrow>
           <ClientRectangle>0,0.2,7.47,20</ClientRectangle>
           <Components isList="true" count="137">
@@ -2807,7 +2806,7 @@ TRẠM GỐC ĐIỆN THOẠI DI ĐỘNG MẶT ĐẤT CÔNG CỘNG</Text>
           <DataRelationName isNull="true" />
           <DataSourceName>Certificates</DataSourceName>
           <Filters isList="true" count="1">
-            <value>FrontSubBtsQuantity,EqualTo,_x0035_,,Numeric</value>
+            <value>FrontSubBtsQuantity,EqualTo,_x0036_,,Numeric</value>
           </Filters>
           <Name>DataBand1</Name>
           <NewPageAfter>True</NewPageAfter>
@@ -2854,10 +2853,10 @@ else {
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>8/6/2020 10:14:59 AM</ReportChanged>
+  <ReportChanged>11/16/2020 9:43:17 AM</ReportChanged>
   <ReportCreated>11/8/2019 2:14:55 PM</ReportCreated>
-  <ReportFile>E:\Projects\BTS\BTS.Web\Content\ReportTemplates-TT14-2017\CopyGCNKD_6BTS.mrt</ReportFile>
-  <ReportGuid>7714bfc06a8b47d7b639520fce7042d5</ReportGuid>
+  <ReportFile>E:\Projects\BTS\BTS.Web\Content\ReportTemplates\GCNKD_6BTS.mrt</ReportFile>
+  <ReportGuid>a1b312d8bffc4e17bdd3a16137cc7bd7</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2019.3.4.0</ReportVersion>

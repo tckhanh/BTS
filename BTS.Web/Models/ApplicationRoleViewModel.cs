@@ -16,7 +16,7 @@ namespace BTS.Web.Models
 
         [Display(Name = "Tên Quyền")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Yêu cầu nhập Tên Quyền")]
-        [Unique(ErrorMessage = "Tên Quyền đã tồn tại rồi !!", TargetModelType = typeof(ApplicationRole), TargetPropertyName = "Name")]
+        //[Unique(ErrorMessage = "Tên Quyền đã tồn tại rồi !!", TargetModelType = typeof(ApplicationRole), TargetPropertyName = "Name")]
         public string Name { set; get; }
 
         [Display(Name = "Mô tả quyền")]

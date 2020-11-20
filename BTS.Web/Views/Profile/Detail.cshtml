@@ -19,6 +19,23 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.ApplicantID, new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
+                                @Html.TextBoxFor(model => model.ApplicantID, new { @name ="AppId", @class = "form-control", disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.ApplicantID)
+                            </div>
+                        </div>
+                        <div class="ln_solid"></div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        
+                        <div class="ln_solid"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.Label("Tên đơn vị nộp HS", new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
                                 @Html.DropDownListFor(model => model.ApplicantID, Model.ApplicantList, " Chọn lựa đơn vị nộp HS ", new { @class = "form-control", disabled = "disabled" })
                                 @Html.ValidationMessageFor(model => model.ApplicantID)
                             </div>
@@ -61,91 +78,91 @@
                 </div>
 
                 @*<div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.ApplyDate, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.ApplyDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                                @Html.ValidationMessageFor(model => model.ApplyDate)
-                            </div>
-                        </div>
-                        <div class="ln_solid"></div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.AcceptedBtsQuantity, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                @Html.TextBoxFor(model => model.AcceptedBtsQuantity, new { @class = "form-control", disabled = "disabled" })
-                                @Html.ValidationMessageFor(model => model.AcceptedBtsQuantity)
-                            </div>
-                        </div>
-                        <div class="ln_solid"></div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ApplyDate, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.ApplyDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.ApplyDate)
                     </div>
                 </div>
-
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.FeeAnnounceNum, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                @Html.TextBoxFor(model => model.FeeAnnounceNum, new { @class = "form-control", disabled = "disabled" })
-                                @Html.ValidationMessageFor(model => model.FeeAnnounceNum)
-                            </div>
-                        </div>
-                        <div class="ln_solid"></div>
+                <div class="ln_solid"></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AcceptedBtsQuantity, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.AcceptedBtsQuantity, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.AcceptedBtsQuantity)
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Fee, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                @Html.TextBoxFor(model => model.Fee, new { @class = "form-control", disabled = "disabled" })
-                                @Html.ValidationMessageFor(model => model.Fee)
-                            </div>
-                        </div>
-                        <div class="ln_solid"></div>
-                    </div>                    
                 </div>
+                <div class="ln_solid"></div>
+            </div>
+        </div>
 
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.FeeAnnounceDate, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.FeeAnnounceDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                                @Html.ValidationMessageFor(model => model.FeeAnnounceDate)
-                            </div>
-                        </div>
-                        <div class="ln_solid"></div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FeeAnnounceNum, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.FeeAnnounceNum, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.FeeAnnounceNum)
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.FeeReceiptDate, new { @class = "control-label col-md-3" })
-                            <div class="col-md-9">
-                                @Html.EditorFor(model => model.FeeReceiptDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
-                                @Html.ValidationMessageFor(model => model.FeeReceiptDate)
-                            </div>
-                        </div>
-                        <div class="ln_solid"></div>
+                </div>
+                <div class="ln_solid"></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Fee, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.TextBoxFor(model => model.Fee, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Fee)
                     </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
+                </div>
+                <div class="ln_solid"></div>
+            </div>
+        </div>
 
-                        <div class="ln_solid"></div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FeeAnnounceDate, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.FeeAnnounceDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.FeeAnnounceDate)
                     </div>
-                </div>*@
+                </div>
+                <div class="ln_solid"></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FeeReceiptDate, new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.FeeReceiptDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.FeeReceiptDate)
+                    </div>
+                </div>
+                <div class="ln_solid"></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+
+                <div class="ln_solid"></div>
+            </div>
+        </div>*@
 
                 <div class="col-md-10">
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                              @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
+                            @if (User.IsInRole(CommonConstants.Data_CanAdd_Role))
                             {
                                 <a class="btn btn-primary" onclick="commonController.refreshAddNewTab('@Url.Action("Add", "Profile")', 1, 'Thêm mới')"><i class="fa fa-plus"></i> Thêm mới</a>
                             }
-                              @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                            @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
                             {
                                 <a class="btn btn-success" onclick="commonController.Edit('@Url.Action("Edit", "Profile", new { id = @Model.Id })')"><i class="fa fa-pencil"></i> Sửa đổi</a>
                             }
 
-                              @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                            @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
                             {
                                 <a class="btn btn-danger" onclick="commonController.Delete('@Url.Action("Delete", "Profile", new { id = @Model.Id })')"><i class="fa fa-trash"></i> Xóa bỏ</a>
                             }

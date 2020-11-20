@@ -30,9 +30,14 @@ namespace BTS.Web.Areas.Controllers
 
         public ActionResult ViewAll()
         {
-            return View(Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles.OrderByDescending(x => x.Name)));
+            return View(GetAll());
         }
 
+        private IEnumerable<ApplicationRoleViewModel> GetAll()
+        {
+            List<ApplicationRole> model = RoleManager.Roles.OrderByDescending(x => x.Name).ToList();
+            return Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(model);
+        }
 
         public ActionResult Add()
         {
@@ -386,7 +391,9 @@ namespace BTS.Web.Areas.Controllers
                     return HttpNotFound();
                 }
 
-                if (_appGroupService.GetGroupsByRoleId(id) != null)
+                int i = _appGroupService.GetGroupsByRoleId(id).Count();
+
+                if (_appGroupService.GetGroupsByRoleId(id).Count() > 0)
                 {
                     return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = "Không thể xóa Quyền đã cấp cho Nhóm người dùng" }, JsonRequestBehavior.AllowGet);
                 }
@@ -394,7 +401,7 @@ namespace BTS.Web.Areas.Controllers
                 IdentityResult result = await RoleManager.DeleteAsync(role);
                 if (result.Succeeded)
                 {
-                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", RoleManager.Roles), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Xóa dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {

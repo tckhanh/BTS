@@ -12,7 +12,7 @@ namespace BTS.Service
 
         void Update(Error newError);
 
-        Error Delete(string Id);
+        Error Delete(int Id);
 
         IEnumerable<Error> getAll();
 
@@ -43,7 +43,7 @@ namespace BTS.Service
             return _errorRepository.Add(newError);
         }
 
-        public Error Delete(string Id)
+        public Error Delete(int Id)
         {
             return _errorRepository.Delete(Id);
         }

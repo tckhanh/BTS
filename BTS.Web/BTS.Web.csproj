@@ -290,6 +290,7 @@
     <Compile Include="Controllers\BtsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Areas\Setup\Controllers\LicenceInfoController.cs" />
+    <Compile Include="Controllers\GuideController.cs" />
     <Compile Include="Controllers\NoRequiredBtsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
@@ -627,6 +628,7 @@
     <Content Include="Assets\client\js\controllers\applicationUserController.js" />
     <Content Include="Assets\client\js\common\dtree.js" />
     <Content Include="Assets\client\js\common\myChart.js" />
+    <Content Include="Assets\client\js\controllers\guideController.js" />
     <Content Include="Assets\client\js\controllers\noRequiredBtsCanceledController.js" />
     <Content Include="Assets\client\js\controllers\noRequiredBtsController.js" />
     <Content Include="Assets\client\js\controllers\publicController - Copy.js" />
@@ -11503,6 +11505,21 @@
     <Content Include="AppFiles\Samples\TT3_Data_Bosung.xlsm" />
     <Content Include="AppFiles\Samples\TT3_Data_Ketqua.xlsm" />
     <Content Include="AppFiles\Samples\TT_Data_Congbo.xlsx" />
+    <Content Include="AppFiles\Samples\Huong dan chuyen doi chuan hoa du lieu.docx" />
+    <Content Include="AppFiles\Samples\Bao cao nhiem vu KHCN.pdf" />
+    <Content Include="AppFiles\Samples\TT1_Data_Goc.xls" />
+    <Content Include="AppFiles\Samples\TT2_Data_Ketqua.xlsm" />
+    <Content Include="AppFiles\Samples\TT3_Data_Goc.xlsx" />
+    <Content Include="AppFiles\Samples\Huong dan su dung phan mem.doc" />
+    <Content Include="AppFiles\Samples\Huong dan su dung phan mem.pdf" />
+    <Content Include="AppFiles\Samples\Huong dan chuyen doi chuan hoa du lieu.pdf" />
+    <Content Include="AppFiles\Samples\TT2_Data_Goc.xlsm" />
+    <Content Include="AppFiles\Samples\TT2_Data_Ketqua 2016_06112019-9BTS-VNP.xlsm" />
+    <Content Include="AppFiles\Samples\TT2_Data_Ketqua 2018_030420209 V3.xlsm" />
+    <Content Include="AppFiles\Samples\TT2_Data_Ketqua 2019_09032020.xlsm" />
+    <Content Include="AppFiles\Samples\Sample File 2018.xlsm" />
+    <Content Include="AppFiles\Images\bannerVcc2.psd" />
+    <Content Include="AppFiles\Samples\Bao cao nhiem vu KHCN.doc" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -11679,6 +11696,11 @@
     <Content Include="Views\NoRequiredBts\Index.cshtml" />
     <Content Include="Views\NoRequiredBts\SubDetail.cshtml" />
     <Content Include="Views\ImportData\NoRequiredBts.cshtml" />
+    <Content Include="Views\Guide\Add.cshtml" />
+    <Content Include="Views\Guide\Detail.cshtml" />
+    <Content Include="Views\Guide\Edit.cshtml" />
+    <Content Include="Views\Guide\Index.cshtml" />
+    <Content Include="Views\Guide\ViewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />

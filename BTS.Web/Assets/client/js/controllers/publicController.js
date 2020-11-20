@@ -12,7 +12,12 @@ var publicController = {
     },
 
     init: function () {
-        $('body').addClass('sidebar-collapse');
+        if (myNotAuthenticated == true) {
+            $('body').addClass('sidebar-collapse');
+        } else {
+            $('body').removeClass('sidebar-collapse');
+        }
+        
         //myMap.invalidateSize();
         //publicController.loadMap();
         //publicController.loadPostData();

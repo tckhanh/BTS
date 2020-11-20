@@ -75,7 +75,7 @@ var myConstant = {
     CertStatus_Valid: "Valid",
     CertStatus_Expired: "Expired",
 
-    coverageRadius: 4000,
+    coverageRadius: 2000,
 
 };
 Object.freeze(myConstant);

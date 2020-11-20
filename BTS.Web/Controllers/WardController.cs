@@ -163,7 +163,10 @@ namespace BTS.Web.Areas.Controllers
 
                     _WardService.Update(editItem);
                     _WardService.Save();
-                    return Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<WardVM>>(GetAll())), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+
+                    JsonResult result = Json(new { resetUrl = Url.Action("Add", "Ward"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
+                    result.MaxJsonLength = int.MaxValue;
+                    return result;
                 }
                 else
                 {

@@ -76,6 +76,8 @@ namespace BTS.Data.ApplicationModels
         public ApplicationUser()
         {
             Id = Guid.NewGuid().ToString();
+            Locked = true;
+
             Groups = new HashSet<ApplicationUserGroup>();
             // Add any custom User properties/code here
             //Groups = new List<ApplicationUserGroup>();

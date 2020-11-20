@@ -55,7 +55,7 @@ namespace BTS.Web.Models
 
         public ApplicantViewModel()
         {
-            Id = Guid.NewGuid().ToString();
+            
             OperatorList = new List<SelectListItem>();
         }
     }

@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BTS.Web.Areas.Controllers
@@ -418,12 +417,12 @@ namespace BTS.Web.Areas.Controllers
         {
             int countItem;
 
-            string CityID = Request.Form.GetValues("CityID")?.FirstOrDefault();
-            string OperatorID = Request.Form.GetValues("OperatorID")?.FirstOrDefault();
-            string ProfileID = Request.Form.GetValues("ProfileID")?.FirstOrDefault();
+            string CityID = Request.Form.GetValues("SelCityID")?.FirstOrDefault();
+            string OperatorID = Request.Form.GetValues("SelOperatorID")?.FirstOrDefault();
+            string ProfileID = Request.Form.GetValues("SelProfileID")?.FirstOrDefault();
             string CertificateNum = Request.Form.GetValues("CertificateNum")?.FirstOrDefault().ToUpper();
             string BtsCodeOrAddress = Request.Form.GetValues("BtsCodeOrAddress")?.FirstOrDefault().ToLower();
-            string IsExpired = Request.Form.GetValues("IsExpired")?.FirstOrDefault().ToLower();
+            string CertificateStatus = Request.Form.GetValues("CertificateStatus")?.FirstOrDefault();
             DateTime StartDate, EndDate;
 
             string[] SubBtsAntenHeights, SubBtsAntenNums, SubBtsBands, SubBtsCodes, SubBtsConfigurations, SubBtsEquipments, SubBtsOperatorIDs, SubBtsPowerSums;
@@ -440,44 +439,67 @@ namespace BTS.Web.Areas.Controllers
             }
 
             // searching ...
-            IEnumerable<Certificate> Items;
+            IEnumerable<Certificate> Items = new List<Certificate>();
+
+            if (CertificateStatus == CommonConstants.CertStatus_WaitToSign)
+            {
+                Items = _certificateService.getCertificateWaitToSign(new string[] { "Operator" }).ToList();
+            }
+            else if (CertificateStatus == CommonConstants.CertStatus_Expired)
+            {
+                Items = _certificateService.getCertificateExpired(new string[] { "Operator" }).ToList();
+            }
+            else if (CertificateStatus == CommonConstants.CertStatus_Valid)
+            {
+                if (!(string.IsNullOrEmpty(CertificateNum)))
+                {
+                    Items = _certificateService.getCertificateByCertificateNum(CertificateNum, new string[] { "Operator" }).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(CityID)) && CityID != CommonConstants.SelectAll)
+                {
+                    Items = _certificateService.getCertificateByCity(CityID, new string[] { "Operator" }).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(OperatorID)) && OperatorID != CommonConstants.SelectAll)
+                {
+                    Items = _certificateService.getCertificateByOperator(OperatorID, new string[] { "Operator" }).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(ProfileID)) && ProfileID != CommonConstants.SelectAll)
+                {
+                    Items = _certificateService.getCertificateByProfile(ProfileID, new string[] { "Operator" }).ToList();
+                }
+                else if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
+                {
+                    Items = _certificateService.getCertificateByBtsCodeOrAddress(BtsCodeOrAddress, new string[] { "Operator" }).ToList();
+                }
+                else if (CertificateStatus == CommonConstants.CertStatus_Valid && StartDate != null && EndDate != null)
+                {
+                    Items = _certificateService.getAll(out countItem, false, StartDate, EndDate, new string[] { "Operator" }).ToList();
+                }
+                else
+                {
+                    Items = _certificateService.getAll(out countItem, false, new string[] { "Operator" }).ToList();
+                }
+            }
 
 
-            if (!(string.IsNullOrEmpty(CertificateNum)))
+            if (CertificateStatus == CommonConstants.CertStatus_WaitToSign)
             {
-                Items = _certificateService.getCertificateByCertificateNum(CertificateNum, new string[] { "Operator" }).ToList();
+                Items = Items.Where(x => x.IsSigned == false && x.IsCanceled == false);
             }
-            else if (!(string.IsNullOrEmpty(CityID)))
+            if (CertificateStatus == CommonConstants.CertStatus_Expired)
             {
-                Items = _certificateService.getCertificateByCity(CityID, new string[] { "Operator" }).ToList();
-            }
-            else if (!(string.IsNullOrEmpty(OperatorID)))
-            {
-                Items = _certificateService.getCertificateByOperator(OperatorID, new string[] { "Operator" }).ToList();
-            }
-            else if (!(string.IsNullOrEmpty(ProfileID)))
-            {
-                Items = _certificateService.getCertificateByProfile(ProfileID, new string[] { "Operator" }).ToList();
-            }
-            else if (!(string.IsNullOrEmpty(BtsCodeOrAddress)))
-            {
-                Items = _certificateService.getCertificateByBtsCodeOrAddress(BtsCodeOrAddress, new string[] { "Operator" }).ToList();
-            }
-            else if (StartDate != null && EndDate != null)
-            {
-                Items = _certificateService.getAll(out countItem, false, StartDate, EndDate, new string[] { "Operator" }).ToList();
-            }
-            else
-            {
-                Items = _certificateService.getAll(out countItem, false, new string[] { "Operator" }).ToList();
+                Items = Items.Where(x => x.IsCanceled == true || x.ExpiredDate < DateTime.Now);
             }
 
-
-            if (StartDate != null && EndDate != null)
+            if (CertificateStatus == CommonConstants.CertStatus_Valid)
             {
-                Items = Items.Where(x => x.IssuedDate >= StartDate && x.IssuedDate <= EndDate).ToList();
-            }
+                Items = Items.Where(x => x.IsSigned == true && x.IsCanceled == false && x.ExpiredDate >= DateTime.Now);
 
+                if (StartDate != null && EndDate != null)
+                {
+                    Items = Items.Where(x => x.IssuedDate >= StartDate && x.IssuedDate <= EndDate).ToList();
+                }
+            }
 
             if (!(string.IsNullOrEmpty(CertificateNum)))
             {
@@ -489,27 +511,17 @@ namespace BTS.Web.Areas.Controllers
                 Items = Items.Where(x => x.BtsCode.ToLower().Contains(BtsCodeOrAddress) || x.Address.ToLower().Contains(BtsCodeOrAddress)).ToList();
             }
 
-
-            if (IsExpired == "yes")
-            {
-                Items = Items.Where(x => x.ExpiredDate < DateTime.Today).ToList();
-            }
-            else
-            {
-                Items = Items.Where(x => x.ExpiredDate >= DateTime.Today).ToList();
-            }
-
-            if (!(string.IsNullOrEmpty(CityID)))
+            if (!(string.IsNullOrEmpty(CityID)) && CityID != CommonConstants.SelectAll)
             {
                 Items = Items.Where(x => x.CityID == CityID).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(OperatorID)))
+            if (!(string.IsNullOrEmpty(OperatorID)) && OperatorID != CommonConstants.SelectAll)
             {
                 Items = Items.Where(x => x.OperatorID.Contains(OperatorID)).ToList();
             }
 
-            if (!(string.IsNullOrEmpty(ProfileID)))
+            if (!(string.IsNullOrEmpty(ProfileID)) && ProfileID != CommonConstants.SelectAll)
             {
                 Items = Items.Where(x => x.ProfileID?.ToString() == ProfileID).ToList();
             }
@@ -518,6 +530,8 @@ namespace BTS.Web.Areas.Controllers
             {
                 Items = Items.Where(x => getCityIDsScope().Split(new char[] { ';' }).Contains(x.CityID)).ToList();
             }
+
+
             //DbItems = DbItems.OrderByDescending(x => x.IssuedDate.Year.ToString() + x.Id);
 
             IEnumerable<PrintCertificateViewModel> printCertificates = Mapper.Map<List<PrintCertificateViewModel>>(Items);
@@ -966,7 +980,7 @@ namespace BTS.Web.Areas.Controllers
                 page.Watermark.ShowImageBehind = true;
             }
             report.RegData(printCertificates?.ToDataSet("DataSet", "Certificates"));
-            
+
             return StiMvcViewer.GetReportResult(report);
         }
 
