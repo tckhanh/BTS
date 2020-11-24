@@ -690,21 +690,21 @@ namespace BTS.Web.Areas.Controllers
                 Item.ProfileNum = dt.Rows[1][CommonConstants.Sheet_Profile_ProfileNum]?.ToString();
                 Item.ProfileDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_ProfileDate]?.ToString());
                 Item.BtsQuantity = Int32.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_BtsQuantity]?.ToString());
-                Item.AcceptedBtsQuantity = Int32.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_AcceptedBtsQuantity]?.ToString());
-                Item.ApplyDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_ApplyDate]?.ToString());
-                if (dt.Rows[1][CommonConstants.Sheet_Profile_Fee]?.ToString().Length > 0)
-                {
-                    //int fee;
-                    //int.TryParse(dt.Rows[1][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number, provider, out fee);
-                    Item.Fee = Int64.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number);
-                }
+                //Item.AcceptedBtsQuantity = Int32.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_AcceptedBtsQuantity]?.ToString());
+                //Item.ApplyDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_ApplyDate]?.ToString());
+                //if (dt.Rows[1][CommonConstants.Sheet_Profile_Fee]?.ToString().Length > 0)
+                //{
+                //    //int fee;
+                //    //int.TryParse(dt.Rows[1][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number, provider, out fee);
+                //    Item.Fee = Int64.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_Fee]?.ToString(), NumberStyles.Number);
+                //}
 
-                if (dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString().Length > 0)
-                    Item.FeeAnnounceNum = dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString();
-                if (dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString().Length > 0)
-                    Item.FeeAnnounceDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString());
-                if (dt.Rows[1][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString().Length > 0)
-                    Item.FeeReceiptDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString());
+                //if (dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString().Length > 0)
+                //    Item.FeeAnnounceNum = dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceNum]?.ToString();
+                //if (dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString().Length > 0)
+                //    Item.FeeAnnounceDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_FeeAnnounceDate]?.ToString());
+                //if (dt.Rows[1][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString().Length > 0)
+                //    Item.FeeReceiptDate = DateTime.Parse(dt.Rows[1][CommonConstants.Sheet_Profile_FeeReceiptDate]?.ToString());
                 Item.CreatedBy = User.Identity.Name;
                 Item.CreatedDate = DateTime.Now;
 
