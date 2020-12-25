@@ -119,9 +119,9 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201903120632039_InitDatabase.cs" />
-    <Compile Include="Migrations\201903120632039_InitDatabase.Designer.cs">
-      <DependentUpon>201903120632039_InitDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\202012080700563_InitDatabase.cs" />
+    <Compile Include="Migrations\202012080700563_InitDatabase.Designer.cs">
+      <DependentUpon>202012080700563_InitDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlConfiguration.cs" />
@@ -179,8 +179,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201903120632039_InitDatabase.resx">
-      <DependentUpon>201903120632039_InitDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202012080700563_InitDatabase.resx">
+      <DependentUpon>202012080700563_InitDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
