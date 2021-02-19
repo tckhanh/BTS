@@ -10,6 +10,7 @@
     using System.Collections.Generic;
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.SqlServer;
     using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
@@ -19,7 +20,10 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
+            SetSqlGenerator("System.Data.SqlClient", new SqlServerMigrationSqlGenerator());
+
+            //For MySQL
+            //SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
         }
 
         protected override void Seed(BTSDbContext context)

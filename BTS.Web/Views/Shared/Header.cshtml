@@ -11,7 +11,7 @@
         <span class="logo-mini"><b><i class="fa fa-home"></i> A</b>LT</span>
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg"><i class="fa fa-home"></i><b>  KIỂM ĐỊNH BTS</b></span>
-    </a>    
+    </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
         <!-- Sidebar toggle button-->
@@ -232,6 +232,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-usermenu pull-right">
                             <li><a href="/ApplicationUserProfile/"> <i class="fa fa-align-justify pull-right"></i> Lý lịch</a></li>
+                            @*<li><a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("Detail", "ApplicationUserProfile", new { id = 0 })')" data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a></li>*@
                             <li><a href="/Account/Logout"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
                         </ul>
                     </li>

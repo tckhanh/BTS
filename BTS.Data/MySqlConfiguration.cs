@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace BTS.Data
 {
-    public class MySqlConfiguration : DbConfiguration
-    {
-        public MySqlConfiguration()
-        {
-            SetHistoryContext("MySql.Data.MySqlClient", (conn, schema) => new MySqlHistoryContext(conn, schema));
-        }
-    }
+    //public class MySqlConfiguration : DbConfiguration
+    //{
+    //    public MySqlConfiguration()
+    //    {
+    //        SetHistoryContext("MySql.Data.MySqlClient", (conn, schema) => new MySqlHistoryContext(conn, schema));
+    //    }
+    //}
 }

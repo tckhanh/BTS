@@ -200,6 +200,7 @@ namespace BTS.Web.Infrastructure.Extensions
 
         public static void UpdateUser(this ApplicationUser appUser, ApplicationUserViewModel appUserViewModel)
         {
+            appUser.UserName = appUserViewModel.UserName;
             appUser.FullName = appUserViewModel.FullName;
             appUser.Email = appUserViewModel.Email;
             appUser.PhoneNumber = appUserViewModel.PhoneNumber;
@@ -210,7 +211,7 @@ namespace BTS.Web.Infrastructure.Extensions
             appUser.EducationalField = appUserViewModel.EducationalField;
             appUser.EntryDate = appUserViewModel.EntryDate;
             appUser.EndDate = appUserViewModel.EndDate;
-            //appUser.Locked = appUserViewModel.Locked;
+            appUser.Locked = appUserViewModel.Locked;
             appUser.JobPositions = appUserViewModel.JobPositions;
             appUser.ImagePath = appUserViewModel.ImagePath;
             appUser.CityIDsScope = appUserViewModel.CityIDsScope;

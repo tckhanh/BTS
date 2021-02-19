@@ -80,8 +80,8 @@ var noRequiredBtsController = {
         });
 
         $('#btnReset').off('click').on('click', function () {
-            $('#SelOperatorID').val('');
-            $('#SelCityID').val('');
+            $('#SelOperatorID').val(myConstant.SelectAll);
+            $('#SelCityID').val(myConstant.SelectAll);
             $('#BtsCodeOrAddress').val('');
             noRequiredBtsController.endDate = new Date();
             noRequiredBtsController.startDate = new Date(noRequiredBtsController.endDate.getFullYear() - 5, noRequiredBtsController.endDate.getMonth(), noRequiredBtsController.endDate.getDate());

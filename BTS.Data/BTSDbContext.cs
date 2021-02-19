@@ -53,6 +53,7 @@ namespace BTS.Data
         public DbSet<Audit> Audits { set; get; }
         public BTSDbContext() : base("BTSConnection")
         {
+            //this.Configuration.LazyLoadingEnabled = true;
             this.Configuration.LazyLoadingEnabled = false;
         }
 
@@ -116,9 +117,10 @@ namespace BTS.Data
                 var migrationHistoryTableExists = ((IObjectContextAdapter)context).ObjectContext.ExecuteStoreQuery<int>(
                 string.Format(
                   "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '{0}' AND table_name = '__MigrationHistory'",
-                  "bts"));
+                  "dbo"));
 
                 // if MigrationHistory table is not there (which is the case first time we run) - create it
+                
                 if (migrationHistoryTableExists.FirstOrDefault() == 0)
                 {
                     context.Database.Delete();

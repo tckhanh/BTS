@@ -50,7 +50,7 @@ var publicController = {
         });
 
         $('#btnReset').off('click').on('click', function () {
-            $('#SelCityID').val('');
+            $('#SelCityID').val(myConstant.SelectAll);
             if (myMap != undefined && myMap != null && myMarkerClusters != null) {
                 myMap.removeLayer(myMarkerClusters);
                 myMarkerClusters.clearLayers();

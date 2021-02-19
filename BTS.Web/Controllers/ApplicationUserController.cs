@@ -72,7 +72,8 @@ namespace BTS.Web.Areas.Controllers
 
         private IEnumerable<ApplicationUserViewModel> GetAll()
         {
-            List<ApplicationUser> model = UserManager.Users.ToList();
+            //IEnumerable<ApplicationUser> model = UserManager.Users.ToList();
+            List<ApplicationUser> model = UserManager.Users.ToList<ApplicationUser>();
             return Mapper.Map<IEnumerable<ApplicationUserViewModel>>(model);
         }
 
@@ -440,7 +441,7 @@ namespace BTS.Web.Areas.Controllers
             }
         }
 
-        private async void UpdateFromUserToGroupRole(ApplicationUser newAppUser, string[] selectedGroupItems)
+        private async Task<bool> UpdateFromUserToGroupRole(ApplicationUser newAppUser, string[] selectedGroupItems)
         {
             _appGroupService.DeleteUserFromGroups(newAppUser.Id);
             _appGroupService.Save();
@@ -467,6 +468,8 @@ namespace BTS.Web.Areas.Controllers
             IEnumerable<ApplicationRole> newUserRoles = _appGroupService.GetLogicRolesByUserId(newAppUser.Id);
 
             await addUserRoles(newAppUser.Id, newUserRoles);
+
+            return true;
         }
 
         [HttpPost]

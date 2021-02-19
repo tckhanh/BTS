@@ -60,9 +60,9 @@ var noCertificateController = {
         });
 
         $('#btnReset').off('click').on('click', function () {
-            $('#SelOperatorID').val('');
-            $('#SelCityID').val('');
-            $('#SelProfileID').val('');
+            $('#SelOperatorID').val(myConstant.SelectAll);
+            $('#SelCityID').val(myConstant.SelectAll);
+            $('#SelProfileID').val(myConstant.SelectAll);
             $('#BtsCodeOrAddress').val('');
             noCertificateController.endDate = new Date();
             noCertificateController.startDate = new Date(noCertificateController.endDate.getFullYear() - 5, noCertificateController.endDate.getMonth(), noCertificateController.endDate.getDate());

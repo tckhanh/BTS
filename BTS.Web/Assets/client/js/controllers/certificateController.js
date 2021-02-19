@@ -80,9 +80,9 @@ var certificateController = {
         });
 
         $('#btnReset').off('click').on('click', function () {
-            $('#SelOperatorID').val('');
-            $('#SelCityID').val('');
-            $('#SelProfileID').val('');
+            $('#SelOperatorID').val(myConstant.SelectAll);
+            $('#SelCityID').val(myConstant.SelectAll);
+            $('#SelProfileID').val(myConstant.SelectAll);
             $('#BtsCodeOrAddress').val('');
             certificateController.endDate = new Date();
             certificateController.startDate = new Date(certificateController.endDate.getFullYear() - 5, certificateController.endDate.getMonth(), certificateController.endDate.getDate());

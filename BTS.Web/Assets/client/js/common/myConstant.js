@@ -77,5 +77,6 @@ var myConstant = {
 
     coverageRadius: 2000,
 
+    SelectAll: "ALL",
 };
 Object.freeze(myConstant);

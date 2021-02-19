@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using BTS.Web.Models;
 using static BTS.Web.Models.AccountViewModel;
 
 namespace BTS.Web.Areas.Controllers
@@ -111,7 +110,7 @@ namespace BTS.Web.Areas.Controllers
             }
             else
             {
-                applicationUserVM = await FillInApplicationUserVM(existedApplicationUser);
+                applicationUserVM = FillInApplicationUserVM(existedApplicationUser);
                 return View(applicationUserVM);
             }
         }
@@ -128,7 +127,7 @@ namespace BTS.Web.Areas.Controllers
             }
             else
             {
-                applicationUserVM = await FillInApplicationUserVM(existedApplicationUser);
+                applicationUserVM = FillInApplicationUserVM(existedApplicationUser);
                 return View(applicationUserVM);
             }
         }
@@ -154,7 +153,7 @@ namespace BTS.Web.Areas.Controllers
             }
         }
 
-        private async Task<ApplicationUserViewModel> FillInApplicationUserVM(ApplicationUser existedApplicationUser)
+        private ApplicationUserViewModel FillInApplicationUserVM(ApplicationUser existedApplicationUser)
         {
             ApplicationUserViewModel applicationUserVM = Mapper.Map<ApplicationUserViewModel>(existedApplicationUser);
 
@@ -173,7 +172,7 @@ namespace BTS.Web.Areas.Controllers
             }
 
             List<ApplicationRole> allRole = RoleManager.Roles.OrderByDescending(x => x.Name).ToList();
-            IList<string> listRole = await UserManager.GetRolesAsync(existedApplicationUser.Id);
+            IList<string> listRole = UserManager.GetRoles(existedApplicationUser.Id);
             foreach (ApplicationRole roleItem in allRole)
             {
                 SelectListItem listItem = new SelectListItem()
@@ -320,7 +319,7 @@ namespace BTS.Web.Areas.Controllers
                         string extension = Path.GetExtension(Item.ImageUpload.FileName);
                         //fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
                         fileName = "UserImage" + DateTime.Now.ToString("yyyymmssfff") + extension;
-                        Item.ImagePath = "~/AppFiles/Images/" + fileName;
+                        Item.ImagePath = "/AppFiles/Images/" + fileName;
                         Item.ImageUpload.SaveAs(Path.Combine(Server.MapPath("~/AppFiles/Images/"), fileName));
                     }
 
@@ -369,7 +368,7 @@ namespace BTS.Web.Areas.Controllers
                         string extension = Path.GetExtension(Item.ImageUpload.FileName);
                         //fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
                         fileName = "UserImage" + DateTime.Now.ToString("yyyymmssfff") + extension;
-                        Item.ImagePath = "~/AppFiles/Images/" + fileName;
+                        Item.ImagePath = "/AppFiles/Images/" + fileName;
                         Item.ImageUpload.SaveAs(Path.Combine(Server.MapPath("~/AppFiles/Images/"), fileName));
                     }
 

@@ -46,6 +46,7 @@ namespace BTS.Web.Areas.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Audit(AuditingLevel = 1)]
         public ActionResult Index(HttpPostedFileBase file, string ImportAction, string InputType, bool IsSigned)
         {
             if (Request.Files["file"].ContentLength > 0)
@@ -120,6 +121,7 @@ namespace BTS.Web.Areas.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Audit(AuditingLevel = 1)]
         public ActionResult NoRequiredBts(HttpPostedFileBase file, string ImportAction, string InputType)
         {
             if (Request.Files["file"].ContentLength > 0)
