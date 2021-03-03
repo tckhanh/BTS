@@ -65,6 +65,7 @@ namespace BTS.Web.Mappings
                 cfg.CreateMap<Licence, LicenceViewModel>();
 
                 cfg.CreateMap<Error, ErrorVM>();
+                cfg.CreateMap<Audit, AuditVM>();
                 cfg.CreateMap<SystemConfig, ConfigVM>();
                 /* etc */
             });

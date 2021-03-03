@@ -32,7 +32,7 @@ namespace BTS.Web.Infrastructure.Helpers
                 SessionID = sessionIdentifier,
                 IPAddress = RequestHelpers.GetClientIpAddress(request),
                 URLAccessed = request.RawUrl,
-                TimeAccessed = DateTime.UtcNow,
+                TimeAccessed = DateTime.Now,
                 UserName = (request.IsAuthenticated) ? HttpContext.Current.User.Identity.Name : UserName,
                 //HttpContext.Current.Controller.GetType().Name,
                 //HttpContext.Current.ActionDescriptor.ActionName,

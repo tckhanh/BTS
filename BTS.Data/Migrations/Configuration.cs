@@ -1,18 +1,8 @@
-﻿namespace BTS.Data.Migrations
+namespace BTS.Data.Migrations
 {
-    using ApplicationModels;
-    using Common;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using Model.Models;
-    using Repositories;
     using System;
-    using System.Collections.Generic;
-    using System.Data.Entity.Infrastructure;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Data.Entity.SqlServer;
-    using System.Data.Entity.Validation;
-    using System.Diagnostics;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<BTS.Data.BTSDbContext>
@@ -20,17 +10,16 @@
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            SetSqlGenerator("System.Data.SqlClient", new SqlServerMigrationSqlGenerator());
 
             //For MySQL
             //SetSqlGenerator("MySql.Data.MySqlClient", new MySql.Data.Entity.MySqlMigrationSqlGenerator());
         }
 
-        protected override void Seed(BTSDbContext context)
+        protected override void Seed(BTS.Data.BTSDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
             //
             //    context.People.AddOrUpdate(

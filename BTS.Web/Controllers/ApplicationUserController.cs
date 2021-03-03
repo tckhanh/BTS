@@ -366,7 +366,7 @@ namespace BTS.Web.Areas.Controllers
                     if (result.Succeeded)
                     {
 
-                        UpdateFromUserToGroupRole(newAppUser, selectedGroupItems);
+                        await UpdateFromUserToGroupRole(newAppUser, selectedGroupItems);
 
                         return Json(new { resetUrl = Url.Action("Add", "ApplicationUser"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
@@ -421,7 +421,7 @@ namespace BTS.Web.Areas.Controllers
                     if (result.Succeeded)
                     {
 
-                        UpdateFromUserToGroupRole(newAppUser, selectedGroupItems);
+                        await UpdateFromUserToGroupRole(newAppUser, selectedGroupItems);
 
                         return Json(new { resetUrl = Url.Action("Add", "ApplicationUser"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                     }
@@ -441,7 +441,7 @@ namespace BTS.Web.Areas.Controllers
             }
         }
 
-        private async Task<bool> UpdateFromUserToGroupRole(ApplicationUser newAppUser, string[] selectedGroupItems)
+        private async Task UpdateFromUserToGroupRole(ApplicationUser newAppUser, string[] selectedGroupItems)
         {
             _appGroupService.DeleteUserFromGroups(newAppUser.Id);
             _appGroupService.Save();
@@ -468,8 +468,7 @@ namespace BTS.Web.Areas.Controllers
             IEnumerable<ApplicationRole> newUserRoles = _appGroupService.GetLogicRolesByUserId(newAppUser.Id);
 
             await addUserRoles(newAppUser.Id, newUserRoles);
-
-            return true;
+            
         }
 
         [HttpPost]

@@ -213,7 +213,7 @@ namespace BTS.Web.Areas.Controllers
                         return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
                     }
 
-                    UpdateFromRoleToGroupUser(appRole, selectedGroupItems);
+                    await UpdateFromRoleToGroupUser(appRole, selectedGroupItems);
 
                     return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
@@ -249,7 +249,7 @@ namespace BTS.Web.Areas.Controllers
                         return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Error, message = roleresult.Errors.First() }, JsonRequestBehavior.AllowGet);
                     }
 
-                    UpdateFromRoleToGroupUser(appRole, selectedGroupItems);
+                    await UpdateFromRoleToGroupUser(appRole, selectedGroupItems);
                     
                     return Json(new { resetUrl = Url.Action("Add", "ApplicationRole"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", Mapper.Map<IEnumerable<ApplicationRoleViewModel>>(RoleManager.Roles)), message = "Cập nhật dữ liệu thành công" }, JsonRequestBehavior.AllowGet);
                 }
@@ -264,7 +264,7 @@ namespace BTS.Web.Areas.Controllers
             }
         }
 
-        private async void UpdateFromRoleToGroupUser(ApplicationRole appRole, string[] selectedGroupItems)
+        private async Task UpdateFromRoleToGroupUser(ApplicationRole appRole, string[] selectedGroupItems)
         {
             //delete ApplicationRoleGroup
             List<string> oldUserIds = _appGroupService.GetLogicUsersByRoleId(appRole.Id).Select(x => x.UserId).ToList();

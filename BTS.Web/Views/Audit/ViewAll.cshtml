@@ -1,0 +1,70 @@
+﻿@model IEnumerable<BTS.Web.Models.AuditVM>
+@using BTS.Common
+@{
+    ViewBag.Title = "ViewAll";
+    Layout = null;
+}
+
+<table class="table table-striped table-condensed MyDataTable" id="MyDataTable">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Id)*@
+                #
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IPAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeAccessed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.URLAccessed)
+            </th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+        <tr data-id=@item.Id>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+                @*@Html.HiddenFor(modelItem => item.Id)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IPAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeAccessed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.URLAccessed)
+            </td>
+            <td class="dt-body-center">
+                @if (User.IsInRole(CommonConstants.Data_CanViewDetail_Role))
+                {
+                    <a class="btn btn-info btn-sm" onclick="commonController.Detail('@Url.Action("Detail", "Audit", new { id = @item.Id })')" data data-toggle="tooltip" data-placement="top" title="Chi tiết"><i class="fa fa-address-card fa-lg"></i></a>
+                }
+
+                @if (User.IsInRole(CommonConstants.Data_CanEdit_Role))
+                {
+                    @*<a class="btn btn-primary btn-sm" onclick="commonController.Edit('@Url.Action("Edit", "Audit", new { id = @item.Id })')" data data-toggle="tooltip" data-placement="top" title="Sửa"><i class="fa fa-pencil fa-lg"></i></a>*@
+                }
+
+                @if (User.IsInRole(CommonConstants.Data_CanDelete_Role))
+                {
+                    <a class="btn btn-danger btn-sm" onclick="commonController.Delete('@Url.Action("Delete", "Audit", new { id = @item.Id })')" data data-toggle="tooltip" data-placement="top" title="Xóa"><i class="fa fa-trash fa-lg"></i></a>
+                }
+            </td>
+        </tr>
+            }
+        </tbody>
+</table>

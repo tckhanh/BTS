@@ -232,7 +232,7 @@ namespace BTS.Web.Areas.Controllers
                     _appGroupService.Save();
                     //save group
 
-                    UpdateFromGroupToRoleUser(appGroup, selectedRoleItems, selectedUserItems);
+                    await UpdateFromGroupToRoleUser(appGroup, selectedRoleItems, selectedUserItems);
                    
                     return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
@@ -274,7 +274,7 @@ namespace BTS.Web.Areas.Controllers
                     _appGroupService.Update(appGroup);
                     _appGroupService.Save();
 
-                    UpdateFromGroupToRoleUser(appGroup, selectedRoleItems, selectedUserItems);
+                    await UpdateFromGroupToRoleUser(appGroup, selectedRoleItems, selectedUserItems);
 
                     return Json(new { resetUrl = Url.Action("Add", "ApplicationGroup"), status = CommonConstants.Status_Success, html = GlobalClass.RenderRazorViewToString(this, "ViewAll", GetAll()), message = "Submitted Successfully" }, JsonRequestBehavior.AllowGet);
                 }
@@ -295,7 +295,7 @@ namespace BTS.Web.Areas.Controllers
             }
         }
 
-        private async void UpdateFromGroupToRoleUser(ApplicationGroup appGroup, string[] selectedRoleItems, string[] selectedUserItems)
+        private async Task UpdateFromGroupToRoleUser(ApplicationGroup appGroup, string[] selectedRoleItems, string[] selectedUserItems)
         {
             //delete ApplicationRoleGroup
             _appGroupService.DeleteRolesFromGroup(appGroup.Id);

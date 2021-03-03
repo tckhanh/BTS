@@ -16,7 +16,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BTS.Web</RootNamespace>
     <AssemblyName>BTS.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -284,6 +284,7 @@
     <Compile Include="Controllers\BtsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Areas\Setup\Controllers\LicenceInfoController.cs" />
+    <Compile Include="Controllers\AuditController.cs" />
     <Compile Include="Controllers\GuideController.cs" />
     <Compile Include="Controllers\NoRequiredBtsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -346,6 +347,7 @@
     <Compile Include="Models\AreaListVM.cs" />
     <Compile Include="Models\AuditableViewModel.cs" />
     <Compile Include="Models\BtsViewModel.cs" />
+    <Compile Include="Models\AuditVM.cs" />
     <Compile Include="Models\NoRequiredBtsVM.cs" />
     <Compile Include="Models\CityTabVM.cs" />
     <Compile Include="Models\AreaTabVM.cs" />
@@ -12059,6 +12061,12 @@
     <Content Include="Views\Guide\Edit.cshtml" />
     <Content Include="Views\Guide\Index.cshtml" />
     <Content Include="Views\Guide\ViewAll.cshtml" />
+    <Content Include="Views\Audit\Add.cshtml" />
+    <Content Include="Views\Audit\Detail.cshtml" />
+    <Content Include="Views\Audit\Edit.cshtml" />
+    <Content Include="Views\Audit\Index.cshtml" />
+    <Content Include="Views\Audit\ViewAll.cshtml" />
+    <Content Include="Views\Audit\DisplayTemplates\DateTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\components\roles\" />

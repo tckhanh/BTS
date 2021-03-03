@@ -297,5 +297,15 @@ namespace BTS.Web.Infrastructure.Extensions
             Item.StackTrace = ItemVm.StackTrace;
             Item.CreatedDate = ItemVm.CreatedDate;
         }
+
+        public static void UpdateAudit(this Audit Item, AuditVM ItemVm)
+        {
+            Item.Data = ItemVm.Data;
+            Item.IPAddress = ItemVm.IPAddress;
+            Item.SessionID = ItemVm.SessionID;
+            Item.TimeAccessed = ItemVm.TimeAccessed;
+            Item.URLAccessed = ItemVm.URLAccessed;
+            Item.UserName = ItemVm.UserName;
+        }
     }
 }
